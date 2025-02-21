@@ -15,3 +15,4 @@ C:\Dev\Web\CuratorsJournal\backend\Application\obj\Debug\net9.0\Application.dll
 C:\Dev\Web\CuratorsJournal\backend\Application\obj\Debug\net9.0\refint\Application.dll
 C:\Dev\Web\CuratorsJournal\backend\Application\obj\Debug\net9.0\Application.pdb
 C:\Dev\Web\CuratorsJournal\backend\Application\obj\Debug\net9.0\ref\Application.dll
+C:\Dev\Web\CuratorsJournal\backend\Application\obj\Debug\net9.0\Application.sourcelink.json

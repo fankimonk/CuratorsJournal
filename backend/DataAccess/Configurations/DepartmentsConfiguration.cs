@@ -1,4 +1,4 @@
-﻿using Domain.Models;
+﻿using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -9,6 +9,8 @@ namespace DataAccess.Configurations
         public void Configure(EntityTypeBuilder<Department> builder)
         {
             builder.HasKey(d => d.Id);
+
+            builder.Property(d => d.Name).HasColumnType("nvarchar(max)");
 
             builder
                 .HasOne(d => d.HeadOfDepartment)

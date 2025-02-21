@@ -1,5 +1,7 @@
 ﻿using DataAccess.Configurations;
-using Domain.Models;
+using Domain.Entities;
+using Domain.Entities.JournalContent;
+using Domain.Entities.JournalContent.PersonalizedAccountingCardContent;
 using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess
@@ -23,6 +25,35 @@ namespace DataAccess
         public DbSet<Subject> Subjects { get; set; }
         public DbSet<Teacher> Teachers { get; set; }
         public DbSet<Worker> Workers { get; set; }
+        public DbSet<ActivityType> ActivityTypes { get; set; }
+        public DbSet<ChronicDisease> ChronicDiseases { get; set; }
+        public DbSet<PEGroup> PEGroups { get; set; }
+        public DbSet<StudentChronicDisease> StudentsChronicDiseases { get; set; }
+        public DbSet<StudentPEGroup> StudentsPEGroups { get; set; }
+        public DbSet<PersonalizedAccountingCard> PersonalizedAccountingCards { get; set; }
+        public DbSet<IndividualInformationRecord> IndividualInformation { get; set; }
+        public DbSet<IndividualWorkWithStudentRecord> IndividualWorkWithStudents { get; set; }
+        public DbSet<ParentalInformationRecord> ParentalInformation { get; set; }
+        public DbSet<StudentDisciplinaryResponsibility> StudentDisciplinaryResponsibilities { get; set; }
+        public DbSet<StudentEcouragement> StudentEcouragements { get; set; }
+        public DbSet<WorkWithParentsRecord> WorkWithParents { get; set; }
+        public DbSet<ContactPhoneNumber> ContactPhoneNumbers { get; set; }
+        public DbSet<CuratorsIdeologicalAndEducationalWorkAccountingRecord> CuratorsIdeologicalAndEducationalWorkAccounting { get; set; }
+        public DbSet<CuratorsParticipationInPedagogicalSeminars> CuratorsParticipationInPedagogicalSeminars { get; set; }
+        public DbSet<DynamicsOfKeyIndicatorsRecord> DynamicsOfKeyIndicators { get; set; }
+        public DbSet<EducationalProcessScheduleRecord> EducationalProcessSchedule { get; set; }
+        public DbSet<FinalPerformanceAccountingRecord> FinalPerformanceAccounting { get; set; }
+        public DbSet<GroupActive> GroupActives { get; set; }
+        public DbSet<Holiday> Holidays { get; set; }
+        public DbSet<HolidayType> HolidayTypes { get; set; }
+        public DbSet<InformationHoursAccountingRecord> InformationHoursAccounting { get; set; }
+        public DbSet<LiteratureWorkRecord> LiteratureWork { get; set; }
+        public DbSet<PsychologicalAndPedagogicalCharacteristics> PsychologicalAndPedagogicalCharacteristics { get; set; }
+        public DbSet<RecomendationsAndRemarks> RecomendationsAndRemarks { get; set; }
+        public DbSet<SocioPedagogicalCharacteristics> SocioPedagogicalCharacteristics { get; set; }
+        public DbSet<StudentListRecord> StudentList { get; set; }
+        public DbSet<StudentsHealthCardRecord> StudentsHealthCards { get; set; }
+        public DbSet<Tradition> Traditions { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -43,6 +74,35 @@ namespace DataAccess
             modelBuilder.ApplyConfiguration(new SubjectsConfiguration());
             modelBuilder.ApplyConfiguration(new TeachersConfiguration());
             modelBuilder.ApplyConfiguration(new WorkersConfiguration());
+            modelBuilder.ApplyConfiguration(new ActivityTypesConfiguration());
+            modelBuilder.ApplyConfiguration(new ChronicDiseasesConfiguration());
+            modelBuilder.ApplyConfiguration(new PEGroupsConfiguration());
+            modelBuilder.ApplyConfiguration(new StudentsChronicDiseasesConfiguration());
+            modelBuilder.ApplyConfiguration(new StudentsPEGroupsConfiguration());
+            modelBuilder.ApplyConfiguration(new PersonalizedAccountingCardsConfiguration());
+            modelBuilder.ApplyConfiguration(new IndividualInformationConfiguration());
+            modelBuilder.ApplyConfiguration(new IndividualWorkWithStudentsConfiguration());
+            modelBuilder.ApplyConfiguration(new ParentalInformationConfiguration());
+            modelBuilder.ApplyConfiguration(new StudentDisciplinaryResponsibilitiesConfiguration());
+            modelBuilder.ApplyConfiguration(new StudentEcouragementsConfiguration());
+            modelBuilder.ApplyConfiguration(new WorkWithParentsConfiguration());
+            modelBuilder.ApplyConfiguration(new ContactPhoneNumbersConfiguration());
+            modelBuilder.ApplyConfiguration(new CuratorsIdeologicalAndEducationalWorkAccountingRecordConfiguration());
+            modelBuilder.ApplyConfiguration(new CuratorsParticipationInPedagogicalSeminarsConfiguration());
+            modelBuilder.ApplyConfiguration(new DynamicsOfKeyIndicatorsConfiguration());
+            modelBuilder.ApplyConfiguration(new EducationalProcessScheduleConfiguration());
+            modelBuilder.ApplyConfiguration(new FinalPerformanceAccountingConfiguration());
+            modelBuilder.ApplyConfiguration(new GroupActivesConfiguration());
+            modelBuilder.ApplyConfiguration(new HolidaysConfiguration());
+            modelBuilder.ApplyConfiguration(new HolidayTypesConfiguration());
+            modelBuilder.ApplyConfiguration(new InformationHoursAccountingConfiguration());
+            modelBuilder.ApplyConfiguration(new LiteratureWorkConfiguration());
+            modelBuilder.ApplyConfiguration(new PsychologicalAndPedagogicalCharacteristicsConfiguration());
+            modelBuilder.ApplyConfiguration(new RecomendationsAndRemarksConfiguration());
+            modelBuilder.ApplyConfiguration(new SocioPedagogicalCharacteristicsConfiguration());
+            modelBuilder.ApplyConfiguration(new StudentListConfiguration());
+            modelBuilder.ApplyConfiguration(new StudentsHealthCardsConfiguration());
+            modelBuilder.ApplyConfiguration(new TraditionsConfiguration());
 
             base.OnModelCreating(modelBuilder);
         }

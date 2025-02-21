@@ -1,4 +1,4 @@
-﻿using Domain.Models;
+﻿using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -9,8 +9,6 @@ namespace DataAccess.Configurations
         public void Configure(EntityTypeBuilder<Group> builder)
         {
             builder.HasKey(g => g.Id);
-
-            builder.Property(g => g.Number).HasColumnType("nvarchar(8)");
 
             builder
                 .HasOne(g => g.Specialty)

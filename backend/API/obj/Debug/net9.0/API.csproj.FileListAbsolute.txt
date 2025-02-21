@@ -163,3 +163,4 @@ C:\Dev\Web\CuratorsJournal\backend\API\obj\Debug\net9.0\API.pdb
 C:\Dev\Web\CuratorsJournal\backend\API\obj\Debug\net9.0\API.genruntimeconfig.cache
 C:\Dev\Web\CuratorsJournal\backend\API\obj\Debug\net9.0\ref\API.dll
 C:\Dev\Web\CuratorsJournal\backend\API\bin\Debug\net9.0\API.staticwebassets.runtime.json
+C:\Dev\Web\CuratorsJournal\backend\API\obj\Debug\net9.0\API.sourcelink.json

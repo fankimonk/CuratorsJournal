@@ -1,0 +1,25 @@
+﻿using Domain.Entities.JournalContent;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+
+namespace DataAccess.Configurations
+{
+    public class CuratorsParticipationInPedagogicalSeminarsConfiguration : IEntityTypeConfiguration<CuratorsParticipationInPedagogicalSeminars>
+    {
+        public void Configure(EntityTypeBuilder<CuratorsParticipationInPedagogicalSeminars> builder)
+        {
+            builder.HasKey(c => c.Id);
+
+            builder.Property(c => c.Topic).HasColumnType("nvarchar(max)");
+            builder.Property(c => c.ParticipationForm).HasColumnType("nvarchar(max)");
+            builder.Property(c => c.SeminarLocation).HasColumnType("nvarchar(max)");
+            builder.Property(c => c.Note).HasColumnType("nvarchar(max)");
+
+            builder
+                .HasOne(c => c.Journal)
+                .WithMany(j => j.CuratorsParticipationInPedagogicalSeminars)
+                .HasForeignKey(c => c.JournalId)
+                .IsRequired();
+        }
+    }
+}
