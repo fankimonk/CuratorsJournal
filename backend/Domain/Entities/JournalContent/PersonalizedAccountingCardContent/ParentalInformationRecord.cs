@@ -14,21 +14,21 @@ namespace Domain.Entities.JournalContent.PersonalizedAccountingCardContent
 
         public string PlaceOfResidence { get; set; } = string.Empty;
         public string PlaceOfWork { get; set; } = string.Empty;
-        public string Position { get; set; } = string.Empty;
+        public string? Position { get; set; } = string.Empty;
 
         [MinLength(9)]
         [MaxLength(17)]
-        public string HomePhoneNumber { get; set; } = string.Empty;
+        public string? HomePhoneNumber { get; set; } = string.Empty;
 
         [MinLength(9)]
         [MaxLength(17)]
-        public string WorkPhoneNumber { get; set; } = string.Empty;
+        public string? WorkPhoneNumber { get; set; } = string.Empty;
 
         [MinLength(9)]
         [MaxLength(17)]
-        public string MobilePhoneNumber { get; set; } = string.Empty;
+        public string? MobilePhoneNumber { get; set; } = string.Empty;
 
-        public string OtherInformation { get; set; } = string.Empty;
+        public string? OtherInformation { get; set; } = string.Empty;
 
         public int PersonalizedAccountingCardId { get; set; }
         public PersonalizedAccountingCard? PersonalizedAccountingCard { get; set; }

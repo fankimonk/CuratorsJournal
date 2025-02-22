@@ -13,7 +13,7 @@ namespace Domain.Entities.JournalContent.PersonalizedAccountingCardContent
         public DateOnly EndDate { get; set; }
 
         public string Result { get; set; } = string.Empty;
-        public string Note { get; set; } = string.Empty;
+        public string? Note { get; set; } = string.Empty;
 
         public int ActivityTypeId { get; set; }
         public ActivityType? ActivityType { get; set; } 

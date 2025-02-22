@@ -12,9 +12,6 @@ namespace Domain.Entities.JournalContent
         [Range(0, int.MaxValue)]
         public int Number { get; set; }
 
-        public int StudentId { get; set; }
-        public Student? Student { get; set; }
-
         public int PersonalizedAccountingCardId { get; set; }
         public PersonalizedAccountingCard? PersonalizedAccountingCard { get; set; }
     }

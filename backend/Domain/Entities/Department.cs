@@ -5,6 +5,7 @@
         public int Id { get; set; }
 
         public string Name { get; set; } = string.Empty;
+        public string AbbreviatedName { get; set; } = string.Empty;
 
         public int HeadId { get; set; }
         public HeadOfDepartment? HeadOfDepartment { get; set; }

@@ -11,12 +11,6 @@ namespace DataAccess.Configurations
             builder.HasKey(sl => sl.Id);
 
             builder
-                .HasOne(sl => sl.Student)
-                .WithOne(s => s.StudentListRecord)
-                .HasForeignKey<StudentListRecord>(sl => sl.StudentId)
-                .IsRequired();
-
-            builder
                 .HasOne(sl => sl.PersonalizedAccountingCard)
                 .WithMany(pac => pac.StudentList)
                 .HasForeignKey(sl => sl.PersonalizedAccountingCardId)

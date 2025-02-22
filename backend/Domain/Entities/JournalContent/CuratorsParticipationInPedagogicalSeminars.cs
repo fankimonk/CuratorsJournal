@@ -9,7 +9,7 @@
         public string Topic { get; set; } = string.Empty;
         public string ParticipationForm { get; set; } = string.Empty;
         public string SeminarLocation { get; set; } = string.Empty;
-        public string Note { get; set; } = string.Empty;
+        public string? Note { get; set; } = string.Empty;
 
         public int JournalId { get; set; }
         public Journal? Journal;

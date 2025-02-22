@@ -11,6 +11,7 @@ namespace DataAccess.Configurations
             builder.HasKey(f => f.Id);
 
             builder.Property(f => f.Name).HasColumnType("nvarchar(max)");
+            builder.Property(f => f.AbbreviatedName).HasColumnType("nvarchar(max)");
         }
     }
 }

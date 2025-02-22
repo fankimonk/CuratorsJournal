@@ -21,7 +21,6 @@ namespace DataAccess.Configurations
                 .HasOne(g => g.Curator)
                 .WithMany(c => c.Groups)
                 .HasForeignKey(g => g.CuratorId)
-                .IsRequired()
                 .OnDelete(DeleteBehavior.Restrict);
         }
     }

@@ -14,7 +14,7 @@ namespace Domain.Entities.JournalContent
         [Range(0, int.MaxValue)]
         public int MissedClasses { get; set; }
 
-        public string Note { get; set; } = string.Empty;
+        public string? Note { get; set; } = string.Empty;
 
         public int StudentId { get; set; }
         public Student? Student { get; set; }

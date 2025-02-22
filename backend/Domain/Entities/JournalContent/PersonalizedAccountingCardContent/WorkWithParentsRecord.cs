@@ -10,7 +10,7 @@ namespace Domain.Entities.JournalContent.PersonalizedAccountingCardContent
         public DateOnly Date { get; set; }
 
         public string WorkContent { get; set; } = string.Empty;
-        public string Note { get; set; } = string.Empty;
+        public string? Note { get; set; } = string.Empty;
 
         public int PersonalizedAccountingCardId { get; set; }
         public PersonalizedAccountingCard? PersonalizedAccountingCard { get; set; }
