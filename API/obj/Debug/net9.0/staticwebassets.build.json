@@ -1,0 +1,20 @@
+{
+  "Version": 1,
+  "Hash": "Jmud1gzDgHuIt5yW3I0DI2pVTHXc4++PGAsl6R08tVk=",
+  "Source": "API",
+  "BasePath": "_content/API",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [
+    {
+      "Name": "API\\wwwroot",
+      "Source": "API",
+      "ContentRoot": "C:\\Dev\\Web\\CuratorsJournal\\API\\wwwroot\\",
+      "BasePath": "_content/API",
+      "Pattern": "**"
+    }
+  ],
+  "Assets": [],
+  "Endpoints": []
+}
