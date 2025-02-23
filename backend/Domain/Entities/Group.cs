@@ -19,6 +19,7 @@ namespace Domain.Entities
         public Curator? Curator { get; set; }
 
         public List<Student> Students { get; set; } = [];
+        public List<CuratorsAppointmentHistoryRecord> CuratorsAppointmentHistory { get; set; } = [];
 
         public Journal? Journal { get; set; }
     }

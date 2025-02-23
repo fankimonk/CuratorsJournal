@@ -1,6 +1,10 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.CookiePolicy;
 using DataAccess;
+using DataAccess.Interfaces;
+using DataAccess.Repositories;
+using Application.Interfaces;
+using Application.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +18,14 @@ builder.Services.AddDbContext<CuratorsJournalDBContext>(
     {
         options.UseSqlServer(connectionString);
     });
+
+builder.Services.AddScoped<IGroupsRepository, GroupsRepository>();
+builder.Services.AddScoped<IJournalsRepository, JournalsRepository>();
+builder.Services.AddScoped<ICuratorsRepository, CuratorsRepository>();
+builder.Services.AddScoped<ISpecialtiesRepository, SpecialtiesRepository>();
+
+builder.Services.AddScoped<IGroupsService, GroupsService>();
+builder.Services.AddScoped<IJournalsService, JournalsService>();
 
 var app = builder.Build();
 

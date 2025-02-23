@@ -10,6 +10,8 @@ namespace DataAccess.Configurations
         {
             builder.HasKey(g => g.Id);
 
+            //TODO OnDelete
+
             builder
                 .HasOne(g => g.Specialty)
                 .WithMany(s => s.Groups)

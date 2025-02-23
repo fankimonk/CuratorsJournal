@@ -54,6 +54,7 @@ namespace DataAccess
         public DbSet<StudentListRecord> StudentList { get; set; }
         public DbSet<StudentsHealthCardRecord> StudentsHealthCards { get; set; }
         public DbSet<Tradition> Traditions { get; set; }
+        public DbSet<CuratorsAppointmentHistoryRecord> CuratorsAppointmentHistory { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -103,6 +104,7 @@ namespace DataAccess
             modelBuilder.ApplyConfiguration(new StudentListConfiguration());
             modelBuilder.ApplyConfiguration(new StudentsHealthCardsConfiguration());
             modelBuilder.ApplyConfiguration(new TraditionsConfiguration());
+            modelBuilder.ApplyConfiguration(new CuratorsAppointmentHistoryConfiguration());
 
             base.OnModelCreating(modelBuilder);
         }
