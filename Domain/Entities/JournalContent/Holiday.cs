@@ -7,10 +7,12 @@ namespace Domain.Entities.JournalContent
         public int Id { get; set; }
 
         [Range(0, 31)]
-        public int Day { get; set; }
+        public int? Day { get; set; }
 
         [Range(0, 12)]
-        public int Month { get; set; }
+        public int? Month { get; set; }
+
+        public string? RelativeDate { get; set; }
 
         public string Name { get; set; } = string.Empty;
 

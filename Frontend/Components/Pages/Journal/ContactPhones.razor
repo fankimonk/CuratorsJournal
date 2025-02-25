@@ -1,0 +1,124 @@
+﻿@page "/journal/{journalId:int}/contactphones"
+@rendermode InteractiveServer
+@attribute [StreamRendering]
+
+@using Contracts.Journal
+@using Contracts.Journal.ContactPhones
+
+@inject HttpClient HttpClient
+
+<h3>Контактные Телефоны</h3>
+
+<h3>КОНТАКТНЫЕ ТЕЛЕФОНЫ</h3>
+
+@if (_pageData == null)
+{
+    <p><em>Загрузка...</em></p>
+}
+else
+{
+    <table class="table">
+        <tbody>
+            @foreach (var phone in Phones)
+            {
+                <tr>
+                    <td>
+                        <input @bind="phone.Name" @bind:after='async () => await UpdatePhone(phone)' />
+                    </td>
+                    <td>
+                        <input @bind="phone.PhoneNumber" @bind:after='async () => await UpdatePhone(phone)' />
+                    </td>
+                    <td>
+                        <button @onclick="async () => await DeletePhone(phone)">Удалить</button>
+                    </td>
+                </tr>
+            }
+            <tr>
+                <td>
+                    <input @bind="PhoneToAdd.Name" @bind:after="AddPhone"/>
+                </td>
+                <td>
+                    <input @bind="PhoneToAdd.PhoneNumber" @bind:after="AddPhone" />
+                </td>
+            </tr>
+        </tbody>
+    </table>
+}
+
+@code {
+    [Parameter]
+    public int JournalId { get; set; }
+
+    private ContactPhonesPageResponse? _pageData;
+
+    private List<ContactPhone> Phones = [];
+
+    private ContactPhone PhoneToAdd = new ContactPhone(-1, "", "");
+
+    protected override async Task OnInitializedAsync()
+    {
+        _pageData = await HttpClient.GetFromJsonAsync<ContactPhonesPageResponse>("api/journal/contactphone/" + JournalId.ToString());
+
+        if (_pageData != null)
+            Phones = _pageData.PhoneNumbers.Select(p => new ContactPhone(p.Id, p.Name, p.PhoneNumber)).ToList();
+    }
+
+    private async Task UpdatePhone(ContactPhone phone)
+    {
+        Console.WriteLine("Update phone");
+
+        var request = new UpdateContactPhoneRequest(phone.Name, phone.PhoneNumber);
+        var response = await HttpClient.PutAsJsonAsync<UpdateContactPhoneRequest>("api/journal/contactphone/" + phone.Id, request);
+
+        if (response.IsSuccessStatusCode)
+        {
+            var updatedPhone = await response.Content.ReadFromJsonAsync<ContactPhoneResponse>();
+
+            var index = Phones.FindIndex(p => p.Id == updatedPhone!.Id);
+            Phones.RemoveAt(index);
+            Phones.Insert(index, new ContactPhone(updatedPhone!.Id, updatedPhone.Name, updatedPhone.PhoneNumber));
+        }
+    }
+
+    private async Task AddPhone()
+    {
+        Console.WriteLine("Add phone");
+
+        if (string.IsNullOrEmpty(PhoneToAdd.Name) || string.IsNullOrEmpty(PhoneToAdd.PhoneNumber)) return;
+
+        var request = new CreateContactPhoneRequest(PhoneToAdd.Name, PhoneToAdd.PhoneNumber, JournalId);
+        var response = await HttpClient.PostAsJsonAsync<CreateContactPhoneRequest>("api/journal/contactphone", request);
+
+        if (response.IsSuccessStatusCode)
+        {
+            var addedPhone = await response.Content.ReadFromJsonAsync<ContactPhoneResponse>();
+            Phones.Add(new ContactPhone(addedPhone!.Id, addedPhone.Name, addedPhone.PhoneNumber));
+
+            PhoneToAdd.Name = "";
+            PhoneToAdd.PhoneNumber = "";
+        }
+    }
+
+    private async Task DeletePhone(ContactPhone phone)
+    {
+        Console.WriteLine("Delete phone");
+
+        var response = await HttpClient.DeleteAsync("api/journal/contactphone/" + phone.Id);
+
+        if (response.IsSuccessStatusCode) Phones.Remove(phone);
+    }
+
+    private class ContactPhone
+    {
+        public int Id { get; set; }
+        public string Name { get; set; } = "";
+        public string PhoneNumber { get; set; } = "";
+
+        public ContactPhone(int id, string name, string phoneNumber)
+        {
+            Id = id;
+            Name = name;
+            PhoneNumber = phoneNumber;
+        }
+    }
+}

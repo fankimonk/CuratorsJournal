@@ -11,6 +11,7 @@ namespace DataAccess.Configurations
             builder.HasKey(h => h.Id);
 
             builder.Property(h => h.Name).HasColumnType("nvarchar(max)");
+            builder.Property(h => h.RelativeDate).HasColumnType("nvarchar(max)");
 
             builder
                 .HasOne(h => h.Type)

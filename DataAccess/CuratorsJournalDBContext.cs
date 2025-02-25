@@ -3,10 +3,11 @@ using Domain.Entities;
 using Domain.Entities.JournalContent;
 using Domain.Entities.JournalContent.PersonalizedAccountingCardContent;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 
 namespace DataAccess
 {
-    public class CuratorsJournalDBContext(DbContextOptions options) : DbContext(options)
+    public class CuratorsJournalDBContext(DbContextOptions options, IOptions<AuthorizationOptions> authOptions) : DbContext(options)
     {
         public DbSet<AcademicYear> AcademicYears { get; set; }
         public DbSet<Curator> Curators { get; set; }
@@ -55,6 +56,10 @@ namespace DataAccess
         public DbSet<StudentsHealthCardRecord> StudentsHealthCards { get; set; }
         public DbSet<Tradition> Traditions { get; set; }
         public DbSet<CuratorsAppointmentHistoryRecord> CuratorsAppointmentHistory { get; set; }
+        public DbSet<Permission> Permissions { get; set; }
+        public DbSet<Role> Roles { get; set; }
+        public DbSet<RolePermission> RolesPermissions { get; set; }
+        public DbSet<User> Users { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -105,6 +110,10 @@ namespace DataAccess
             modelBuilder.ApplyConfiguration(new StudentsHealthCardsConfiguration());
             modelBuilder.ApplyConfiguration(new TraditionsConfiguration());
             modelBuilder.ApplyConfiguration(new CuratorsAppointmentHistoryConfiguration());
+            modelBuilder.ApplyConfiguration(new PermissionsConfiguration());
+            modelBuilder.ApplyConfiguration(new RolesConfiguration());
+            modelBuilder.ApplyConfiguration(new RolesPermissionsConfiguration(authOptions.Value));
+            modelBuilder.ApplyConfiguration(new UsersConfiguration());
 
             base.OnModelCreating(modelBuilder);
         }

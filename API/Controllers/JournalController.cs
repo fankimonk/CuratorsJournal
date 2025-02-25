@@ -1,6 +1,5 @@
 ﻿using Contracts.Journal;
 using Application.Interfaces;
-using Application.Models;
 using DataAccess.Interfaces;
 using Domain.Entities;
 using Microsoft.AspNetCore.Mvc;

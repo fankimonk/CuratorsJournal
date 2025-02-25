@@ -34,7 +34,9 @@ namespace API.Controllers
 
             var group = await _groupsService.CreateGroup(request.Number, request.SpecialtyId, request.AdmissionYear);
             if (group == null) return BadRequest(nameof(group));
-            return Ok();
+
+            var groupResponse = new GroupResponse(group.Id, group.Number, group.AdmissionYear, group.SpecialtyId);
+            return CreatedAtAction(nameof(Create), groupResponse);
         }
 
         [HttpPut("appointcurator")]

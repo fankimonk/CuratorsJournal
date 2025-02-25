@@ -82,4 +82,3 @@ C:\Dev\Web\CuratorsJournal\Frontend\bin\Debug\net9.0\Contracts.dll
 C:\Dev\Web\CuratorsJournal\Frontend\bin\Debug\net9.0\Contracts.pdb
 C:\Dev\Web\CuratorsJournal\Frontend\obj\Debug\net9.0\Frontend.csproj.AssemblyReference.cache
 C:\Dev\Web\CuratorsJournal\Frontend\obj\Debug\net9.0\Frontend.csproj.Up2Date
-C:\Dev\Web\CuratorsJournal\Frontend\obj\Debug\net9.0\staticwebassets.upToDateCheck.txt

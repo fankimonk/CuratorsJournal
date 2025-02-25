@@ -13,6 +13,9 @@ namespace Domain.Entities
         public int PositionId { get; set; }
         public Position? Position { get; set; }
 
+        public int? UserId { get; set; }
+        public User? User { get; set; }
+
         public SocialDepartmentWorker? SocialDepartmentWorker { get; set; }
         public HeadOfDepartment? HeadOfDepartment { get; set; }
         public Dean? Dean { get; set; }
