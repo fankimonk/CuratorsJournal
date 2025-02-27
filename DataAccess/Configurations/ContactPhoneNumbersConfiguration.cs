@@ -11,11 +11,12 @@ namespace DataAccess.Configurations
             builder.HasKey(c => c.Id);
 
             builder.Property(c => c.Name).HasColumnType("nvarchar(max)");
+            builder.Property(c => c.PhoneNumber).HasColumnType("nvarchar(17)");
 
             builder
-                .HasOne(c => c.Journal)
-                .WithMany(j => j.ContactPhoneNumbers)
-                .HasForeignKey(c => c.JournalId)
+                .HasOne(c => c.Page)
+                .WithMany(p => p.ContactPhoneNumbers)
+                .HasForeignKey(c => c.PageId)
                 .IsRequired();
         }
     }

@@ -1,15 +1,15 @@
 ﻿namespace Contracts.Journal.ContactPhones
 {
-    public record ContactPhonesPageResponse
-    (
-        int JournalId,
-        List<ContactPhoneResponse> PhoneNumbers
-    );
+    public class ContactPhonesPageResponse(int journalId, List<ContactPhoneResponse> phoneNumbers)
+    {
+        public int JournalId { get; set; } = journalId;
+        public List<ContactPhoneResponse> PhoneNumbers { get; set; } = phoneNumbers;
+    }
 
-    public record ContactPhoneResponse
-    (
-        int Id,
-        string Name,
-        string PhoneNumber
-    );
+    public class ContactPhoneResponse(int id, string name, string phoneNumber)
+    {
+        public int Id { get; set; } = id;
+        public string Name { get; set; } = name;
+        public string PhoneNumber { get; set; } = phoneNumber;
+    }
 }

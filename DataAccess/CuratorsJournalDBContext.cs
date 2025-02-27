@@ -60,6 +60,8 @@ namespace DataAccess
         public DbSet<Role> Roles { get; set; }
         public DbSet<RolePermission> RolesPermissions { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<Page> Pages { get; set; }
+        public DbSet<PageType> PageTypes { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -114,6 +116,8 @@ namespace DataAccess
             modelBuilder.ApplyConfiguration(new RolesConfiguration());
             modelBuilder.ApplyConfiguration(new RolesPermissionsConfiguration(authOptions.Value));
             modelBuilder.ApplyConfiguration(new UsersConfiguration());
+            modelBuilder.ApplyConfiguration(new PagesConfiguration());
+            modelBuilder.ApplyConfiguration(new PageTypesConfiguration());
 
             base.OnModelCreating(modelBuilder);
         }

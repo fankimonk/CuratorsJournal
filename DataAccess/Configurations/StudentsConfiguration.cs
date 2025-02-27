@@ -14,6 +14,8 @@ namespace DataAccess.Configurations
             builder.Property(s => s.MiddleName).HasColumnType("nvarchar(max)");
             builder.Property(s => s.LastName).HasColumnType("nvarchar(max)");
 
+            builder.Property(s => s.PhoneNumber).HasColumnType("nvarchar(17)");
+
             builder
                 .HasOne(s => s.Group)
                 .WithMany(g => g.Students)

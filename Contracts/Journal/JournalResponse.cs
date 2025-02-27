@@ -2,10 +2,10 @@
 
 namespace Contracts.Journal
 {
-    public record JournalResponse
-    (
-        int Id,
-        string GroupNumber,
-        CuratorResponse? Curator
-    );
+    public class JournalResponse(int id, string groupNumber, CuratorResponse? curator)
+    {
+        public int Id { get; set; } = id;
+        public string GroupNumber { get; set; } = groupNumber;
+        public CuratorResponse? Curator { get; set; } = curator;
+    }
 }

@@ -12,8 +12,6 @@ namespace Domain.Entities
         public string MiddleName { get; set; } = string.Empty;
         public string LastName { get; set; } = string.Empty;
 
-        [MinLength(9)]
-        [MaxLength(17)]
         public string PhoneNumber { get; set; } = string.Empty;
 
         public int GroupId { get; set; }

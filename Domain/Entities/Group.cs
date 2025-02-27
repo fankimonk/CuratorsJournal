@@ -6,8 +6,6 @@ namespace Domain.Entities
     {
         public int Id { get; set; }
 
-        [MinLength(8)]
-        [MaxLength(8)]
         public string Number { get; set; } = string.Empty;
 
         public int AdmissionYear { get; set; }

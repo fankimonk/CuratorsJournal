@@ -10,7 +10,6 @@ namespace Domain.Entities
         public int GroupId { get; set; }
         public Group? Group { get; set; }
 
-        public List<ContactPhoneNumber> ContactPhoneNumbers { get; set; } = [];
         public List<SocioPedagogicalCharacteristics> SocioPedagogicalCharacteristics { get; set; } = [];
         public List<GroupActive> GroupActives { get; set; } = [];
         public List<PersonalizedAccountingCard> PersonalizedAccountingCards { get; set; } = [];
@@ -25,5 +24,7 @@ namespace Domain.Entities
         public List<Tradition> Traditions { get; set; } = [];
         public List<EducationalProcessScheduleRecord> EducationalProcessSchedule { get; set; } = [];
         public List<PsychologicalAndPedagogicalCharacteristics> PsychologicalAndPedagogicalCharacteristics { get; set; } = [];
+
+        public List<Page> Pages { get; set; } = [];
     }
 }

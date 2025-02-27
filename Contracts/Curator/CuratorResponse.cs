@@ -1,10 +1,10 @@
 ﻿namespace Contracts.Curator
 {
-    public record CuratorResponse
-    (
-        int Id,
-        string FirstName,
-        string MiddleName,
-        string LastName
-    );
+    public class CuratorResponse(int id, string firstName, string middleName, string lastName)
+    {
+        public int Id { get; set; } = id;
+        public string FirstName { get; set; } = firstName;
+        public string MiddleName { get; set; } = middleName;
+        public string LastName { get; set; } = lastName;
+    };
 }

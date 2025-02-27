@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace Domain.Entities.JournalContent
+﻿namespace Domain.Entities.JournalContent
 {
     public class ContactPhoneNumber
     {
@@ -8,11 +6,9 @@ namespace Domain.Entities.JournalContent
 
         public string Name { get; set; } = string.Empty;
 
-        [MinLength(9)]
-        [MaxLength(17)]
         public string PhoneNumber { get; set; } = string.Empty;
 
-        public int JournalId { get; set; }
-        public Journal? Journal;
+        public int PageId { get; set; }
+        public Page? Page;
     }
 }

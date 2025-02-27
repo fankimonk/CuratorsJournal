@@ -10,7 +10,7 @@ namespace DataAccess.Configurations
         {
             builder.HasKey(g => g.Id);
 
-            //TODO OnDelete
+            builder.Property(c => c.Number).HasColumnType("nvarchar(8)");
 
             builder
                 .HasOne(g => g.Specialty)

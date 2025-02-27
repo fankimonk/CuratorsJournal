@@ -6,8 +6,8 @@ namespace Domain.Entities
     {
         public int Id { get; set; }
 
-        public DateOnly Start { get; set; }
-        public DateOnly End { get; set; }
+        public int StartYear { get; set; }
+        public int EndYear { get; set; }
 
         public List<SocioPedagogicalCharacteristics> SocioPedagogicalCharacteristics { get; set; } = [];
         public List<StudentsHealthCardRecord> StudentsHealthCards { get; set; } = [];

@@ -20,4 +20,14 @@ namespace DataAccess.Configurations
                 .IsRequired();
         }
     }
+
+    public class HolidayTypesConfiguration : IEntityTypeConfiguration<HolidayType>
+    {
+        public void Configure(EntityTypeBuilder<HolidayType> builder)
+        {
+            builder.HasKey(ht => ht.Id);
+
+            builder.Property(ht => ht.Name).HasColumnType("nvarchar(max)");
+        }
+    }
 }

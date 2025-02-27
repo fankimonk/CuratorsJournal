@@ -1,23 +1,23 @@
 ﻿namespace Contracts.Journal
 {
-    public record HolidaysPageResponse
-    (
-        List<HolidayTypeResponse> HolidayTypes
-    );
+    public class HolidaysPageResponse(List<HolidayTypeResponse> holidayTypes)
+    {
+        public List<HolidayTypeResponse> HolidayTypes { get; set; } = holidayTypes;
+    }
 
-    public record HolidayResponse
-    (
-        int Id,
-        int? Day,
-        int? Month,
-        string? RelativeDate,
-        string Name
-    );
+    public class HolidayResponse(int id, int? day, int? month, string? relativeDate, string name)
+    {
+        public int Id { get; set; } = id;
+        public int? Day { get; set; } = day;
+        public int? Month { get; set; } = month;
+        public string? RelativeDate { get; set; } = relativeDate;
+        public string Name { get; set; } = name;
+    }
 
-    public record HolidayTypeResponse
-    (
-        int Id,
-        string Name,
-        List<HolidayResponse> Holidays
-    );
+    public class HolidayTypeResponse(int id, string name, List<HolidayResponse> holidays)
+    {
+        public int Id { get; set; } = id;
+        public string Name { get; set; } = name;
+        public List<HolidayResponse> Holidays { get; set; } = holidays;
+    }
 }
