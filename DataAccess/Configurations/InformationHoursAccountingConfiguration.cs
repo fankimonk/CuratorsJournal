@@ -11,9 +11,9 @@ namespace DataAccess.Configurations
             builder.HasKey(i => i.Id);
 
             builder
-                .HasOne(i => i.Journal)
-                .WithMany(j => j.InformationHoursAccounting)
-                .HasForeignKey(i => i.JournalId)
+                .HasOne(i => i.Page)
+                .WithMany(p => p.InformationHoursAccounting)
+                .HasForeignKey(i => i.PageId)
                 .IsRequired();
         }
     }

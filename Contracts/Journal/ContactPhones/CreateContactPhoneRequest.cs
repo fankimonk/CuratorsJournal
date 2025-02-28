@@ -14,6 +14,6 @@ namespace Contracts.Journal.ContactPhones
         string PhoneNumber,
 
         [Required]
-        int JournalId
+        int PageId
     );
 }

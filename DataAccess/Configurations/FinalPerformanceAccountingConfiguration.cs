@@ -10,6 +10,8 @@ namespace DataAccess.Configurations
         {
             builder.HasKey(f => f.Id);
 
+            builder.ToTable(t => t.HasCheckConstraint("CHK_FPA_Number", "[Number] >= 0"));
+
             builder
                 .HasOne(f => f.Student)
                 .WithMany(s => s.FinalPerformanceAccountingRecords)
@@ -17,9 +19,9 @@ namespace DataAccess.Configurations
                 .IsRequired();
 
             builder
-                .HasOne(f => f.Journal)
-                .WithMany(j => j.FinalPerformanceAccounting)
-                .HasForeignKey(f => f.JournalId)
+                .HasOne(f => f.Page)
+                .WithMany(p => p.FinalPerformanceAccounting)
+                .HasForeignKey(f => f.PageId)
                 .IsRequired();
         }
     }

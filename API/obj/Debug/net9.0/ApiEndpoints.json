@@ -124,6 +124,58 @@
     ]
   },
   {
+    "ContainingType": "API.Controllers.JournalController",
+    "Method": "GetContents",
+    "RelativePath": "api/journal/{journalId}/contents",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "journalId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "Contracts.Journal.ContentsResponse",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "API.Controllers.JournalController",
+    "Method": "GetTitlePage",
+    "RelativePath": "api/journal/{journalId}/titlepage",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "journalId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "Contracts.Journal.TitlePageResponse",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
     "ContainingType": "API.Controllers.ContactPhonesController",
     "Method": "AddContactPhone",
     "RelativePath": "api/journal/contactphone",
@@ -151,14 +203,14 @@
   },
   {
     "ContainingType": "API.Controllers.ContactPhonesController",
-    "Method": "GetJournalContactPhones",
-    "RelativePath": "api/journal/contactphone/{journalId}",
+    "Method": "GetContactPhonesByPage",
+    "RelativePath": "api/journal/contactphone/{pageId}",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
-        "Name": "journalId",
+        "Name": "pageId",
         "Type": "System.Int32",
         "IsRequired": true
       }
@@ -233,32 +285,6 @@
     "ReturnTypes": [
       {
         "Type": "Contracts.Journal.HolidaysPageResponse",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
-        "StatusCode": 200
-      }
-    ]
-  },
-  {
-    "ContainingType": "API.Controllers.JournalController",
-    "Method": "GetTitlePage",
-    "RelativePath": "api/journal/titlepage/{journalId}",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "journalId",
-        "Type": "System.Int32",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": [
-      {
-        "Type": "Contracts.Journal.TitlePageResponse",
         "MediaTypes": [
           "text/plain",
           "application/json",

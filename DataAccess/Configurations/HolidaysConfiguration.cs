@@ -10,6 +10,9 @@ namespace DataAccess.Configurations
         {
             builder.HasKey(h => h.Id);
 
+            builder.ToTable(t => t.HasCheckConstraint("CHK_Holidays_Month", "[Month] >= 0 and [Month] <= 12"));
+            builder.ToTable(t => t.HasCheckConstraint("CHK_Holidays_Day", "[Day] >= 0 and [Day] <= 31"));
+
             builder.Property(h => h.Name).HasColumnType("nvarchar(max)");
             builder.Property(h => h.RelativeDate).HasColumnType("nvarchar(max)");
 

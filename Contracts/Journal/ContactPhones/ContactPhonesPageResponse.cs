@@ -1,8 +1,8 @@
 ﻿namespace Contracts.Journal.ContactPhones
 {
-    public class ContactPhonesPageResponse(int journalId, List<ContactPhoneResponse> phoneNumbers)
+    public class ContactPhonesPageResponse(int pageId, List<ContactPhoneResponse> phoneNumbers)
     {
-        public int JournalId { get; set; } = journalId;
+        public int PageId { get; set; } = pageId;
         public List<ContactPhoneResponse> PhoneNumbers { get; set; } = phoneNumbers;
     }
 

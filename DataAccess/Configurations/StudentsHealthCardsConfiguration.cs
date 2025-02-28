@@ -12,10 +12,13 @@ namespace DataAccess.Configurations
 
             builder.Property(hc => hc.Note).HasColumnType("nvarchar(max)");
 
+            builder.ToTable(t => t.HasCheckConstraint("CHK_SHC_Number", "[Number] >= 0"));
+            builder.ToTable(t => t.HasCheckConstraint("CHK_SHC_MissedClasses", "[MissedClasses] >= 0"));
+
             builder
-                .HasOne(hc => hc.Journal)
-                .WithMany(j => j.StudentsHealthCards)
-                .HasForeignKey(hc => hc.JournalId)
+                .HasOne(hc => hc.Page)
+                .WithMany(p => p.StudentsHealthCards)
+                .HasForeignKey(hc => hc.PageId)
                 .IsRequired();
 
             builder

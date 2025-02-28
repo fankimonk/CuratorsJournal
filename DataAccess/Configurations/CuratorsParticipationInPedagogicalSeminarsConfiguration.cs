@@ -16,9 +16,9 @@ namespace DataAccess.Configurations
             builder.Property(c => c.Note).HasColumnType("nvarchar(max)");
 
             builder
-                .HasOne(c => c.Journal)
-                .WithMany(j => j.CuratorsParticipationInPedagogicalSeminars)
-                .HasForeignKey(c => c.JournalId)
+                .HasOne(c => c.Page)
+                .WithMany(p => p.CuratorsParticipationInPedagogicalSeminars)
+                .HasForeignKey(c => c.PageId)
                 .IsRequired();
         }
     }

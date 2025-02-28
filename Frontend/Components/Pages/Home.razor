@@ -27,16 +27,16 @@ else
         <tbody>
             @foreach (var journal in _journals)
             {
-                <tr @onclick='() => OpenJournal(journal.Id)' style="cursor: pointer;">
+                <tr @onclick='async () => await OpenJournal(journal.Id)' style="cursor: pointer;">
                     <td>@journal.GroupNumber</td>
                     <td>
                         @if (journal.Curator != null) 
                         {
                             @(
-                                    journal.Curator.LastName + ' ' +
-                                    journal.Curator.FirstName + ' ' +
-                                    journal.Curator.MiddleName
-                                 )
+                                            journal.Curator.LastName + ' ' +
+                                            journal.Curator.FirstName + ' ' +
+                                            journal.Curator.MiddleName
+                                         )
                         }
                     </td>
                 </tr>
@@ -53,9 +53,12 @@ else
         _journals = await HttpClient.GetFromJsonAsync<List<JournalResponse>>("api/journal");
     }
 
-    private void OpenJournal(int journalId)
+    private async Task OpenJournal(int journalId)
     {
         NavigationManager.NavigateTo($"/journal/{journalId}/title");
+
+        var response = await HttpClient.GetFromJsonAsync<ContentsResponse>($"api/journal/{journalId}/contents");
+        var journal = new Journal(response);
     }
 
 }

@@ -10,10 +10,17 @@ namespace DataAccess.Configurations
         {
             builder.HasKey(e => e.Id);
 
+            builder.ToTable(t => t.HasCheckConstraint("CHK_EPS_SemesterNumber", "[SemesterNumber] >= 0"));
+
+            builder.ToTable(t => t.HasCheckConstraint("CHK_EPS_StartEndDates", "[EndDate] >= [StartDate]"));
+            builder.ToTable(t => t.HasCheckConstraint("CHK_EPS_SessionStartEndDates", "[SessionEndDate] >= [SessionStartDate]"));
+            builder.ToTable(t => t.HasCheckConstraint("CHK_EPS_PracticeStartEndDates", "[PracticeEndDate] >= [PracticeStartDate]"));
+            builder.ToTable(t => t.HasCheckConstraint("CHK_EPS_VacationStartEndDates", "[VacationEndDate] >= [VacationStartDate]"));
+
             builder
-                .HasOne(e => e.Journal)
-                .WithMany(j => j.EducationalProcessSchedule)
-                .HasForeignKey(e => e.JournalId)
+                .HasOne(e => e.Page)
+                .WithMany(p => p.EducationalProcessSchedule)
+                .HasForeignKey(e => e.PageId)
                 .IsRequired();
         }
     }

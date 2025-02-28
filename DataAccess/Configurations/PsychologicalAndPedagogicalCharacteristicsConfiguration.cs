@@ -19,9 +19,9 @@ namespace DataAccess.Configurations
                 .IsRequired();
 
             builder
-                .HasOne(p => p.Journal)
-                .WithMany(j => j.PsychologicalAndPedagogicalCharacteristics)
-                .HasForeignKey(p => p.JournalId)
+                .HasOne(p => p.Page)
+                .WithMany(p => p.PsychologicalAndPedagogicalCharacteristics)
+                .HasForeignKey(p => p.PageId)
                 .IsRequired();
         }
     }

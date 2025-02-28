@@ -8,23 +8,23 @@ namespace DataAccess.Configurations
     {
         public void Configure(EntityTypeBuilder<PersonalizedAccountingCard> builder)
         {
-            builder.HasKey(p => p.Id);
+            builder.HasKey(pac => pac.Id);
 
-            builder.Property(p => p.PassportData).HasColumnType("nvarchar(max)");
-            builder.Property(p => p.Citizenship).HasColumnType("nvarchar(max)");
-            builder.Property(p => p.GraduatedEducationalInstitution).HasColumnType("nvarchar(max)");
-            builder.Property(p => p.ResidentialAddress).HasColumnType("nvarchar(max)");
+            builder.Property(pac => pac.PassportData).HasColumnType("nvarchar(max)");
+            builder.Property(pac => pac.Citizenship).HasColumnType("nvarchar(max)");
+            builder.Property(pac => pac.GraduatedEducationalInstitution).HasColumnType("nvarchar(max)");
+            builder.Property(pac => pac.ResidentialAddress).HasColumnType("nvarchar(max)");
 
             builder
-                .HasOne(p => p.Student)
+                .HasOne(pac => pac.Student)
                 .WithOne(s => s.PersonalizedAccountingCard)
-                .HasForeignKey<PersonalizedAccountingCard>(p => p.StudentId)
+                .HasForeignKey<PersonalizedAccountingCard>(pac => pac.StudentId)
                 .IsRequired();
 
             builder
-                .HasOne(p => p.Journal)
-                .WithMany(j => j.PersonalizedAccountingCards)
-                .HasForeignKey(p => p.JournalId)
+                .HasOne(pac => pac.Page)
+                .WithMany(p => p.PersonalizedAccountingCards)
+                .HasForeignKey(pac => pac.PageId)
                 .IsRequired();
         }
     }

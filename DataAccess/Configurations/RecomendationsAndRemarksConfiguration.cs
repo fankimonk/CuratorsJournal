@@ -13,6 +13,8 @@ namespace DataAccess.Configurations
             builder.Property(rr => rr.Content).HasColumnType("nvarchar(max)");
             builder.Property(rr => rr.Result).HasColumnType("nvarchar(max)");
 
+            builder.ToTable(t => t.HasCheckConstraint("CHK_RAR_Dates", "[ExecutionDate] >= [Date]"));
+
             builder
                 .HasOne(rr => rr.Reviewer)
                 .WithMany(r => r.RecomendationsAndRemarks)
@@ -20,9 +22,9 @@ namespace DataAccess.Configurations
                 .IsRequired();
 
             builder
-                .HasOne(rr => rr.Journal)
-                .WithMany(j => j.RecomendationsAndRemarks)
-                .HasForeignKey(rr => rr.JournalId)
+                .HasOne(rr => rr.Page)
+                .WithMany(p => p.RecomendationsAndRemarks)
+                .HasForeignKey(rr => rr.PageId)
                 .IsRequired();
         }
     }

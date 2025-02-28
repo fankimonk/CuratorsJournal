@@ -1,4 +1,7 @@
-﻿using Domain.Entities.JournalContent;
+﻿using Domain.Entities;
+using Domain.Entities.JournalContent;
+using Domain.Enums;
+using Domain.Enums.Journal;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -32,6 +35,16 @@ namespace DataAccess.Configurations
             builder.HasKey(pt => pt.Id);
 
             builder.Property(pt => pt.Name).HasColumnType("nvarchar(max)");
+
+            var pageTypes = Enum
+                .GetValues<PageTypes>()
+                .Select(pt => new PageType
+                {
+                    Id = (int)pt,
+                    Name = pt.ToString()
+                });
+
+            builder.HasData(pageTypes);
         }
     }
 }

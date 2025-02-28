@@ -11,7 +11,7 @@
         public int WorkerId { get; set; }
         public Worker? Worker { get; set; }
 
-        public int JournalId { get; set; }
-        public Journal? Journal;
+        public int PageId { get; set; }
+        public Page? Page;
     }
 }

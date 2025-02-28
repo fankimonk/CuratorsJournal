@@ -1,4 +1,4 @@
-﻿@page "/journal/{journalId:int}/contactphones"
+﻿@page "/journal/contactphones/{pageId:int}"
 @rendermode InteractiveServer
 @attribute [StreamRendering]
 
@@ -47,7 +47,7 @@ else
 
 @code {
     [Parameter]
-    public int JournalId { get; set; }
+    public int PageId { get; set; }
 
     private ContactPhonesPageResponse? _pageData;
 
@@ -55,7 +55,7 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        _pageData = await HttpClient.GetFromJsonAsync<ContactPhonesPageResponse>("api/journal/contactphone/" + JournalId.ToString());
+        _pageData = await HttpClient.GetFromJsonAsync<ContactPhonesPageResponse>("api/journal/contactphone/" + PageId.ToString());
     }
 
     private async Task UpdatePhone(ContactPhoneResponse phone)
@@ -81,7 +81,7 @@ else
 
         if (string.IsNullOrEmpty(PhoneToAdd.Name) || string.IsNullOrEmpty(PhoneToAdd.PhoneNumber)) return;
 
-        var request = new CreateContactPhoneRequest(PhoneToAdd.Name, PhoneToAdd.PhoneNumber, JournalId);
+        var request = new CreateContactPhoneRequest(PhoneToAdd.Name, PhoneToAdd.PhoneNumber, PageId);
         var response = await HttpClient.PostAsJsonAsync<CreateContactPhoneRequest>("api/journal/contactphone", request);
 
         if (response.IsSuccessStatusCode)

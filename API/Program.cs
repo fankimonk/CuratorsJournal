@@ -35,6 +35,8 @@ builder.Services.AddScoped<ISpecialtiesRepository, SpecialtiesRepository>();
 builder.Services.AddScoped<IContactPhonesRepository, ContactPhonesRepository>();
 builder.Services.AddScoped<IHolidaysRepository, HolidaysRepository>();
 builder.Services.AddScoped<IUsersRepository, UsersRepository>();
+builder.Services.AddScoped<ICuratorsAppointmentHistoryRepository, CuratorsAppointmentHistoryRepository>();
+builder.Services.AddScoped<IPagesRepository, PagesRepository>();
 
 builder.Services.AddScoped<IGroupsService, GroupsService>();
 builder.Services.AddScoped<IJournalsService, JournalsService>();

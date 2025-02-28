@@ -16,16 +16,8 @@ namespace Domain.Entities.JournalContent.PersonalizedAccountingCardContent
         public string PlaceOfWork { get; set; } = string.Empty;
         public string? Position { get; set; } = string.Empty;
 
-        [MinLength(9)]
-        [MaxLength(17)]
         public string? HomePhoneNumber { get; set; } = string.Empty;
-
-        [MinLength(9)]
-        [MaxLength(17)]
         public string? WorkPhoneNumber { get; set; } = string.Empty;
-
-        [MinLength(9)]
-        [MaxLength(17)]
         public string? MobilePhoneNumber { get; set; } = string.Empty;
 
         public string? OtherInformation { get; set; } = string.Empty;

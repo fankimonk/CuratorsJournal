@@ -10,7 +10,7 @@ namespace Domain.Entities.JournalContent
 
 
 
-        public int JournalId { get; set; }
-        public Journal? Journal;
+        public int PageId { get; set; }
+        public Page? Page;
     }
 }

@@ -8,10 +8,7 @@ namespace Domain.Entities.JournalContent
     {
         public int Id { get; set; }
 
-        [Range(0, int.MaxValue)]
         public int Number { get; set; }
-
-        [Range(0, int.MaxValue)]
         public int MissedClasses { get; set; }
 
         public string? Note { get; set; } = string.Empty;
@@ -22,7 +19,7 @@ namespace Domain.Entities.JournalContent
         public int AcademicYearId { get; set; }
         public AcademicYear? AcademicYear { get; set; }
 
-        public int JournalId { get; set; }
-        public Journal? Journal;
+        public int PageId { get; set; }
+        public Page? Page;
     }
 }

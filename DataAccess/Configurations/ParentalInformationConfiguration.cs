@@ -17,6 +17,10 @@ namespace DataAccess.Configurations
             builder.Property(p => p.PlaceOfWork).HasColumnType("nvarchar(max)");
             builder.Property(p => p.Position).HasColumnType("nvarchar(max)");
             builder.Property(p => p.OtherInformation).HasColumnType("nvarchar(max)");
+
+            builder.Property(p => p.HomePhoneNumber).HasColumnType("nvarchar(17)");
+            builder.Property(p => p.WorkPhoneNumber).HasColumnType("nvarchar(17)");
+            builder.Property(p => p.MobilePhoneNumber).HasColumnType("nvarchar(17)");
         
             builder
                 .HasOne(p => p.PersonalizedAccountingCard)

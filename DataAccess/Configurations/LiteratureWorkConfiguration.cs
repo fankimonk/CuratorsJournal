@@ -13,9 +13,9 @@ namespace DataAccess.Configurations
             builder.Property(lw => lw.ShortAnnotation).HasColumnType("nvarchar(max)");
 
             builder
-                .HasOne(lw => lw.Journal)
-                .WithMany(j => j.LiteratureWork)
-                .HasForeignKey(lw => lw.JournalId)
+                .HasOne(lw => lw.Page)
+                .WithMany(p => p.LiteratureWork)
+                .HasForeignKey(lw => lw.PageId)
                 .IsRequired();
         }
     }

@@ -16,9 +16,9 @@ namespace DataAccess.Repositories
         public async Task<ContactPhoneNumber?> CreateAsync(ContactPhoneNumber phone)
         {
             if (phone == null) return null;
+            if (!await PageExists(phone.PageId)) return null;
 
             var createdPhone = await _dbContext.ContactPhoneNumbers.AddAsync(phone);
-            if (createdPhone == null) return null;
 
             await _dbContext.SaveChangesAsync();
 
@@ -34,9 +34,9 @@ namespace DataAccess.Repositories
             return true;
         }
 
-        public async Task<List<ContactPhoneNumber>> GetByJournalIdAsync(int id)
+        public async Task<List<ContactPhoneNumber>> GetByPageIdAsync(int id)
         {
-            return await _dbContext.ContactPhoneNumbers.AsNoTracking().Where(c => c.JournalId == id).ToListAsync();
+            return await _dbContext.ContactPhoneNumbers.AsNoTracking().Where(c => c.PageId == id).ToListAsync();
         }
 
         public async Task<ContactPhoneNumber?> UpdateAsync(int id, ContactPhoneNumber phone)
@@ -52,5 +52,8 @@ namespace DataAccess.Repositories
             await _dbContext.SaveChangesAsync();
             return phoneToUpdate;
         }
+
+        private async Task<bool> PageExists(int id) =>
+            await _dbContext.Pages.AsNoTracking().FirstOrDefaultAsync(p => p.Id == id) != null;
     }
 }

@@ -10,12 +10,19 @@ namespace DataAccess.Configurations
         {
             builder.HasKey(sl => sl.Id);
 
+            builder.ToTable(t => t.HasCheckConstraint("CHK_StudentList_Number", "[Number] >= 0"));
+
             builder
                 .HasOne(sl => sl.PersonalizedAccountingCard)
                 .WithMany(pac => pac.StudentList)
                 .HasForeignKey(sl => sl.PersonalizedAccountingCardId)
-                .IsRequired()
                 .OnDelete(DeleteBehavior.Restrict);
+
+            builder
+                .HasOne(sl => sl.Page)
+                .WithMany(p => p.StudentList)
+                .HasForeignKey(sl => sl.PageId)
+                .IsRequired();
         }
     }
 }

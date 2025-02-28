@@ -14,11 +14,14 @@ namespace API.Controllers
     {
         private readonly IJournalsService _journalsService;
         private readonly IJournalsRepository _journalsRepository;
+        private readonly IPagesRepository _pagesRepository;
 
-        public JournalController(IJournalsService journalsService, IJournalsRepository journalsRepository)
+        public JournalController(IJournalsService journalsService, IJournalsRepository journalsRepository, 
+            IPagesRepository pagesRepository)
         {
             _journalsService = journalsService;
             _journalsRepository = journalsRepository;
+            _pagesRepository = pagesRepository;
         }
 
         [HttpGet]
@@ -50,8 +53,21 @@ namespace API.Controllers
             return Ok(journalResponses);
         }
 
-        [HttpGet]
-        [Route("titlepage/{journalId}")]
+        [HttpGet("{journalId}/contents")]
+        public async Task<ActionResult<ContentsResponse>> GetContents([FromRoute] int journalId)
+        {
+            var pages = await _pagesRepository.GetByJournalId(journalId);
+
+            var response = pages.Select(p => new PageResponse(
+                p.Id,
+                new PageTypeResponse(p.PageType!.Id, p.PageType.Name),
+                p.JournalId
+            )).ToList();
+
+            return Ok(new ContentsResponse(journalId, response));
+        }
+
+        [HttpGet("{journalId}/titlepage")]
         public async Task<ActionResult<TitlePageResponse>> GetTitlePage([FromRoute] int journalId)
         {
             var journal = await _journalsService.GetJournalsTitlePageData(journalId);

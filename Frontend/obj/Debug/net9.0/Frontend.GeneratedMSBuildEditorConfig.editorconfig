@@ -44,6 +44,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xKb3VybmFsXFRpdGxlLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Dev/Web/CuratorsJournal/Frontend/Components/Pages/Journal/_Imports.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xKb3VybmFsXF9JbXBvcnRzLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Dev/Web/CuratorsJournal/Frontend/Components/Routes.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xSb3V0ZXMucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
@@ -51,6 +55,14 @@ build_metadata.AdditionalFiles.CssScope =
 [C:/Dev/Web/CuratorsJournal/Frontend/Components/_Imports.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xfSW1wb3J0cy5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Dev/Web/CuratorsJournal/Frontend/Components/Layout/Journal/JournalLayout.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xMYXlvdXRcSm91cm5hbFxKb3VybmFsTGF5b3V0LnJhem9y
+build_metadata.AdditionalFiles.CssScope = b-ugu1blg2bi
+
+[C:/Dev/Web/CuratorsJournal/Frontend/Components/Layout/Journal/JournalNavMenu.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xMYXlvdXRcSm91cm5hbFxKb3VybmFsTmF2TWVudS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-rywomp374a
 
 [C:/Dev/Web/CuratorsJournal/Frontend/Components/Layout/MainLayout.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xMYXlvdXRcTWFpbkxheW91dC5yYXpvcg==

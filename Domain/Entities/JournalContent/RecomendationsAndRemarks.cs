@@ -13,7 +13,7 @@
         public int ReviewerId { get; set; }
         public Worker? Reviewer { get; set; }
 
-        public int JournalId { get; set; }
-        public Journal? Journal;
+        public int PageId { get; set; }
+        public Page? Page;
     }
 }

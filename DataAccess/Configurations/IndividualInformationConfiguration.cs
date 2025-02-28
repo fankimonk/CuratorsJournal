@@ -10,6 +10,8 @@ namespace DataAccess.Configurations
         {
             builder.HasKey(i => i.Id);
 
+            builder.ToTable(t => t.HasCheckConstraint("CHK_II_StartEndDates", "[EndDate] >= [StartDate]"));
+
             builder.Property(i => i.ActivityName).HasColumnType("nvarchar(max)");
             builder.Property(i => i.Result).HasColumnType("nvarchar(max)");
             builder.Property(i => i.Note).HasColumnType("nvarchar(max)");

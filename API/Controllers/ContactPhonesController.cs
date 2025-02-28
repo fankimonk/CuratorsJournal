@@ -1,6 +1,7 @@
 ﻿using Contracts.Journal.ContactPhones;
 using DataAccess.Interfaces;
 using Domain.Entities.JournalContent;
+using Domain.Enums.Journal;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -9,19 +10,21 @@ namespace API.Controllers
     public class ContactPhonesController : ControllerBase
     {
         private readonly IContactPhonesRepository _contactPhonesRepository;
+        private readonly IPagesRepository _pagesRepository;
 
-        public ContactPhonesController(IContactPhonesRepository contactPhonesRepository)
+        public ContactPhonesController(IContactPhonesRepository contactPhonesRepository, IPagesRepository pagesRepository)
         {
             _contactPhonesRepository = contactPhonesRepository;
+            _pagesRepository = pagesRepository;
         }
 
-        [HttpGet("{journalId}")]
-        public async Task<ActionResult<ContactPhonesPageResponse>> GetJournalContactPhones([FromRoute] int journalId)
+        [HttpGet("{pageId}")]
+        public async Task<ActionResult<ContactPhonesPageResponse>> GetContactPhonesByPage([FromRoute] int pageId)
         {
-            var phones = await _contactPhonesRepository.GetByJournalIdAsync(journalId);
+            var phones = await _contactPhonesRepository.GetByPageIdAsync(pageId);
 
             var phonesResponse = phones.Select(p => new ContactPhoneResponse(p.Id, p.Name, p.PhoneNumber)).ToList();
-            return Ok(new ContactPhonesPageResponse(journalId, phonesResponse));
+            return Ok(new ContactPhonesPageResponse(pageId, phonesResponse));
         }
 
         [HttpPost]
@@ -29,7 +32,10 @@ namespace API.Controllers
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            var phone = new ContactPhoneNumber { Name = request.Name, PhoneNumber = request.PhoneNumber, JournalId = request.JournalId };
+            var page = await _pagesRepository.GetById(request.PageId);
+            if (page == null || page.PageTypeId != (int)PageTypes.ContactPhonesPage) return BadRequest(nameof(request.PageId));
+
+            var phone = new ContactPhoneNumber { Name = request.Name, PhoneNumber = request.PhoneNumber, PageId = request.PageId };
 
             var createdPhone = await _contactPhonesRepository.CreateAsync(phone);
             if (createdPhone == null) return BadRequest();

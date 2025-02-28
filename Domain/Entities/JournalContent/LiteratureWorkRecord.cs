@@ -12,7 +12,7 @@ namespace Domain.Entities.JournalContent
 
         public string? ShortAnnotation { get; set; } = string.Empty;
 
-        public int JournalId { get; set; }
-        public Journal? Journal;
+        public int PageId { get; set; }
+        public Page? Page;
     }
 }

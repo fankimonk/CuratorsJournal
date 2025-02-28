@@ -9,10 +9,12 @@ namespace Domain.Entities.JournalContent
     {
         public int Id { get; set; }
 
-        [Range(0, int.MaxValue)]
         public int Number { get; set; }
 
-        public int PersonalizedAccountingCardId { get; set; }
+        public int? PersonalizedAccountingCardId { get; set; }
         public PersonalizedAccountingCard? PersonalizedAccountingCard { get; set; }
+
+        public int PageId { get; set; }
+        public Page? Page { get; set; }
     }
 }

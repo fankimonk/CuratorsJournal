@@ -11,7 +11,7 @@
         public string SeminarLocation { get; set; } = string.Empty;
         public string? Note { get; set; } = string.Empty;
 
-        public int JournalId { get; set; }
-        public Journal? Journal;
+        public int PageId { get; set; }
+        public Page? Page;
     }
 }

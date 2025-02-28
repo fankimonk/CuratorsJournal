@@ -8,7 +8,6 @@ namespace Domain.Entities.JournalContent
     {
         public int Id { get; set; }
 
-        [Range(0, int.MaxValue)]
         public int SemesterNumber { get; set; }
 
         public DateOnly StartDate { get; set; }
@@ -20,7 +19,7 @@ namespace Domain.Entities.JournalContent
         public DateOnly VacationStartDate { get; set; }
         public DateOnly VacationEndDate { get; set; }
 
-        public int JournalId { get; set; }
-        public Journal? Journal;
+        public int PageId { get; set; }
+        public Page? Page;
     }
 }

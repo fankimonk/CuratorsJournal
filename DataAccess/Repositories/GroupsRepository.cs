@@ -8,9 +8,12 @@ namespace DataAccess.Repositories
     {
         private readonly CuratorsJournalDBContext _dbContext;
 
-        public GroupsRepository(CuratorsJournalDBContext dbContext)
+        private readonly ICuratorsAppointmentHistoryRepository _curatorsAppointmentHistoryRepository;
+
+        public GroupsRepository(CuratorsJournalDBContext dbContext, ICuratorsAppointmentHistoryRepository curatorsAppointmentHistoryRepository)
         {
             _dbContext = dbContext;
+            _curatorsAppointmentHistoryRepository = curatorsAppointmentHistoryRepository;
         }
 
         public async Task<List<Group>> GetAllAsync()
@@ -28,10 +31,9 @@ namespace DataAccess.Repositories
             if (group == null) return null;
 
             if (group.Number.Length != 8) return null;
+            if (!await SpecialtyExists(group.SpecialtyId)) return null;
 
             var createdGroup = await _dbContext.Groups.AddAsync(group);
-
-            if (createdGroup == null) return null;
 
             await _dbContext.SaveChangesAsync();
 
@@ -75,17 +77,15 @@ namespace DataAccess.Repositories
             return groupToUpdate;
         }
 
-        private async Task<bool> SpecialtyExists(int id) =>
-            await _dbContext.Specialties.AsNoTracking().FirstOrDefaultAsync(s => s.Id == id) != null;
-
         private async Task<bool> CuratorExists(int id) =>
             await _dbContext.Curators.AsNoTracking().FirstOrDefaultAsync(c => c.Id == id) != null;
 
+        private async Task<bool> SpecialtyExists(int id) =>
+            await _dbContext.Specialties.AsNoTracking().FirstOrDefaultAsync(c => c.Id == id) != null;
+
         private async Task<CuratorsAppointmentHistoryRecord?> AddCuratorsAppointmentHistoryRecord(int id, int curatorId)
         {
-            if (!await CuratorExists(curatorId) || await GetByIdAsync(id) == null) return null;
-
-            var historyRecord = await _dbContext.CuratorsAppointmentHistory.AddAsync(
+            var historyRecord = await _curatorsAppointmentHistoryRepository.CreateAsync(
                 new CuratorsAppointmentHistoryRecord
                 {
                     GroupId = id,
@@ -93,9 +93,9 @@ namespace DataAccess.Repositories
                     AppointmentDate = DateOnly.FromDateTime(DateTime.Now)
                 });
 
-            await _dbContext.SaveChangesAsync();
+            if (historyRecord == null) return null;
 
-            return historyRecord.Entity;
+            return historyRecord;
         }
     }
 }

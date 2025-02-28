@@ -1,4 +1,5 @@
 ﻿using Domain.Entities;
+using Domain.Entities.JournalContent;
 
 namespace DataAccess.Interfaces
 {
@@ -6,6 +7,6 @@ namespace DataAccess.Interfaces
     {
         Task<List<Journal>> GetAllAsync();
         Task<Journal?> CreateAsync(Journal journal);
-        Task<Journal?> GetJournalWithTitlePageData(int journalId);
+        Task<Journal?> GetById(int journalId);
     }
 }

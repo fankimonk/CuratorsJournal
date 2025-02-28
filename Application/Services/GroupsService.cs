@@ -7,14 +7,12 @@ namespace Application.Services
     public class GroupsService : IGroupsService
     {
         private readonly IGroupsRepository _groupsRepository;
-        private readonly ISpecialtiesRepository _specialtiesRepository;
 
         private readonly IJournalsService _journalsService;
 
-        public GroupsService(IGroupsRepository groupsRepository, ISpecialtiesRepository specialtiesRepository, IJournalsService journalsService)
+        public GroupsService(IGroupsRepository groupsRepository, IJournalsService journalsService)
         {
             _groupsRepository = groupsRepository;
-            _specialtiesRepository = specialtiesRepository;
             _journalsService = journalsService;
         }
 

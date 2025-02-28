@@ -9,13 +9,12 @@ namespace Domain.Entities.JournalContent
     {
         public int Id { get; set; }
 
-        [Range(0, int.MaxValue)]
         public int Number { get; set; }
 
 
 
-        public int JournalId { get; set; }
-        public Journal? Journal;
+        public int PageId { get; set; }
+        public Page? Page;
 
         public int StudentId { get; set; }
         public Student? Student { get; set; }

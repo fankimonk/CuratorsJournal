@@ -14,8 +14,8 @@
         public int StudentId { get; set; }
         public Student? Student { get; set; }
 
-        public int JournalId { get; set; }
-        public Journal? Journal { get; set; }
+        public int PageId { get; set; }
+        public Page? Page { get; set; }
 
         public List<ParentalInformationRecord> ParentalInformation { get; set; } = [];
         public List<IndividualInformationRecord> IndividualInformation { get; set; } = [];
