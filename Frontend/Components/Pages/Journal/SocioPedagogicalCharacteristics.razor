@@ -1,0 +1,11 @@
+﻿@page "/journal/{journalId:int}/sociopedagogicalcharacteristics/{pageId:int}"
+
+<h3>СОЦИАЛЬНО-ПЕДАГОГИЧЕСКАЯ ХАРАКТЕРИСТИКА</h3>
+
+@code {
+    [Parameter]
+    public int PageId { get; set; }
+
+    [Parameter]
+    public int JournalId { get; set; }
+}

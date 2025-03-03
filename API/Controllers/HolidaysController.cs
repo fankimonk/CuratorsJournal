@@ -1,4 +1,4 @@
-﻿using Contracts.Journal;
+﻿using Contracts.Journal.Holidays;
 using DataAccess.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 

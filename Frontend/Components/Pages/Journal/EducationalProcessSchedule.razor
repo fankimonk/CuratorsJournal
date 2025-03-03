@@ -1,0 +1,124 @@
+﻿@page "/journal/{journalId:int}/educationalprocessschedule/{pageId:int}"
+@rendermode InteractiveServer
+
+@using Contracts.Journal.EducationalProcessSchedule
+
+@inject HttpClient HttpClient
+
+<h3>ГРАФИК УЧЕБНОГО ПРОЦЕССА</h3>
+
+@if (_pageData == null)
+{
+    <p><em>Загрузка...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <td>Семестр</td>
+                <td>Начало</td>
+                <td>Окончание</td>
+                <td>Сессия</td>
+                <td>Практика</td>
+                <td>Каникулы</td>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var record in _pageData.EducationalProcessSchedule)
+            {
+                <tr>
+                    <td>@record.SemesterNumber.ToString()</td>
+                    <td>@record.StartDate.ToString()</td>
+                    <td>@record.EndDate.ToString()</td>
+                    <td>
+                        @("с " + @record.SessionStartDate.ToString())
+                        <br />
+                        @("по " + record.SessionEndDate.ToString())
+                    </td>
+                    <td>
+                        @if (@record.PracticeStartDate != null && @record.PracticeEndDate != null)
+                        {
+                            @("с " + @record.PracticeStartDate.ToString())
+                            <br />
+                            @("по " + record.PracticeEndDate.ToString())
+                        }
+                        else
+                        {
+                            @("-")
+                        }
+                    </td>
+                    <td>
+                        @("с " + @record.VacationStartDate.ToString() + '\n')
+                        @("по " + record.VacationEndDate.ToString())
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    [Parameter]
+    public int PageId { get; set; }
+
+    [Parameter]
+    public int JournalId { get; set; }
+
+    public EducationalProcessSchedulePageResponse? _pageData;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _pageData = await HttpClient.GetFromJsonAsync<EducationalProcessSchedulePageResponse>("api/journal/educationalprocessschedule/" + PageId.ToString());
+    }
+
+    // private async Task UpdateRecord(EducationalProcessScheduleRecordResponse record)
+    // {
+    //     var request = new UpdateEducationalProcessScheduleRecordRequest(
+    //         record.SemesterNumber,
+    //         record.StartDate,
+    //         record.EndDate,
+    //         record.SessionStartDate,
+    //         record.SessionEndDate,
+    //         record.PracticeStartDate,
+    //         record.PracticeEndDate,
+    //         record.VacationStartDate,
+    //         record.VacationEndDate
+    //     );
+
+    //     var response = await HttpClient.PutAsJsonAsync<UpdateEducationalProcessScheduleRecordRequest>("api/journal/educationalprocessschedule/" + record.Id, request);
+
+    //     if (response.IsSuccessStatusCode)
+    //     {
+    //         var updatedPhone = await response.Content.ReadFromJsonAsync<ContactPhoneResponse>();
+
+    //         var index = _pageData!.PhoneNumbers.FindIndex(p => p.Id == updatedPhone!.Id);
+    //         _pageData.PhoneNumbers.RemoveAt(index);
+    //         _pageData.PhoneNumbers.Insert(index, new ContactPhoneResponse(updatedPhone!.Id, updatedPhone.Name, updatedPhone.PhoneNumber));
+    //     }
+    // }
+
+    // private async Task AddRecord()
+    // {
+    //     if (string.IsNullOrEmpty(RecordToAdd.Name) || string.IsNullOrEmpty(RecordToAdd.PhoneNumber)) return;
+
+    //     var request = new CreateContactPhoneRequest(RecordToAdd.Name, RecordToAdd.PhoneNumber, PageId);
+    //     var response = await HttpClient.PostAsJsonAsync<CreateContactPhoneRequest>("api/journal/educationalprocessschedule", request);
+
+    //     if (response.IsSuccessStatusCode)
+    //     {
+    //         var addedPhone = await response.Content.ReadFromJsonAsync<ContactPhoneResponse>();
+    //         _pageData!.PhoneNumbers.Add(new ContactPhoneResponse(addedPhone!.Id, addedPhone.Name, addedPhone.PhoneNumber));
+
+    //         RecordToAdd.Name = "";
+    //         RecordToAdd.PhoneNumber = "";
+    //     }
+    // }
+
+    // private async Task DeleteRecord(EducationalProcessScheduleRecordResponse record)
+    // {
+    //     var response = await HttpClient.DeleteAsync("api/journal/educationalprocessschedule/" + record.Id);
+
+    //     if (response.IsSuccessStatusCode) _pageData!.EducationalProcessSchedule.Remove(record);
+    // }
+}

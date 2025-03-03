@@ -14,13 +14,4 @@
         public int TypeId { get; set; }
         public HolidayType? Type { get; set; }
     }
-
-    public class HolidayType
-    {
-        public int Id { get; set; }
-
-        public string Name { get; set; } = string.Empty;
-
-        public List<Holiday> Holidays { get; set; } = [];
-    }
 }

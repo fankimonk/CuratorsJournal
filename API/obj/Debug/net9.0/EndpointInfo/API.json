@@ -259,6 +259,174 @@
         }
       }
     },
+    "/api/journal/educationalprocessschedule/{pageId}": {
+      "get": {
+        "tags": [
+          "EducationalProcessSchedule"
+        ],
+        "parameters": [
+          {
+            "name": "pageId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/EducationalProcessSchedulePageResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EducationalProcessSchedulePageResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EducationalProcessSchedulePageResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/journal/educationalprocessschedule": {
+      "post": {
+        "tags": [
+          "EducationalProcessSchedule"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateEducationalProcessScheduleRecordRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateEducationalProcessScheduleRecordRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateEducationalProcessScheduleRecordRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/EducationalProcessScheduleRecordResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EducationalProcessScheduleRecordResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EducationalProcessScheduleRecordResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/journal/educationalprocessschedule/{recordId}": {
+      "put": {
+        "tags": [
+          "EducationalProcessSchedule"
+        ],
+        "parameters": [
+          {
+            "name": "recordId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateEducationalProcessScheduleRecordRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateEducationalProcessScheduleRecordRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateEducationalProcessScheduleRecordRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/EducationalProcessScheduleRecordResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EducationalProcessScheduleRecordResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EducationalProcessScheduleRecordResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "EducationalProcessSchedule"
+        ],
+        "parameters": [
+          {
+            "name": "recordId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/group": {
       "get": {
         "tags": [
@@ -350,6 +518,174 @@
             }
           }
         },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/journal/groupactive/{pageId}": {
+      "get": {
+        "tags": [
+          "GroupActives"
+        ],
+        "parameters": [
+          {
+            "name": "pageId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/GroupActivesPageResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GroupActivesPageResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GroupActivesPageResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/journal/groupactive": {
+      "post": {
+        "tags": [
+          "GroupActives"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateGroupActiveRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateGroupActiveRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateGroupActiveRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/GroupActiveResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GroupActiveResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GroupActiveResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/journal/groupactive/{activeId}": {
+      "put": {
+        "tags": [
+          "GroupActives"
+        ],
+        "parameters": [
+          {
+            "name": "activeId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateGroupActiveRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateGroupActiveRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateGroupActiveRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/GroupActiveResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GroupActiveResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GroupActiveResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "GroupActives"
+        ],
+        "parameters": [
+          {
+            "name": "activeId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -500,6 +836,174 @@
                 }
               }
             }
+          }
+        }
+      }
+    },
+    "/api/journal/studentlist/{pageId}": {
+      "get": {
+        "tags": [
+          "StudentList"
+        ],
+        "parameters": [
+          {
+            "name": "pageId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/StudentListPageResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StudentListPageResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StudentListPageResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/journal/studentlist": {
+      "post": {
+        "tags": [
+          "StudentList"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateStudentListRecordRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateStudentListRecordRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateStudentListRecordRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/StudentListRecordResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StudentListRecordResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StudentListRecordResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/journal/studentlist/{recordId}": {
+      "put": {
+        "tags": [
+          "StudentList"
+        ],
+        "parameters": [
+          {
+            "name": "recordId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateStudentListRecordRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateStudentListRecordRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateStudentListRecordRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/StudentListRecordResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StudentListRecordResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StudentListRecordResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "StudentList"
+        ],
+        "parameters": [
+          {
+            "name": "recordId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
           }
         }
       }
@@ -699,6 +1203,72 @@
         },
         "additionalProperties": false
       },
+      "CreateEducationalProcessScheduleRecordRequest": {
+        "type": "object",
+        "properties": {
+          "semesterNumber": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "startDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "endDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "sessionStartDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "sessionEndDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "practiceStartDate": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          },
+          "practiceEndDate": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          },
+          "vacationStartDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "vacationEndDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "pageId": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "CreateGroupActiveRequest": {
+        "type": "object",
+        "properties": {
+          "positionName": {
+            "type": "string",
+            "nullable": true
+          },
+          "studentId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageId": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
       "CreateGroupRequest": {
         "type": "object",
         "properties": {
@@ -711,6 +1281,29 @@
             "format": "int32"
           },
           "specialtyId": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "CreateStudentListRecordRequest": {
+        "type": "object",
+        "properties": {
+          "number": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "studentId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "personalizedAccountingCardId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "pageId": {
             "type": "integer",
             "format": "int32"
           }
@@ -1004,6 +1597,23 @@
         },
         "additionalProperties": false
       },
+      "EducationalProcessSchedulePageResponse": {
+        "type": "object",
+        "properties": {
+          "pageId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "educationalProcessSchedule": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/EducationalProcessScheduleRecordResponse"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "EducationalProcessScheduleRecord": {
         "type": "object",
         "properties": {
@@ -1033,11 +1643,13 @@
           },
           "practiceStartDate": {
             "type": "string",
-            "format": "date"
+            "format": "date",
+            "nullable": true
           },
           "practiceEndDate": {
             "type": "string",
-            "format": "date"
+            "format": "date",
+            "nullable": true
           },
           "vacationStartDate": {
             "type": "string",
@@ -1050,6 +1662,54 @@
           "pageId": {
             "type": "integer",
             "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "EducationalProcessScheduleRecordResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "semesterNumber": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "startDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "endDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "sessionStartDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "sessionEndDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "practiceStartDate": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          },
+          "practiceEndDate": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          },
+          "vacationStartDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "vacationEndDate": {
+            "type": "string",
+            "format": "date"
           }
         },
         "additionalProperties": false
@@ -1171,6 +1831,41 @@
           "pageId": {
             "type": "integer",
             "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "GroupActiveResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "positionName": {
+            "type": "string",
+            "nullable": true
+          },
+          "studentId": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "GroupActivesPageResponse": {
+        "type": "object",
+        "properties": {
+          "pageId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "groupActives": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GroupActiveResponse"
+            },
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -2227,6 +2922,23 @@
         },
         "additionalProperties": false
       },
+      "StudentListPageResponse": {
+        "type": "object",
+        "properties": {
+          "pageId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "studentList": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/StudentListRecordResponse"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "StudentListRecord": {
         "type": "object",
         "properties": {
@@ -2237,6 +2949,13 @@
           "number": {
             "type": "integer",
             "format": "int32"
+          },
+          "studentId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "student": {
+            "$ref": "#/components/schemas/Student"
           },
           "personalizedAccountingCardId": {
             "type": "integer",
@@ -2252,6 +2971,29 @@
           },
           "page": {
             "$ref": "#/components/schemas/Page"
+          }
+        },
+        "additionalProperties": false
+      },
+      "StudentListRecordResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "number": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "studentId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "personalizedAccountingCardId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -2395,6 +3137,79 @@
           },
           "phoneNumber": {
             "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "UpdateEducationalProcessScheduleRecordRequest": {
+        "type": "object",
+        "properties": {
+          "semesterNumber": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "startDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "endDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "sessionStartDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "sessionEndDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "practiceStartDate": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          },
+          "practiceEndDate": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          },
+          "vacationStartDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "vacationEndDate": {
+            "type": "string",
+            "format": "date"
+          }
+        },
+        "additionalProperties": false
+      },
+      "UpdateGroupActiveRequest": {
+        "type": "object",
+        "properties": {
+          "positionName": {
+            "type": "string",
+            "nullable": true
+          },
+          "studentId": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "UpdateStudentListRecordRequest": {
+        "type": "object",
+        "properties": {
+          "number": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "personalizedAccountingCardId": {
+            "type": "integer",
+            "format": "int32",
             "nullable": true
           }
         },

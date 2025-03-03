@@ -4,15 +4,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess.Repositories
 {
-    public class SpecialtiesRepository : ISpecialtiesRepository
+    public class SpecialtiesRepository(CuratorsJournalDBContext dbContext) : RepositoryBase(dbContext), ISpecialtiesRepository
     {
-        private readonly CuratorsJournalDBContext _dbContext;
-
-        public SpecialtiesRepository(CuratorsJournalDBContext dbContext)
-        {
-            _dbContext = dbContext;
-        }
-
         public async Task<List<Specialty>> GetAllAsync()
         {
             throw new NotImplementedException();

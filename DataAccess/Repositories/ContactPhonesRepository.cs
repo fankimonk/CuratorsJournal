@@ -1,18 +1,12 @@
 ﻿using DataAccess.Interfaces;
 using Domain.Entities.JournalContent;
+using Domain.Enums.Journal;
 using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess.Repositories
 {
-    public class ContactPhonesRepository : IContactPhonesRepository
+    public class ContactPhonesRepository(CuratorsJournalDBContext dBContext) : PageRepositoryBase(dBContext), IContactPhonesRepository
     {
-        private readonly CuratorsJournalDBContext _dbContext;
-
-        public ContactPhonesRepository(CuratorsJournalDBContext dbContext)
-        {
-            _dbContext = dbContext;
-        }
-
         public async Task<ContactPhoneNumber?> CreateAsync(ContactPhoneNumber phone)
         {
             if (phone == null) return null;
@@ -34,8 +28,9 @@ namespace DataAccess.Repositories
             return true;
         }
 
-        public async Task<List<ContactPhoneNumber>> GetByPageIdAsync(int id)
+        public async Task<List<ContactPhoneNumber>?> GetByPageIdAsync(int id)
         {
+            if (!await PageExists(id)) return null;
             return await _dbContext.ContactPhoneNumbers.AsNoTracking().Where(c => c.PageId == id).ToListAsync();
         }
 
@@ -53,7 +48,6 @@ namespace DataAccess.Repositories
             return phoneToUpdate;
         }
 
-        private async Task<bool> PageExists(int id) =>
-            await _dbContext.Pages.AsNoTracking().FirstOrDefaultAsync(p => p.Id == id) != null;
+        public async Task<bool> PageExists(int id) => await PageExists(id, PageTypes.ContactPhonesPage);
     }
 }

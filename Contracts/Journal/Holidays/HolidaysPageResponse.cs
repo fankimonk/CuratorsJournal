@@ -1,4 +1,4 @@
-﻿namespace Contracts.Journal
+﻿namespace Contracts.Journal.Holidays
 {
     public class HolidaysPageResponse(List<HolidayTypeResponse> holidayTypes)
     {

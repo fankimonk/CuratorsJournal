@@ -4,15 +4,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess.Repositories
 {
-    public class CuratorsAppointmentHistoryRepository : ICuratorsAppointmentHistoryRepository
+    public class CuratorsAppointmentHistoryRepository(CuratorsJournalDBContext dbContext) : RepositoryBase(dbContext), ICuratorsAppointmentHistoryRepository
     {
-        private readonly CuratorsJournalDBContext _dbContext;
-
-        public CuratorsAppointmentHistoryRepository(CuratorsJournalDBContext dbContext)
-        {
-            _dbContext = dbContext;
-        }
-
         public async Task<CuratorsAppointmentHistoryRecord?> CreateAsync(CuratorsAppointmentHistoryRecord record)
         {
             if (record == null) return null;

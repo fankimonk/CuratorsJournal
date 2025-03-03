@@ -3,17 +3,10 @@ using DataAccess.Interfaces;
 using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace DataAccess.Repositiories
+namespace DataAccess.Repositories
 {
-    public class UsersRepository : IUsersRepository
+    public class UsersRepository(CuratorsJournalDBContext dbContext) : RepositoryBase(dbContext), IUsersRepository
     {
-        private readonly CuratorsJournalDBContext _dbContext;
-
-        public UsersRepository(CuratorsJournalDBContext dbContext)
-        {
-            _dbContext = dbContext;
-        }
-
         public async Task<User?> CreateAsync(User user)
         {
             var createdUser = await _dbContext.Users.AddAsync(user);

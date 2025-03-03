@@ -4,15 +4,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess.Repositories
 {
-    public class CuratorsRepository : ICuratorsRepository
+    public class CuratorsRepository(CuratorsJournalDBContext dbContext) : RepositoryBase(dbContext), ICuratorsRepository
     {
-        private readonly CuratorsJournalDBContext _dbContext;
-
-        public CuratorsRepository(CuratorsJournalDBContext dbContext)
-        {
-            _dbContext = dbContext;
-        }
-
         public async Task<List<Curator>> GetAllAsync()
         {
             throw new NotImplementedException();

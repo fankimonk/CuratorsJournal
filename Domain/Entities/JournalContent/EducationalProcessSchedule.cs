@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Domain.Entities.JournalContent.Pages;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Domain.Entities.JournalContent
@@ -14,8 +14,8 @@ namespace Domain.Entities.JournalContent
         public DateOnly EndDate { get; set; }
         public DateOnly SessionStartDate { get; set; }
         public DateOnly SessionEndDate { get; set; }
-        public DateOnly PracticeStartDate { get; set; }
-        public DateOnly PracticeEndDate { get; set; }
+        public DateOnly? PracticeStartDate { get; set; }
+        public DateOnly? PracticeEndDate { get; set; }
         public DateOnly VacationStartDate { get; set; }
         public DateOnly VacationEndDate { get; set; }
 

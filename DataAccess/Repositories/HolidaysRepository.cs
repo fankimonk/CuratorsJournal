@@ -4,15 +4,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess.Repositories
 {
-    public class HolidaysRepository : IHolidaysRepository
+    public class HolidaysRepository(CuratorsJournalDBContext dbContext) : RepositoryBase(dbContext), IHolidaysRepository
     {
-        private readonly CuratorsJournalDBContext _dbContext;
-
-        public HolidaysRepository(CuratorsJournalDBContext dbContext)
-        {
-            _dbContext = dbContext;
-        }
-
         public Task<Holiday?> CreateAsync(Holiday holiday)
         {
             throw new NotImplementedException();

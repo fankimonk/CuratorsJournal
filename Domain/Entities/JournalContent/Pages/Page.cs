@@ -1,6 +1,6 @@
 ﻿using Domain.Entities.JournalContent.PersonalizedAccountingCardContent;
 
-namespace Domain.Entities.JournalContent
+namespace Domain.Entities.JournalContent.Pages
 {
     public class Page
     {
@@ -28,14 +28,5 @@ namespace Domain.Entities.JournalContent
         public List<Tradition> Traditions { get; set; } = [];
         public List<PersonalizedAccountingCard> PersonalizedAccountingCards { get; set; } = [];
         public List<StudentListRecord> StudentList { get; set; } = [];
-    }
-
-    public class PageType
-    {
-        public int Id { get; set; }
-
-        public string Name { get; set; } = string.Empty;
-
-        public List<Page> Pages { get; set; } = [];
     }
 }

@@ -4,17 +4,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess.Repositories
 {
-    public class GroupsRepository : IGroupsRepository
+    public class GroupsRepository(CuratorsJournalDBContext dbContext, 
+        ICuratorsAppointmentHistoryRepository curatorsAppointmentHistoryRepository) : RepositoryBase(dbContext), IGroupsRepository
     {
-        private readonly CuratorsJournalDBContext _dbContext;
-
-        private readonly ICuratorsAppointmentHistoryRepository _curatorsAppointmentHistoryRepository;
-
-        public GroupsRepository(CuratorsJournalDBContext dbContext, ICuratorsAppointmentHistoryRepository curatorsAppointmentHistoryRepository)
-        {
-            _dbContext = dbContext;
-            _curatorsAppointmentHistoryRepository = curatorsAppointmentHistoryRepository;
-        }
+        private readonly ICuratorsAppointmentHistoryRepository _curatorsAppointmentHistoryRepository = curatorsAppointmentHistoryRepository;
 
         public async Task<List<Group>> GetAllAsync()
         {

@@ -1,4 +1,4 @@
-﻿using Domain.Entities.JournalContent;
+﻿using Domain.Entities.JournalContent.Pages;
 using Domain.Entities.JournalContent.PersonalizedAccountingCardContent;
 
 namespace Domain.Entities

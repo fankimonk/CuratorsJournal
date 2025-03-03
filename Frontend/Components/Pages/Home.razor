@@ -58,7 +58,6 @@ else
         NavigationManager.NavigateTo($"/journal/{journalId}/title");
 
         var response = await HttpClient.GetFromJsonAsync<ContentsResponse>($"api/journal/{journalId}/contents");
-        var journal = new Journal(response);
     }
 
 }

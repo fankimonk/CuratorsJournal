@@ -1,7 +1,7 @@
 ﻿using Application.Interfaces;
 using DataAccess.Interfaces;
 using Domain.Entities;
-using Domain.Entities.JournalContent;
+using Domain.Entities.JournalContent.Pages;
 using Domain.Enums.Journal;
 
 namespace Application.Services

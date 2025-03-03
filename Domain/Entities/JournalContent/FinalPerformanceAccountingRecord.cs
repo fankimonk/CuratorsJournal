@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Domain.Entities.JournalContent.Pages;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Domain.Entities.JournalContent

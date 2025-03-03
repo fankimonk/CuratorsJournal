@@ -1,18 +1,11 @@
 ﻿using DataAccess.Interfaces;
-using Domain.Entities.JournalContent;
+using Domain.Entities.JournalContent.Pages;
 using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess.Repositories
 {
-    public class PagesRepository : IPagesRepository
+    public class PagesRepository(CuratorsJournalDBContext dbContext) : RepositoryBase(dbContext), IPagesRepository
     {
-        private readonly CuratorsJournalDBContext _dbContext;
-
-        public PagesRepository(CuratorsJournalDBContext dbContext)
-        {
-            _dbContext = dbContext;
-        }
-
         public Task<bool> DeleteAsync(int id)
         {
             throw new NotImplementedException();

@@ -1,4 +1,6 @@
-﻿namespace Domain.Entities.JournalContent
+﻿using Domain.Entities.JournalContent.Pages;
+
+namespace Domain.Entities.JournalContent
 {
     public class SocioPedagogicalCharacteristics
     {

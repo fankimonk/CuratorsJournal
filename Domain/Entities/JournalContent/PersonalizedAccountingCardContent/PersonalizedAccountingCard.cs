@@ -1,4 +1,6 @@
-﻿namespace Domain.Entities.JournalContent.PersonalizedAccountingCardContent
+﻿using Domain.Entities.JournalContent.Pages;
+
+namespace Domain.Entities.JournalContent.PersonalizedAccountingCardContent
 {
     public class PersonalizedAccountingCard
     {

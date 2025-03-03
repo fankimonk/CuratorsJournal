@@ -1,6 +1,5 @@
-﻿@page "/journal/contactphones/{pageId:int}"
+﻿@page "/journal/{journalId:int}/contactphones/{pageId:int}"
 @rendermode InteractiveServer
-@attribute [StreamRendering]
 
 @using Contracts.Journal
 @using Contracts.Journal.ContactPhones
@@ -48,6 +47,9 @@ else
 @code {
     [Parameter]
     public int PageId { get; set; }
+
+    [Parameter]
+    public int JournalId { get; set; }
 
     private ContactPhonesPageResponse? _pageData;
 

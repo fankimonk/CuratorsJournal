@@ -36,8 +36,16 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xKb3VybmFsXENvbnRhY3RQaG9uZXMucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Dev/Web/CuratorsJournal/Frontend/Components/Pages/Journal/EducationalProcessSchedule.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xKb3VybmFsXEVkdWNhdGlvbmFsUHJvY2Vzc1NjaGVkdWxlLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Dev/Web/CuratorsJournal/Frontend/Components/Pages/Journal/Holidays.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xKb3VybmFsXEhvbGlkYXlzLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Dev/Web/CuratorsJournal/Frontend/Components/Pages/Journal/SocioPedagogicalCharacteristics.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xKb3VybmFsXFNvY2lvUGVkYWdvZ2ljYWxDaGFyYWN0ZXJpc3RpY3MucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Dev/Web/CuratorsJournal/Frontend/Components/Pages/Journal/Title.razor]

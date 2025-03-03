@@ -5,15 +5,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess.Repositories
 {
-    public class JournalsRepository : IJournalsRepository
+    public class JournalsRepository(CuratorsJournalDBContext dbContext) : RepositoryBase(dbContext), IJournalsRepository
     {
-        private readonly CuratorsJournalDBContext _dbContext;
-
-        public JournalsRepository(CuratorsJournalDBContext dbContext)
-        {
-            _dbContext = dbContext;
-        }
-
         public async Task<List<Journal>> GetAllAsync()
         {
             return await _dbContext.Journals.AsNoTracking()
