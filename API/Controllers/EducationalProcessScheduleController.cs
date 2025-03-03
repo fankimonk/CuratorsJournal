@@ -1,6 +1,6 @@
 ﻿using API.Mappers;
 using Contracts.Journal.EducationalProcessSchedule;
-using DataAccess.Interfaces;
+using DataAccess.Interfaces.PageRepositories;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -16,9 +16,7 @@ namespace API.Controllers
             var records = await _educationalProcessScheduleRepository.GetByPageIdAsync(pageId);
             if (records == null) return BadRequest();
 
-            var response = records.Select(r => new EducationalProcessScheduleRecordResponse(
-                r.Id, r.SemesterNumber, r.StartDate, r.EndDate, r.SessionStartDate, r.SessionEndDate,
-                r.PracticeStartDate, r.PracticeEndDate, r.VacationStartDate, r.VacationEndDate)).ToList();
+            var response = records.Select(r => r.ToResponse()).ToList();
             return Ok(new EducationalProcessSchedulePageResponse(pageId, response));
         }
 
@@ -37,7 +35,7 @@ namespace API.Controllers
         }
 
         [HttpPut("{recordId}")]
-        public async Task<ActionResult<EducationalProcessScheduleRecordResponse>> UpdateRecord([FromRoute] int recordId, 
+        public async Task<ActionResult<EducationalProcessScheduleRecordResponse>> UpdateRecord([FromRoute] int recordId,
             [FromBody] UpdateEducationalProcessScheduleRecordRequest request)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);

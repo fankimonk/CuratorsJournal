@@ -1,4 +1,4 @@
-﻿using Domain.Entities.JournalContent;
+﻿using Domain.Entities.JournalContent.Holidays;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

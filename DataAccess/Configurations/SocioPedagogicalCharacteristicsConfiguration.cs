@@ -46,12 +46,6 @@ namespace DataAccess.Configurations
                 .WithMany(p => p.SocioPedagogicalCharacteristics)
                 .HasForeignKey(spc => spc.PageId)
                 .IsRequired();
-
-            builder
-                .HasOne(spc => spc.AcademicYear)
-                .WithMany(ay => ay.SocioPedagogicalCharacteristics)
-                .HasForeignKey(spc => spc.AcademicYearId)
-                .IsRequired();
         }
     }
 }

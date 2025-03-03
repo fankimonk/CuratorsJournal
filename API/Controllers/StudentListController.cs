@@ -1,6 +1,6 @@
 ﻿using API.Mappers;
 using Contracts.Journal.StudentList;
-using DataAccess.Interfaces;
+using DataAccess.Interfaces.PageRepositories;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers

@@ -1,4 +1,5 @@
 ﻿using Domain.Entities.JournalContent;
+using Domain.Entities.JournalContent.Pages.Attributes;
 
 namespace Domain.Entities
 {
@@ -9,7 +10,7 @@ namespace Domain.Entities
         public int StartYear { get; set; }
         public int EndYear { get; set; }
 
-        public List<SocioPedagogicalCharacteristics> SocioPedagogicalCharacteristics { get; set; } = [];
-        public List<StudentsHealthCardRecord> StudentsHealthCards { get; set; } = [];
+        public List<SocioPedagogicalCharacteristicsPageAttributes> SocioPedagogicalCharacteristicsPageAttributes { get; set; } = [];
+        public List<HealthCardPageAttributes> HealthCardPageAttributes { get; set; } = [];
     }
 }

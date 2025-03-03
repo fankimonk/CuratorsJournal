@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace DataAccess.Configurations
 {
-    public class CuratorsParticipationInPedagogicalSeminarsConfiguration : IEntityTypeConfiguration<CuratorsParticipationInPedagogicalSeminars>
+    public class CuratorsParticipationInPedagogicalSeminarsConfiguration : IEntityTypeConfiguration<CuratorsParticipationInPedagogicalSeminarsRecord>
     {
-        public void Configure(EntityTypeBuilder<CuratorsParticipationInPedagogicalSeminars> builder)
+        public void Configure(EntityTypeBuilder<CuratorsParticipationInPedagogicalSeminarsRecord> builder)
         {
             builder.HasKey(c => c.Id);
 

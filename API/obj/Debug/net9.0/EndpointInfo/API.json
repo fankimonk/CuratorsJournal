@@ -722,6 +722,174 @@
         }
       }
     },
+    "/api/journal/ideologicaleducationalwork/{pageId}": {
+      "get": {
+        "tags": [
+          "IdeologicalEducationalWork"
+        ],
+        "parameters": [
+          {
+            "name": "pageId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/IdeologicalEducationalWorkPageResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IdeologicalEducationalWorkPageResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IdeologicalEducationalWorkPageResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/journal/ideologicaleducationalwork": {
+      "post": {
+        "tags": [
+          "IdeologicalEducationalWork"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateIdeologicalEducationalWorkRecordRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateIdeologicalEducationalWorkRecordRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateIdeologicalEducationalWorkRecordRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/IdeologicalEducationalWorkRecordResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IdeologicalEducationalWorkRecordResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IdeologicalEducationalWorkRecordResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/journal/ideologicaleducationalwork/{recordId}": {
+      "put": {
+        "tags": [
+          "IdeologicalEducationalWork"
+        ],
+        "parameters": [
+          {
+            "name": "recordId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateIdeologicalEducationalWorkRecordRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateIdeologicalEducationalWorkRecordRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateIdeologicalEducationalWorkRecordRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/IdeologicalEducationalWorkRecordResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IdeologicalEducationalWorkRecordResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IdeologicalEducationalWorkRecordResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "IdeologicalEducationalWork"
+        ],
+        "parameters": [
+          {
+            "name": "recordId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/journal": {
       "get": {
         "tags": [
@@ -782,17 +950,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/ContentsResponse"
+                  "$ref": "#/components/schemas/JournalContentsResponse"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ContentsResponse"
+                  "$ref": "#/components/schemas/JournalContentsResponse"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ContentsResponse"
+                  "$ref": "#/components/schemas/JournalContentsResponse"
                 }
               }
             }
@@ -836,6 +1004,510 @@
                 }
               }
             }
+          }
+        }
+      }
+    },
+    "/api/journal/literaturework/{pageId}": {
+      "get": {
+        "tags": [
+          "LiteratureWork"
+        ],
+        "parameters": [
+          {
+            "name": "pageId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/LiteratureWorkPageResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LiteratureWorkPageResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LiteratureWorkPageResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/journal/literaturework": {
+      "post": {
+        "tags": [
+          "LiteratureWork"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateLiteratureWorkRecordRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateLiteratureWorkRecordRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateLiteratureWorkRecordRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/LiteratureWorkRecordResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LiteratureWorkRecordResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LiteratureWorkRecordResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/journal/literaturework/{recordId}": {
+      "put": {
+        "tags": [
+          "LiteratureWork"
+        ],
+        "parameters": [
+          {
+            "name": "recordId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateLiteratureWorkRecordRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateLiteratureWorkRecordRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateLiteratureWorkRecordRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/LiteratureWorkRecordResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LiteratureWorkRecordResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LiteratureWorkRecordResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "LiteratureWork"
+        ],
+        "parameters": [
+          {
+            "name": "recordId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/journal/participationinpedagogicalseminars/{pageId}": {
+      "get": {
+        "tags": [
+          "ParticipationInPedagogicalSeminars"
+        ],
+        "parameters": [
+          {
+            "name": "pageId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ParticipationInPedagogicalSeminarsPageResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ParticipationInPedagogicalSeminarsPageResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ParticipationInPedagogicalSeminarsPageResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/journal/participationinpedagogicalseminars": {
+      "post": {
+        "tags": [
+          "ParticipationInPedagogicalSeminars"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateParticipationInPedagogicalSeminarsRecordRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateParticipationInPedagogicalSeminarsRecordRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateParticipationInPedagogicalSeminarsRecordRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ParticipationInPedagogicalSeminarsRecordResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ParticipationInPedagogicalSeminarsRecordResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ParticipationInPedagogicalSeminarsRecordResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/journal/participationinpedagogicalseminars/{recordId}": {
+      "put": {
+        "tags": [
+          "ParticipationInPedagogicalSeminars"
+        ],
+        "parameters": [
+          {
+            "name": "recordId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateParticipationInPedagogicalSeminarsRecordRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateParticipationInPedagogicalSeminarsRecordRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateParticipationInPedagogicalSeminarsRecordRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ParticipationInPedagogicalSeminarsRecordResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ParticipationInPedagogicalSeminarsRecordResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ParticipationInPedagogicalSeminarsRecordResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "ParticipationInPedagogicalSeminars"
+        ],
+        "parameters": [
+          {
+            "name": "recordId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/journal/healthcard/{pageId}": {
+      "get": {
+        "tags": [
+          "StudentHealthCard"
+        ],
+        "parameters": [
+          {
+            "name": "pageId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthCardPageResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthCardPageResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthCardPageResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/journal/healthcard": {
+      "post": {
+        "tags": [
+          "StudentHealthCard"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateHealthCardRecordRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateHealthCardRecordRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateHealthCardRecordRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthCardRecordResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthCardRecordResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthCardRecordResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/journal/healthcard/{recordId}": {
+      "put": {
+        "tags": [
+          "StudentHealthCard"
+        ],
+        "parameters": [
+          {
+            "name": "recordId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateHealthCardRecordRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateHealthCardRecordRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateHealthCardRecordRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthCardRecordResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthCardRecordResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthCardRecordResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "StudentHealthCard"
+        ],
+        "parameters": [
+          {
+            "name": "recordId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
           }
         }
       }
@@ -1038,17 +1710,17 @@
             "type": "integer",
             "format": "int32"
           },
-          "socioPedagogicalCharacteristics": {
+          "socioPedagogicalCharacteristicsPageAttributes": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/SocioPedagogicalCharacteristics"
+              "$ref": "#/components/schemas/SocioPedagogicalCharacteristicsPageAttributes"
             },
             "nullable": true
           },
-          "studentsHealthCards": {
+          "healthCardPageAttributes": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/StudentsHealthCardRecord"
+              "$ref": "#/components/schemas/HealthCardPageAttributes"
             },
             "nullable": true
           }
@@ -1168,23 +1840,6 @@
         },
         "additionalProperties": false
       },
-      "ContentsResponse": {
-        "type": "object",
-        "properties": {
-          "journalId": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "pages": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/PageResponse"
-            },
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
       "CreateContactPhoneRequest": {
         "type": "object",
         "properties": {
@@ -1281,6 +1936,102 @@
             "format": "int32"
           },
           "specialtyId": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "CreateHealthCardRecordRequest": {
+        "type": "object",
+        "properties": {
+          "number": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "missedClasses": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "note": {
+            "type": "string",
+            "nullable": true
+          },
+          "studentId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageId": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "CreateIdeologicalEducationalWorkRecordRequest": {
+        "type": "object",
+        "properties": {
+          "startDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "endDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "workContent": {
+            "type": "string",
+            "nullable": true
+          },
+          "pageId": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "CreateLiteratureWorkRecordRequest": {
+        "type": "object",
+        "properties": {
+          "literatureId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "shortAnnotaion": {
+            "type": "string",
+            "nullable": true
+          },
+          "pageId": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "CreateParticipationInPedagogicalSeminarsRecordRequest": {
+        "type": "object",
+        "properties": {
+          "date": {
+            "type": "string",
+            "format": "date"
+          },
+          "topic": {
+            "type": "string",
+            "nullable": true
+          },
+          "participationForm": {
+            "type": "string",
+            "nullable": true
+          },
+          "seminarLocation": {
+            "type": "string",
+            "nullable": true
+          },
+          "note": {
+            "type": "string",
+            "nullable": true
+          },
+          "pageId": {
             "type": "integer",
             "format": "int32"
           }
@@ -1398,14 +2149,6 @@
             "type": "integer",
             "format": "int32"
           },
-          "month": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "year": {
-            "type": "integer",
-            "format": "int32"
-          },
           "startDate": {
             "type": "string",
             "format": "date"
@@ -1425,7 +2168,32 @@
         },
         "additionalProperties": false
       },
-      "CuratorsParticipationInPedagogicalSeminars": {
+      "CuratorsIdeologicalAndEducationalWorkPageAttributes": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "page": {
+            "$ref": "#/components/schemas/Page"
+          },
+          "month": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "year": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "CuratorsParticipationInPedagogicalSeminarsRecord": {
         "type": "object",
         "properties": {
           "id": {
@@ -1890,6 +2658,73 @@
         },
         "additionalProperties": false
       },
+      "HealthCardPageAttributes": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "page": {
+            "$ref": "#/components/schemas/Page"
+          },
+          "academicYearId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "academicYear": {
+            "$ref": "#/components/schemas/AcademicYear"
+          }
+        },
+        "additionalProperties": false
+      },
+      "HealthCardPageResponse": {
+        "type": "object",
+        "properties": {
+          "pageId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "studentHealthCard": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/HealthCardRecordResponse"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "HealthCardRecordResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "number": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "missedClasses": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "note": {
+            "type": "string",
+            "nullable": true
+          },
+          "studentId": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
       "HolidayResponse": {
         "type": "object",
         "properties": {
@@ -1947,6 +2782,45 @@
             "items": {
               "$ref": "#/components/schemas/HolidayTypeResponse"
             },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "IdeologicalEducationalWorkPageResponse": {
+        "type": "object",
+        "properties": {
+          "pageId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "ideologicalEducationalWork": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/IdeologicalEducationalWorkRecordResponse"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "IdeologicalEducationalWorkRecordResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "startDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "endDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "workContent": {
+            "type": "string",
             "nullable": true
           }
         },
@@ -2063,6 +2937,23 @@
         },
         "additionalProperties": false
       },
+      "JournalContentsResponse": {
+        "type": "object",
+        "properties": {
+          "journalId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pages": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PageResponse"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "JournalResponse": {
         "type": "object",
         "properties": {
@@ -2080,12 +2971,65 @@
         },
         "additionalProperties": false
       },
+      "LiteratureListRecord": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "author": {
+            "type": "string",
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "bibliographicData": {
+            "type": "string",
+            "nullable": true
+          },
+          "literatureWorkRecords": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LiteratureWorkRecord"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "LiteratureWorkPageResponse": {
+        "type": "object",
+        "properties": {
+          "pageId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "literatureWork": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LiteratureWorkRecordResponse"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "LiteratureWorkRecord": {
         "type": "object",
         "properties": {
           "id": {
             "type": "integer",
             "format": "int32"
+          },
+          "literatureId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "literature": {
+            "$ref": "#/components/schemas/LiteratureListRecord"
           },
           "shortAnnotation": {
             "type": "string",
@@ -2094,6 +3038,24 @@
           "pageId": {
             "type": "integer",
             "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "LiteratureWorkRecordResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "literatureId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "shortAnnotation": {
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -2171,7 +3133,7 @@
           "curatorsParticipationInPedagogicalSeminars": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/CuratorsParticipationInPedagogicalSeminars"
+              "$ref": "#/components/schemas/CuratorsParticipationInPedagogicalSeminarsRecord"
             },
             "nullable": true
           },
@@ -2265,6 +3227,15 @@
               "$ref": "#/components/schemas/StudentListRecord"
             },
             "nullable": true
+          },
+          "healthCardPageAttributes": {
+            "$ref": "#/components/schemas/HealthCardPageAttributes"
+          },
+          "socioPedagogicalCharacteristicsPageAttributes": {
+            "$ref": "#/components/schemas/SocioPedagogicalCharacteristicsPageAttributes"
+          },
+          "curatorsIdeologicalAndEducationalWorkPageAttributes": {
+            "$ref": "#/components/schemas/CuratorsIdeologicalAndEducationalWorkPageAttributes"
           }
         },
         "additionalProperties": false
@@ -2374,6 +3345,53 @@
           },
           "personalizedAccountingCard": {
             "$ref": "#/components/schemas/PersonalizedAccountingCard"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ParticipationInPedagogicalSeminarsPageResponse": {
+        "type": "object",
+        "properties": {
+          "pageId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "participationInPedagogicalSeminars": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ParticipationInPedagogicalSeminarsRecordResponse"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ParticipationInPedagogicalSeminarsRecordResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "date": {
+            "type": "string",
+            "format": "date"
+          },
+          "topic": {
+            "type": "string",
+            "nullable": true
+          },
+          "participationForm": {
+            "type": "string",
+            "nullable": true
+          },
+          "seminarLocation": {
+            "type": "string",
+            "nullable": true
+          },
+          "note": {
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -2743,6 +3761,23 @@
           "pageId": {
             "type": "integer",
             "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "SocioPedagogicalCharacteristicsPageAttributes": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "page": {
+            "$ref": "#/components/schemas/Page"
           },
           "academicYearId": {
             "type": "integer",
@@ -3024,13 +4059,6 @@
           "student": {
             "$ref": "#/components/schemas/Student"
           },
-          "academicYearId": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "academicYear": {
-            "$ref": "#/components/schemas/AcademicYear"
-          },
           "pageId": {
             "type": "integer",
             "format": "int32"
@@ -3196,6 +4224,78 @@
           "studentId": {
             "type": "integer",
             "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "UpdateHealthCardRecordRequest": {
+        "type": "object",
+        "properties": {
+          "number": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "missedClasses": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "note": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "UpdateIdeologicalEducationalWorkRecordRequest": {
+        "type": "object",
+        "properties": {
+          "startDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "endDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "workContent": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "UpdateLiteratureWorkRecordRequest": {
+        "type": "object",
+        "properties": {
+          "shortAnnotaion": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "UpdateParticipationInPedagogicalSeminarsRecordRequest": {
+        "type": "object",
+        "properties": {
+          "date": {
+            "type": "string",
+            "format": "date"
+          },
+          "topic": {
+            "type": "string",
+            "nullable": true
+          },
+          "participationForm": {
+            "type": "string",
+            "nullable": true
+          },
+          "seminarLocation": {
+            "type": "string",
+            "nullable": true
+          },
+          "note": {
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false

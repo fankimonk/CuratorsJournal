@@ -139,7 +139,7 @@
     ],
     "ReturnTypes": [
       {
-        "Type": "Contracts.Journal.ContentsResponse",
+        "Type": "Contracts.Journal.JournalContentsResponse",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -473,6 +473,105 @@
     ]
   },
   {
+    "ContainingType": "API.Controllers.StudentHealthCardController",
+    "Method": "AddRecord",
+    "RelativePath": "api/journal/healthcard",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "Contracts.Journal.StudentHealthCards.CreateHealthCardRecordRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "Contracts.Journal.StudentHealthCards.HealthCardRecordResponse",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "API.Controllers.StudentHealthCardController",
+    "Method": "GetRecordsByPage",
+    "RelativePath": "api/journal/healthcard/{pageId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "pageId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "Contracts.Journal.StudentHealthCards.HealthCardPageResponse",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "API.Controllers.StudentHealthCardController",
+    "Method": "UpdateRecord",
+    "RelativePath": "api/journal/healthcard/{recordId}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "recordId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "request",
+        "Type": "Contracts.Journal.StudentHealthCards.UpdateHealthCardRecordRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "Contracts.Journal.StudentHealthCards.HealthCardRecordResponse",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "API.Controllers.StudentHealthCardController",
+    "Method": "DeleteRecord",
+    "RelativePath": "api/journal/healthcard/{recordId}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "recordId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "API.Controllers.HolidaysController",
     "Method": "GetAll",
     "RelativePath": "api/journal/holiday",
@@ -491,6 +590,303 @@
         "StatusCode": 200
       }
     ]
+  },
+  {
+    "ContainingType": "API.Controllers.IdeologicalEducationalWorkController",
+    "Method": "AddRecord",
+    "RelativePath": "api/journal/ideologicaleducationalwork",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "Contracts.Journal.CuratorsIdeologicalAndEducationalWorkAccounting.CreateIdeologicalEducationalWorkRecordRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "Contracts.Journal.CuratorsIdeologicalAndEducationalWorkAccounting.IdeologicalEducationalWorkRecordResponse",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "API.Controllers.IdeologicalEducationalWorkController",
+    "Method": "GetRecordsByPage",
+    "RelativePath": "api/journal/ideologicaleducationalwork/{pageId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "pageId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "Contracts.Journal.CuratorsIdeologicalAndEducationalWorkAccounting.IdeologicalEducationalWorkPageResponse",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "API.Controllers.IdeologicalEducationalWorkController",
+    "Method": "UpdateRecord",
+    "RelativePath": "api/journal/ideologicaleducationalwork/{recordId}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "recordId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "request",
+        "Type": "Contracts.Journal.CuratorsIdeologicalAndEducationalWorkAccounting.UpdateIdeologicalEducationalWorkRecordRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "Contracts.Journal.CuratorsIdeologicalAndEducationalWorkAccounting.IdeologicalEducationalWorkRecordResponse",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "API.Controllers.IdeologicalEducationalWorkController",
+    "Method": "DeleteRecord",
+    "RelativePath": "api/journal/ideologicaleducationalwork/{recordId}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "recordId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "API.Controllers.LiteratureWorkController",
+    "Method": "AddRecord",
+    "RelativePath": "api/journal/literaturework",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "Contracts.Journal.LiteratureWork.CreateLiteratureWorkRecordRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "Contracts.Journal.LiteratureWork.LiteratureWorkRecordResponse",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "API.Controllers.LiteratureWorkController",
+    "Method": "GetByPage",
+    "RelativePath": "api/journal/literaturework/{pageId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "pageId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "Contracts.Journal.LiteratureWork.LiteratureWorkPageResponse",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "API.Controllers.LiteratureWorkController",
+    "Method": "UpdateContactPhone",
+    "RelativePath": "api/journal/literaturework/{recordId}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "recordId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "request",
+        "Type": "Contracts.Journal.LiteratureWork.UpdateLiteratureWorkRecordRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "Contracts.Journal.LiteratureWork.LiteratureWorkRecordResponse",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "API.Controllers.LiteratureWorkController",
+    "Method": "DeleteContactPhone",
+    "RelativePath": "api/journal/literaturework/{recordId}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "recordId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "API.Controllers.ParticipationInPedagogicalSeminarsController",
+    "Method": "AddRecord",
+    "RelativePath": "api/journal/participationinpedagogicalseminars",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "Contracts.Journal.CuratorsParticipationInPedagogicalSeminars.CreateParticipationInPedagogicalSeminarsRecordRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "Contracts.Journal.CuratorsParticipationInPedagogicalSeminars.ParticipationInPedagogicalSeminarsRecordResponse",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "API.Controllers.ParticipationInPedagogicalSeminarsController",
+    "Method": "GetRecordsByPage",
+    "RelativePath": "api/journal/participationinpedagogicalseminars/{pageId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "pageId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "Contracts.Journal.CuratorsParticipationInPedagogicalSeminars.ParticipationInPedagogicalSeminarsPageResponse",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "API.Controllers.ParticipationInPedagogicalSeminarsController",
+    "Method": "UpdateRecord",
+    "RelativePath": "api/journal/participationinpedagogicalseminars/{recordId}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "recordId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "request",
+        "Type": "Contracts.Journal.CuratorsParticipationInPedagogicalSeminars.UpdateParticipationInPedagogicalSeminarsRecordRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "Contracts.Journal.CuratorsParticipationInPedagogicalSeminars.ParticipationInPedagogicalSeminarsRecordResponse",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "API.Controllers.ParticipationInPedagogicalSeminarsController",
+    "Method": "DeleteRecord",
+    "RelativePath": "api/journal/participationinpedagogicalseminars/{recordId}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "recordId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
   },
   {
     "ContainingType": "API.Controllers.StudentListController",

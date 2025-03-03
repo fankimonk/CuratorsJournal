@@ -28,8 +28,5 @@ namespace Domain.Entities.JournalContent
 
         public int PageId { get; set; }
         public Page? Page;
-
-        public int AcademicYearId { get; set; }
-        public AcademicYear? AcademicYear { get; set; }
     }
 }

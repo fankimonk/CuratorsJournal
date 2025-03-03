@@ -1,4 +1,4 @@
-﻿using Domain.Entities.JournalContent;
+﻿using Domain.Entities.JournalContent.Literature;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -17,6 +17,13 @@ namespace DataAccess.Configurations
                 .WithMany(p => p.LiteratureWork)
                 .HasForeignKey(lw => lw.PageId)
                 .IsRequired();
+
+            builder
+                .HasOne(lw => lw.Literature)
+                .WithMany(l => l.LiteratureWorkRecords)
+                .HasForeignKey(lw => lw.LiteratureId)
+                .IsRequired()
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

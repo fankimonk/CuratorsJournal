@@ -1,7 +1,10 @@
 ﻿using DataAccess.Configurations;
 using Domain.Entities;
 using Domain.Entities.JournalContent;
+using Domain.Entities.JournalContent.Holidays;
+using Domain.Entities.JournalContent.Literature;
 using Domain.Entities.JournalContent.Pages;
+using Domain.Entities.JournalContent.Pages.Attributes;
 using Domain.Entities.JournalContent.PersonalizedAccountingCardContent;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
@@ -41,7 +44,7 @@ namespace DataAccess
         public DbSet<WorkWithParentsRecord> WorkWithParents { get; set; }
         public DbSet<ContactPhoneNumber> ContactPhoneNumbers { get; set; }
         public DbSet<CuratorsIdeologicalAndEducationalWorkAccountingRecord> CuratorsIdeologicalAndEducationalWorkAccounting { get; set; }
-        public DbSet<CuratorsParticipationInPedagogicalSeminars> CuratorsParticipationInPedagogicalSeminars { get; set; }
+        public DbSet<CuratorsParticipationInPedagogicalSeminarsRecord> CuratorsParticipationInPedagogicalSeminars { get; set; }
         public DbSet<DynamicsOfKeyIndicatorsRecord> DynamicsOfKeyIndicators { get; set; }
         public DbSet<EducationalProcessScheduleRecord> EducationalProcessSchedule { get; set; }
         public DbSet<FinalPerformanceAccountingRecord> FinalPerformanceAccounting { get; set; }
@@ -63,6 +66,10 @@ namespace DataAccess
         public DbSet<User> Users { get; set; }
         public DbSet<Page> Pages { get; set; }
         public DbSet<PageType> PageTypes { get; set; }
+        public DbSet<HealthCardPageAttributes> HealthCardPageAttributes { get; set; }
+        public DbSet<SocioPedagogicalCharacteristicsPageAttributes> SocioPedagogicalCharacteristicsPageAttributes { get; set; }
+        public DbSet<CuratorsIdeologicalAndEducationalWorkPageAttributes> CuratorsIdeologicalAndEducationalWorkPageAttributes { get; set; }
+        public DbSet<LiteratureListRecord> LiteratureList { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -119,6 +126,10 @@ namespace DataAccess
             modelBuilder.ApplyConfiguration(new UsersConfiguration());
             modelBuilder.ApplyConfiguration(new PagesConfiguration());
             modelBuilder.ApplyConfiguration(new PageTypesConfiguration());
+            modelBuilder.ApplyConfiguration(new HealthCardPageAttributesConfiguration());
+            modelBuilder.ApplyConfiguration(new SocioPedagogicalCharacteristicsPageAttributesConfiguration());
+            modelBuilder.ApplyConfiguration(new CuratorsIdeologicalAndEducationalWorkPageAttributesConfiguration());
+            modelBuilder.ApplyConfiguration(new LiteratureListConfiguration());
 
             base.OnModelCreating(modelBuilder);
         }

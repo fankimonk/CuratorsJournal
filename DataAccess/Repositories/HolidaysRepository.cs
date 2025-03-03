@@ -1,5 +1,5 @@
 ﻿using DataAccess.Interfaces;
-using Domain.Entities.JournalContent;
+using Domain.Entities.JournalContent.Holidays;
 using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess.Repositories

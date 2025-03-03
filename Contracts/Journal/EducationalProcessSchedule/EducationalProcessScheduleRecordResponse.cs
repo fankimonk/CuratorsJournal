@@ -20,11 +20,4 @@
         public DateOnly VacationStartDate { get; set; } = vacationStartDate;
         public DateOnly VacationEndDate { get; set; } = vacationEndDate;
     }
-
-    public class EducationalProcessSchedulePageResponse(int pageId, List<EducationalProcessScheduleRecordResponse> educationalProcessSchedule)
-    {
-        public int PageId { get; set; } = pageId;
-
-        public List<EducationalProcessScheduleRecordResponse> EducationalProcessSchedule { get; set; } = educationalProcessSchedule;
-    }
 }

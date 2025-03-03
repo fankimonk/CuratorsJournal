@@ -26,12 +26,6 @@ namespace DataAccess.Configurations
                 .WithMany(s => s.StudentsHealthCardRecords)
                 .HasForeignKey(hc => hc.StudentId)
                 .IsRequired();
-
-            builder
-                .HasOne(hc => hc.AcademicYear)
-                .WithMany(ay => ay.StudentsHealthCards)
-                .HasForeignKey(hc => hc.AcademicYearId)
-                .IsRequired();
         }
     }
 }

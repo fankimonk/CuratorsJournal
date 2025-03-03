@@ -8,6 +8,8 @@ using Application.Services;
 using API.Extensions;
 using Application.Authorization;
 using Application.Utils;
+using DataAccess.Repositories.PageRepositories;
+using DataAccess.Interfaces.PageRepositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -39,6 +41,11 @@ builder.Services.AddScoped<IPagesRepository, PagesRepository>();
 builder.Services.AddScoped<IEducationalProcessScheduleRepository, EducationalProcessScheduleRepository>();
 builder.Services.AddScoped<IGroupActivesRepository, GroupActivesRepository>();
 builder.Services.AddScoped<IStudentListRepository, StudentListRepository>();
+builder.Services.AddScoped<IStudentHealthCardRepository, StudentHealthCardRepository>();
+builder.Services.AddScoped<IIdeologicalEducationalWorkRepository, IdeologicalEducationalWorkRepository>();
+builder.Services.AddScoped<IParticipationInPedagogicalSeminarsRepository, ParticipationInPedagogicalSeminarsRepository>();
+builder.Services.AddScoped<ILiteratureRepository, LiteratureRepository>();
+builder.Services.AddScoped<ILiteratureWorkRepository, LiteratureWorkRepository>();
 
 builder.Services.AddScoped<IGroupsService, GroupsService>();
 builder.Services.AddScoped<IJournalsService, JournalsService>();

@@ -1,4 +1,5 @@
 ﻿using Contracts.Journal;
+using Contracts.Journal.Pages;
 using Application.Interfaces;
 using DataAccess.Interfaces;
 using Domain.Entities;
@@ -54,7 +55,7 @@ namespace API.Controllers
         }
 
         [HttpGet("{journalId}/contents")]
-        public async Task<ActionResult<ContentsResponse>> GetContents([FromRoute] int journalId)
+        public async Task<ActionResult<JournalContentsResponse>> GetContents([FromRoute] int journalId)
         {
             var pages = await _pagesRepository.GetByJournalId(journalId);
 
@@ -64,7 +65,7 @@ namespace API.Controllers
                 p.JournalId
             )).ToList();
 
-            return Ok(new ContentsResponse(journalId, response));
+            return Ok(new JournalContentsResponse(journalId, response));
         }
 
         [HttpGet("{journalId}/titlepage")]

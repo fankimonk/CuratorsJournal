@@ -1,6 +1,6 @@
 ﻿using API.Mappers;
 using Contracts.Journal.GroupActives;
-using DataAccess.Interfaces;
+using DataAccess.Interfaces.PageRepositories;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers

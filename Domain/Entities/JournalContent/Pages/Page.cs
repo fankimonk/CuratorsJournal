@@ -1,4 +1,6 @@
-﻿using Domain.Entities.JournalContent.PersonalizedAccountingCardContent;
+﻿using Domain.Entities.JournalContent.Literature;
+using Domain.Entities.JournalContent.Pages.Attributes;
+using Domain.Entities.JournalContent.PersonalizedAccountingCardContent;
 
 namespace Domain.Entities.JournalContent.Pages
 {
@@ -14,7 +16,7 @@ namespace Domain.Entities.JournalContent.Pages
 
         public List<ContactPhoneNumber> ContactPhoneNumbers { get; set; } = [];
         public List<CuratorsIdeologicalAndEducationalWorkAccountingRecord> CuratorsIdeologicalAndEducationalWorkAccounting { get; set; } = [];
-        public List<CuratorsParticipationInPedagogicalSeminars> CuratorsParticipationInPedagogicalSeminars { get; set; } = [];
+        public List<CuratorsParticipationInPedagogicalSeminarsRecord> CuratorsParticipationInPedagogicalSeminars { get; set; } = [];
         public List<DynamicsOfKeyIndicatorsRecord> DynamicsOfKeyIndicators { get; set; } = [];
         public List<EducationalProcessScheduleRecord> EducationalProcessSchedule { get; set; } = [];
         public List<FinalPerformanceAccountingRecord> FinalPerformanceAccounting { get; set; } = [];
@@ -28,5 +30,9 @@ namespace Domain.Entities.JournalContent.Pages
         public List<Tradition> Traditions { get; set; } = [];
         public List<PersonalizedAccountingCard> PersonalizedAccountingCards { get; set; } = [];
         public List<StudentListRecord> StudentList { get; set; } = [];
+
+        public HealthCardPageAttributes? HealthCardPageAttributes { get; set; }
+        public SocioPedagogicalCharacteristicsPageAttributes? SocioPedagogicalCharacteristicsPageAttributes { get; set; }
+        public CuratorsIdeologicalAndEducationalWorkPageAttributes? CuratorsIdeologicalAndEducationalWorkPageAttributes { get; set; }
     }
 }
