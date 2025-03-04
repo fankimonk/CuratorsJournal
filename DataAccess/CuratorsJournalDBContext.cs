@@ -1,6 +1,7 @@
 ﻿using DataAccess.Configurations;
 using Domain.Entities;
 using Domain.Entities.JournalContent;
+using Domain.Entities.JournalContent.DynamicsOfKeyIndicators;
 using Domain.Entities.JournalContent.Holidays;
 using Domain.Entities.JournalContent.Literature;
 using Domain.Entities.JournalContent.Pages;
@@ -54,7 +55,7 @@ namespace DataAccess
         public DbSet<InformationHoursAccountingRecord> InformationHoursAccounting { get; set; }
         public DbSet<LiteratureWorkRecord> LiteratureWork { get; set; }
         public DbSet<PsychologicalAndPedagogicalCharacteristics> PsychologicalAndPedagogicalCharacteristics { get; set; }
-        public DbSet<RecomendationsAndRemarks> RecomendationsAndRemarks { get; set; }
+        public DbSet<RecomendationsAndRemarksRecord> RecomendationsAndRemarks { get; set; }
         public DbSet<SocioPedagogicalCharacteristics> SocioPedagogicalCharacteristics { get; set; }
         public DbSet<StudentListRecord> StudentList { get; set; }
         public DbSet<StudentsHealthCardRecord> StudentsHealthCards { get; set; }
@@ -70,6 +71,8 @@ namespace DataAccess
         public DbSet<SocioPedagogicalCharacteristicsPageAttributes> SocioPedagogicalCharacteristicsPageAttributes { get; set; }
         public DbSet<CuratorsIdeologicalAndEducationalWorkPageAttributes> CuratorsIdeologicalAndEducationalWorkPageAttributes { get; set; }
         public DbSet<LiteratureListRecord> LiteratureList { get; set; }
+        public DbSet<KeyIndicator> KeyIndicators { get; set; }
+        public DbSet<KeyIndicatorByCourse> KeyIndicatorsByCourse { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -130,6 +133,8 @@ namespace DataAccess
             modelBuilder.ApplyConfiguration(new SocioPedagogicalCharacteristicsPageAttributesConfiguration());
             modelBuilder.ApplyConfiguration(new CuratorsIdeologicalAndEducationalWorkPageAttributesConfiguration());
             modelBuilder.ApplyConfiguration(new LiteratureListConfiguration());
+            modelBuilder.ApplyConfiguration(new KeyIndicatorsConfiguration());
+            modelBuilder.ApplyConfiguration(new KeyIndicatorsByCourseConfiguration());
 
             base.OnModelCreating(modelBuilder);
         }

@@ -43,8 +43,8 @@ namespace DataAccess.Configurations
 
             builder
                 .HasOne(spc => spc.Page)
-                .WithMany(p => p.SocioPedagogicalCharacteristics)
-                .HasForeignKey(spc => spc.PageId)
+                .WithOne(p => p.SocioPedagogicalCharacteristics)
+                .HasForeignKey<SocioPedagogicalCharacteristics>(spc => spc.PageId)
                 .IsRequired();
         }
     }

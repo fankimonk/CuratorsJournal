@@ -15,13 +15,12 @@ namespace DataAccess.Configurations
             builder
                 .HasOne(p => p.Worker)
                 .WithMany(w => w.PsychologicalAndPedagogicalCharacteristics)
-                .HasForeignKey(p => p.WorkerId)
-                .IsRequired();
+                .HasForeignKey(p => p.WorkerId);
 
             builder
                 .HasOne(p => p.Page)
-                .WithMany(p => p.PsychologicalAndPedagogicalCharacteristics)
-                .HasForeignKey(p => p.PageId)
+                .WithOne(p => p.PsychologicalAndPedagogicalCharacteristics)
+                .HasForeignKey<PsychologicalAndPedagogicalCharacteristics>(p => p.PageId)
                 .IsRequired();
         }
     }

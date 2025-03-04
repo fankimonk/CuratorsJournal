@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace DataAccess.Configurations
 {
-    public class RecomendationsAndRemarksConfiguration : IEntityTypeConfiguration<RecomendationsAndRemarks>
+    public class RecomendationsAndRemarksConfiguration : IEntityTypeConfiguration<RecomendationsAndRemarksRecord>
     {
-        public void Configure(EntityTypeBuilder<RecomendationsAndRemarks> builder)
+        public void Configure(EntityTypeBuilder<RecomendationsAndRemarksRecord> builder)
         {
             builder.HasKey(rr => rr.Id);
 

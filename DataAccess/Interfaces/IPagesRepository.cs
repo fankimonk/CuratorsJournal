@@ -4,6 +4,7 @@ namespace DataAccess.Interfaces
 {
     public interface IPagesRepository
     {
+        Task<Page?> CreateAsync(Page page);
         Task<bool> DeleteAsync(int id);
         Task<List<Page>> GetByJournalId(int journalId);
         Task<Page?> GetById(int id);

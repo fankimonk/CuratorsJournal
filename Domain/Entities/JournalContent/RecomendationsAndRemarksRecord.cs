@@ -1,8 +1,10 @@
 ﻿using Domain.Entities.JournalContent.Pages;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Domain.Entities.JournalContent
 {
-    public class RecomendationsAndRemarks
+    [Table("RecommendationsAndRemarks")]
+    public class RecomendationsAndRemarksRecord
     {
         public int Id { get; set; }
 

@@ -40,7 +40,7 @@ namespace API.Controllers
         }
 
         [HttpPut("{recordId}")]
-        public async Task<ActionResult<LiteratureWorkRecordResponse>> UpdateContactPhone([FromRoute] int recordId, 
+        public async Task<ActionResult<LiteratureWorkRecordResponse>> UpdateRecord([FromRoute] int recordId, 
             [FromBody] UpdateLiteratureWorkRecordRequest request)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
@@ -54,7 +54,7 @@ namespace API.Controllers
         }
 
         [HttpDelete("{recordId}")]
-        public async Task<ActionResult> DeleteContactPhone([FromRoute] int recordId)
+        public async Task<ActionResult> DeleteRecord([FromRoute] int recordId)
         {
             if (!await _literatureWorkRepository.DeleteAsync(recordId)) return NotFound();
 

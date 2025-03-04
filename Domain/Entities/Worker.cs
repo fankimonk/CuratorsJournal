@@ -23,6 +23,6 @@ namespace Domain.Entities
         public Teacher? Teacher { get; set; }
 
         public List<PsychologicalAndPedagogicalCharacteristics> PsychologicalAndPedagogicalCharacteristics { get; set; } = [];
-        public List<RecomendationsAndRemarks> RecomendationsAndRemarks { get; set; } = [];
+        public List<RecomendationsAndRemarksRecord> RecomendationsAndRemarks { get; set; } = [];
     }
 }

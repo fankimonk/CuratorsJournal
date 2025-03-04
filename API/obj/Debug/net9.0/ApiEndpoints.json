@@ -275,6 +275,58 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "API.Controllers.DynamicsOfKeyIndicatorsController",
+    "Method": "AddValue",
+    "RelativePath": "api/journal/dynamicsofkeyindicators",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "Contracts.Journal.DynamicsOfKeyIndicators.CreateKeyIndicatorValueRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "Contracts.Journal.DynamicsOfKeyIndicators.KeyIndicatorByCourseResponse",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "API.Controllers.DynamicsOfKeyIndicatorsController",
+    "Method": "GetByPage",
+    "RelativePath": "api/journal/dynamicsofkeyindicators/{pageId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "pageId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "Contracts.Journal.DynamicsOfKeyIndicators.DynamicsOfKeyIndicatorsPageResponse",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
     "ContainingType": "API.Controllers.EducationalProcessScheduleController",
     "Method": "AddRecord",
     "RelativePath": "api/journal/educationalprocessschedule",
@@ -744,7 +796,7 @@
   },
   {
     "ContainingType": "API.Controllers.LiteratureWorkController",
-    "Method": "UpdateContactPhone",
+    "Method": "UpdateRecord",
     "RelativePath": "api/journal/literaturework/{recordId}",
     "HttpMethod": "PUT",
     "IsController": true,
@@ -775,7 +827,7 @@
   },
   {
     "ContainingType": "API.Controllers.LiteratureWorkController",
-    "Method": "DeleteContactPhone",
+    "Method": "DeleteRecord",
     "RelativePath": "api/journal/literaturework/{recordId}",
     "HttpMethod": "DELETE",
     "IsController": true,
@@ -889,6 +941,219 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "API.Controllers.PsychologicalAndPedagogicalCharacteristicsController",
+    "Method": "Update",
+    "RelativePath": "api/journal/psychologicalpedagogicalcharacteristics/{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "request",
+        "Type": "Contracts.Journal.SocioPedagogicalCharacteristics.UpdateSocioPedagogicalCharacteristicsRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "Contracts.Journal.SocioPedagogicalCharacteristics.SocioPedagogicalCharacteristicsResponse",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "API.Controllers.PsychologicalAndPedagogicalCharacteristicsController",
+    "Method": "GetByPage",
+    "RelativePath": "api/journal/psychologicalpedagogicalcharacteristics/{pageId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "pageId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "Contracts.Journal.SocioPedagogicalCharacteristics.SocioPedagogicalCharacteristicsResponse",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "API.Controllers.RecommendationsAndRemarksController",
+    "Method": "AddRecord",
+    "RelativePath": "api/journal/recommendationsandremarks",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "Contracts.Journal.RecommendationsAndRemarks.CreateRecommendationsAndRemarksRecordRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "Contracts.Journal.RecommendationsAndRemarks.RecommendationsAndRemarksRecordResponse",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "API.Controllers.RecommendationsAndRemarksController",
+    "Method": "GetByPage",
+    "RelativePath": "api/journal/recommendationsandremarks/{pageId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "pageId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "Contracts.Journal.RecommendationsAndRemarks.RecommendationsAndRemarksPageResponse",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "API.Controllers.RecommendationsAndRemarksController",
+    "Method": "UpdateContactPhone",
+    "RelativePath": "api/journal/recommendationsandremarks/{recordId}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "recordId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "request",
+        "Type": "Contracts.Journal.RecommendationsAndRemarks.UpdateRecommendationsAndRemarksRecordRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "Contracts.Journal.RecommendationsAndRemarks.RecommendationsAndRemarksRecordResponse",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "API.Controllers.RecommendationsAndRemarksController",
+    "Method": "DeleteContactPhone",
+    "RelativePath": "api/journal/recommendationsandremarks/{recordId}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "recordId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "API.Controllers.SocioPedagogicalCharacteristicsController",
+    "Method": "Update",
+    "RelativePath": "api/journal/sociopedagogicalcharacteristics/{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "request",
+        "Type": "Contracts.Journal.PsychologicalAndPedagogicalCharacteristics.UpdatePsychologicalAndPedagogicalCharacteristicsRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "Contracts.Journal.PsychologicalAndPedagogicalCharacteristics.PsychologicalAndPedagogicalCharacteristicsResponse",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "API.Controllers.SocioPedagogicalCharacteristicsController",
+    "Method": "GetByPage",
+    "RelativePath": "api/journal/sociopedagogicalcharacteristics/{pageId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "pageId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "Contracts.Journal.PsychologicalAndPedagogicalCharacteristics.PsychologicalAndPedagogicalCharacteristicsResponse",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
     "ContainingType": "API.Controllers.StudentListController",
     "Method": "AddRecord",
     "RelativePath": "api/journal/studentlist",
@@ -988,6 +1253,105 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "API.Controllers.TraditionsController",
+    "Method": "Add",
+    "RelativePath": "api/journal/tradition",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "Contracts.Journal.Traditions.CreateTraditionRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "Contracts.Journal.Traditions.TraditionResponse",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "API.Controllers.TraditionsController",
+    "Method": "Update",
+    "RelativePath": "api/journal/tradition/{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "request",
+        "Type": "Contracts.Journal.Traditions.UpdateTraditionRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "Contracts.Journal.Traditions.TraditionResponse",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "API.Controllers.TraditionsController",
+    "Method": "Delete",
+    "RelativePath": "api/journal/tradition/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "API.Controllers.TraditionsController",
+    "Method": "GetByPage",
+    "RelativePath": "api/journal/tradition/{pageId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "pageId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "Contracts.Journal.Traditions.TraditionsPageResponse",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
     "ContainingType": "API.Controllers.UsersController",
     "Method": "GetAll",
     "RelativePath": "api/users",
@@ -996,5 +1360,99 @@
     "Order": 0,
     "Parameters": [],
     "ReturnTypes": []
+  },
+  {
+    "ContainingType": "API.Controllers.DynamicsOfKeyIndicatorsController",
+    "Method": "Delete",
+    "RelativePath": "delete/{recordId}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "recordId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "API.Controllers.DynamicsOfKeyIndicatorsController",
+    "Method": "DeleteValue",
+    "RelativePath": "deletevalue/{valueId}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "valueId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "API.Controllers.DynamicsOfKeyIndicatorsController",
+    "Method": "Update",
+    "RelativePath": "update/{recordId}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "recordId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "request",
+        "Type": "Contracts.Journal.DynamicsOfKeyIndicators.UpdateDynamicsOfKeyIndicatorsRecordRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "Contracts.Journal.DynamicsOfKeyIndicators.DynamicsOfKeyIndicatorsRecordResponse",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "API.Controllers.DynamicsOfKeyIndicatorsController",
+    "Method": "UpdateValue",
+    "RelativePath": "updatevalue/{valueId}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "valueId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "request",
+        "Type": "Contracts.Journal.DynamicsOfKeyIndicators.UpdateKeyIndicatorValueRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "Contracts.Journal.DynamicsOfKeyIndicators.KeyIndicatorByCourseResponse",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
   }
 ]

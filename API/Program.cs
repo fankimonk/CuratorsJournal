@@ -46,6 +46,11 @@ builder.Services.AddScoped<IIdeologicalEducationalWorkRepository, IdeologicalEdu
 builder.Services.AddScoped<IParticipationInPedagogicalSeminarsRepository, ParticipationInPedagogicalSeminarsRepository>();
 builder.Services.AddScoped<ILiteratureRepository, LiteratureRepository>();
 builder.Services.AddScoped<ILiteratureWorkRepository, LiteratureWorkRepository>();
+builder.Services.AddScoped<IPsychologicalAndPedagogicalCharacteristicsRepository, PsychologicalAndPedagogicalCharacteristicsRepository>();
+builder.Services.AddScoped<IRecommendationsAndRemarksRepository, RecommendationsAndRemarksRepository>();
+builder.Services.AddScoped<ITraditionsRepository, TraditionsRepository>();
+builder.Services.AddScoped<IDynamicsOfKeyIndicatorsRepository, DynamicsOfKeyIndicatorsRepository>();
+builder.Services.AddScoped<ISocioPedagogicalCharacteristicsRepository, SocioPedagogicalCharacteristicsRepository>();
 
 builder.Services.AddScoped<IGroupsService, GroupsService>();
 builder.Services.AddScoped<IJournalsService, JournalsService>();

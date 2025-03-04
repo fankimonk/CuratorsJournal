@@ -259,6 +259,258 @@
         }
       }
     },
+    "/api/journal/dynamicsofkeyindicators/{pageId}": {
+      "get": {
+        "tags": [
+          "DynamicsOfKeyIndicators"
+        ],
+        "parameters": [
+          {
+            "name": "pageId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/DynamicsOfKeyIndicatorsPageResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DynamicsOfKeyIndicatorsPageResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DynamicsOfKeyIndicatorsPageResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/journal/dynamicsofkeyindicators": {
+      "post": {
+        "tags": [
+          "DynamicsOfKeyIndicators"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateKeyIndicatorValueRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateKeyIndicatorValueRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateKeyIndicatorValueRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/KeyIndicatorByCourseResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/KeyIndicatorByCourseResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/KeyIndicatorByCourseResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/update/{recordId}": {
+      "put": {
+        "tags": [
+          "DynamicsOfKeyIndicators"
+        ],
+        "parameters": [
+          {
+            "name": "recordId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateDynamicsOfKeyIndicatorsRecordRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateDynamicsOfKeyIndicatorsRecordRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateDynamicsOfKeyIndicatorsRecordRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/DynamicsOfKeyIndicatorsRecordResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DynamicsOfKeyIndicatorsRecordResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DynamicsOfKeyIndicatorsRecordResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/updatevalue/{valueId}": {
+      "put": {
+        "tags": [
+          "DynamicsOfKeyIndicators"
+        ],
+        "parameters": [
+          {
+            "name": "valueId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateKeyIndicatorValueRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateKeyIndicatorValueRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateKeyIndicatorValueRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/KeyIndicatorByCourseResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/KeyIndicatorByCourseResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/KeyIndicatorByCourseResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/delete/{recordId}": {
+      "delete": {
+        "tags": [
+          "DynamicsOfKeyIndicators"
+        ],
+        "parameters": [
+          {
+            "name": "recordId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/deletevalue/{valueId}": {
+      "delete": {
+        "tags": [
+          "DynamicsOfKeyIndicators"
+        ],
+        "parameters": [
+          {
+            "name": "valueId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/journal/educationalprocessschedule/{pageId}": {
       "get": {
         "tags": [
@@ -1344,6 +1596,372 @@
         }
       }
     },
+    "/api/journal/psychologicalpedagogicalcharacteristics/{pageId}": {
+      "get": {
+        "tags": [
+          "PsychologicalAndPedagogicalCharacteristics"
+        ],
+        "parameters": [
+          {
+            "name": "pageId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SocioPedagogicalCharacteristicsResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SocioPedagogicalCharacteristicsResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SocioPedagogicalCharacteristicsResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/journal/psychologicalpedagogicalcharacteristics/{id}": {
+      "put": {
+        "tags": [
+          "PsychologicalAndPedagogicalCharacteristics"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateSocioPedagogicalCharacteristicsRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateSocioPedagogicalCharacteristicsRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateSocioPedagogicalCharacteristicsRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SocioPedagogicalCharacteristicsResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SocioPedagogicalCharacteristicsResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SocioPedagogicalCharacteristicsResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/journal/recommendationsandremarks/{pageId}": {
+      "get": {
+        "tags": [
+          "RecommendationsAndRemarks"
+        ],
+        "parameters": [
+          {
+            "name": "pageId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/RecommendationsAndRemarksPageResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RecommendationsAndRemarksPageResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RecommendationsAndRemarksPageResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/journal/recommendationsandremarks": {
+      "post": {
+        "tags": [
+          "RecommendationsAndRemarks"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateRecommendationsAndRemarksRecordRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateRecommendationsAndRemarksRecordRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateRecommendationsAndRemarksRecordRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/RecommendationsAndRemarksRecordResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RecommendationsAndRemarksRecordResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RecommendationsAndRemarksRecordResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/journal/recommendationsandremarks/{recordId}": {
+      "put": {
+        "tags": [
+          "RecommendationsAndRemarks"
+        ],
+        "parameters": [
+          {
+            "name": "recordId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateRecommendationsAndRemarksRecordRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateRecommendationsAndRemarksRecordRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateRecommendationsAndRemarksRecordRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/RecommendationsAndRemarksRecordResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RecommendationsAndRemarksRecordResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RecommendationsAndRemarksRecordResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "RecommendationsAndRemarks"
+        ],
+        "parameters": [
+          {
+            "name": "recordId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/journal/sociopedagogicalcharacteristics/{pageId}": {
+      "get": {
+        "tags": [
+          "SocioPedagogicalCharacteristics"
+        ],
+        "parameters": [
+          {
+            "name": "pageId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/PsychologicalAndPedagogicalCharacteristicsResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PsychologicalAndPedagogicalCharacteristicsResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PsychologicalAndPedagogicalCharacteristicsResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/journal/sociopedagogicalcharacteristics/{id}": {
+      "put": {
+        "tags": [
+          "SocioPedagogicalCharacteristics"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdatePsychologicalAndPedagogicalCharacteristicsRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdatePsychologicalAndPedagogicalCharacteristicsRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdatePsychologicalAndPedagogicalCharacteristicsRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/PsychologicalAndPedagogicalCharacteristicsResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PsychologicalAndPedagogicalCharacteristicsResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PsychologicalAndPedagogicalCharacteristicsResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/journal/healthcard/{pageId}": {
       "get": {
         "tags": [
@@ -1680,6 +2298,174 @@
         }
       }
     },
+    "/api/journal/tradition/{pageId}": {
+      "get": {
+        "tags": [
+          "Traditions"
+        ],
+        "parameters": [
+          {
+            "name": "pageId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/TraditionsPageResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TraditionsPageResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TraditionsPageResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/journal/tradition": {
+      "post": {
+        "tags": [
+          "Traditions"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateTraditionRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateTraditionRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateTraditionRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/TraditionResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TraditionResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TraditionResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/journal/tradition/{id}": {
+      "put": {
+        "tags": [
+          "Traditions"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateTraditionRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateTraditionRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateTraditionRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/TraditionResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TraditionResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TraditionResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Traditions"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/users": {
       "get": {
         "tags": [
@@ -1990,6 +2776,24 @@
         },
         "additionalProperties": false
       },
+      "CreateKeyIndicatorValueRequest": {
+        "type": "object",
+        "properties": {
+          "dynamicsRecordId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "course": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "value": {
+            "type": "number",
+            "format": "double"
+          }
+        },
+        "additionalProperties": false
+      },
       "CreateLiteratureWorkRecordRequest": {
         "type": "object",
         "properties": {
@@ -2038,6 +2842,36 @@
         },
         "additionalProperties": false
       },
+      "CreateRecommendationsAndRemarksRecordRequest": {
+        "type": "object",
+        "properties": {
+          "date": {
+            "type": "string",
+            "format": "date"
+          },
+          "executionDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "content": {
+            "type": "string",
+            "nullable": true
+          },
+          "result": {
+            "type": "string",
+            "nullable": true
+          },
+          "reviewerId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageId": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
       "CreateStudentListRecordRequest": {
         "type": "object",
         "properties": {
@@ -2053,6 +2887,36 @@
             "type": "integer",
             "format": "int32",
             "nullable": true
+          },
+          "pageId": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "CreateTraditionRequest": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "participationForm": {
+            "type": "string",
+            "nullable": true
+          },
+          "note": {
+            "type": "string",
+            "nullable": true
+          },
+          "day": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "month": {
+            "type": "integer",
+            "format": "int32"
           },
           "pageId": {
             "type": "integer",
@@ -2351,6 +3215,23 @@
         },
         "additionalProperties": false
       },
+      "DynamicsOfKeyIndicatorsPageResponse": {
+        "type": "object",
+        "properties": {
+          "pageId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "dynamicsOfKeyIndicators": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DynamicsOfKeyIndicatorsRecordResponse"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "DynamicsOfKeyIndicatorsRecord": {
         "type": "object",
         "properties": {
@@ -2358,9 +3239,51 @@
             "type": "integer",
             "format": "int32"
           },
+          "keyIndicatorId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "keyIndicator": {
+            "$ref": "#/components/schemas/KeyIndicator"
+          },
+          "note": {
+            "type": "string",
+            "nullable": true
+          },
           "pageId": {
             "type": "integer",
             "format": "int32"
+          },
+          "keyIndicatorsByCourse": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/KeyIndicatorByCourse"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "DynamicsOfKeyIndicatorsRecordResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "keyIndicator": {
+            "$ref": "#/components/schemas/KeyIndicatorResponse"
+          },
+          "note": {
+            "type": "string",
+            "nullable": true
+          },
+          "keyIndicatorsByCourse": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/KeyIndicatorByCourseResponse"
+            },
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -2971,6 +3894,88 @@
         },
         "additionalProperties": false
       },
+      "KeyIndicator": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "dynamicsOfKeyIndicatorsRecords": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DynamicsOfKeyIndicatorsRecord"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "KeyIndicatorByCourse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "dynamicsRecordId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "dynamicsRecord": {
+            "$ref": "#/components/schemas/DynamicsOfKeyIndicatorsRecord"
+          },
+          "course": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "value": {
+            "type": "number",
+            "format": "double"
+          }
+        },
+        "additionalProperties": false
+      },
+      "KeyIndicatorByCourseResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "dynamicsRecordId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "course": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "value": {
+            "type": "number",
+            "format": "double"
+          }
+        },
+        "additionalProperties": false
+      },
+      "KeyIndicatorResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "LiteratureListRecord": {
         "type": "object",
         "properties": {
@@ -3179,24 +4184,10 @@
             },
             "nullable": true
           },
-          "psychologicalAndPedagogicalCharacteristics": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/PsychologicalAndPedagogicalCharacteristics"
-            },
-            "nullable": true
-          },
           "recomendationsAndRemarks": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/RecomendationsAndRemarks"
-            },
-            "nullable": true
-          },
-          "socioPedagogicalCharacteristics": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/SocioPedagogicalCharacteristics"
+              "$ref": "#/components/schemas/RecomendationsAndRemarksRecord"
             },
             "nullable": true
           },
@@ -3227,6 +4218,12 @@
               "$ref": "#/components/schemas/StudentListRecord"
             },
             "nullable": true
+          },
+          "psychologicalAndPedagogicalCharacteristics": {
+            "$ref": "#/components/schemas/PsychologicalAndPedagogicalCharacteristics"
+          },
+          "socioPedagogicalCharacteristics": {
+            "$ref": "#/components/schemas/SocioPedagogicalCharacteristics"
           },
           "healthCardPageAttributes": {
             "$ref": "#/components/schemas/HealthCardPageAttributes"
@@ -3545,11 +4542,13 @@
           },
           "date": {
             "type": "string",
-            "format": "date"
+            "format": "date",
+            "nullable": true
           },
           "workerId": {
             "type": "integer",
-            "format": "int32"
+            "format": "int32",
+            "nullable": true
           },
           "worker": {
             "$ref": "#/components/schemas/Worker"
@@ -3561,7 +4560,35 @@
         },
         "additionalProperties": false
       },
-      "RecomendationsAndRemarks": {
+      "PsychologicalAndPedagogicalCharacteristicsResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "content": {
+            "type": "string",
+            "nullable": true
+          },
+          "date": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          },
+          "workerId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "pageId": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "RecomendationsAndRemarksRecord": {
         "type": "object",
         "properties": {
           "id": {
@@ -3592,6 +4619,53 @@
             "$ref": "#/components/schemas/Worker"
           },
           "pageId": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "RecommendationsAndRemarksPageResponse": {
+        "type": "object",
+        "properties": {
+          "pageId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "recommendationsAndRemarks": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RecommendationsAndRemarksRecordResponse"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "RecommendationsAndRemarksRecordResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "date": {
+            "type": "string",
+            "format": "date"
+          },
+          "executionDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "content": {
+            "type": "string",
+            "nullable": true
+          },
+          "result": {
+            "type": "string",
+            "nullable": true
+          },
+          "reviewerId": {
             "type": "integer",
             "format": "int32"
           }
@@ -3785,6 +4859,114 @@
           },
           "academicYear": {
             "$ref": "#/components/schemas/AcademicYear"
+          }
+        },
+        "additionalProperties": false
+      },
+      "SocioPedagogicalCharacteristicsResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalStudents": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "femalesCount": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "malesCount": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "brsmMembersCount": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "orphansUnderagesCount": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "studentsWithoutParentalCareUnderagesCount": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "orphansOrStudentsWithoutParentalCareAdults": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "studentsWithSpecialPsychophysicalDevelopmentNeeds": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "studentsWithDisabledParentsOfGroups1and2": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "studentsFromLargeFamilies": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "studentsFromSingleParentFamilies": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "studentsFromRegionsAffectedByChernobylDisaster": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "studentsFromFamiliesRelocatedFromAreasOfRadioactivePollution": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "nonResidentStudents": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "studentsLivingWithParents": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "studentsLivingInADormitory": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "studentsLivingWithRelatives": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "studentsLivingInPrivateApartments": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "otherInformation": {
+            "type": "string",
+            "nullable": true
+          },
+          "pageId": {
+            "type": "integer",
+            "format": "int32"
           }
         },
         "additionalProperties": false
@@ -4156,6 +5338,53 @@
         },
         "additionalProperties": false
       },
+      "TraditionResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "participationForm": {
+            "type": "string",
+            "nullable": true
+          },
+          "note": {
+            "type": "string",
+            "nullable": true
+          },
+          "day": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "month": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "TraditionsPageResponse": {
+        "type": "object",
+        "properties": {
+          "pageId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "traditions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TraditionResponse"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "UpdateContactPhoneRequest": {
         "type": "object",
         "properties": {
@@ -4164,6 +5393,16 @@
             "nullable": true
           },
           "phoneNumber": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "UpdateDynamicsOfKeyIndicatorsRecordRequest": {
+        "type": "object",
+        "properties": {
+          "note": {
             "type": "string",
             "nullable": true
           }
@@ -4264,6 +5503,20 @@
         },
         "additionalProperties": false
       },
+      "UpdateKeyIndicatorValueRequest": {
+        "type": "object",
+        "properties": {
+          "course": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "value": {
+            "type": "number",
+            "format": "double"
+          }
+        },
+        "additionalProperties": false
+      },
       "UpdateLiteratureWorkRecordRequest": {
         "type": "object",
         "properties": {
@@ -4300,6 +5553,152 @@
         },
         "additionalProperties": false
       },
+      "UpdatePsychologicalAndPedagogicalCharacteristicsRequest": {
+        "type": "object",
+        "properties": {
+          "content": {
+            "type": "string",
+            "nullable": true
+          },
+          "date": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          },
+          "workerId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "UpdateRecommendationsAndRemarksRecordRequest": {
+        "type": "object",
+        "properties": {
+          "date": {
+            "type": "string",
+            "format": "date"
+          },
+          "executionDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "content": {
+            "type": "string",
+            "nullable": true
+          },
+          "result": {
+            "type": "string",
+            "nullable": true
+          },
+          "reviewerId": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "UpdateSocioPedagogicalCharacteristicsRequest": {
+        "type": "object",
+        "properties": {
+          "totalStudents": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "femalesCount": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "malesCount": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "brsmMembersCount": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "orphansUnderagesCount": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "studentsWithoutParentalCareUnderagesCount": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "orphansOrStudentsWithoutParentalCareAdults": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "studentsWithSpecialPsychophysicalDevelopmentNeeds": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "studentsWithDisabledParentsOfGroups1and2": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "studentsFromLargeFamilies": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "studentsFromSingleParentFamilies": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "studentsFromRegionsAffectedByChernobylDisaster": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "studentsFromFamiliesRelocatedFromAreasOfRadioactivePollution": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "nonResidentStudents": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "studentsLivingWithParents": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "studentsLivingInADormitory": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "studentsLivingWithRelatives": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "studentsLivingInPrivateApartments": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "otherInformation": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "UpdateStudentListRecordRequest": {
         "type": "object",
         "properties": {
@@ -4311,6 +5710,32 @@
             "type": "integer",
             "format": "int32",
             "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "UpdateTraditionRequest": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "participationForm": {
+            "type": "string",
+            "nullable": true
+          },
+          "note": {
+            "type": "string",
+            "nullable": true
+          },
+          "day": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "month": {
+            "type": "integer",
+            "format": "int32"
           }
         },
         "additionalProperties": false
@@ -4434,7 +5859,7 @@
           "recomendationsAndRemarks": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/RecomendationsAndRemarks"
+              "$ref": "#/components/schemas/RecomendationsAndRemarksRecord"
             },
             "nullable": true
           }
