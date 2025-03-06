@@ -1,0 +1,130 @@
+﻿@page "/journal/{journalId:int}/traditions/{pageId:int}"
+@rendermode InteractiveServer
+
+@using Contracts.Journal.Traditions
+@using Contracts.Mappers
+
+@inject HttpClient HttpClient
+
+<PageTitle>Традиции ВУЗа, факультета, группы</PageTitle>
+
+<h3>ТРАДИЦИИ ВУЗА, ФАКУЛЬТЕТА, ГРУППЫ</h3>
+
+@if (_pageData == null)
+{
+    <p><em>Загрузка...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Название традиции</th>
+                <th>Дата</th>
+                <th>Форма участия группы</th>
+                <th>Примечание</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var record in _pageData.Traditions)
+            {
+                <tr>
+                    <td>
+                        <input @bind="record.Name" @bind:after="async () => await Update(record)" />
+                    </td>
+                    <td>
+                        <input type="number" min="1" max="31" @bind="record.Day" @bind:after="async () => await Update(record)" />.
+                        <input type="number" min="1" max="12" @bind="record.Month" @bind:after="async () => await Update(record)" />
+                    </td>
+                    <td>
+                        <input @bind="record.ParticipationForm" @bind:after="async () => await Update(record)" />
+                    </td>
+                    <td>
+                        <input @bind="record.Note" @bind:after="async () => await Update(record)" />
+                    </td>
+                    <td>
+                        <button @onclick="async () => await Delete(record)">Удалить</button>
+                    </td>
+                </tr>
+            }
+            <tr>
+                <td>
+                    <input @bind="TraditionToAdd.Name" @bind:after="Add" />
+                </td>
+                <td>
+                    <input type="number" min="1" max="31" @bind="TraditionToAdd.Day" @bind:after="Add" />.
+                    <input type="number" min="1" max="12" @bind="TraditionToAdd.Month" @bind:after="Add" />
+                </td>
+                <td>
+                    <input @bind="TraditionToAdd.ParticipationForm" @bind:after="Add" />
+                </td>
+                <td>
+                    <input @bind="TraditionToAdd.Note" @bind:after="Add" />
+                </td>
+            </tr>
+        </tbody>
+    </table>
+}
+
+@code {
+    [Parameter]
+    public int PageId { get; set; }
+
+    [Parameter]
+    public int JournalId { get; set; }
+
+    public TraditionsPageResponse? _pageData;
+
+    private CreateTraditionRequest TraditionToAdd = new("", "", "", 1, 1, -1);
+
+    protected override async Task OnInitializedAsync()
+    {
+        _pageData = await HttpClient.GetFromJsonAsync<TraditionsPageResponse>("api/journal/tradition/" + PageId.ToString());
+        TraditionToAdd.PageId = PageId;
+    }
+
+    private async Task Update(TraditionResponse record)
+    {
+        Console.WriteLine("Update tradition");
+
+        var request = record.ToRequest();
+        var response = await HttpClient.PutAsJsonAsync<UpdateTraditionRequest>
+            ("api/journal/tradition/" + record.Id, request);
+
+        if (!response.IsSuccessStatusCode)
+        {
+            // var updatedRecord = await response.Content.ReadFromJsonAsync<EducationalProcessScheduleRecordResponse>();
+            // record = updatedRecord!;
+        }
+    }
+
+    private async Task Add()
+    {
+        Console.WriteLine("Add tradition");
+
+        if (string.IsNullOrEmpty(TraditionToAdd.Name) || string.IsNullOrEmpty(TraditionToAdd.ParticipationForm)) return;
+
+        var response = await HttpClient.PostAsJsonAsync<CreateTraditionRequest>("api/journal/tradition", TraditionToAdd);
+
+        if (response.IsSuccessStatusCode)
+        {
+            var addedPhone = await response.Content.ReadFromJsonAsync<TraditionResponse>();
+            _pageData!.Traditions.Add(addedPhone!);
+
+            TraditionToAdd.Name = "";
+            TraditionToAdd.ParticipationForm = "";
+            TraditionToAdd.Day = 1;
+            TraditionToAdd.Month = 1;
+            TraditionToAdd.Note = "";
+        }
+    }
+
+    private async Task Delete(TraditionResponse record)
+    {
+        Console.WriteLine("Delete traidition");
+
+        var response = await HttpClient.DeleteAsync("api/journal/tradition/" + record.Id);
+
+        if (response.IsSuccessStatusCode) _pageData!.Traditions.Remove(record);
+    }
+}

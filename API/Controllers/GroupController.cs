@@ -3,6 +3,7 @@ using Application.Interfaces;
 using DataAccess.Interfaces;
 using Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
+using API.Mappers;
 
 namespace API.Controllers
 {
@@ -20,22 +21,23 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<Group>>> GetAll()
+        public async Task<ActionResult<List<GroupResponse>>> GetAll()
         {
             var groups = await _groupsRepository.GetAllAsync();
 
+            var response = groups.Select(g => g.ToResponse());
             return Ok(groups);
         }
 
         [HttpPost]
-        public async Task<ActionResult> Create([FromBody] CreateGroupRequest request)
+        public async Task<ActionResult<GroupResponse>> Create([FromBody] CreateGroupRequest request)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
             var group = await _groupsService.CreateGroup(request.Number, request.SpecialtyId, request.AdmissionYear);
             if (group == null) return BadRequest(nameof(group));
 
-            var groupResponse = new GroupResponse(group.Id, group.Number, group.AdmissionYear, group.SpecialtyId);
+            var groupResponse = group.ToResponse();
             return CreatedAtAction(nameof(Create), groupResponse);
         }
 
@@ -49,5 +51,14 @@ namespace API.Controllers
             return Ok();
         }
 
+        [HttpGet("getbyjournal/{journalId}")]
+        public async Task<ActionResult<GroupResponse>> GetByJournal([FromRoute] int journalId)
+        {
+            var group = await _groupsRepository.GetByJournalId(journalId);
+            if (group == null) return BadRequest();
+
+            var response = group.ToResponse();
+            return Ok(response);
+        }
     }
 }

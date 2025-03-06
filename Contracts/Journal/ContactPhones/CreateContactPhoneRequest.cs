@@ -2,18 +2,19 @@
 
 namespace Contracts.Journal.ContactPhones
 {
-    public record CreateContactPhoneRequest
-    (
+    public class CreateContactPhoneRequest(
+        string name, string phoneNumber, int pageId)
+    {
         [Required]
-        string Name,
+        public string Name { get; set; } = name;
 
         [Required]
         [Phone]
         [MinLength(9)]
         [MaxLength(17)]
-        string PhoneNumber,
+        public string PhoneNumber { get; set; } = phoneNumber;
 
         [Required]
-        int PageId
-    );
+        public int PageId { get; set; } = pageId;
+    };
 }

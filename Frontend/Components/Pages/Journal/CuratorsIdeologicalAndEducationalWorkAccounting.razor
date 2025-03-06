@@ -1,0 +1,84 @@
+﻿@page "/journal/{journalId:int}/ideologicalandeducationalwork/{pageId:int}"
+@rendermode InteractiveServer
+
+@using Contracts.Journal.CuratorsIdeologicalAndEducationalWorkAccounting
+@using Contracts.Mappers
+
+@inject HttpClient HttpClient
+
+<PageTitle>Учет идеологической и воспитательной работы куратора учебной группы</PageTitle>
+
+<h3>УЧЕТ ИДЕОЛОГИЧЕСКОЙ И ВОСПИТАТЕЛЬНОЙ РАБОТЫ КУРАТОРА УЧЕБНОЙ ГРУППЫ</h3>
+
+@if (_pageData == null)
+{
+    <p><em>Загрузка...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Срок выполнения</th>
+                <th>Содержание работы</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var record in _pageData.IdeologicalEducationalWork)
+            {
+                <tr>
+                    <td>
+                        с <input type="date" @bind="record.StartDate" @bind:after="async () => await Update(record)" />
+                        <br />
+                        по <input type="date" @bind="record.EndDate" @bind:after="async () => await Update(record)" />
+                    </td>
+                    <td>
+                        <input @bind="record.WorkContent" @bind:after="async () => await Update(record)" />
+                    </td>
+                    <td>
+                        <button @onclick="async () => await Delete(record)">Удалить</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    [Parameter]
+    public int PageId { get; set; }
+
+    [Parameter]
+    public int JournalId { get; set; }
+
+    private IdeologicalEducationalWorkPageResponse? _pageData;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _pageData = await HttpClient.GetFromJsonAsync<IdeologicalEducationalWorkPageResponse>("api/journal/ideologicalandeducationalwork/" + PageId.ToString());
+    }
+
+    private async Task Update(IdeologicalEducationalWorkRecordResponse record)
+    {
+        Console.WriteLine("Update ideological and educational work");
+
+        var request = record.ToRequest();
+        var response = await HttpClient.PutAsJsonAsync<UpdateIdeologicalEducationalWorkRecordRequest>
+            ("api/journal/ideologicalandeducationalwork/" + record.Id, request);
+
+        if (response.IsSuccessStatusCode)
+        {
+            // var updatedRecord = await response.Content.ReadFromJsonAsync<IdeologicalEducationalWorkRecordResponse>();
+            // record = updatedRecord!;
+        }
+    }
+
+    private async Task Delete(IdeologicalEducationalWorkRecordResponse record)
+    {
+        Console.WriteLine("Delete ideological and educational work");
+
+        var response = await HttpClient.DeleteAsync("api/journal/ideologicalandeducationalwork/" + record.Id);
+
+        if (response.IsSuccessStatusCode) _pageData!.IdeologicalEducationalWork.Remove(record);
+    }
+}

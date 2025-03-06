@@ -1,5 +1,5 @@
 ﻿using API.Mappers;
-using Contracts.Journal.SocioPedagogicalCharacteristics;
+using Contracts.Journal.PsychologicalAndPedagogicalCharacteristics;
 using DataAccess.Interfaces.PageRepositories;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,12 +7,13 @@ namespace API.Controllers
 {
     [Route("api/journal/psychologicalpedagogicalcharacteristics")]
     public class PsychologicalAndPedagogicalCharacteristicsController(
-        ISocioPedagogicalCharacteristicsRepository entityRepository) : ControllerBase
+        IPsychologicalAndPedagogicalCharacteristicsRepository entityRepository) : ControllerBase
     {
-        private readonly ISocioPedagogicalCharacteristicsRepository _entityRepository = entityRepository;
+        private readonly IPsychologicalAndPedagogicalCharacteristicsRepository _entityRepository = entityRepository;
 
         [HttpGet("{pageId}")]
-        public async Task<ActionResult<SocioPedagogicalCharacteristicsResponse>> GetByPage([FromRoute] int pageId)
+        public async Task<ActionResult<PsychologicalAndPedagogicalCharacteristicsResponse>>
+            GetByPage([FromRoute] int pageId)
         {
             var characteristics = await _entityRepository.GetByPageIdAsync(pageId);
             if (characteristics == null) return BadRequest();
@@ -22,8 +23,8 @@ namespace API.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<SocioPedagogicalCharacteristicsResponse>> Update([FromRoute] int id, 
-            [FromBody] UpdateSocioPedagogicalCharacteristicsRequest request)
+        public async Task<ActionResult<PsychologicalAndPedagogicalCharacteristicsResponse>> Update(
+            [FromRoute] int id, [FromBody] UpdatePsychologicalAndPedagogicalCharacteristicsRequest request)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 

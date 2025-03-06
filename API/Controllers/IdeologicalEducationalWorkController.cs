@@ -1,12 +1,11 @@
 ﻿using API.Mappers;
 using Contracts.Journal.CuratorsIdeologicalAndEducationalWorkAccounting;
-using Contracts.Journal.EducationalProcessSchedule;
 using DataAccess.Interfaces.PageRepositories;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
-    [Route("api/journal/ideologicaleducationalwork")]
+    [Route("api/journal/ideologicalandeducationalwork")]
     public class IdeologicalEducationalWorkController(IIdeologicalEducationalWorkRepository ideologicalEducationalWorkRepository) : ControllerBase
     {
         private readonly IIdeologicalEducationalWorkRepository _ideologicalEducationalWorkRepository = ideologicalEducationalWorkRepository;

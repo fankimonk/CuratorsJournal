@@ -2,8 +2,11 @@
 @rendermode InteractiveServer
 
 @using Contracts.Journal.EducationalProcessSchedule
+@using Contracts.Mappers
 
 @inject HttpClient HttpClient
+
+<PageTitle>График учебного процесса</PageTitle>
 
 <h3>ГРАФИК УЧЕБНОГО ПРОЦЕССА</h3>
 
@@ -16,32 +19,40 @@ else
     <table class="table">
         <thead>
             <tr>
-                <td>Семестр</td>
-                <td>Начало</td>
-                <td>Окончание</td>
-                <td>Сессия</td>
-                <td>Практика</td>
-                <td>Каникулы</td>
+                <th>Семестр</th>
+                <th>Начало</th>
+                <th>Окончание</th>
+                <th>Сессия</th>
+                <th>Практика</th>
+                <th>Каникулы</th>
             </tr>
         </thead>
         <tbody>
             @foreach (var record in _pageData.EducationalProcessSchedule)
             {
                 <tr>
-                    <td>@record.SemesterNumber.ToString()</td>
-                    <td>@record.StartDate.ToString()</td>
-                    <td>@record.EndDate.ToString()</td>
                     <td>
-                        @("с " + @record.SessionStartDate.ToString())
+                        <input type="number" min="0" @bind="record.SemesterNumber" @bind:after="async () => await Update(record)" />
+                    </td>
+                    <td>
+                        <input type="date" @bind="record.StartDate" @bind:after="async () => await Update(record)" />
+                    </td>
+                    <td>
+                        <input type="date" @bind="record.EndDate" @bind:after="async () => await Update(record)" />
+                    </td>
+                    <td>
+                        с <input type="date" @bind="record.SessionStartDate" @bind:after="async () => await Update(record)" />
                         <br />
-                        @("по " + record.SessionEndDate.ToString())
+                        по <input type="date" @bind="record.SessionEndDate" @bind:after="async () => await Update(record)" />
                     </td>
                     <td>
                         @if (@record.PracticeStartDate != null && @record.PracticeEndDate != null)
                         {
-                            @("с " + @record.PracticeStartDate.ToString())
-                            <br />
-                            @("по " + record.PracticeEndDate.ToString())
+                            <div>
+                                с <input type="date" @bind="record.PracticeStartDate" @bind:after="async () => await Update(record)" />
+                                <br />
+                                по <input type="date" @bind="record.PracticeEndDate" @bind:after="async () => await Update(record)" />
+                            </div>
                         }
                         else
                         {
@@ -49,8 +60,12 @@ else
                         }
                     </td>
                     <td>
-                        @("с " + @record.VacationStartDate.ToString() + '\n')
-                        @("по " + record.VacationEndDate.ToString())
+                        с <input type="date" @bind="record.VacationStartDate" @bind:after="async () => await Update(record)" />
+                        <br />
+                        по <input type="date" @bind="record.VacationEndDate" @bind:after="async () => await Update(record)" />
+                    </td>
+                    <td>
+                        <button @onclick="async () => await Delete(record)">Удалить</button>
                     </td>
                 </tr>
             }
@@ -72,53 +87,27 @@ else
         _pageData = await HttpClient.GetFromJsonAsync<EducationalProcessSchedulePageResponse>("api/journal/educationalprocessschedule/" + PageId.ToString());
     }
 
-    // private async Task UpdateRecord(EducationalProcessScheduleRecordResponse record)
-    // {
-    //     var request = new UpdateEducationalProcessScheduleRecordRequest(
-    //         record.SemesterNumber,
-    //         record.StartDate,
-    //         record.EndDate,
-    //         record.SessionStartDate,
-    //         record.SessionEndDate,
-    //         record.PracticeStartDate,
-    //         record.PracticeEndDate,
-    //         record.VacationStartDate,
-    //         record.VacationEndDate
-    //     );
+    private async Task Update(EducationalProcessScheduleRecordResponse record)
+    {
+        Console.WriteLine("Update educational process schedule");
 
-    //     var response = await HttpClient.PutAsJsonAsync<UpdateEducationalProcessScheduleRecordRequest>("api/journal/educationalprocessschedule/" + record.Id, request);
+        var request = record.ToRequest();
+        var response = await HttpClient.PutAsJsonAsync<UpdateEducationalProcessScheduleRecordRequest>
+            ("api/journal/educationalprocessschedule/" + record.Id, request);
 
-    //     if (response.IsSuccessStatusCode)
-    //     {
-    //         var updatedPhone = await response.Content.ReadFromJsonAsync<ContactPhoneResponse>();
+        if (!response.IsSuccessStatusCode)
+        {
+            // var updatedRecord = await response.Content.ReadFromJsonAsync<EducationalProcessScheduleRecordResponse>();
+            // record = updatedRecord!;
+        }
+    }
 
-    //         var index = _pageData!.PhoneNumbers.FindIndex(p => p.Id == updatedPhone!.Id);
-    //         _pageData.PhoneNumbers.RemoveAt(index);
-    //         _pageData.PhoneNumbers.Insert(index, new ContactPhoneResponse(updatedPhone!.Id, updatedPhone.Name, updatedPhone.PhoneNumber));
-    //     }
-    // }
+    private async Task Delete(EducationalProcessScheduleRecordResponse record)
+    {
+        Console.WriteLine("Delete educational process schedule");
 
-    // private async Task AddRecord()
-    // {
-    //     if (string.IsNullOrEmpty(RecordToAdd.Name) || string.IsNullOrEmpty(RecordToAdd.PhoneNumber)) return;
+        var response = await HttpClient.DeleteAsync("api/journal/educationalprocessschedule/" + record.Id);
 
-    //     var request = new CreateContactPhoneRequest(RecordToAdd.Name, RecordToAdd.PhoneNumber, PageId);
-    //     var response = await HttpClient.PostAsJsonAsync<CreateContactPhoneRequest>("api/journal/educationalprocessschedule", request);
-
-    //     if (response.IsSuccessStatusCode)
-    //     {
-    //         var addedPhone = await response.Content.ReadFromJsonAsync<ContactPhoneResponse>();
-    //         _pageData!.PhoneNumbers.Add(new ContactPhoneResponse(addedPhone!.Id, addedPhone.Name, addedPhone.PhoneNumber));
-
-    //         RecordToAdd.Name = "";
-    //         RecordToAdd.PhoneNumber = "";
-    //     }
-    // }
-
-    // private async Task DeleteRecord(EducationalProcessScheduleRecordResponse record)
-    // {
-    //     var response = await HttpClient.DeleteAsync("api/journal/educationalprocessschedule/" + record.Id);
-
-    //     if (response.IsSuccessStatusCode) _pageData!.EducationalProcessSchedule.Remove(record);
-    // }
+        if (response.IsSuccessStatusCode) _pageData!.EducationalProcessSchedule.Remove(record);
+    }
 }

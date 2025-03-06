@@ -36,12 +36,28 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xKb3VybmFsXENvbnRhY3RQaG9uZXMucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Dev/Web/CuratorsJournal/Frontend/Components/Pages/Journal/CuratorsIdeologicalAndEducationalWorkAccounting.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xKb3VybmFsXEN1cmF0b3JzSWRlb2xvZ2ljYWxBbmRFZHVjYXRpb25hbFdvcmtBY2NvdW50aW5nLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Dev/Web/CuratorsJournal/Frontend/Components/Pages/Journal/CuratorsParticipationInPedagogicalSeminars.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xKb3VybmFsXEN1cmF0b3JzUGFydGljaXBhdGlvbkluUGVkYWdvZ2ljYWxTZW1pbmFycy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Dev/Web/CuratorsJournal/Frontend/Components/Pages/Journal/EducationalProcessSchedule.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xKb3VybmFsXEVkdWNhdGlvbmFsUHJvY2Vzc1NjaGVkdWxlLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Dev/Web/CuratorsJournal/Frontend/Components/Pages/Journal/GroupActives.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xKb3VybmFsXEdyb3VwQWN0aXZlcy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Dev/Web/CuratorsJournal/Frontend/Components/Pages/Journal/Holidays.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xKb3VybmFsXEhvbGlkYXlzLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Dev/Web/CuratorsJournal/Frontend/Components/Pages/Journal/PsychologicalAndPedagogicalCharacteristics.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xKb3VybmFsXFBzeWNob2xvZ2ljYWxBbmRQZWRhZ29naWNhbENoYXJhY3RlcmlzdGljcy5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Dev/Web/CuratorsJournal/Frontend/Components/Pages/Journal/SocioPedagogicalCharacteristics.razor]
@@ -50,6 +66,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/Dev/Web/CuratorsJournal/Frontend/Components/Pages/Journal/Title.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xKb3VybmFsXFRpdGxlLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Dev/Web/CuratorsJournal/Frontend/Components/Pages/Journal/Traditions.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xKb3VybmFsXFRyYWRpdGlvbnMucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Dev/Web/CuratorsJournal/Frontend/Components/Pages/Journal/_Imports.razor]

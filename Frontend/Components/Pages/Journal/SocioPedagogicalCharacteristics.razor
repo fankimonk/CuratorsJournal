@@ -1,6 +1,104 @@
 ﻿@page "/journal/{journalId:int}/sociopedagogicalcharacteristics/{pageId:int}"
+@rendermode InteractiveServer
+
+@using Contracts.Group
+@using Contracts.Journal.SocioPedagogicalCharacteristics
+@using Contracts.Mappers
+
+@inject HttpClient HttpClient
+
+<PageTitle>Социально-педагогическая характеристика</PageTitle>
 
 <h3>СОЦИАЛЬНО-ПЕДАГОГИЧЕСКАЯ ХАРАКТЕРИСТИКА</h3>
+
+@if (_group == null)
+{
+    <p><em>Загрузка...</em></p>
+}
+else
+{
+    <p>учебной группы @_group.Number.ToString()</p>
+}
+
+@if (_pageData == null)
+{
+    <p><em>Загрузка...</em></p>
+}
+else
+{
+    <p>
+        1. Всего студентов
+        <input type="number" min="0" @bind="_pageData.TotalStudents" @bind:after="Update" />
+    </p>
+    <p>Из них</p>
+    <p>
+        2. Девушки
+        <input type="number" min="0" @bind="_pageData.FemalesCount" @bind:after="Update" />
+    </p>
+    <p>
+        3. Юноши
+        <input type="number" min="0" @bind="_pageData.MalesCount" @bind:after="Update" />
+    </p>
+    <p>
+        4. Члены ОО "БРСМ"
+        <input type="number" min="0" @bind="_pageData.BRSMMembersCount" @bind:after="Update" />
+    </p>
+    <p>
+        5. Дети-сироты, (до 18 лет) 
+        <input type="number" min="0" @bind="_pageData.OrphansUnderagesCount" @bind:after="Update" />
+    </p>
+    <p>
+        6. Дети, оставшиеся без попечения родителей (до 18 лет) 
+        <input type="number" min="0" @bind="_pageData.StudentsWithoutParentalCareUnderagesCount" @bind:after="Update" />
+    </p>
+    <p>
+        7. Лица из числа детей-сирот <br />
+        и детей, оставшихся без попечения родителей (18-23 года) 
+        <input type="number" min="0" @bind="_pageData.OrphansOrStudentsWithoutParentalCareAdults" @bind:after="Update" />
+    </p>
+    <p>
+        8. Студенты с особенностями психофизического развития 
+        <input type="number" min="0" @bind="_pageData.StudentsWithSpecialPsychophysicalDevelopmentNeeds" @bind:after="Update" />
+    </p>
+    <p>
+        9. Имеющие родителей-инвалидов 1, 2 группы 
+        <input type="number" min="0" @bind="_pageData.StudentsWithDisabledParentsOfGroups1and2" @bind:after="Update" />
+    </p>
+    <p>
+        10. Из многодетных семей 
+        <input type="number" min="0" @bind="_pageData.StudentsFromLargeFamilies" @bind:after="Update" />
+    </p>
+    <p>
+        11. Из неполных семей 
+        <input type="number" min="0" @bind="_pageData.StudentsFromSingleParentFamilies" @bind:after="Update" />
+    </p>
+    <p>
+        12. Из регионов, пострадавших от катастрофы на Чернобыльской АЭС 
+        <input type="number" min="0" @bind="_pageData.StudentsFromRegionsAffectedByChernobylDisaster" @bind:after="Update" />
+    </p>
+    <p>
+        13. Из семей, отселенных из зон радиоактивного загрязнения 
+        <input type="number" min="0" @bind="_pageData.StudentsFromFamiliesRelocatedFromAreasOfRadioactivePollution" @bind:after="Update" />
+    </p>
+    <p>
+        14. Иногородних 
+        <input type="number" min="0" @bind="_pageData.NonResidentStudents" @bind:after="Update" />
+    </p>
+    <p>
+        15. Проживают с родителями 
+        <input type="number" min="0" @bind="_pageData.StudentsLivingWithParents" @bind:after="Update" />, 
+        в общежитии
+        <input type="number" min="0" @bind="_pageData.StudentsLivingInADormitory" @bind:after="Update" />, <br />
+        у родственников
+        <input type="number" min="0" @bind="_pageData.StudentsLivingWithRelatives" @bind:after="Update" />, 
+        на частных квартирах
+        <input type="number" min="0" @bind="_pageData.StudentsLivingInPrivateApartments" @bind:after="Update" />
+    </p>
+    <p>
+        16. Другие сведения <br />
+        <textarea cols="40", rows="5" @bind="_pageData.OtherInformation" @bind:after="Update" />
+    </p>
+}
 
 @code {
     [Parameter]
@@ -8,4 +106,27 @@
 
     [Parameter]
     public int JournalId { get; set; }
+
+    private SocioPedagogicalCharacteristicsResponse? _pageData;
+    private GroupResponse? _group;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _pageData = await HttpClient.GetFromJsonAsync<SocioPedagogicalCharacteristicsResponse>("api/journal/sociopedagogicalcharacteristics/" + PageId.ToString());
+        _group = await HttpClient.GetFromJsonAsync<GroupResponse>("api/group/getbyjournal/" + JournalId.ToString());
+    }
+
+    private async Task Update()
+    {
+        Console.WriteLine("Update socio pedagogical characteristics");
+
+        var request = _pageData!.ToRequest();
+        var response = await HttpClient.PutAsJsonAsync<UpdateSocioPedagogicalCharacteristicsRequest>
+            ("api/journal/psychologicalpedagogicalcharacteristics/" + _pageData!.Id, request);
+
+        if (!response.IsSuccessStatusCode)
+        {
+            // _pageData = await response.Content.ReadFromJsonAsync<SocioPedagogicalCharacteristicsResponse>();
+        }
+    }
 }

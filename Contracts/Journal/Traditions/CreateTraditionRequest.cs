@@ -2,23 +2,24 @@
 
 namespace Contracts.Journal.Traditions
 {
-    public record CreateTraditionRequest
-    (
+    public class CreateTraditionRequest(
+        string name, string participationForm, string? note, int day, int month, int pageId)
+    {
         [Required]
-        string Name,
+        public string Name { get; set; } = name;
         [Required]
-        string ParticipationForm,
+        public string ParticipationForm { get; set; } = participationForm;
 
-        string? Note,
+        public string? Note { get; set; } = note;
 
         [Required]
         [Range(1, 31)]
-        int Day,
+        public int Day { get; set; } = day;
         [Required]
         [Range(1, 12)]
-        int Month,
+        public int Month { get; set; } = month;
 
         [Required]
-        int PageId
-    );
+        public int PageId { get; set; } = pageId;
+    };
 }

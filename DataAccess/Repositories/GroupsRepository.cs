@@ -90,5 +90,10 @@ namespace DataAccess.Repositories
 
             return historyRecord;
         }
+
+        public async Task<Group?> GetByJournalId(int id)
+        {
+            return await _dbContext.Groups.Include(g => g.Journal).AsNoTracking().FirstOrDefaultAsync(g => g.Journal!.Id == id);
+        }
     }
 }

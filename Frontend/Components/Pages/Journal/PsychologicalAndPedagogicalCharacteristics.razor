@@ -1,0 +1,58 @@
+﻿@page "/journal/{journalId:int}/psychologicalandpedagogicalcharacteristics/{pageId:int}"
+@rendermode InteractiveServer
+
+@using Contracts.Journal.PsychologicalAndPedagogicalCharacteristics
+@using Contracts.Mappers
+
+@inject HttpClient HttpClient
+
+<PageTitle>Психолого-педагогическая характеристика учебной группы</PageTitle>
+
+<h3>
+    ПСИХОЛОГО-ПЕДАГОГИЧЕСКАЯ <br />
+    ХАРАКТЕРИСТИКА УЧЕБНОЙ ГРУППЫ
+</h3>
+
+@if (_pageData == null)
+{
+    <p><em>Загрузка...</em></p>
+}
+else
+{
+    <textarea cols="80" rows="15" @bind="_pageData.Content" @bind:after="Update" />
+    <p>Ф. И. О., должность специалиста</p>
+    <p>
+        Дата <input type="date" @bind="_pageData.Date" @bind:after="Update" />
+    </p>
+}
+
+@code {
+    [Parameter]
+    public int PageId { get; set; }
+
+    [Parameter]
+    public int JournalId { get; set; }
+
+    private PsychologicalAndPedagogicalCharacteristicsResponse? _pageData;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _pageData = await HttpClient.GetFromJsonAsync<PsychologicalAndPedagogicalCharacteristicsResponse>
+            ("api/journal/psychologicalpedagogicalcharacteristics/" + PageId.ToString());
+    }
+
+    private async Task Update()
+    {
+        Console.WriteLine("Update psychological and pedagogical characteristics");
+
+        var request = _pageData!.ToRequest();
+        var response = await HttpClient.PutAsJsonAsync<UpdatePsychologicalAndPedagogicalCharacteristicsRequest>
+            ("api/journal/psychologicalpedagogicalcharacteristics/" + _pageData!.Id, request);
+
+        if (response.IsSuccessStatusCode)
+        {
+            // var updatedRecord = await response.Content.ReadFromJsonAsync<IdeologicalEducationalWorkRecordResponse>();
+            // record = updatedRecord!;
+        }
+    }
+}

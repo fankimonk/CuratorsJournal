@@ -22,22 +22,22 @@ else
             {
                 <tr>
                     <td>
-                        <input @bind="phone.Name" @bind:after='async () => await UpdatePhone(phone)' />
+                        <input @bind="phone.Name" @bind:after='async () => await Update(phone)' />
                     </td>
                     <td>
-                        <input @bind="phone.PhoneNumber" @bind:after='async () => await UpdatePhone(phone)' />
+                        <input type="tel" @bind="phone.PhoneNumber" @bind:after='async () => await Update(phone)' />
                     </td>
                     <td>
-                        <button @onclick="async () => await DeletePhone(phone)">Удалить</button>
+                        <button @onclick="async () => await Delete(phone)">Удалить</button>
                     </td>
                 </tr>
             }
             <tr>
                 <td>
-                    <input @bind="PhoneToAdd.Name" @bind:after="AddPhone"/>
+                    <input @bind="PhoneToAdd.Name" @bind:after="Add"/>
                 </td>
                 <td>
-                    <input @bind="PhoneToAdd.PhoneNumber" @bind:after="AddPhone" />
+                    <input type="tel" @bind="PhoneToAdd.PhoneNumber" @bind:after="Add" />
                 </td>
             </tr>
         </tbody>
@@ -53,14 +53,15 @@ else
 
     private ContactPhonesPageResponse? _pageData;
 
-    private ContactPhoneResponse PhoneToAdd = new ContactPhoneResponse(-1, "", "");
+    private CreateContactPhoneRequest PhoneToAdd = new("", "", -1);
 
     protected override async Task OnInitializedAsync()
     {
         _pageData = await HttpClient.GetFromJsonAsync<ContactPhonesPageResponse>("api/journal/contactphone/" + PageId.ToString());
+        PhoneToAdd.PageId = PageId;
     }
 
-    private async Task UpdatePhone(ContactPhoneResponse phone)
+    private async Task Update(ContactPhoneResponse phone)
     {
         Console.WriteLine("Update phone");
 
@@ -69,34 +70,33 @@ else
 
         if (response.IsSuccessStatusCode)
         {
-            var updatedPhone = await response.Content.ReadFromJsonAsync<ContactPhoneResponse>();
+            // var updatedPhone = await response.Content.ReadFromJsonAsync<ContactPhoneResponse>();
 
-            var index = _pageData!.PhoneNumbers.FindIndex(p => p.Id == updatedPhone!.Id);
-            _pageData.PhoneNumbers.RemoveAt(index);
-            _pageData.PhoneNumbers.Insert(index, new ContactPhoneResponse(updatedPhone!.Id, updatedPhone.Name, updatedPhone.PhoneNumber));
+            // var index = _pageData!.PhoneNumbers.FindIndex(p => p.Id == updatedPhone!.Id);
+            // _pageData.PhoneNumbers.RemoveAt(index);
+            // _pageData.PhoneNumbers.Insert(index, new ContactPhoneResponse(updatedPhone!.Id, updatedPhone.Name, updatedPhone.PhoneNumber));
         }
     }
 
-    private async Task AddPhone()
+    private async Task Add()
     {
         Console.WriteLine("Add phone");
 
         if (string.IsNullOrEmpty(PhoneToAdd.Name) || string.IsNullOrEmpty(PhoneToAdd.PhoneNumber)) return;
 
-        var request = new CreateContactPhoneRequest(PhoneToAdd.Name, PhoneToAdd.PhoneNumber, PageId);
-        var response = await HttpClient.PostAsJsonAsync<CreateContactPhoneRequest>("api/journal/contactphone", request);
+        var response = await HttpClient.PostAsJsonAsync<CreateContactPhoneRequest>("api/journal/contactphone", PhoneToAdd);
 
         if (response.IsSuccessStatusCode)
         {
             var addedPhone = await response.Content.ReadFromJsonAsync<ContactPhoneResponse>();
-            _pageData!.PhoneNumbers.Add(new ContactPhoneResponse(addedPhone!.Id, addedPhone.Name, addedPhone.PhoneNumber));
+            _pageData!.PhoneNumbers.Add(addedPhone!);
 
             PhoneToAdd.Name = "";
             PhoneToAdd.PhoneNumber = "";
         }
     }
 
-    private async Task DeletePhone(ContactPhoneResponse phone)
+    private async Task Delete(ContactPhoneResponse phone)
     {
         Console.WriteLine("Delete phone");
 

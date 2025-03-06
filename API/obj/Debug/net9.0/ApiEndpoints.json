@@ -61,7 +61,7 @@
     "Parameters": [],
     "ReturnTypes": [
       {
-        "Type": "System.Collections.Generic.List\u00601[[Domain.Entities.Group, Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "Type": "System.Collections.Generic.List\u00601[[Contracts.Group.GroupResponse, Contracts, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -85,7 +85,17 @@
         "IsRequired": true
       }
     ],
-    "ReturnTypes": []
+    "ReturnTypes": [
+      {
+        "Type": "Contracts.Group.GroupResponse",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
   },
   {
     "ContainingType": "API.Controllers.GroupController",
@@ -102,6 +112,32 @@
       }
     ],
     "ReturnTypes": []
+  },
+  {
+    "ContainingType": "API.Controllers.GroupController",
+    "Method": "GetByJournal",
+    "RelativePath": "api/group/getbyjournal/{journalId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "journalId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "Contracts.Group.GroupResponse",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
   },
   {
     "ContainingType": "API.Controllers.JournalController",
@@ -646,7 +682,7 @@
   {
     "ContainingType": "API.Controllers.IdeologicalEducationalWorkController",
     "Method": "AddRecord",
-    "RelativePath": "api/journal/ideologicaleducationalwork",
+    "RelativePath": "api/journal/ideologicalandeducationalwork",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
@@ -672,7 +708,7 @@
   {
     "ContainingType": "API.Controllers.IdeologicalEducationalWorkController",
     "Method": "GetRecordsByPage",
-    "RelativePath": "api/journal/ideologicaleducationalwork/{pageId}",
+    "RelativePath": "api/journal/ideologicalandeducationalwork/{pageId}",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -698,7 +734,7 @@
   {
     "ContainingType": "API.Controllers.IdeologicalEducationalWorkController",
     "Method": "UpdateRecord",
-    "RelativePath": "api/journal/ideologicaleducationalwork/{recordId}",
+    "RelativePath": "api/journal/ideologicalandeducationalwork/{recordId}",
     "HttpMethod": "PUT",
     "IsController": true,
     "Order": 0,
@@ -729,7 +765,7 @@
   {
     "ContainingType": "API.Controllers.IdeologicalEducationalWorkController",
     "Method": "DeleteRecord",
-    "RelativePath": "api/journal/ideologicaleducationalwork/{recordId}",
+    "RelativePath": "api/journal/ideologicalandeducationalwork/{recordId}",
     "HttpMethod": "DELETE",
     "IsController": true,
     "Order": 0,
@@ -955,13 +991,13 @@
       },
       {
         "Name": "request",
-        "Type": "Contracts.Journal.SocioPedagogicalCharacteristics.UpdateSocioPedagogicalCharacteristicsRequest",
+        "Type": "Contracts.Journal.PsychologicalAndPedagogicalCharacteristics.UpdatePsychologicalAndPedagogicalCharacteristicsRequest",
         "IsRequired": true
       }
     ],
     "ReturnTypes": [
       {
-        "Type": "Contracts.Journal.SocioPedagogicalCharacteristics.SocioPedagogicalCharacteristicsResponse",
+        "Type": "Contracts.Journal.PsychologicalAndPedagogicalCharacteristics.PsychologicalAndPedagogicalCharacteristicsResponse",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -987,7 +1023,7 @@
     ],
     "ReturnTypes": [
       {
-        "Type": "Contracts.Journal.SocioPedagogicalCharacteristics.SocioPedagogicalCharacteristicsResponse",
+        "Type": "Contracts.Journal.PsychologicalAndPedagogicalCharacteristics.PsychologicalAndPedagogicalCharacteristicsResponse",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -1111,13 +1147,13 @@
       },
       {
         "Name": "request",
-        "Type": "Contracts.Journal.PsychologicalAndPedagogicalCharacteristics.UpdatePsychologicalAndPedagogicalCharacteristicsRequest",
+        "Type": "Contracts.Journal.SocioPedagogicalCharacteristics.UpdateSocioPedagogicalCharacteristicsRequest",
         "IsRequired": true
       }
     ],
     "ReturnTypes": [
       {
-        "Type": "Contracts.Journal.PsychologicalAndPedagogicalCharacteristics.PsychologicalAndPedagogicalCharacteristicsResponse",
+        "Type": "Contracts.Journal.SocioPedagogicalCharacteristics.SocioPedagogicalCharacteristicsResponse",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -1143,7 +1179,7 @@
     ],
     "ReturnTypes": [
       {
-        "Type": "Contracts.Journal.PsychologicalAndPedagogicalCharacteristics.PsychologicalAndPedagogicalCharacteristicsResponse",
+        "Type": "Contracts.Journal.SocioPedagogicalCharacteristics.SocioPedagogicalCharacteristicsResponse",
         "MediaTypes": [
           "text/plain",
           "application/json",
