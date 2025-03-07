@@ -13,7 +13,7 @@ namespace Domain.Entities.JournalContent.PersonalizedAccountingCardContent
         public string? GraduatedEducationalInstitution { get; set; } = string.Empty;
         public string? ResidentialAddress { get; set; } = string.Empty;
         
-        public int StudentId { get; set; }
+        public int? StudentId { get; set; }
         public Student? Student { get; set; }
 
         public int PageId { get; set; }

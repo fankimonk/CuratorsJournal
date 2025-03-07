@@ -1,9 +1,11 @@
 ﻿@page "/journal/{journalId:int}/sociopedagogicalcharacteristics/{pageId:int}"
 @rendermode InteractiveServer
 
+@using Contracts.AcademicYears
 @using Contracts.Group
 @using Contracts.Journal.SocioPedagogicalCharacteristics
 @using Contracts.Mappers
+@using Contracts.Mappers.Journal
 
 @inject HttpClient HttpClient
 
@@ -11,21 +13,27 @@
 
 <h3>СОЦИАЛЬНО-ПЕДАГОГИЧЕСКАЯ ХАРАКТЕРИСТИКА</h3>
 
-@if (_group == null)
-{
-    <p><em>Загрузка...</em></p>
-}
-else
-{
-    <p>учебной группы @_group.Number.ToString()</p>
-}
-
 @if (_pageData == null)
 {
     <p><em>Загрузка...</em></p>
 }
 else
 {
+    @if (_group == null)
+    {
+        <p><em>Загрузка...</em></p>
+    }
+    else
+    {
+        <p>
+            учебной группы @_group.Number.ToString() 
+            @if (academicYear != null)
+            {
+                @(" в " + academicYear!.StartYear.ToString() + "/" + academicYear.EndYear.ToString() + " уч. году")
+            }
+        </p>
+    }
+
     <p>
         1. Всего студентов
         <input type="number" min="0" @bind="_pageData.TotalStudents" @bind:after="Update" />
@@ -96,7 +104,7 @@ else
     </p>
     <p>
         16. Другие сведения <br />
-        <textarea cols="40", rows="5" @bind="_pageData.OtherInformation" @bind:after="Update" />
+        <input @bind="_pageData.OtherInformation" @bind:after="Update" />
     </p>
 }
 
@@ -110,6 +118,8 @@ else
     private SocioPedagogicalCharacteristicsResponse? _pageData;
     private GroupResponse? _group;
 
+    private AcademicYearResponse? academicYear => _pageData != null ? _pageData.Attributes.AcademicYear : null;
+
     protected override async Task OnInitializedAsync()
     {
         _pageData = await HttpClient.GetFromJsonAsync<SocioPedagogicalCharacteristicsResponse>("api/journal/sociopedagogicalcharacteristics/" + PageId.ToString());
@@ -122,7 +132,7 @@ else
 
         var request = _pageData!.ToRequest();
         var response = await HttpClient.PutAsJsonAsync<UpdateSocioPedagogicalCharacteristicsRequest>
-            ("api/journal/psychologicalpedagogicalcharacteristics/" + _pageData!.Id, request);
+            ("api/journal/sociopedagogicalcharacteristics/" + _pageData!.Id, request);
 
         if (!response.IsSuccessStatusCode)
         {

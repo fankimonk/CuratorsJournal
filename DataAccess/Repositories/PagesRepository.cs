@@ -2,6 +2,8 @@
 using Domain.Entities.JournalContent;
 using Domain.Entities.JournalContent.DynamicsOfKeyIndicators;
 using Domain.Entities.JournalContent.Pages;
+using Domain.Entities.JournalContent.Pages.Attributes;
+using Domain.Entities.JournalContent.PersonalizedAccountingCardContent;
 using Domain.Enums.Journal;
 using Microsoft.EntityFrameworkCore;
 
@@ -32,6 +34,19 @@ namespace DataAccess.Repositories
 
                 case (int)PageTypes.SocioPedagogicalCharacteristicsPage:
                     page.SocioPedagogicalCharacteristics = new SocioPedagogicalCharacteristics();
+                    page.SocioPedagogicalCharacteristicsPageAttributes = new SocioPedagogicalCharacteristicsPageAttributes();
+                    break;
+
+                case (int)PageTypes.PersonalizedAccountingCardPage:
+                    page.PersonalizedAccountingCard = new PersonalizedAccountingCard();
+                    break;
+
+                case (int)PageTypes.StudentsHealthCardPage:
+                    page.HealthCardPageAttributes = new HealthCardPageAttributes();
+                    break;
+
+                case (int)PageTypes.CuratorsIdeologicalAndEducationalWorkAccountingPage:
+                    page.CuratorsIdeologicalAndEducationalWorkPageAttributes = new CuratorsIdeologicalAndEducationalWorkPageAttributes();
                     break;
 
                 default:

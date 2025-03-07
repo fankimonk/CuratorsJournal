@@ -3,6 +3,7 @@
 
 @using Contracts.Journal.EducationalProcessSchedule
 @using Contracts.Mappers
+@using Contracts.Mappers.Journal
 
 @inject HttpClient HttpClient
 
@@ -46,18 +47,11 @@ else
                         по <input type="date" @bind="record.SessionEndDate" @bind:after="async () => await Update(record)" />
                     </td>
                     <td>
-                        @if (@record.PracticeStartDate != null && @record.PracticeEndDate != null)
-                        {
-                            <div>
-                                с <input type="date" @bind="record.PracticeStartDate" @bind:after="async () => await Update(record)" />
-                                <br />
-                                по <input type="date" @bind="record.PracticeEndDate" @bind:after="async () => await Update(record)" />
-                            </div>
-                        }
-                        else
-                        {
-                            @("-")
-                        }
+                        <div>
+                            с <input type="date" @bind="record.PracticeStartDate" @bind:after="async () => await Update(record)" />
+                            <br />
+                            по <input type="date" @bind="record.PracticeEndDate" @bind:after="async () => await Update(record)" />
+                        </div>
                     </td>
                     <td>
                         с <input type="date" @bind="record.VacationStartDate" @bind:after="async () => await Update(record)" />
@@ -69,6 +63,11 @@ else
                     </td>
                 </tr>
             }
+            <tr>
+                <td>
+                    <button @onclick="Add">Добавить строку</button>
+                </td>
+            </tr>
         </tbody>
     </table>
 }
@@ -85,6 +84,20 @@ else
     protected override async Task OnInitializedAsync()
     {
         _pageData = await HttpClient.GetFromJsonAsync<EducationalProcessSchedulePageResponse>("api/journal/educationalprocessschedule/" + PageId.ToString());
+    }
+
+    private async Task Add()
+    {
+        Console.WriteLine("Add educational process schedule");
+
+        var request = new CreateEducationalProcessScheduleRecordRequest(null, null, null, null, null, null, null, null, null, PageId);
+        var response = await HttpClient.PostAsJsonAsync<CreateEducationalProcessScheduleRecordRequest>("api/journal/educationalprocessschedule", request);
+
+        if (response.IsSuccessStatusCode)
+        {
+            var addedRecord = await response.Content.ReadFromJsonAsync<EducationalProcessScheduleRecordResponse>();
+            _pageData!.EducationalProcessSchedule.Add(addedRecord!);
+        }
     }
 
     private async Task Update(EducationalProcessScheduleRecordResponse record)

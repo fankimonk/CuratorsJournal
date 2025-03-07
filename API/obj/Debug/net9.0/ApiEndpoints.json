@@ -779,6 +779,105 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "API.Controllers.InformationHoursAccountingController",
+    "Method": "AddRecord",
+    "RelativePath": "api/journal/informationhoursaccounting",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "Contracts.Journal.InformationHoursAccounting.CreateInformationHoursAccountingRecordRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "Contracts.Journal.InformationHoursAccounting.InformationHoursAccountingRecordResponse",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "API.Controllers.InformationHoursAccountingController",
+    "Method": "GetByPage",
+    "RelativePath": "api/journal/informationhoursaccounting/{pageId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "pageId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "Contracts.Journal.InformationHoursAccounting.InformationHoursAccountingPageResponse",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "API.Controllers.InformationHoursAccountingController",
+    "Method": "UpdateContactPhone",
+    "RelativePath": "api/journal/informationhoursaccounting/{recordId}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "recordId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "request",
+        "Type": "Contracts.Journal.InformationHoursAccounting.UpdateInformationHoursAccountingRecordRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "Contracts.Journal.InformationHoursAccounting.InformationHoursAccountingRecordResponse",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "API.Controllers.InformationHoursAccountingController",
+    "Method": "DeleteContactPhone",
+    "RelativePath": "api/journal/informationhoursaccounting/{recordId}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "recordId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "API.Controllers.LiteratureWorkController",
     "Method": "AddRecord",
     "RelativePath": "api/journal/literaturework",
@@ -975,6 +1074,63 @@
       }
     ],
     "ReturnTypes": []
+  },
+  {
+    "ContainingType": "API.Controllers.PersonalizedAccountingCardsController",
+    "Method": "Update",
+    "RelativePath": "api/journal/personalizedaccountingcard/{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "request",
+        "Type": "Contracts.Journal.PersonalizedAccountingCards.UpdatePersonalizedAccountingCardRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "Contracts.Journal.PersonalizedAccountingCards.PersonalizedAccountingCardResponse",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "API.Controllers.PersonalizedAccountingCardsController",
+    "Method": "GetByPage",
+    "RelativePath": "api/journal/personalizedaccountingcard/{pageId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "pageId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "Contracts.Journal.PersonalizedAccountingCards.PersonalizedAccountingCardResponse",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
   },
   {
     "ContainingType": "API.Controllers.PsychologicalAndPedagogicalCharacteristicsController",
@@ -1180,6 +1336,37 @@
     "ReturnTypes": [
       {
         "Type": "Contracts.Journal.SocioPedagogicalCharacteristics.SocioPedagogicalCharacteristicsResponse",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "API.Controllers.SocioPedagogicalCharacteristicsController",
+    "Method": "UpdateAttributes",
+    "RelativePath": "api/journal/sociopedagogicalcharacteristics/updateattributes/{attributesId}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "attributesId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "AcademicYearId",
+        "Type": "System.Nullable\u00601[[System.Int32, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "Contracts.Journal.SocioPedagogicalCharacteristics.SocioPedagogicalCharacteristicsAttributesResponse",
         "MediaTypes": [
           "text/plain",
           "application/json",

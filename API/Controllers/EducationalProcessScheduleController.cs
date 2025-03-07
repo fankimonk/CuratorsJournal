@@ -1,4 +1,6 @@
 ﻿using API.Mappers;
+using API.Mappers.Journal;
+using API.Mappers.Journal.PersonalizedAccountingCards;
 using Contracts.Journal.EducationalProcessSchedule;
 using DataAccess.Interfaces.PageRepositories;
 using Microsoft.AspNetCore.Mvc;

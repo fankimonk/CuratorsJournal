@@ -4,25 +4,18 @@ namespace Contracts.Journal.EducationalProcessSchedule
 {
     public record CreateEducationalProcessScheduleRecordRequest
     (
-        [Required]
-        int SemesterNumber,
+        int? SemesterNumber,
 
-        [Required]
-        DateOnly StartDate,
-        [Required]
-        DateOnly EndDate,
-        [Required]
-        DateOnly SessionStartDate,
-        [Required]
-        DateOnly SessionEndDate,
+        DateOnly? StartDate,
+        DateOnly? EndDate,
+        DateOnly? SessionStartDate,
+        DateOnly? SessionEndDate,
 
         DateOnly? PracticeStartDate,
         DateOnly? PracticeEndDate,
 
-        [Required]
-        DateOnly VacationStartDate,
-        [Required]
-        DateOnly VacationEndDate,
+        DateOnly? VacationStartDate,
+        DateOnly? VacationEndDate,
 
         [Required]
         int PageId

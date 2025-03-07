@@ -4,13 +4,11 @@ namespace Contracts.Journal.ContactPhones
 {
     public record UpdateContactPhoneRequest
     (
-        [Required]
-        string Name,
+        string? Name,
 
-        [Required]
         [Phone]
-        [MinLength(9)]
-        [MaxLength(17)]
-        string PhoneNumber
+        [MinLength(7)]
+        [MaxLength(19)]
+        string? PhoneNumber
     );
 }

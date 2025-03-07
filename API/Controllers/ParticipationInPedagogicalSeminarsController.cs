@@ -1,4 +1,5 @@
 ﻿using API.Mappers;
+using API.Mappers.Journal;
 using Contracts.Journal.CuratorsParticipationInPedagogicalSeminars;
 using Contracts.Journal.EducationalProcessSchedule;
 using DataAccess.Interfaces.PageRepositories;

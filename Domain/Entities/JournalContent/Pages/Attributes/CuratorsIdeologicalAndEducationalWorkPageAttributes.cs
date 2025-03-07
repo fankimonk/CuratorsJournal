@@ -7,7 +7,7 @@
         public int PageId { get; set; }
         public Page? Page { get; set; }
 
-        public int Month { get; set; }
-        public int Year { get; set; }
+        public int? Month { get; set; }
+        public int? Year { get; set; }
     }
 }

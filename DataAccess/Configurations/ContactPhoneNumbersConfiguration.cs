@@ -11,7 +11,7 @@ namespace DataAccess.Configurations
             builder.HasKey(c => c.Id);
 
             builder.Property(c => c.Name).HasColumnType("nvarchar(max)");
-            builder.Property(c => c.PhoneNumber).HasColumnType("nvarchar(17)");
+            builder.Property(c => c.PhoneNumber).HasColumnType("nvarchar(19)");
 
             builder
                 .HasOne(c => c.Page)

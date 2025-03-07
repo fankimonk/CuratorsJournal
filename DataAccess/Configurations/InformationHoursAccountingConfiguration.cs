@@ -10,6 +10,9 @@ namespace DataAccess.Configurations
         {
             builder.HasKey(i => i.Id);
 
+            builder.Property(i => i.Topic).HasColumnType("nvarchar(max)");
+            builder.Property(i => i.Note).HasColumnType("nvarchar(max)");
+
             builder
                 .HasOne(i => i.Page)
                 .WithMany(p => p.InformationHoursAccounting)

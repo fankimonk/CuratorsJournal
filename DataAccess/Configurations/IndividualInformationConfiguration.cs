@@ -20,7 +20,6 @@ namespace DataAccess.Configurations
                 .HasOne(i => i.ActivityType)
                 .WithMany(a => a.IndividualInformationRecords)
                 .HasForeignKey(i => i.ActivityTypeId)
-                .IsRequired()
                 .OnDelete(DeleteBehavior.Restrict);
 
             builder

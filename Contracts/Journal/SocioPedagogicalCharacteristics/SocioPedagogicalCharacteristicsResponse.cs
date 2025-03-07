@@ -14,7 +14,7 @@
         int? nonResidentStudents, int? studentsLivingWithParents,
         int? studentsLivingInADormitory, int? studentsLivingWithRelatives,
         int? studentsLivingInPrivateApartments, string? otherInformation,
-        int pageId)
+        SocioPedagogicalCharacteristicsAttributesResponse attributes, int pageId)
     {
         public int Id { get; set; } = id;
 
@@ -37,6 +37,8 @@
         public int? StudentsLivingWithRelatives { get; set; } = studentsLivingWithRelatives;
         public int? StudentsLivingInPrivateApartments { get; set; } = studentsLivingInPrivateApartments;
         public string? OtherInformation { get; set; } = otherInformation;
+
+        public SocioPedagogicalCharacteristicsAttributesResponse Attributes { get; set; } = attributes;
 
         public int PageId { get; set; } = pageId;
     }

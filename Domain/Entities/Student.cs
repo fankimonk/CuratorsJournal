@@ -1,6 +1,5 @@
 ﻿using Domain.Entities.JournalContent;
 using Domain.Entities.JournalContent.PersonalizedAccountingCardContent;
-using System.ComponentModel.DataAnnotations;
 
 namespace Domain.Entities
 {

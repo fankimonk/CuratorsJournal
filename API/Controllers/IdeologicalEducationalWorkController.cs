@@ -1,4 +1,5 @@
 ﻿using API.Mappers;
+using API.Mappers.Journal;
 using Contracts.Journal.CuratorsIdeologicalAndEducationalWorkAccounting;
 using DataAccess.Interfaces.PageRepositories;
 using Microsoft.AspNetCore.Mvc;

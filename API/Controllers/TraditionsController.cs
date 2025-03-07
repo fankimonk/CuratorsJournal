@@ -1,4 +1,5 @@
 ﻿using API.Mappers;
+using API.Mappers.Journal;
 using Contracts.Journal.ContactPhones;
 using Contracts.Journal.Traditions;
 using DataAccess.Interfaces.PageRepositories;

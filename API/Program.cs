@@ -10,6 +10,8 @@ using Application.Authorization;
 using Application.Utils;
 using DataAccess.Repositories.PageRepositories;
 using DataAccess.Interfaces.PageRepositories;
+using DataAccess.Interfaces.PageRepositories.PersonalizedAccountingCards;
+using DataAccess.Repositories.PageRepositories.PersonalizedAccountingCards;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -51,6 +53,17 @@ builder.Services.AddScoped<IRecommendationsAndRemarksRepository, Recommendations
 builder.Services.AddScoped<ITraditionsRepository, TraditionsRepository>();
 builder.Services.AddScoped<IDynamicsOfKeyIndicatorsRepository, DynamicsOfKeyIndicatorsRepository>();
 builder.Services.AddScoped<ISocioPedagogicalCharacteristicsRepository, SocioPedagogicalCharacteristicsRepository>();
+builder.Services.AddScoped<IPersonalizedAccountingCardsRepository, PersonalizedAccountingCardsRepository>();
+builder.Services.AddScoped<IStudentsRepository, StudentsRepository>();
+builder.Services.AddScoped<IParentalInformationRepository, ParentalInformationRepository>();
+builder.Services.AddScoped<IIndividualInformationRepository, IndividualInformationRepository>();
+builder.Services.AddScoped<IStudentEncouragementsRepository, StudentEncouragementsRepository>();
+builder.Services.AddScoped<IStudentDisciplinaryResponsibilitiesRepository, StudentDisciplinaryResponsibilitiesRepository>();
+builder.Services.AddScoped<IWorkWithParentsRepository, WorkWithParentsRepository>();
+builder.Services.AddScoped<IIndividualWorkWithStudentRepository, IndividualWorkWithStudentRepository>();
+builder.Services.AddScoped<ISocioPedagogicalCharacteristicsAttributesRepository, SocioPedagogicalCharacteristicsAttributesRepository>();
+builder.Services.AddScoped<IHealthCardAttributesRepository, HealthCardAttributesRepository>();
+builder.Services.AddScoped<IInformationHoursAccountingRepository, InformationHoursAccountingRepository>();
 
 builder.Services.AddScoped<IGroupsService, GroupsService>();
 builder.Services.AddScoped<IJournalsService, JournalsService>();

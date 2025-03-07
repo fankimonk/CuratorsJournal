@@ -6,9 +6,9 @@ namespace Domain.Entities.JournalContent
     {
         public int Id { get; set; }
 
-        public string Name { get; set; } = string.Empty;
+        public string? Name { get; set; } = string.Empty;
 
-        public string PhoneNumber { get; set; } = string.Empty;
+        public string? PhoneNumber { get; set; } = string.Empty;
 
         public int PageId { get; set; }
         public Page? Page;

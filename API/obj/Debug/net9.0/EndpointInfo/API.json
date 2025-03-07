@@ -1199,6 +1199,174 @@
         }
       }
     },
+    "/api/journal/informationhoursaccounting/{pageId}": {
+      "get": {
+        "tags": [
+          "InformationHoursAccounting"
+        ],
+        "parameters": [
+          {
+            "name": "pageId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/InformationHoursAccountingPageResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InformationHoursAccountingPageResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InformationHoursAccountingPageResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/journal/informationhoursaccounting": {
+      "post": {
+        "tags": [
+          "InformationHoursAccounting"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateInformationHoursAccountingRecordRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateInformationHoursAccountingRecordRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateInformationHoursAccountingRecordRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/InformationHoursAccountingRecordResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InformationHoursAccountingRecordResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InformationHoursAccountingRecordResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/journal/informationhoursaccounting/{recordId}": {
+      "put": {
+        "tags": [
+          "InformationHoursAccounting"
+        ],
+        "parameters": [
+          {
+            "name": "recordId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateInformationHoursAccountingRecordRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateInformationHoursAccountingRecordRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateInformationHoursAccountingRecordRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/InformationHoursAccountingRecordResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InformationHoursAccountingRecordResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InformationHoursAccountingRecordResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "InformationHoursAccounting"
+        ],
+        "parameters": [
+          {
+            "name": "recordId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/journal": {
       "get": {
         "tags": [
@@ -1653,6 +1821,105 @@
         }
       }
     },
+    "/api/journal/personalizedaccountingcard/{pageId}": {
+      "get": {
+        "tags": [
+          "PersonalizedAccountingCards"
+        ],
+        "parameters": [
+          {
+            "name": "pageId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/PersonalizedAccountingCardResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PersonalizedAccountingCardResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PersonalizedAccountingCardResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/journal/personalizedaccountingcard/{id}": {
+      "put": {
+        "tags": [
+          "PersonalizedAccountingCards"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdatePersonalizedAccountingCardRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdatePersonalizedAccountingCardRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdatePersonalizedAccountingCardRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/PersonalizedAccountingCardResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PersonalizedAccountingCardResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PersonalizedAccountingCardResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/journal/psychologicalpedagogicalcharacteristics/{pageId}": {
       "get": {
         "tags": [
@@ -2012,6 +2279,54 @@
               "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/SocioPedagogicalCharacteristicsResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/journal/sociopedagogicalcharacteristics/updateattributes/{attributesId}": {
+      "put": {
+        "tags": [
+          "SocioPedagogicalCharacteristics"
+        ],
+        "parameters": [
+          {
+            "name": "attributesId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "AcademicYearId",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SocioPedagogicalCharacteristicsAttributesResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SocioPedagogicalCharacteristicsAttributesResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SocioPedagogicalCharacteristicsAttributesResponse"
                 }
               }
             }
@@ -2538,6 +2853,24 @@
   },
   "components": {
     "schemas": {
+      "AcademicYearResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "startYear": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "endYear": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
       "AppointCuratorRequest": {
         "type": "object",
         "properties": {
@@ -2589,21 +2922,20 @@
       },
       "CreateContactPhoneRequest": {
         "required": [
-          "name",
-          "pageId",
-          "phoneNumber"
+          "pageId"
         ],
         "type": "object",
         "properties": {
           "name": {
-            "minLength": 1,
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "phoneNumber": {
-            "maxLength": 17,
-            "minLength": 9,
+            "maxLength": 19,
+            "minLength": 7,
             "type": "string",
-            "format": "tel"
+            "format": "tel",
+            "nullable": true
           },
           "pageId": {
             "type": "integer",
@@ -2617,23 +2949,28 @@
         "properties": {
           "semesterNumber": {
             "type": "integer",
-            "format": "int32"
+            "format": "int32",
+            "nullable": true
           },
           "startDate": {
             "type": "string",
-            "format": "date"
+            "format": "date",
+            "nullable": true
           },
           "endDate": {
             "type": "string",
-            "format": "date"
+            "format": "date",
+            "nullable": true
           },
           "sessionStartDate": {
             "type": "string",
-            "format": "date"
+            "format": "date",
+            "nullable": true
           },
           "sessionEndDate": {
             "type": "string",
-            "format": "date"
+            "format": "date",
+            "nullable": true
           },
           "practiceStartDate": {
             "type": "string",
@@ -2647,11 +2984,13 @@
           },
           "vacationStartDate": {
             "type": "string",
-            "format": "date"
+            "format": "date",
+            "nullable": true
           },
           "vacationEndDate": {
             "type": "string",
-            "format": "date"
+            "format": "date",
+            "nullable": true
           },
           "pageId": {
             "type": "integer",
@@ -2734,6 +3073,29 @@
             "format": "date"
           },
           "workContent": {
+            "type": "string",
+            "nullable": true
+          },
+          "pageId": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "CreateInformationHoursAccountingRecordRequest": {
+        "type": "object",
+        "properties": {
+          "date": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          },
+          "topic": {
+            "type": "string",
+            "nullable": true
+          },
+          "note": {
             "type": "string",
             "nullable": true
           },
@@ -2993,23 +3355,28 @@
           },
           "semesterNumber": {
             "type": "integer",
-            "format": "int32"
+            "format": "int32",
+            "nullable": true
           },
           "startDate": {
             "type": "string",
-            "format": "date"
+            "format": "date",
+            "nullable": true
           },
           "endDate": {
             "type": "string",
-            "format": "date"
+            "format": "date",
+            "nullable": true
           },
           "sessionStartDate": {
             "type": "string",
-            "format": "date"
+            "format": "date",
+            "nullable": true
           },
           "sessionEndDate": {
             "type": "string",
-            "format": "date"
+            "format": "date",
+            "nullable": true
           },
           "practiceStartDate": {
             "type": "string",
@@ -3023,11 +3390,13 @@
           },
           "vacationStartDate": {
             "type": "string",
-            "format": "date"
+            "format": "date",
+            "nullable": true
           },
           "vacationEndDate": {
             "type": "string",
-            "format": "date"
+            "format": "date",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -3233,6 +3602,46 @@
         },
         "additionalProperties": false
       },
+      "InformationHoursAccountingPageResponse": {
+        "type": "object",
+        "properties": {
+          "pageId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "informationHoursAccounting": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/InformationHoursAccountingRecordResponse"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "InformationHoursAccountingRecordResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "date": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          },
+          "topic": {
+            "type": "string",
+            "nullable": true
+          },
+          "note": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "JournalContentsResponse": {
         "type": "object",
         "properties": {
@@ -3430,6 +3839,46 @@
         },
         "additionalProperties": false
       },
+      "PersonalizedAccountingCardResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "birthDate": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          },
+          "passportData": {
+            "type": "string",
+            "nullable": true
+          },
+          "citizenship": {
+            "type": "string",
+            "nullable": true
+          },
+          "graduatedEducationalInstitution": {
+            "type": "string",
+            "nullable": true
+          },
+          "residentialAddress": {
+            "type": "string",
+            "nullable": true
+          },
+          "studentId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "pageId": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
       "PsychologicalAndPedagogicalCharacteristicsResponse": {
         "type": "object",
         "properties": {
@@ -3515,6 +3964,19 @@
           "password": {
             "type": "string",
             "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "SocioPedagogicalCharacteristicsAttributesResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "academicYear": {
+            "$ref": "#/components/schemas/AcademicYearResponse"
           }
         },
         "additionalProperties": false
@@ -3619,6 +4081,9 @@
           "otherInformation": {
             "type": "string",
             "nullable": true
+          },
+          "attributes": {
+            "$ref": "#/components/schemas/SocioPedagogicalCharacteristicsAttributesResponse"
           },
           "pageId": {
             "type": "integer",
@@ -3772,23 +4237,28 @@
         "properties": {
           "semesterNumber": {
             "type": "integer",
-            "format": "int32"
+            "format": "int32",
+            "nullable": true
           },
           "startDate": {
             "type": "string",
-            "format": "date"
+            "format": "date",
+            "nullable": true
           },
           "endDate": {
             "type": "string",
-            "format": "date"
+            "format": "date",
+            "nullable": true
           },
           "sessionStartDate": {
             "type": "string",
-            "format": "date"
+            "format": "date",
+            "nullable": true
           },
           "sessionEndDate": {
             "type": "string",
-            "format": "date"
+            "format": "date",
+            "nullable": true
           },
           "practiceStartDate": {
             "type": "string",
@@ -3802,11 +4272,13 @@
           },
           "vacationStartDate": {
             "type": "string",
-            "format": "date"
+            "format": "date",
+            "nullable": true
           },
           "vacationEndDate": {
             "type": "string",
-            "format": "date"
+            "format": "date",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -3861,6 +4333,25 @@
         },
         "additionalProperties": false
       },
+      "UpdateInformationHoursAccountingRecordRequest": {
+        "type": "object",
+        "properties": {
+          "date": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          },
+          "topic": {
+            "type": "string",
+            "nullable": true
+          },
+          "note": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "UpdateKeyIndicatorValueRequest": {
         "type": "object",
         "properties": {
@@ -3906,6 +4397,38 @@
           },
           "note": {
             "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "UpdatePersonalizedAccountingCardRequest": {
+        "type": "object",
+        "properties": {
+          "birthDate": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          },
+          "passportData": {
+            "type": "string",
+            "nullable": true
+          },
+          "citizenship": {
+            "type": "string",
+            "nullable": true
+          },
+          "graduatedEducationalInstitution": {
+            "type": "string",
+            "nullable": true
+          },
+          "residentialAddress": {
+            "type": "string",
+            "nullable": true
+          },
+          "studentId": {
+            "type": "integer",
+            "format": "int32",
             "nullable": true
           }
         },

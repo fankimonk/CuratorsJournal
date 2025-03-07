@@ -18,13 +18,12 @@ namespace DataAccess.Configurations
             builder
                 .HasOne(pac => pac.Student)
                 .WithOne(s => s.PersonalizedAccountingCard)
-                .HasForeignKey<PersonalizedAccountingCard>(pac => pac.StudentId)
-                .IsRequired();
+                .HasForeignKey<PersonalizedAccountingCard>(pac => pac.StudentId);
 
             builder
                 .HasOne(pac => pac.Page)
-                .WithMany(p => p.PersonalizedAccountingCards)
-                .HasForeignKey(pac => pac.PageId)
+                .WithOne(p => p.PersonalizedAccountingCard)
+                .HasForeignKey<PersonalizedAccountingCard>(pac => pac.PageId)
                 .IsRequired();
         }
     }

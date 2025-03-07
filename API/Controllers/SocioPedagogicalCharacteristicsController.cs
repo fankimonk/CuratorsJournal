@@ -1,5 +1,7 @@
 ﻿using API.Mappers;
+using API.Mappers.Journal;
 using Contracts.Journal.SocioPedagogicalCharacteristics;
+using DataAccess.Interfaces;
 using DataAccess.Interfaces.PageRepositories;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,9 +9,11 @@ namespace API.Controllers
 {
     [Route("api/journal/sociopedagogicalcharacteristics")]
     public class SocioPedagogicalCharacteristicsController(
-        ISocioPedagogicalCharacteristicsRepository entityRepository) : ControllerBase
+        ISocioPedagogicalCharacteristicsRepository entityRepository,
+        ISocioPedagogicalCharacteristicsAttributesRepository attributesRepository) : ControllerBase
     {
         private readonly ISocioPedagogicalCharacteristicsRepository _entityRepository = entityRepository;
+        private readonly ISocioPedagogicalCharacteristicsAttributesRepository _attributesRepository = attributesRepository;
 
         [HttpGet("{pageId}")]
         public async Task<ActionResult<SocioPedagogicalCharacteristicsResponse>> GetByPage([FromRoute] int pageId)
@@ -32,6 +36,17 @@ namespace API.Controllers
             if (updatedCharacteristics == null) return BadRequest();
 
             var response = updatedCharacteristics.ToResponse();
+            return Ok(response);
+        }
+
+        [HttpPut("updateattributes/{attributesId}")]
+        public async Task<ActionResult<SocioPedagogicalCharacteristicsAttributesResponse>> UpdateAttributes([FromRoute] int attributesId,
+            UpdatePageAttributesRequest request)
+        {
+            var attributes = await _attributesRepository.UpdateAcademicYear(attributesId, request.AcademicYearId);
+            if (attributes == null) return BadRequest();
+
+            var response = attributes.ToResponse();
             return Ok(response);
         }
     }

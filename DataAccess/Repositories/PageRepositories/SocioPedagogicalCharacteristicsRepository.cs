@@ -33,8 +33,9 @@ namespace DataAccess.Repositories.PageRepositories
         {
             var pageExists = await PageExists(id);
             if (!pageExists) return null;
-            return await _dbContext.SocioPedagogicalCharacteristics
-                .AsNoTracking().FirstOrDefaultAsync(c => c.PageId == id);
+            return await _dbContext.SocioPedagogicalCharacteristics.AsNoTracking()
+                .Include(s => s.Page).ThenInclude(p => p!.SocioPedagogicalCharacteristicsPageAttributes).ThenInclude(s => s!.AcademicYear)
+                .FirstOrDefaultAsync(c => c.PageId == id);
         }
 
         public async Task<SocioPedagogicalCharacteristics?> UpdateAsync(int id, SocioPedagogicalCharacteristics characteristics)

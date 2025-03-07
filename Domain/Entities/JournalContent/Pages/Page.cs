@@ -27,9 +27,9 @@ namespace Domain.Entities.JournalContent.Pages
         public List<RecomendationsAndRemarksRecord> RecomendationsAndRemarks { get; set; } = [];
         public List<StudentsHealthCardRecord> StudentsHealthCards { get; set; } = [];
         public List<Tradition> Traditions { get; set; } = [];
-        public List<PersonalizedAccountingCard> PersonalizedAccountingCards { get; set; } = [];
         public List<StudentListRecord> StudentList { get; set; } = [];
 
+        public PersonalizedAccountingCard? PersonalizedAccountingCard { get; set; }
         public PsychologicalAndPedagogicalCharacteristics? PsychologicalAndPedagogicalCharacteristics { get; set; }
         public SocioPedagogicalCharacteristics? SocioPedagogicalCharacteristics { get; set; }
 

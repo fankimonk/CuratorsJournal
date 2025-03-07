@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Domain.Entities.JournalContent.PersonalizedAccountingCardContent
 {
@@ -8,12 +7,12 @@ namespace Domain.Entities.JournalContent.PersonalizedAccountingCardContent
     {
         public int Id { get; set; }
 
-        public string FirstName { get; set; } = string.Empty;
-        public string MiddleName { get; set; } = string.Empty;
-        public string LastName { get; set; } = string.Empty;
+        public string? FirstName { get; set; } = string.Empty;
+        public string? MiddleName { get; set; } = string.Empty;
+        public string? LastName { get; set; } = string.Empty;
 
-        public string PlaceOfResidence { get; set; } = string.Empty;
-        public string PlaceOfWork { get; set; } = string.Empty;
+        public string? PlaceOfResidence { get; set; } = string.Empty;
+        public string? PlaceOfWork { get; set; } = string.Empty;
         public string? Position { get; set; } = string.Empty;
 
         public string? HomePhoneNumber { get; set; } = string.Empty;
