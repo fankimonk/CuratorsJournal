@@ -41,6 +41,11 @@ else
                     </td>
                 </tr>
             }
+            <tr>
+                <td>
+                    <button @onclick="Add">Добавить строку</button>
+                </td>
+            </tr>
         </tbody>
     </table>
 }
@@ -69,8 +74,7 @@ else
 
         if (response.IsSuccessStatusCode)
         {
-            // var updatedRecord = await response.Content.ReadFromJsonAsync<IdeologicalEducationalWorkRecordResponse>();
-            // record = updatedRecord!;
+            //TODO
         }
     }
 
@@ -81,5 +85,19 @@ else
         var response = await HttpClient.DeleteAsync("api/journal/ideologicalandeducationalwork/" + record.Id);
 
         if (response.IsSuccessStatusCode) _pageData!.IdeologicalEducationalWork.Remove(record);
+    }
+
+    private async Task Add()
+    {
+        Console.WriteLine("Add ideological and educational work");
+
+        var request = new CreateIdeologicalEducationalWorkRecordRequest(null, null, null, PageId);
+        var response = await HttpClient.PostAsJsonAsync<CreateIdeologicalEducationalWorkRecordRequest>("api/journal/ideologicalandeducationalwork", request);
+
+        if (response.IsSuccessStatusCode)
+        {
+            var addedRecord = await response.Content.ReadFromJsonAsync<IdeologicalEducationalWorkRecordResponse>();
+            _pageData!.IdeologicalEducationalWork.Add(addedRecord!);
+        }
     }
 }

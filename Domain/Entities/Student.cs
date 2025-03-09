@@ -11,7 +11,7 @@ namespace Domain.Entities
         public string MiddleName { get; set; } = string.Empty;
         public string LastName { get; set; } = string.Empty;
 
-        public string PhoneNumber { get; set; } = string.Empty;
+        public string? PhoneNumber { get; set; } = string.Empty;
 
         public int GroupId { get; set; }
         public Group? Group { get; set; }

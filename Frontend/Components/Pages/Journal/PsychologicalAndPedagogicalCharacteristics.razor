@@ -4,6 +4,7 @@
 @using Contracts.Journal.PsychologicalAndPedagogicalCharacteristics
 @using Contracts.Mappers
 @using Contracts.Mappers.Journal
+@using Contracts.Workers
 
 @inject HttpClient HttpClient
 
@@ -14,14 +15,26 @@
     ХАРАКТЕРИСТИКА УЧЕБНОЙ ГРУППЫ
 </h3>
 
-@if (_pageData == null)
+@if (_pageData == null || _workers == null)
 {
     <p><em>Загрузка...</em></p>
 }
 else
 {
     <textarea cols="80" rows="15" @bind="_pageData.Content" @bind:after="Update" />
-    <p>Ф. И. О., должность специалиста</p>
+    <p>
+        Ф. И. О., должность специалиста
+        <select @bind="_pageData.WorkerId" @bind:after="Update">
+            <option value="">-- Выберите специалиста --</option>
+            @foreach (var worker in _workers)
+            {
+                <option @key="worker.Id" value="@worker.Id">
+                    @worker.LastName @worker.FirstName @worker.MiddleName, 
+                    @worker.Position.Name
+                </option>
+            }
+        </select>
+    </p>
     <p>
         Дата <input type="date" @bind="_pageData.Date" @bind:after="Update" />
     </p>
@@ -36,10 +49,14 @@ else
 
     private PsychologicalAndPedagogicalCharacteristicsResponse? _pageData;
 
+    private List<WorkerResponse>? _workers;
+
     protected override async Task OnInitializedAsync()
     {
         _pageData = await HttpClient.GetFromJsonAsync<PsychologicalAndPedagogicalCharacteristicsResponse>
             ("api/journal/psychologicalpedagogicalcharacteristics/" + PageId.ToString());
+
+        _workers = await HttpClient.GetFromJsonAsync<List<WorkerResponse>>("api/worker/");
     }
 
     private async Task Update()

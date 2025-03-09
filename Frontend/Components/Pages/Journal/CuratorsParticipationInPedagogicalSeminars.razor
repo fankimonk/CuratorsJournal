@@ -54,6 +54,11 @@ else
                     </td>
                 </tr>
             }
+            <tr>
+                <td>
+                    <button @onclick="Add">Добавить строку</button>
+                </td>
+            </tr>
         </tbody>
     </table>
 }
@@ -70,6 +75,21 @@ else
     protected override async Task OnInitializedAsync()
     {
         _pageData = await HttpClient.GetFromJsonAsync<ParticipationInPedagogicalSeminarsPageResponse>("api/journal/participationinpedagogicalseminars/" + PageId.ToString());
+    }
+
+    private async Task Add()
+    {
+        Console.WriteLine("Add participation in pedagogical seminars");
+
+        var request = new CreateParticipationInPedagogicalSeminarsRecordRequest(null, null, null, null, null, PageId);
+        var response = await HttpClient.PostAsJsonAsync<CreateParticipationInPedagogicalSeminarsRecordRequest>
+            ("api/journal/participationinpedagogicalseminars", request);
+
+        if (response.IsSuccessStatusCode)
+        {
+            var addedRecord = await response.Content.ReadFromJsonAsync<ParticipationInPedagogicalSeminarsRecordResponse>();
+            _pageData!.ParticipationInPedagogicalSeminars.Add(addedRecord!);
+        }
     }
 
     private async Task Update(ParticipationInPedagogicalSeminarsRecordResponse record)

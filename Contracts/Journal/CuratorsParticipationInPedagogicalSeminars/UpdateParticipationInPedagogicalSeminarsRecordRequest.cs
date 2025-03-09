@@ -1,18 +1,12 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace Contracts.Journal.CuratorsParticipationInPedagogicalSeminars
+﻿namespace Contracts.Journal.CuratorsParticipationInPedagogicalSeminars
 {
     public record UpdateParticipationInPedagogicalSeminarsRecordRequest
     (
-        [Required]
-        DateOnly Date,
+        DateOnly? Date,
 
-        [Required]
-        string Topic,
-        [Required]
-        string ParticipationForm,
-        [Required]
-        string SeminarLocation,
+        string? Topic,
+        string? ParticipationForm,
+        string? SeminarLocation,
 
         string? Note
     );

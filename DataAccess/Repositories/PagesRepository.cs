@@ -49,6 +49,12 @@ namespace DataAccess.Repositories
                     page.CuratorsIdeologicalAndEducationalWorkPageAttributes = new CuratorsIdeologicalAndEducationalWorkPageAttributes();
                     break;
 
+                case (int)PageTypes.GroupActivesPage:
+                    page.GroupActives.Add(new GroupActive { PositionName = "Староста" });
+                    page.GroupActives.Add(new GroupActive { PositionName = "Заместитель старосты" });
+                    page.GroupActives.Add(new GroupActive { PositionName = "Профорг" });
+                    break;
+
                 default:
                     break;
             }

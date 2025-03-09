@@ -1,13 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace Contracts.Journal.GroupActives
+﻿namespace Contracts.Journal.GroupActives
 {
     public record UpdateGroupActiveRequest
     (
-        [Required]
-        string PositionName,
+        string? PositionName,
 
-        [Required]
-        int StudentId
+        int? StudentId
     );
 }

@@ -5,5 +5,6 @@ namespace DataAccess.Interfaces
     public interface IHealthCardAttributesRepository
     {
         Task<HealthCardPageAttributes?> UpdateAcademicYear(int id, int? academicYearId);
+        Task<HealthCardPageAttributes?> GetByPageId(int pageId);
     }
 }

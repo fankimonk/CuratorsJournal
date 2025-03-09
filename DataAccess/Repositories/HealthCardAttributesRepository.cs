@@ -7,6 +7,11 @@ namespace DataAccess.Repositories
     public class HealthCardAttributesRepository(CuratorsJournalDBContext dbContext) : RepositoryBase(dbContext),
         IHealthCardAttributesRepository
     {
+        public async Task<HealthCardPageAttributes?> GetByPageId(int pageId)
+        {
+            return await _dbContext.HealthCardPageAttributes.AsNoTracking().FirstOrDefaultAsync(h => h.PageId == pageId);
+        }
+
         public async Task<HealthCardPageAttributes?> UpdateAcademicYear(int id, int? academicYearId)
         {
             if (academicYearId != null && !await AcademicYearExists((int)academicYearId)) return null;
@@ -18,8 +23,7 @@ namespace DataAccess.Repositories
             attributes.AcademicYearId = academicYearId;
             await _dbContext.SaveChangesAsync();
 
-            return await _dbContext.HealthCardPageAttributes
-                .Include(s => s.AcademicYear).AsNoTracking()
+            return await _dbContext.HealthCardPageAttributes.AsNoTracking()
                 .FirstOrDefaultAsync(s => s.Id == id);
         }
 

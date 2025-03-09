@@ -1,0 +1,106 @@
+﻿@page "/journal/{journalId:int}/informationalhours/{pageId:int}"
+@rendermode InteractiveServer
+
+@using Contracts.Journal.InformationHoursAccounting
+@using Contracts.Mappers
+@using Contracts.Mappers.Journal
+
+@inject HttpClient HttpClient
+
+<PageTitle>Учет информационных часов</PageTitle>
+
+<h3>УЧЕТ ИНФОРМАЦИОННЫХ ЧАСОВ</h3>
+
+@if (_pageData == null)
+{
+    <p><em>Загрузка...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Дата проведения</th>
+                <th>Тема</th>
+                <th>Примечание</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var record in _pageData.InformationHoursAccounting)
+            {
+                <tr>
+                    <td>
+                        <input type="date" @bind="record.Date" @bind:after="async () => await Update(record)" />
+                    </td>
+                    <td>
+                        <input @bind="record.Topic" @bind:after="async () => await Update(record)" />
+                    </td>
+                    <td>
+                        <input @bind="record.Note" @bind:after="async () => await Update(record)" />
+                    </td>
+                    <td>
+                        <button @onclick="async () => await Delete(record)">Удалить</button>
+                    </td>
+                </tr>
+            }
+            <tr>
+                <td>
+                    <button @onclick="Add">Добавить строку</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+}
+
+@code {
+    [Parameter]
+    public int PageId { get; set; }
+
+    [Parameter]
+    public int JournalId { get; set; }
+
+    private InformationHoursAccountingPageResponse? _pageData;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _pageData = await HttpClient.GetFromJsonAsync<InformationHoursAccountingPageResponse>("api/journal/informationhoursaccounting/" + PageId.ToString());
+    }
+
+    private async Task Update(InformationHoursAccountingRecordResponse record)
+    {
+        Console.WriteLine("Update information hours accounting");
+
+        var request = record.ToRequest();
+        var response = await HttpClient.PutAsJsonAsync<UpdateInformationHoursAccountingRecordRequest>
+            ("api/journal/informationhoursaccounting/" + record.Id, request);
+
+        if (response.IsSuccessStatusCode)
+        {
+            // var updatedRecord = await response.Content.ReadFromJsonAsync<IdeologicalEducationalWorkRecordResponse>();
+            // record = updatedRecord!;
+        }
+    }
+
+    private async Task Delete(InformationHoursAccountingRecordResponse record)
+    {
+        Console.WriteLine("Delete information hours accounting");
+
+        var response = await HttpClient.DeleteAsync("api/journal/informationhoursaccounting/" + record.Id);
+
+        if (response.IsSuccessStatusCode) _pageData!.InformationHoursAccounting.Remove(record);
+    }
+
+    private async Task Add()
+    {
+        Console.WriteLine("Add ideological and educational work");
+
+        var request = new CreateInformationHoursAccountingRecordRequest(null, null, null, PageId);
+        var response = await HttpClient.PostAsJsonAsync<CreateInformationHoursAccountingRecordRequest>("api/journal/informationhoursaccounting", request);
+
+        if (response.IsSuccessStatusCode)
+        {
+            var addedRecord = await response.Content.ReadFromJsonAsync<InformationHoursAccountingRecordResponse>();
+            _pageData!.InformationHoursAccounting.Add(addedRecord!);
+        }
+    }
+}

@@ -4,15 +4,13 @@ namespace Contracts.Journal.StudentHealthCards
 {
     public record CreateHealthCardRecordRequest
     (
-        [Required]
-        int Number,
-        [Required]
-        int MissedClasses,
+        int? Number,
+        int? MissedClasses,
 
         string? Note,
 
-        [Required]
-        int StudentId,
+        int? StudentId,
+
         [Required]
         int PageId
     );

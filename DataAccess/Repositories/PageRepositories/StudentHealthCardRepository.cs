@@ -11,7 +11,7 @@ namespace DataAccess.Repositories.PageRepositories
         {
             if (record == null) return null;
             if (!await PageExists(record.PageId)) return null;
-            if (!await StudentExists(record.StudentId)) return null;
+            if (record.StudentId != null && !await StudentExists((int)record.StudentId)) return null;
 
             var createdRecord = await _dbContext.StudentsHealthCards.AddAsync(record);
 
@@ -32,12 +32,15 @@ namespace DataAccess.Repositories.PageRepositories
         public async Task<List<StudentsHealthCardRecord>?> GetByPageIdAsync(int pageId)
         {
             if (!await PageExists(pageId)) return null;
-            return await _dbContext.StudentsHealthCards.AsNoTracking().Where(c => c.PageId == pageId).ToListAsync();
+            return await _dbContext.StudentsHealthCards.AsNoTracking()
+                .Include(s => s.Page).ThenInclude(s => s.HealthCardPageAttributes)
+                .Where(c => c.PageId == pageId).ToListAsync();
         }
 
         public async Task<StudentsHealthCardRecord?> UpdateAsync(int id, StudentsHealthCardRecord record)
         {
             if (record == null) return null;
+            if (record.StudentId != null && !await StudentExists((int)record.StudentId)) return null;
 
             var recordToUpdate = await _dbContext.StudentsHealthCards.FirstOrDefaultAsync(p => p.Id == id);
             if (recordToUpdate == null) return null;
@@ -45,6 +48,7 @@ namespace DataAccess.Repositories.PageRepositories
             recordToUpdate.Number = record.Number;
             recordToUpdate.MissedClasses = record.MissedClasses;
             recordToUpdate.Note = record.Note;
+            recordToUpdate.StudentId = record.StudentId;
 
             await _dbContext.SaveChangesAsync();
             return recordToUpdate;

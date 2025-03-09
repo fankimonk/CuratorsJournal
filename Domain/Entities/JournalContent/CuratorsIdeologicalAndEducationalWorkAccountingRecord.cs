@@ -6,10 +6,10 @@ namespace Domain.Entities.JournalContent
     {
         public int Id { get; set; }
 
-        public DateOnly StartDate { get; set; }
-        public DateOnly EndDate { get; set; }
+        public DateOnly? StartDate { get; set; }
+        public DateOnly? EndDate { get; set; }
 
-        public string WorkContent { get; set; } = string.Empty;
+        public string? WorkContent { get; set; } = string.Empty;
 
         public int PageId { get; set; }
         public Page? Page;

@@ -4,15 +4,11 @@ namespace Contracts.Journal.CuratorsParticipationInPedagogicalSeminars
 {
     public record CreateParticipationInPedagogicalSeminarsRecordRequest
     (
-        [Required]
-        DateOnly Date,
+        DateOnly? Date,
 
-        [Required]
-        string Topic,
-        [Required]
-        string ParticipationForm,
-        [Required]
-        string SeminarLocation,
+        string? Topic,
+        string? ParticipationForm,
+        string? SeminarLocation,
 
         string? Note,
 

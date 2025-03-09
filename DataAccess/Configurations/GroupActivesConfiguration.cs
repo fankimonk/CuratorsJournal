@@ -16,7 +16,7 @@ namespace DataAccess.Configurations
                 .HasOne(ga => ga.Student)
                 .WithOne(s => s.GroupActive)
                 .HasForeignKey<GroupActive>(ga => ga.StudentId)
-                .IsRequired();
+                .OnDelete(DeleteBehavior.Restrict);
 
             builder
                 .HasOne(ga => ga.Page)

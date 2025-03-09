@@ -1,7 +1,6 @@
 ﻿using Contracts.Group;
 using Application.Interfaces;
 using DataAccess.Interfaces;
-using Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 using API.Mappers;
 

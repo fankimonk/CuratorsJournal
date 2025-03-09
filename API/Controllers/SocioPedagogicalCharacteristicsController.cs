@@ -41,7 +41,7 @@ namespace API.Controllers
 
         [HttpPut("updateattributes/{attributesId}")]
         public async Task<ActionResult<SocioPedagogicalCharacteristicsAttributesResponse>> UpdateAttributes([FromRoute] int attributesId,
-            UpdatePageAttributesRequest request)
+            [FromBody] UpdateSocioPedagogicalCharacteristicsPageAttributesRequest request)
         {
             var attributes = await _attributesRepository.UpdateAcademicYear(attributesId, request.AcademicYearId);
             if (attributes == null) return BadRequest();

@@ -5,6 +5,93 @@
     "version": "1.0"
   },
   "paths": {
+    "/api/academicyear": {
+      "get": {
+        "tags": [
+          "AcademicYears"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AcademicYearResponse"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AcademicYearResponse"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AcademicYearResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/academicyear/getsinceyear/{yearSince}": {
+      "get": {
+        "tags": [
+          "AcademicYears"
+        ],
+        "parameters": [
+          {
+            "name": "yearSince",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AcademicYearResponse"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AcademicYearResponse"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AcademicYearResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/auth/register": {
       "post": {
         "tags": [
@@ -2300,16 +2387,27 @@
               "type": "integer",
               "format": "int32"
             }
-          },
-          {
-            "name": "AcademicYearId",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
           }
         ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateSocioPedagogicalCharacteristicsPageAttributesRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateSocioPedagogicalCharacteristicsPageAttributesRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateSocioPedagogicalCharacteristicsPageAttributesRequest"
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "OK",
@@ -2502,6 +2600,65 @@
         }
       }
     },
+    "/api/journal/healthcard/updateattributes/{attributesId}": {
+      "put": {
+        "tags": [
+          "StudentHealthCard"
+        ],
+        "parameters": [
+          {
+            "name": "attributesId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateHealthCardPageAttributesRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateHealthCardPageAttributesRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateHealthCardPageAttributesRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthCardPageAttributesResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthCardPageAttributesResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthCardPageAttributesResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/journal/studentlist/{pageId}": {
       "get": {
         "tags": [
@@ -2666,6 +2823,142 @@
         "responses": {
           "200": {
             "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/student": {
+      "get": {
+        "tags": [
+          "Students"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/StudentResponse"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/StudentResponse"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/StudentResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/student/getbygroup/{groupId}": {
+      "get": {
+        "tags": [
+          "Students"
+        ],
+        "parameters": [
+          {
+            "name": "groupId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/StudentResponse"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/StudentResponse"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/StudentResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/student/getbyjournal/{journalId}": {
+      "get": {
+        "tags": [
+          "Students"
+        ],
+        "parameters": [
+          {
+            "name": "journalId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/StudentResponse"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/StudentResponse"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/StudentResponse"
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -2849,10 +3142,120 @@
           }
         }
       }
+    },
+    "/api/worker": {
+      "get": {
+        "tags": [
+          "Workers"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WorkerResponse"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WorkerResponse"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WorkerResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/worker/{workerId}": {
+      "get": {
+        "tags": [
+          "Workers"
+        ],
+        "parameters": [
+          {
+            "name": "workerId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/Worker"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Worker"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Worker"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
     "schemas": {
+      "AcademicYear": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "startYear": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "endYear": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "socioPedagogicalCharacteristicsPageAttributes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SocioPedagogicalCharacteristicsPageAttributes"
+            },
+            "nullable": true
+          },
+          "healthCardPageAttributes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/HealthCardPageAttributes"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "AcademicYearResponse": {
         "type": "object",
         "properties": {
@@ -2871,6 +3274,27 @@
         },
         "additionalProperties": false
       },
+      "ActivityType": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "individualInformationRecords": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/IndividualInformationRecord"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "AppointCuratorRequest": {
         "type": "object",
         "properties": {
@@ -2879,6 +3303,49 @@
             "format": "int32"
           },
           "curatorId": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ChronicDisease": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "students": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Student"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ContactPhoneNumber": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "phoneNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "pageId": {
             "type": "integer",
             "format": "int32"
           }
@@ -3008,7 +3475,8 @@
           },
           "studentId": {
             "type": "integer",
-            "format": "int32"
+            "format": "int32",
+            "nullable": true
           },
           "pageId": {
             "type": "integer",
@@ -3040,11 +3508,13 @@
         "properties": {
           "number": {
             "type": "integer",
-            "format": "int32"
+            "format": "int32",
+            "nullable": true
           },
           "missedClasses": {
             "type": "integer",
-            "format": "int32"
+            "format": "int32",
+            "nullable": true
           },
           "note": {
             "type": "string",
@@ -3052,7 +3522,8 @@
           },
           "studentId": {
             "type": "integer",
-            "format": "int32"
+            "format": "int32",
+            "nullable": true
           },
           "pageId": {
             "type": "integer",
@@ -3066,11 +3537,13 @@
         "properties": {
           "startDate": {
             "type": "string",
-            "format": "date"
+            "format": "date",
+            "nullable": true
           },
           "endDate": {
             "type": "string",
-            "format": "date"
+            "format": "date",
+            "nullable": true
           },
           "workContent": {
             "type": "string",
@@ -3147,7 +3620,8 @@
         "properties": {
           "date": {
             "type": "string",
-            "format": "date"
+            "format": "date",
+            "nullable": true
           },
           "topic": {
             "type": "string",
@@ -3227,21 +3701,17 @@
       },
       "CreateTraditionRequest": {
         "required": [
-          "day",
-          "month",
-          "name",
-          "pageId",
-          "participationForm"
+          "pageId"
         ],
         "type": "object",
         "properties": {
           "name": {
-            "minLength": 1,
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "participationForm": {
-            "minLength": 1,
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "note": {
             "type": "string",
@@ -3251,17 +3721,50 @@
             "maximum": 31,
             "minimum": 1,
             "type": "integer",
-            "format": "int32"
+            "format": "int32",
+            "nullable": true
           },
           "month": {
             "maximum": 12,
             "minimum": 1,
             "type": "integer",
-            "format": "int32"
+            "format": "int32",
+            "nullable": true
           },
           "pageId": {
             "type": "integer",
             "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Curator": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "teacherId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "teacher": {
+            "$ref": "#/components/schemas/Teacher"
+          },
+          "groups": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Group"
+            },
+            "nullable": true
+          },
+          "curatorsAppointmentHistory": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CuratorsAppointmentHistoryRecord"
+            },
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -3288,6 +3791,248 @@
         },
         "additionalProperties": false
       },
+      "CuratorsAppointmentHistoryRecord": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "appointmentDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "curatorId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "curator": {
+            "$ref": "#/components/schemas/Curator"
+          },
+          "groupId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "group": {
+            "$ref": "#/components/schemas/Group"
+          }
+        },
+        "additionalProperties": false
+      },
+      "CuratorsIdeologicalAndEducationalWorkAccountingRecord": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "startDate": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          },
+          "endDate": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          },
+          "workContent": {
+            "type": "string",
+            "nullable": true
+          },
+          "pageId": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "CuratorsIdeologicalAndEducationalWorkPageAttributes": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "page": {
+            "$ref": "#/components/schemas/Page"
+          },
+          "month": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "year": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "CuratorsParticipationInPedagogicalSeminarsRecord": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "date": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          },
+          "topic": {
+            "type": "string",
+            "nullable": true
+          },
+          "participationForm": {
+            "type": "string",
+            "nullable": true
+          },
+          "seminarLocation": {
+            "type": "string",
+            "nullable": true
+          },
+          "note": {
+            "type": "string",
+            "nullable": true
+          },
+          "pageId": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Dean": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "workerId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "worker": {
+            "$ref": "#/components/schemas/Worker"
+          },
+          "deanery": {
+            "$ref": "#/components/schemas/Deanery"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Deanery": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "facultyId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "faculty": {
+            "$ref": "#/components/schemas/Faculty"
+          },
+          "deanId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "dean": {
+            "$ref": "#/components/schemas/Dean"
+          },
+          "deputyDeanId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "deputyDean": {
+            "$ref": "#/components/schemas/DeputyDean"
+          },
+          "departments": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Department"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "Department": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "abbreviatedName": {
+            "type": "string",
+            "nullable": true
+          },
+          "headId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "headOfDepartment": {
+            "$ref": "#/components/schemas/HeadOfDepartment"
+          },
+          "deaneryId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "deanery": {
+            "$ref": "#/components/schemas/Deanery"
+          },
+          "teachers": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Teacher"
+            },
+            "nullable": true
+          },
+          "specialties": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Specialty"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "DeputyDean": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "workerId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "worker": {
+            "$ref": "#/components/schemas/Worker"
+          },
+          "deanery": {
+            "$ref": "#/components/schemas/Deanery"
+          }
+        },
+        "additionalProperties": false
+      },
       "DynamicsOfKeyIndicatorsPageResponse": {
         "type": "object",
         "properties": {
@@ -3299,6 +4044,38 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/DynamicsOfKeyIndicatorsRecordResponse"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "DynamicsOfKeyIndicatorsRecord": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "keyIndicatorId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "keyIndicator": {
+            "$ref": "#/components/schemas/KeyIndicator"
+          },
+          "note": {
+            "type": "string",
+            "nullable": true
+          },
+          "pageId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "keyIndicatorsByCourse": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/KeyIndicatorByCourse"
             },
             "nullable": true
           }
@@ -3342,6 +4119,65 @@
               "$ref": "#/components/schemas/EducationalProcessScheduleRecordResponse"
             },
             "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "EducationalProcessScheduleRecord": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "semesterNumber": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "startDate": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          },
+          "endDate": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          },
+          "sessionStartDate": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          },
+          "sessionEndDate": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          },
+          "practiceStartDate": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          },
+          "practiceEndDate": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          },
+          "vacationStartDate": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          },
+          "vacationEndDate": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          },
+          "pageId": {
+            "type": "integer",
+            "format": "int32"
           }
         },
         "additionalProperties": false
@@ -3401,6 +4237,128 @@
         },
         "additionalProperties": false
       },
+      "Faculty": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "abbreviatedName": {
+            "type": "string",
+            "nullable": true
+          },
+          "deanery": {
+            "$ref": "#/components/schemas/Deanery"
+          }
+        },
+        "additionalProperties": false
+      },
+      "FinalPerformanceAccountingRecord": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "number": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "studentId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "student": {
+            "$ref": "#/components/schemas/Student"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Group": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "number": {
+            "type": "string",
+            "nullable": true
+          },
+          "admissionYear": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "specialtyId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "specialty": {
+            "$ref": "#/components/schemas/Specialty"
+          },
+          "curatorId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "curator": {
+            "$ref": "#/components/schemas/Curator"
+          },
+          "students": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Student"
+            },
+            "nullable": true
+          },
+          "curatorsAppointmentHistory": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CuratorsAppointmentHistoryRecord"
+            },
+            "nullable": true
+          },
+          "journal": {
+            "$ref": "#/components/schemas/Journal"
+          }
+        },
+        "additionalProperties": false
+      },
+      "GroupActive": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "positionName": {
+            "type": "string",
+            "nullable": true
+          },
+          "studentId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "student": {
+            "$ref": "#/components/schemas/Student"
+          },
+          "pageId": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
       "GroupActiveResponse": {
         "type": "object",
         "properties": {
@@ -3414,7 +4372,8 @@
           },
           "studentId": {
             "type": "integer",
-            "format": "int32"
+            "format": "int32",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -3458,6 +4417,66 @@
         },
         "additionalProperties": false
       },
+      "HeadOfDepartment": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "workerId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "worker": {
+            "$ref": "#/components/schemas/Worker"
+          },
+          "department": {
+            "$ref": "#/components/schemas/Department"
+          }
+        },
+        "additionalProperties": false
+      },
+      "HealthCardPageAttributes": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "page": {
+            "$ref": "#/components/schemas/Page"
+          },
+          "academicYearId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "academicYear": {
+            "$ref": "#/components/schemas/AcademicYear"
+          }
+        },
+        "additionalProperties": false
+      },
+      "HealthCardPageAttributesResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "academicYearId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "HealthCardPageResponse": {
         "type": "object",
         "properties": {
@@ -3471,6 +4490,9 @@
               "$ref": "#/components/schemas/HealthCardRecordResponse"
             },
             "nullable": true
+          },
+          "attributes": {
+            "$ref": "#/components/schemas/HealthCardPageAttributesResponse"
           }
         },
         "additionalProperties": false
@@ -3484,11 +4506,13 @@
           },
           "number": {
             "type": "integer",
-            "format": "int32"
+            "format": "int32",
+            "nullable": true
           },
           "missedClasses": {
             "type": "integer",
-            "format": "int32"
+            "format": "int32",
+            "nullable": true
           },
           "note": {
             "type": "string",
@@ -3496,7 +4520,8 @@
           },
           "studentId": {
             "type": "integer",
-            "format": "int32"
+            "format": "int32",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -3589,15 +4614,94 @@
           },
           "startDate": {
             "type": "string",
-            "format": "date"
+            "format": "date",
+            "nullable": true
           },
           "endDate": {
             "type": "string",
-            "format": "date"
+            "format": "date",
+            "nullable": true
           },
           "workContent": {
             "type": "string",
             "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "IndividualInformationRecord": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "activityName": {
+            "type": "string",
+            "nullable": true
+          },
+          "startDate": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          },
+          "endDate": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          },
+          "result": {
+            "type": "string",
+            "nullable": true
+          },
+          "note": {
+            "type": "string",
+            "nullable": true
+          },
+          "activityTypeId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "activityType": {
+            "$ref": "#/components/schemas/ActivityType"
+          },
+          "personalizedAccountingCardId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "personalizedAccountingCard": {
+            "$ref": "#/components/schemas/PersonalizedAccountingCard"
+          }
+        },
+        "additionalProperties": false
+      },
+      "IndividualWorkWithStudentRecord": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "date": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          },
+          "workDoneAndRecommendations": {
+            "type": "string",
+            "nullable": true
+          },
+          "result": {
+            "type": "string",
+            "nullable": true
+          },
+          "personalizedAccountingCardId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "personalizedAccountingCard": {
+            "$ref": "#/components/schemas/PersonalizedAccountingCard"
           }
         },
         "additionalProperties": false
@@ -3615,6 +4719,33 @@
               "$ref": "#/components/schemas/InformationHoursAccountingRecordResponse"
             },
             "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "InformationHoursAccountingRecord": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "date": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          },
+          "topic": {
+            "type": "string",
+            "nullable": true
+          },
+          "note": {
+            "type": "string",
+            "nullable": true
+          },
+          "pageId": {
+            "type": "integer",
+            "format": "int32"
           }
         },
         "additionalProperties": false
@@ -3637,6 +4768,30 @@
           },
           "note": {
             "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "Journal": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "groupId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "group": {
+            "$ref": "#/components/schemas/Group"
+          },
+          "pages": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Page"
+            },
             "nullable": true
           }
         },
@@ -3672,6 +4827,52 @@
           },
           "curator": {
             "$ref": "#/components/schemas/CuratorResponse"
+          }
+        },
+        "additionalProperties": false
+      },
+      "KeyIndicator": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "dynamicsOfKeyIndicatorsRecords": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DynamicsOfKeyIndicatorsRecord"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "KeyIndicatorByCourse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "dynamicsRecordId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "dynamicsRecord": {
+            "$ref": "#/components/schemas/DynamicsOfKeyIndicatorsRecord"
+          },
+          "course": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "value": {
+            "type": "number",
+            "format": "double"
           }
         },
         "additionalProperties": false
@@ -3712,6 +4913,35 @@
         },
         "additionalProperties": false
       },
+      "LiteratureListRecord": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "author": {
+            "type": "string",
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "bibliographicData": {
+            "type": "string",
+            "nullable": true
+          },
+          "literatureWorkRecords": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LiteratureWorkRecord"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "LiteratureWorkPageResponse": {
         "type": "object",
         "properties": {
@@ -3725,6 +4955,31 @@
               "$ref": "#/components/schemas/LiteratureWorkRecordResponse"
             },
             "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "LiteratureWorkRecord": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "literatureId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "literature": {
+            "$ref": "#/components/schemas/LiteratureListRecord"
+          },
+          "shortAnnotation": {
+            "type": "string",
+            "nullable": true
+          },
+          "pageId": {
+            "type": "integer",
+            "format": "int32"
           }
         },
         "additionalProperties": false
@@ -3761,6 +5016,160 @@
         },
         "additionalProperties": false
       },
+      "PEGroup": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "students": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Student"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "Page": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageTypeId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageType": {
+            "$ref": "#/components/schemas/PageType"
+          },
+          "journalId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "journal": {
+            "$ref": "#/components/schemas/Journal"
+          },
+          "contactPhoneNumbers": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ContactPhoneNumber"
+            },
+            "nullable": true
+          },
+          "curatorsIdeologicalAndEducationalWorkAccounting": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CuratorsIdeologicalAndEducationalWorkAccountingRecord"
+            },
+            "nullable": true
+          },
+          "curatorsParticipationInPedagogicalSeminars": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CuratorsParticipationInPedagogicalSeminarsRecord"
+            },
+            "nullable": true
+          },
+          "dynamicsOfKeyIndicators": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DynamicsOfKeyIndicatorsRecord"
+            },
+            "nullable": true
+          },
+          "educationalProcessSchedule": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/EducationalProcessScheduleRecord"
+            },
+            "nullable": true
+          },
+          "finalPerformanceAccounting": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FinalPerformanceAccountingRecord"
+            },
+            "nullable": true
+          },
+          "groupActives": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GroupActive"
+            },
+            "nullable": true
+          },
+          "informationHoursAccounting": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/InformationHoursAccountingRecord"
+            },
+            "nullable": true
+          },
+          "literatureWork": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LiteratureWorkRecord"
+            },
+            "nullable": true
+          },
+          "recomendationsAndRemarks": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RecomendationsAndRemarksRecord"
+            },
+            "nullable": true
+          },
+          "studentsHealthCards": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/StudentsHealthCardRecord"
+            },
+            "nullable": true
+          },
+          "traditions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Tradition"
+            },
+            "nullable": true
+          },
+          "studentList": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/StudentListRecord"
+            },
+            "nullable": true
+          },
+          "personalizedAccountingCard": {
+            "$ref": "#/components/schemas/PersonalizedAccountingCard"
+          },
+          "psychologicalAndPedagogicalCharacteristics": {
+            "$ref": "#/components/schemas/PsychologicalAndPedagogicalCharacteristics"
+          },
+          "socioPedagogicalCharacteristics": {
+            "$ref": "#/components/schemas/SocioPedagogicalCharacteristics"
+          },
+          "healthCardPageAttributes": {
+            "$ref": "#/components/schemas/HealthCardPageAttributes"
+          },
+          "socioPedagogicalCharacteristicsPageAttributes": {
+            "$ref": "#/components/schemas/SocioPedagogicalCharacteristicsPageAttributes"
+          },
+          "curatorsIdeologicalAndEducationalWorkPageAttributes": {
+            "$ref": "#/components/schemas/CuratorsIdeologicalAndEducationalWorkPageAttributes"
+          }
+        },
+        "additionalProperties": false
+      },
       "PageResponse": {
         "type": "object",
         "properties": {
@@ -3778,6 +5187,27 @@
         },
         "additionalProperties": false
       },
+      "PageType": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "pages": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Page"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "PageTypeResponse": {
         "type": "object",
         "properties": {
@@ -3788,6 +5218,63 @@
           "name": {
             "type": "string",
             "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ParentalInformationRecord": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "firstName": {
+            "type": "string",
+            "nullable": true
+          },
+          "middleName": {
+            "type": "string",
+            "nullable": true
+          },
+          "lastName": {
+            "type": "string",
+            "nullable": true
+          },
+          "placeOfResidence": {
+            "type": "string",
+            "nullable": true
+          },
+          "placeOfWork": {
+            "type": "string",
+            "nullable": true
+          },
+          "position": {
+            "type": "string",
+            "nullable": true
+          },
+          "homePhoneNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "workPhoneNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "mobilePhoneNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "otherInformation": {
+            "type": "string",
+            "nullable": true
+          },
+          "personalizedAccountingCardId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "personalizedAccountingCard": {
+            "$ref": "#/components/schemas/PersonalizedAccountingCard"
           }
         },
         "additionalProperties": false
@@ -3818,7 +5305,8 @@
           },
           "date": {
             "type": "string",
-            "format": "date"
+            "format": "date",
+            "nullable": true
           },
           "topic": {
             "type": "string",
@@ -3834,6 +5322,122 @@
           },
           "note": {
             "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "Permission": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "roles": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Role"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "PersonalizedAccountingCard": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "birthDate": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          },
+          "passportData": {
+            "type": "string",
+            "nullable": true
+          },
+          "citizenship": {
+            "type": "string",
+            "nullable": true
+          },
+          "graduatedEducationalInstitution": {
+            "type": "string",
+            "nullable": true
+          },
+          "residentialAddress": {
+            "type": "string",
+            "nullable": true
+          },
+          "studentId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "student": {
+            "$ref": "#/components/schemas/Student"
+          },
+          "pageId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "page": {
+            "$ref": "#/components/schemas/Page"
+          },
+          "parentalInformation": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ParentalInformationRecord"
+            },
+            "nullable": true
+          },
+          "individualInformation": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/IndividualInformationRecord"
+            },
+            "nullable": true
+          },
+          "studentList": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/StudentListRecord"
+            },
+            "nullable": true
+          },
+          "studentEcouragements": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/StudentEcouragement"
+            },
+            "nullable": true
+          },
+          "studentDisciplinaryResponsibilities": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/StudentDisciplinaryResponsibility"
+            },
+            "nullable": true
+          },
+          "individualWorkWithStudent": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/IndividualWorkWithStudentRecord"
+            },
+            "nullable": true
+          },
+          "workWithParents": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WorkWithParentsRecord"
+            },
             "nullable": true
           }
         },
@@ -3879,6 +5483,72 @@
         },
         "additionalProperties": false
       },
+      "Position": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "workers": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Worker"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "PositionResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "PsychologicalAndPedagogicalCharacteristics": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "content": {
+            "type": "string",
+            "nullable": true
+          },
+          "date": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          },
+          "workerId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "worker": {
+            "$ref": "#/components/schemas/Worker"
+          },
+          "pageId": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
       "PsychologicalAndPedagogicalCharacteristicsResponse": {
         "type": "object",
         "properties": {
@@ -3899,6 +5569,43 @@
             "type": "integer",
             "format": "int32",
             "nullable": true
+          },
+          "pageId": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "RecomendationsAndRemarksRecord": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "date": {
+            "type": "string",
+            "format": "date"
+          },
+          "executionDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "content": {
+            "type": "string",
+            "nullable": true
+          },
+          "result": {
+            "type": "string",
+            "nullable": true
+          },
+          "reviewerId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "reviewer": {
+            "$ref": "#/components/schemas/Worker"
           },
           "pageId": {
             "type": "integer",
@@ -3968,6 +5675,159 @@
         },
         "additionalProperties": false
       },
+      "Role": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "permissions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Permission"
+            },
+            "nullable": true
+          },
+          "users": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/User"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "SocialDepartmentWorker": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "workerId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "worker": {
+            "$ref": "#/components/schemas/Worker"
+          }
+        },
+        "additionalProperties": false
+      },
+      "SocioPedagogicalCharacteristics": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalStudents": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "femalesCount": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "malesCount": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "brsmMembersCount": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "orphansUnderagesCount": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "studentsWithoutParentalCareUnderagesCount": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "orphansOrStudentsWithoutParentalCareAdults": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "studentsWithSpecialPsychophysicalDevelopmentNeeds": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "studentsWithDisabledParentsOfGroups1and2": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "studentsFromLargeFamilies": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "studentsFromSingleParentFamilies": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "studentsFromRegionsAffectedByChernobylDisaster": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "studentsFromFamiliesRelocatedFromAreasOfRadioactivePollution": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "nonResidentStudents": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "studentsLivingWithParents": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "studentsLivingInADormitory": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "studentsLivingWithRelatives": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "studentsLivingInPrivateApartments": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "otherInformation": {
+            "type": "string",
+            "nullable": true
+          },
+          "pageId": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
       "SocioPedagogicalCharacteristicsAttributesResponse": {
         "type": "object",
         "properties": {
@@ -3975,8 +5835,35 @@
             "type": "integer",
             "format": "int32"
           },
+          "academicYearId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "SocioPedagogicalCharacteristicsPageAttributes": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "page": {
+            "$ref": "#/components/schemas/Page"
+          },
+          "academicYearId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
           "academicYear": {
-            "$ref": "#/components/schemas/AcademicYearResponse"
+            "$ref": "#/components/schemas/AcademicYear"
           }
         },
         "additionalProperties": false
@@ -4092,6 +5979,176 @@
         },
         "additionalProperties": false
       },
+      "Specialty": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "abbreviatedName": {
+            "type": "string",
+            "nullable": true
+          },
+          "departmentId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "department": {
+            "$ref": "#/components/schemas/Department"
+          },
+          "groups": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Group"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "Student": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "firstName": {
+            "type": "string",
+            "nullable": true
+          },
+          "middleName": {
+            "type": "string",
+            "nullable": true
+          },
+          "lastName": {
+            "type": "string",
+            "nullable": true
+          },
+          "phoneNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "groupId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "group": {
+            "$ref": "#/components/schemas/Group"
+          },
+          "userId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "user": {
+            "$ref": "#/components/schemas/User"
+          },
+          "groupActive": {
+            "$ref": "#/components/schemas/GroupActive"
+          },
+          "personalizedAccountingCard": {
+            "$ref": "#/components/schemas/PersonalizedAccountingCard"
+          },
+          "studentListRecord": {
+            "$ref": "#/components/schemas/StudentListRecord"
+          },
+          "chronicDiseases": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ChronicDisease"
+            },
+            "nullable": true
+          },
+          "peGroups": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PEGroup"
+            },
+            "nullable": true
+          },
+          "studentsHealthCardRecords": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/StudentsHealthCardRecord"
+            },
+            "nullable": true
+          },
+          "finalPerformanceAccountingRecords": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FinalPerformanceAccountingRecord"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "StudentDisciplinaryResponsibility": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "date": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          },
+          "misdemeanor": {
+            "type": "string",
+            "nullable": true
+          },
+          "disciplinaryResponsibilityKind": {
+            "type": "string",
+            "nullable": true
+          },
+          "personalizedAccountingCardId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "personalizedAccountingCard": {
+            "$ref": "#/components/schemas/PersonalizedAccountingCard"
+          }
+        },
+        "additionalProperties": false
+      },
+      "StudentEcouragement": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "date": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          },
+          "achievement": {
+            "type": "string",
+            "nullable": true
+          },
+          "encouragementKind": {
+            "type": "string",
+            "nullable": true
+          },
+          "personalizedAccountingCardId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "personalizedAccountingCard": {
+            "$ref": "#/components/schemas/PersonalizedAccountingCard"
+          }
+        },
+        "additionalProperties": false
+      },
       "StudentListPageResponse": {
         "type": "object",
         "properties": {
@@ -4105,6 +6162,42 @@
               "$ref": "#/components/schemas/StudentListRecordResponse"
             },
             "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "StudentListRecord": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "number": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "studentId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "student": {
+            "$ref": "#/components/schemas/Student"
+          },
+          "personalizedAccountingCardId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "personalizedAccountingCard": {
+            "$ref": "#/components/schemas/PersonalizedAccountingCard"
+          },
+          "pageId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "page": {
+            "$ref": "#/components/schemas/Page"
           }
         },
         "additionalProperties": false
@@ -4128,6 +6221,99 @@
             "type": "integer",
             "format": "int32",
             "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "StudentResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "firstName": {
+            "type": "string",
+            "nullable": true
+          },
+          "middleName": {
+            "type": "string",
+            "nullable": true
+          },
+          "lastName": {
+            "type": "string",
+            "nullable": true
+          },
+          "phoneNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "groupId": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "StudentsHealthCardRecord": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "number": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "missedClasses": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "note": {
+            "type": "string",
+            "nullable": true
+          },
+          "studentId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "student": {
+            "$ref": "#/components/schemas/Student"
+          },
+          "pageId": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Teacher": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "workerId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "worker": {
+            "$ref": "#/components/schemas/Worker"
+          },
+          "departmentId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "department": {
+            "$ref": "#/components/schemas/Department"
+          },
+          "curator": {
+            "$ref": "#/components/schemas/Curator"
           }
         },
         "additionalProperties": false
@@ -4161,6 +6347,42 @@
         },
         "additionalProperties": false
       },
+      "Tradition": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "participationForm": {
+            "type": "string",
+            "nullable": true
+          },
+          "note": {
+            "type": "string",
+            "nullable": true
+          },
+          "day": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "month": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "pageId": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
       "TraditionResponse": {
         "type": "object",
         "properties": {
@@ -4182,11 +6404,13 @@
           },
           "day": {
             "type": "integer",
-            "format": "int32"
+            "format": "int32",
+            "nullable": true
           },
           "month": {
             "type": "integer",
-            "format": "int32"
+            "format": "int32",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -4292,7 +6516,19 @@
           },
           "studentId": {
             "type": "integer",
-            "format": "int32"
+            "format": "int32",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "UpdateHealthCardPageAttributesRequest": {
+        "type": "object",
+        "properties": {
+          "academicYearId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -4302,14 +6538,21 @@
         "properties": {
           "number": {
             "type": "integer",
-            "format": "int32"
+            "format": "int32",
+            "nullable": true
           },
           "missedClasses": {
             "type": "integer",
-            "format": "int32"
+            "format": "int32",
+            "nullable": true
           },
           "note": {
             "type": "string",
+            "nullable": true
+          },
+          "studentId": {
+            "type": "integer",
+            "format": "int32",
             "nullable": true
           }
         },
@@ -4320,11 +6563,13 @@
         "properties": {
           "startDate": {
             "type": "string",
-            "format": "date"
+            "format": "date",
+            "nullable": true
           },
           "endDate": {
             "type": "string",
-            "format": "date"
+            "format": "date",
+            "nullable": true
           },
           "workContent": {
             "type": "string",
@@ -4381,7 +6626,8 @@
         "properties": {
           "date": {
             "type": "string",
-            "format": "date"
+            "format": "date",
+            "nullable": true
           },
           "topic": {
             "type": "string",
@@ -4476,6 +6722,17 @@
           "reviewerId": {
             "type": "integer",
             "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "UpdateSocioPedagogicalCharacteristicsPageAttributesRequest": {
+        "type": "object",
+        "properties": {
+          "academicYearId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -4612,11 +6869,165 @@
           },
           "day": {
             "type": "integer",
-            "format": "int32"
+            "format": "int32",
+            "nullable": true
           },
           "month": {
             "type": "integer",
+            "format": "int32",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "User": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
             "format": "int32"
+          },
+          "userName": {
+            "type": "string",
+            "nullable": true
+          },
+          "passwordHash": {
+            "type": "string",
+            "nullable": true
+          },
+          "roleId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "role": {
+            "$ref": "#/components/schemas/Role"
+          },
+          "worker": {
+            "$ref": "#/components/schemas/Worker"
+          },
+          "student": {
+            "$ref": "#/components/schemas/Student"
+          }
+        },
+        "additionalProperties": false
+      },
+      "WorkWithParentsRecord": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "date": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          },
+          "workContent": {
+            "type": "string",
+            "nullable": true
+          },
+          "note": {
+            "type": "string",
+            "nullable": true
+          },
+          "personalizedAccountingCardId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "personalizedAccountingCard": {
+            "$ref": "#/components/schemas/PersonalizedAccountingCard"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Worker": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "firstName": {
+            "type": "string",
+            "nullable": true
+          },
+          "middleName": {
+            "type": "string",
+            "nullable": true
+          },
+          "lastName": {
+            "type": "string",
+            "nullable": true
+          },
+          "positionId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "position": {
+            "$ref": "#/components/schemas/Position"
+          },
+          "userId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "user": {
+            "$ref": "#/components/schemas/User"
+          },
+          "socialDepartmentWorker": {
+            "$ref": "#/components/schemas/SocialDepartmentWorker"
+          },
+          "headOfDepartment": {
+            "$ref": "#/components/schemas/HeadOfDepartment"
+          },
+          "dean": {
+            "$ref": "#/components/schemas/Dean"
+          },
+          "deputyDean": {
+            "$ref": "#/components/schemas/DeputyDean"
+          },
+          "teacher": {
+            "$ref": "#/components/schemas/Teacher"
+          },
+          "psychologicalAndPedagogicalCharacteristics": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PsychologicalAndPedagogicalCharacteristics"
+            },
+            "nullable": true
+          },
+          "recomendationsAndRemarks": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RecomendationsAndRemarksRecord"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "WorkerResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "firstName": {
+            "type": "string",
+            "nullable": true
+          },
+          "middleName": {
+            "type": "string",
+            "nullable": true
+          },
+          "lastName": {
+            "type": "string",
+            "nullable": true
+          },
+          "position": {
+            "$ref": "#/components/schemas/PositionResponse"
           }
         },
         "additionalProperties": false

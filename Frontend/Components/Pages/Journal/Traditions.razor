@@ -50,17 +50,7 @@ else
             }
             <tr>
                 <td>
-                    <input @bind="TraditionToAdd.Name" @bind:after="Add" />
-                </td>
-                <td>
-                    <input type="number" min="1" max="31" @bind="TraditionToAdd.Day" @bind:after="Add" />.
-                    <input type="number" min="1" max="12" @bind="TraditionToAdd.Month" @bind:after="Add" />
-                </td>
-                <td>
-                    <input @bind="TraditionToAdd.ParticipationForm" @bind:after="Add" />
-                </td>
-                <td>
-                    <input @bind="TraditionToAdd.Note" @bind:after="Add" />
+                    <button @onclick="Add">Добавить строку</button>
                 </td>
             </tr>
         </tbody>
@@ -76,12 +66,9 @@ else
 
     public TraditionsPageResponse? _pageData;
 
-    private CreateTraditionRequest TraditionToAdd = new("", "", "", 1, 1, -1);
-
     protected override async Task OnInitializedAsync()
     {
         _pageData = await HttpClient.GetFromJsonAsync<TraditionsPageResponse>("api/journal/tradition/" + PageId.ToString());
-        TraditionToAdd.PageId = PageId;
     }
 
     private async Task Update(TraditionResponse record)
@@ -89,8 +76,7 @@ else
         Console.WriteLine("Update tradition");
 
         var request = record.ToRequest();
-        var response = await HttpClient.PutAsJsonAsync<UpdateTraditionRequest>
-            ("api/journal/tradition/" + record.Id, request);
+        var response = await HttpClient.PutAsJsonAsync<UpdateTraditionRequest>("api/journal/tradition/" + record.Id, request);
 
         if (!response.IsSuccessStatusCode)
         {
@@ -103,20 +89,13 @@ else
     {
         Console.WriteLine("Add tradition");
 
-        if (string.IsNullOrEmpty(TraditionToAdd.Name) || string.IsNullOrEmpty(TraditionToAdd.ParticipationForm)) return;
-
-        var response = await HttpClient.PostAsJsonAsync<CreateTraditionRequest>("api/journal/tradition", TraditionToAdd);
+        var request = new CreateTraditionRequest(null, null, null, null, null, PageId);
+        var response = await HttpClient.PostAsJsonAsync<CreateTraditionRequest>("api/journal/tradition", request);
 
         if (response.IsSuccessStatusCode)
         {
-            var addedPhone = await response.Content.ReadFromJsonAsync<TraditionResponse>();
-            _pageData!.Traditions.Add(addedPhone!);
-
-            TraditionToAdd.Name = "";
-            TraditionToAdd.ParticipationForm = "";
-            TraditionToAdd.Day = 1;
-            TraditionToAdd.Month = 1;
-            TraditionToAdd.Note = "";
+            var addedRecord = await response.Content.ReadFromJsonAsync<TraditionResponse>();
+            _pageData!.Traditions.Add(addedRecord!);
         }
     }
 

@@ -1,14 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace Contracts.Journal.StudentHealthCards
+﻿namespace Contracts.Journal.StudentHealthCards
 {
     public record UpdateHealthCardRecordRequest
     (
-        [Required]
-        int Number,
-        [Required]
-        int MissedClasses,
+        int? Number,
+        int? MissedClasses,
 
-        string? Note
+        string? Note,
+        int? StudentId
     );
 }

@@ -4,11 +4,9 @@ namespace Contracts.Journal.GroupActives
 {
     public record CreateGroupActiveRequest
     (
-        [Required]
-        string PositionName,
+        string? PositionName,
 
-        [Required]
-        int StudentId,
+        int? StudentId,
 
         [Required]
         int PageId

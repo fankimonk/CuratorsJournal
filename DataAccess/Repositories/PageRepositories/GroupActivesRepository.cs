@@ -10,7 +10,7 @@ namespace DataAccess.Repositories.PageRepositories
         public async Task<GroupActive?> CreateAsync(GroupActive active)
         {
             if (active == null) return null;
-            if (!await StudentExists(active.StudentId)) return null;
+            if (active.StudentId != null && !await StudentExists((int)active.StudentId)) return null;
             if (!await PageExists(active.PageId)) return null;
 
             var createdActive = await _dbContext.GroupActives.AddAsync(active);
@@ -39,7 +39,7 @@ namespace DataAccess.Repositories.PageRepositories
         {
             if (active == null) return null;
 
-            if (!await StudentExists(active.StudentId)) return null;
+            if (active.StudentId != null && !await StudentExists((int)active.StudentId)) return null;
 
             var activeToUpdate = await _dbContext.GroupActives.FirstOrDefaultAsync(p => p.Id == id);
             if (activeToUpdate == null) return null;

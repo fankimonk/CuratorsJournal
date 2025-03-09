@@ -26,10 +26,20 @@ else
     else
     {
         <p>
-            учебной группы @_group.Number.ToString() 
-            @if (academicYear != null)
+            учебной группы @_group.Number.ToString()
+            @if (_academicYears != null)
             {
-                @(" в " + academicYear!.StartYear.ToString() + "/" + academicYear.EndYear.ToString() + " уч. году")
+                @(" в ")
+                <select @bind="_pageData.Attributes.AcademicYearId" @bind:after="UpdateAttributes">
+                    <option value="">-- Выберите учебный год --</option>
+                    @foreach (var academicYear in _academicYears)
+                    {
+                        <option @key="academicYear.Id" value="@academicYear.Id">
+                            @academicYear.StartYear / @academicYear.EndYear
+                        </option>
+                    }
+                </select>
+                @(" уч. году ")
             }
         </p>
     }
@@ -116,14 +126,21 @@ else
     public int JournalId { get; set; }
 
     private SocioPedagogicalCharacteristicsResponse? _pageData;
+
     private GroupResponse? _group;
 
-    private AcademicYearResponse? academicYear => _pageData != null ? _pageData.Attributes.AcademicYear : null;
+    private List<AcademicYearResponse>? _academicYears;
 
     protected override async Task OnInitializedAsync()
     {
         _pageData = await HttpClient.GetFromJsonAsync<SocioPedagogicalCharacteristicsResponse>("api/journal/sociopedagogicalcharacteristics/" + PageId.ToString());
         _group = await HttpClient.GetFromJsonAsync<GroupResponse>("api/group/getbyjournal/" + JournalId.ToString());
+
+        var getAcademicYearsUri = "api/academicyear/getsinceyear/";
+        if (_group != null)
+            _academicYears = await HttpClient.GetFromJsonAsync<List<AcademicYearResponse>>(getAcademicYearsUri + _group.AdmissionYear.ToString());
+        else
+            _academicYears = await HttpClient.GetFromJsonAsync<List<AcademicYearResponse>>(getAcademicYearsUri);
     }
 
     private async Task Update()
@@ -136,7 +153,19 @@ else
 
         if (!response.IsSuccessStatusCode)
         {
-            // _pageData = await response.Content.ReadFromJsonAsync<SocioPedagogicalCharacteristicsResponse>();
+            //TODO
+        }
+    }
+
+    private async Task UpdateAttributes()
+    {
+        var request = new UpdateSocioPedagogicalCharacteristicsPageAttributesRequest(_pageData!.Attributes.AcademicYearId);
+        var response = await HttpClient.PutAsJsonAsync<UpdateSocioPedagogicalCharacteristicsPageAttributesRequest>
+            ("api/journal/sociopedagogicalcharacteristics/updateattributes/" + _pageData!.Attributes.Id, request);
+
+        if (!response.IsSuccessStatusCode)
+        {
+            //TODO
         }
     }
 }

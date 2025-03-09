@@ -26,7 +26,7 @@ namespace API.Mappers.Journal
         public static SocioPedagogicalCharacteristicsAttributesResponse ToResponse(this SocioPedagogicalCharacteristicsPageAttributes attributes)
         {
             return new SocioPedagogicalCharacteristicsAttributesResponse(attributes.Id,
-                attributes.AcademicYear != null ? attributes.AcademicYear.ToResponse() : null);
+                attributes.AcademicYearId);
         }
 
         public static SocioPedagogicalCharacteristics ToEntity(this UpdateSocioPedagogicalCharacteristicsRequest request)

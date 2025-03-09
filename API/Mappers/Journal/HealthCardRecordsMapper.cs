@@ -1,5 +1,6 @@
 ﻿using Contracts.Journal.StudentHealthCards;
 using Domain.Entities.JournalContent;
+using Domain.Entities.JournalContent.Pages.Attributes;
 
 namespace API.Mappers.Journal
 {
@@ -12,13 +13,20 @@ namespace API.Mappers.Journal
             );
         }
 
+        public static HealthCardPageAttributesResponse ToResponse(this HealthCardPageAttributes attributes)
+        {
+            return new HealthCardPageAttributesResponse(attributes.Id,
+                attributes.AcademicYearId);
+        }
+
         public static StudentsHealthCardRecord ToEntity(this UpdateHealthCardRecordRequest request)
         {
             return new StudentsHealthCardRecord
             {
                 Number = request.Number,
                 MissedClasses = request.MissedClasses,
-                Note = request.Note
+                Note = request.Note,
+                StudentId = request.StudentId
             };
         }
 

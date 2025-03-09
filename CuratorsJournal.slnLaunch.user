@@ -1,6 +1,6 @@
 [
   {
-    "Name": "Default Profile",
+    "Name": "API + Frontend",
     "Projects": [
       {
         "Path": "API\\API.csproj",

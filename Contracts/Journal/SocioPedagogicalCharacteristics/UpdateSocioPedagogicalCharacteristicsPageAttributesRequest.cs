@@ -1,6 +1,6 @@
 ﻿namespace Contracts.Journal.SocioPedagogicalCharacteristics
 {
-    public record UpdatePageAttributesRequest
+    public record UpdateSocioPedagogicalCharacteristicsPageAttributesRequest
     (
         int? AcademicYearId
     );

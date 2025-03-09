@@ -56,12 +56,20 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xKb3VybmFsXEhvbGlkYXlzLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Dev/Web/CuratorsJournal/Frontend/Components/Pages/Journal/InformationHoursAccounting.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xKb3VybmFsXEluZm9ybWF0aW9uSG91cnNBY2NvdW50aW5nLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Dev/Web/CuratorsJournal/Frontend/Components/Pages/Journal/PsychologicalAndPedagogicalCharacteristics.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xKb3VybmFsXFBzeWNob2xvZ2ljYWxBbmRQZWRhZ29naWNhbENoYXJhY3RlcmlzdGljcy5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Dev/Web/CuratorsJournal/Frontend/Components/Pages/Journal/SocioPedagogicalCharacteristics.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xKb3VybmFsXFNvY2lvUGVkYWdvZ2ljYWxDaGFyYWN0ZXJpc3RpY3MucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Dev/Web/CuratorsJournal/Frontend/Components/Pages/Journal/StudentsHealthCard.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xKb3VybmFsXFN0dWRlbnRzSGVhbHRoQ2FyZC5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Dev/Web/CuratorsJournal/Frontend/Components/Pages/Journal/Title.razor]

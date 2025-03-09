@@ -4,14 +4,11 @@ namespace Contracts.Journal.CuratorsIdeologicalAndEducationalWorkAccounting
 {
     public record CreateIdeologicalEducationalWorkRecordRequest
     (
-        [Required]
-        DateOnly StartDate,
+        DateOnly? StartDate,
 
-        [Required]
-        DateOnly EndDate,
+        DateOnly? EndDate,
 
-        [Required]
-        string WorkContent,
+        string? WorkContent,
 
         [Required]
         int PageId
