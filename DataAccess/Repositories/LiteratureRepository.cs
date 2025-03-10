@@ -6,9 +6,15 @@ namespace DataAccess.Repositories
 {
     public class LiteratureRepository(CuratorsJournalDBContext dbContext) : RepositoryBase(dbContext), ILiteratureRepository
     {
-        public Task<LiteratureListRecord?> CreateAsync(LiteratureListRecord literature)
+        public async Task<LiteratureListRecord?> CreateAsync(LiteratureListRecord literature)
         {
-            throw new NotImplementedException();
+            if (literature == null) return null;
+
+            var createdLiterature = await _dbContext.LiteratureList.AddAsync(literature);
+
+            await _dbContext.SaveChangesAsync();
+
+            return createdLiterature.Entity;
         }
 
         public Task<bool> DeleteAsync(int id)

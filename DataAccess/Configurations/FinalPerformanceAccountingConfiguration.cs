@@ -15,8 +15,7 @@ namespace DataAccess.Configurations
             builder
                 .HasOne(f => f.Student)
                 .WithMany(s => s.FinalPerformanceAccountingRecords)
-                .HasForeignKey(f => f.StudentId)
-                .IsRequired();
+                .HasForeignKey(f => f.StudentId);
 
             builder
                 .HasOne(f => f.Page)

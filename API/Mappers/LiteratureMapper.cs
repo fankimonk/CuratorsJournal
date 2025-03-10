@@ -9,5 +9,25 @@ namespace API.Mappers
         {
             return new LiteratureResponse(literature.Id, literature.Author, literature.Name, literature.BibliographicData);
         }
+
+        public static LiteratureListRecord ToEntity(this CreateLiteratureRequest request)
+        {
+            return new LiteratureListRecord
+            {
+                Author = request.Author, 
+                Name = request.Name, 
+                BibliographicData = request.BibliographicData
+            };
+        }
+
+        public static LiteratureListRecord ToEntity(this UpdateLiteratureRequest request)
+        {
+            return new LiteratureListRecord
+            {
+                Author = request.Author,
+                Name = request.Name,
+                BibliographicData = request.BibliographicData
+            };
+        }
     }
 }

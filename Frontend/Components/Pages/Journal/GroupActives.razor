@@ -9,7 +9,7 @@
 
 <PageTitle>Актив учебной группы</PageTitle>
 
-<h3>АКТИВ УЧЕБНОЙ ГРУППЫ</h3>
+<h3 class="d-flex justify-content-center">АКТИВ УЧЕБНОЙ ГРУППЫ</h3>
 
 @if (_pageData == null || _students == null)
 {
@@ -23,14 +23,14 @@ else
         <p>
             @if (i > 2)
             {
-                <input @bind="active.PositionName" @bind:after="async () => await Update(active)" /> 
+                <input @bind="active.PositionName" @bind:after="async () => await Update(active)" class="input" /> 
             }
             else
             {
                 @(active.PositionName + " ")
             }
-            <select @bind="active.StudentId" @bind:after="async () => await Update(active)" >
-                <option value="">-- Выберите студента --</option>
+            <select @bind="active.StudentId" @bind:after="async () => await Update(active)" class="input underline" >
+                <option value="">(нет)</option>
                 @foreach (var student in _students)
                 {
                     @if (active.StudentId == student.Id || !_pageData.GroupActives.Any(a => a.StudentId == student.Id))
@@ -41,12 +41,12 @@ else
             </select>
             @if (i > 2)
             {
-                <button @onclick="async () => await Delete(active)">Удалить</button>
+                <button @onclick="async () => await Delete(active)" class="btn btn-close" />
             }
         </p>
         i++;
     }
-    <button @onclick="Add">Добавить</button>
+    <button @onclick="Add" class="btn btn-outline-primary">Добавить</button>
 }
 
 @code {
@@ -102,3 +102,15 @@ else
         if (response.IsSuccessStatusCode) _pageData!.GroupActives.Remove(active);
     }
 }
+
+<style>
+    .input {
+        border: none;
+        outline: none;
+        background: transparent;
+    }
+
+    .underline {
+        border-bottom: 1px solid #000;
+    }
+</style>

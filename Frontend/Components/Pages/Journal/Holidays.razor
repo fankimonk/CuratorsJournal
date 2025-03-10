@@ -19,9 +19,9 @@ else
     {
         @if (@ht.Holidays.Count != 0)
         {
-            <h1>@ht.Name</h1>
+            <h1 class="d-flex justify-content-center">@ht.Name</h1>
         }
-        <table class="table">
+        <table class="table table-bordered">
             <tbody>
                 @foreach (var h in ht.Holidays)
                 {

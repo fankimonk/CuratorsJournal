@@ -9,14 +9,14 @@ namespace Domain.Entities.JournalContent
     {
         public int Id { get; set; }
 
-        public int Number { get; set; }
+        public int? Number { get; set; }
 
 
 
         public int PageId { get; set; }
         public Page? Page;
 
-        public int StudentId { get; set; }
+        public int? StudentId { get; set; }
         public Student? Student { get; set; }
     }
 }

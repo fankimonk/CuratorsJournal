@@ -6,7 +6,8 @@
 
 <PageTitle>Титульная страница</PageTitle>
 
-<h3>ЖУРНАЛ КУРАТОРА УЧЕБНОЙ ГРУППЫ</h3>
+<h3 class="d-flex justify-content-center">ЖУРНАЛ</h3>
+<h3 class="d-flex justify-content-center">КУРАТОРА УЧЕБНОЙ ГРУППЫ</h3>
 
 @if (_pageData == null)
 {
@@ -14,13 +15,13 @@
 }
 else
 {
-    <p>Группа № @_pageData.GroupNumber</p>
-    <p>Год поступления @_pageData.AdmissionYear</p>
-    <p>Куратор @if (_pageData.Curator != null)
-        @(_pageData.Curator.LastName + ' ' + _pageData.Curator.FirstName + ' ' + _pageData.Curator.MiddleName)
+    <p>Группа № <u>@_pageData.GroupNumber</u></p>
+    <p>Год поступления <u>@_pageData.AdmissionYear</u></p>
+    <p>Куратор <u>@if (_pageData.Curator != null)
+        @(_pageData.Curator.LastName + ' ' + _pageData.Curator.FirstName + ' ' + _pageData.Curator.MiddleName)</u>
     </p>
-    <p>Кафедра @_pageData.DepartmentName</p>
-    <p>Факультет @_pageData.FacultyName</p>
+    <p>Кафедра <u>@_pageData.DepartmentName</u></p>
+    <p>Факультет <u>@_pageData.FacultyName</u></p>
 }
 
 @code {

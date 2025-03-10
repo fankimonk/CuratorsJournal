@@ -11,7 +11,7 @@
 
 <PageTitle>Социально-педагогическая характеристика</PageTitle>
 
-<h3>СОЦИАЛЬНО-ПЕДАГОГИЧЕСКАЯ ХАРАКТЕРИСТИКА</h3>
+<h3 class="d-flex justify-content-center">СОЦИАЛЬНО-ПЕДАГОГИЧЕСКАЯ ХАРАКТЕРИСТИКА</h3>
 
 @if (_pageData == null)
 {
@@ -25,13 +25,13 @@ else
     }
     else
     {
-        <p>
+        <h3 class="d-flex justify-content-center">
             учебной группы @_group.Number.ToString()
             @if (_academicYears != null)
             {
                 @(" в ")
-                <select @bind="_pageData.Attributes.AcademicYearId" @bind:after="UpdateAttributes">
-                    <option value="">-- Выберите учебный год --</option>
+                <select @bind="_pageData.Attributes.AcademicYearId" @bind:after="UpdateAttributes" class="input">
+                    <option value="">(нет)</option>
                     @foreach (var academicYear in _academicYears)
                     {
                         <option @key="academicYear.Id" value="@academicYear.Id">
@@ -41,80 +41,80 @@ else
                 </select>
                 @(" уч. году ")
             }
-        </p>
+        </h3>
     }
 
     <p>
         1. Всего студентов
-        <input type="number" min="0" @bind="_pageData.TotalStudents" @bind:after="Update" />
+        <input type="number" min="0" @bind="_pageData.TotalStudents" @bind:after="Update" class="input underline" />
     </p>
     <p>Из них</p>
     <p>
         2. Девушки
-        <input type="number" min="0" @bind="_pageData.FemalesCount" @bind:after="Update" />
+        <input type="number" min="0" @bind="_pageData.FemalesCount" @bind:after="Update" class="input underline" />
     </p>
     <p>
         3. Юноши
-        <input type="number" min="0" @bind="_pageData.MalesCount" @bind:after="Update" />
+        <input type="number" min="0" @bind="_pageData.MalesCount" @bind:after="Update" class="input underline" />
     </p>
     <p>
         4. Члены ОО "БРСМ"
-        <input type="number" min="0" @bind="_pageData.BRSMMembersCount" @bind:after="Update" />
+        <input type="number" min="0" @bind="_pageData.BRSMMembersCount" @bind:after="Update" class="input underline" />
     </p>
     <p>
-        5. Дети-сироты, (до 18 лет) 
-        <input type="number" min="0" @bind="_pageData.OrphansUnderagesCount" @bind:after="Update" />
+        5. Дети-сироты, (до 18 лет)
+        <input type="number" min="0" @bind="_pageData.OrphansUnderagesCount" @bind:after="Update" class="input underline" />
     </p>
     <p>
-        6. Дети, оставшиеся без попечения родителей (до 18 лет) 
-        <input type="number" min="0" @bind="_pageData.StudentsWithoutParentalCareUnderagesCount" @bind:after="Update" />
+        6. Дети, оставшиеся без попечения родителей (до 18 лет)
+        <input type="number" min="0" @bind="_pageData.StudentsWithoutParentalCareUnderagesCount" @bind:after="Update" class="input underline" />
     </p>
     <p>
         7. Лица из числа детей-сирот <br />
-        и детей, оставшихся без попечения родителей (18-23 года) 
-        <input type="number" min="0" @bind="_pageData.OrphansOrStudentsWithoutParentalCareAdults" @bind:after="Update" />
+        и детей, оставшихся без попечения родителей (18-23 года)
+        <input type="number" min="0" @bind="_pageData.OrphansOrStudentsWithoutParentalCareAdults" @bind:after="Update" class="input underline" />
     </p>
     <p>
-        8. Студенты с особенностями психофизического развития 
-        <input type="number" min="0" @bind="_pageData.StudentsWithSpecialPsychophysicalDevelopmentNeeds" @bind:after="Update" />
+        8. Студенты с особенностями психофизического развития
+        <input type="number" min="0" @bind="_pageData.StudentsWithSpecialPsychophysicalDevelopmentNeeds" @bind:after="Update" class="input underline" />
     </p>
     <p>
-        9. Имеющие родителей-инвалидов 1, 2 группы 
-        <input type="number" min="0" @bind="_pageData.StudentsWithDisabledParentsOfGroups1and2" @bind:after="Update" />
+        9. Имеющие родителей-инвалидов 1, 2 группы
+        <input type="number" min="0" @bind="_pageData.StudentsWithDisabledParentsOfGroups1and2" @bind:after="Update" class="input underline" />
     </p>
     <p>
-        10. Из многодетных семей 
-        <input type="number" min="0" @bind="_pageData.StudentsFromLargeFamilies" @bind:after="Update" />
+        10. Из многодетных семей
+        <input type="number" min="0" @bind="_pageData.StudentsFromLargeFamilies" @bind:after="Update" class="input underline" />
     </p>
     <p>
-        11. Из неполных семей 
-        <input type="number" min="0" @bind="_pageData.StudentsFromSingleParentFamilies" @bind:after="Update" />
+        11. Из неполных семей
+        <input type="number" min="0" @bind="_pageData.StudentsFromSingleParentFamilies" @bind:after="Update" class="input underline" />
     </p>
     <p>
-        12. Из регионов, пострадавших от катастрофы на Чернобыльской АЭС 
-        <input type="number" min="0" @bind="_pageData.StudentsFromRegionsAffectedByChernobylDisaster" @bind:after="Update" />
+        12. Из регионов, пострадавших от катастрофы на Чернобыльской АЭС
+        <input type="number" min="0" @bind="_pageData.StudentsFromRegionsAffectedByChernobylDisaster" @bind:after="Update" class="input underline" />
     </p>
     <p>
-        13. Из семей, отселенных из зон радиоактивного загрязнения 
-        <input type="number" min="0" @bind="_pageData.StudentsFromFamiliesRelocatedFromAreasOfRadioactivePollution" @bind:after="Update" />
+        13. Из семей, отселенных из зон радиоактивного загрязнения
+        <input type="number" min="0" @bind="_pageData.StudentsFromFamiliesRelocatedFromAreasOfRadioactivePollution" @bind:after="Update" class="input underline" />
     </p>
     <p>
-        14. Иногородних 
-        <input type="number" min="0" @bind="_pageData.NonResidentStudents" @bind:after="Update" />
+        14. Иногородних
+        <input type="number" min="0" @bind="_pageData.NonResidentStudents" @bind:after="Update" class="input underline" />
     </p>
     <p>
-        15. Проживают с родителями 
-        <input type="number" min="0" @bind="_pageData.StudentsLivingWithParents" @bind:after="Update" />, 
+        15. Проживают с родителями
+        <input type="number" min="0" @bind="_pageData.StudentsLivingWithParents" @bind:after="Update" class="input underline" />,
         в общежитии
-        <input type="number" min="0" @bind="_pageData.StudentsLivingInADormitory" @bind:after="Update" />, <br />
+        <input type="number" min="0" @bind="_pageData.StudentsLivingInADormitory" @bind:after="Update" class="input underline" />, <br />
         у родственников
-        <input type="number" min="0" @bind="_pageData.StudentsLivingWithRelatives" @bind:after="Update" />, 
+        <input type="number" min="0" @bind="_pageData.StudentsLivingWithRelatives" @bind:after="Update" class="input underline" />,
         на частных квартирах
-        <input type="number" min="0" @bind="_pageData.StudentsLivingInPrivateApartments" @bind:after="Update" />
+        <input type="number" min="0" @bind="_pageData.StudentsLivingInPrivateApartments" @bind:after="Update" class="input underline" />
     </p>
     <p>
         16. Другие сведения <br />
-        <input @bind="_pageData.OtherInformation" @bind:after="Update" />
+        <input @bind="_pageData.OtherInformation" @bind:after="Update" class="input fullwidth underline" />
     </p>
 }
 
@@ -169,3 +169,19 @@ else
         }
     }
 }
+
+<style>
+    .input {
+        border: none;
+        outline: none;
+        background: transparent;
+    }
+
+    .underline {
+        border-bottom: 1px solid #000;
+    }
+
+    .fullwidth {
+        width: 100%;
+    }
+</style>

@@ -1,0 +1,86 @@
+﻿@page "/literature"
+@rendermode InteractiveServer
+
+@using Contracts.Literature
+
+@inject HttpClient HttpClient
+
+<PageTitle>Список литературы</PageTitle>
+
+<h1>Список литературы</h1>
+
+@if (_literature == null)
+{
+    <p><em>Загрузка...</em></p>
+}
+else
+{
+
+}
+
+@* <button @onclick="ToggleShowForm" class="btn btn-primary">
+    @if (!_showForm)
+    {
+        @("Показать форму")
+    }
+    else
+    {
+        @("Скрыть форму")
+    }
+</button> *@
+
+@if (_showForm)
+{
+    <div class="row">
+        <div class="col-md-4">
+            <EditForm method="post" Model="LiteratureToAdd" OnValidSubmit="Add" FormName="add" Enhance>
+                <DataAnnotationsValidator />
+                <ValidationSummary class="text-danger" />
+                <div class="mb-3">
+                    <label for="author" class="form-label">Автор: </label>
+                    <InputText id="author" @bind-Value="LiteratureToAdd.Author" class="form-control" />
+                    <ValidationMessage For="() => LiteratureToAdd.Author" class="text-danger" />
+                </div>
+                <div class="mb-3">
+                    <label for="name" class="form-label">Название: </label>
+                    <InputText id="name" @bind-Value="LiteratureToAdd.Name" class="form-control" />
+                    <ValidationMessage For="() => LiteratureToAdd.Name" class="text-danger" />
+                </div>
+                <div class="mb-3">
+                    <label for="bibliographicData" class="form-label">Библиографические данные: </label>
+                    <InputText id="bibliographicData" @bind-Value="LiteratureToAdd.BibliographicData" class="form-control" />
+                    <ValidationMessage For="() => LiteratureToAdd.BibliographicData" class="text-danger" />
+                </div>
+                <button type="submit" class="btn btn-primary">Добавить</button>
+            </EditForm>
+        </div>
+    </div>
+}
+
+@code {
+    [SupplyParameterFromForm]
+    public CreateLiteratureRequest LiteratureToAdd { get; set; } = new("", "", "");
+
+    private List<LiteratureResponse>? _literature;
+
+    private bool _showForm = true;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _literature = await HttpClient.GetFromJsonAsync<List<LiteratureResponse>>("api/literature/");
+    }
+
+    private void ToggleShowForm() => _showForm = !_showForm;
+
+    public async Task Add()
+    {
+        Console.WriteLine("Add literature");
+
+        var response = await HttpClient.PostAsJsonAsync<CreateLiteratureRequest>("api/literature", LiteratureToAdd);
+
+        if (response.IsSuccessStatusCode)
+        {
+            //TODO
+        }
+    }
+}

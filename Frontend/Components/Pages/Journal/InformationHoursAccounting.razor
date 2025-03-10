@@ -9,7 +9,7 @@
 
 <PageTitle>Учет информационных часов</PageTitle>
 
-<h3>УЧЕТ ИНФОРМАЦИОННЫХ ЧАСОВ</h3>
+<h3 class="d-flex justify-content-center">УЧЕТ ИНФОРМАЦИОННЫХ ЧАСОВ</h3>
 
 @if (_pageData == null)
 {
@@ -17,12 +17,12 @@
 }
 else
 {
-    <table class="table">
+    <table class="table table-bordered">
         <thead>
             <tr>
-                <th>Дата проведения</th>
-                <th>Тема</th>
-                <th>Примечание</th>
+                <th class="text-center">Дата проведения</th>
+                <th class="text-center">Тема</th>
+                <th class="text-center">Примечание</th>
             </tr>
         </thead>
         <tbody>
@@ -30,26 +30,23 @@ else
             {
                 <tr>
                     <td>
-                        <input type="date" @bind="record.Date" @bind:after="async () => await Update(record)" />
+                        <input type="date" @bind="record.Date" @bind:after="async () => await Update(record)" class="input" />
                     </td>
                     <td>
-                        <input @bind="record.Topic" @bind:after="async () => await Update(record)" />
+                        <input @bind="record.Topic" @bind:after="async () => await Update(record)" class="input fullwidth" />
                     </td>
                     <td>
-                        <input @bind="record.Note" @bind:after="async () => await Update(record)" />
+                        <input @bind="record.Note" @bind:after="async () => await Update(record)" class="input fullwidth" />
                     </td>
                     <td>
-                        <button @onclick="async () => await Delete(record)">Удалить</button>
+                        <button @onclick="async () => await Delete(record)" class="btn btn-close" />
                     </td>
                 </tr>
             }
-            <tr>
-                <td>
-                    <button @onclick="Add">Добавить строку</button>
-                </td>
-            </tr>
+            
         </tbody>
     </table>
+    <button @onclick="Add" class="btn btn-outline-primary">Добавить строку</button>
 }
 
 @code {
@@ -104,3 +101,15 @@ else
         }
     }
 }
+
+<style>
+    .input {
+        border: none;
+        outline: none;
+        background: transparent;
+    }
+
+    .fullwidth {
+        width: 100%;
+    }
+</style>

@@ -12,7 +12,7 @@
 
 <PageTitle>Список студентов</PageTitle>
 
-<h3>СПИСОК СТУДЕНТОВ</h3>
+<h3 class="d-flex justify-content-center">СПИСОК СТУДЕНТОВ</h3>
 
 @if (_pageData == null || _students == null || _cardIds == null)
 {
@@ -20,16 +20,16 @@
 }
 else
 {
-    <table class="table">
+    <table class="table table-bordered">
         <thead>
             <tr>
-                <th>№</th>
-                <th>Фамилия, имя отчество (полностью)</th>
-                <th>
+                <th class="text-center">№</th>
+                <th class="text-center">Фамилия, имя отчество (полностью)</th>
+                <th class="text-center">
                     Контактный<br/>
                     телефон
                 </th>
-                <th>
+                <th class="text-center">
                     № страни-<br/>
                     цы персо-<br/>
                     нифици-<br/>
@@ -43,11 +43,11 @@ else
             {
                 <tr>
                     <td>
-                        <input type="number" min="0" @bind="record.Number" @bind:after='async () => await Update(record)' />
+                        <input type="number" min="0" @bind="record.Number" @bind:after='async () => await Update(record)' class="input fullwidth" />
                     </td>
                     <td>
-                        <select @bind="record.StudentId" @bind:after="async () => await Update(record)">
-                            <option value="">-- Выберите студента --</option>
+                        <select @bind="record.StudentId" @bind:after="async () => await Update(record)" class="input fullwidth">
+                            <option value="">(нет)</option>
                             @foreach (var student in _students)
                             {
                                 @if (record.StudentId == student.Id || !_pageData.StudentList.Any(a => a.StudentId == student.Id))
@@ -70,8 +70,8 @@ else
                         </p>
                     </td>
                     <td>
-                        <select @bind="record.PersonalizedAccountingCardId" @bind:after="async () => await Update(record)">
-                            <option value="">-- Выберите студента --</option>
+                        <select @bind="record.PersonalizedAccountingCardId" @bind:after="async () => await Update(record)" class="input fullwidth">
+                            <option value="">(нет)</option>
                             @foreach (var card in _cardIds)
                             {
                                 @if (record.PersonalizedAccountingCardId == card.Id || !_pageData.StudentList.Any(a => a.PersonalizedAccountingCardId == card.Id))
@@ -82,17 +82,13 @@ else
                         </select>
                     </td>
                     <td>
-                        <button @onclick="async () => await Delete(record)">Удалить</button>
+                        <button @onclick="async () => await Delete(record)" class="btn btn-close" />
                     </td>
                 </tr>
             }
-            <tr>
-                <td>
-                    <button @onclick="Add">Добавить строку</button>
-                </td>
-            </tr>
         </tbody>
     </table>
+    <button @onclick="Add" class="btn btn-outline-primary">Добавить строку</button>
 }
 
 @code {
@@ -152,3 +148,15 @@ else
         if (response.IsSuccessStatusCode) _pageData!.StudentList.Remove(record);
     }
 }
+
+<style>
+    .input {
+        border: none;
+        outline: none;
+        background: transparent;
+    }
+
+    .fullwidth {
+        width: 100%;
+    }
+</style>

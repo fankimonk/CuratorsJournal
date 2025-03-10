@@ -8,7 +8,7 @@
 
 <PageTitle>Контактные Телефоны</PageTitle>
 
-<h3>КОНТАКТНЫЕ ТЕЛЕФОНЫ</h3>
+<h3 class="d-flex justify-content-center"><b>КОНТАКТНЫЕ ТЕЛЕФОНЫ</b></h3>
 
 @if (_pageData == null)
 {
@@ -16,29 +16,26 @@
 }
 else
 {
-    <table class="table">
+    <table class="table table-bordered">
         <tbody>
             @foreach (var phone in _pageData.PhoneNumbers)
             {
                 <tr>
                     <td>
-                        <input @bind="phone.Name" @bind:after='async () => await Update(phone)' />
+                        <input @bind="phone.Name" @bind:after='async () => await Update(phone)' class="input" />
                     </td>
                     <td>
-                        <input type="tel" @bind="phone.PhoneNumber" @bind:after='async () => await Update(phone)' />
+                        <input type="tel" @bind="phone.PhoneNumber" @bind:after='async () => await Update(phone)' class="input" />
                     </td>
                     <td>
-                        <button @onclick="async () => await Delete(phone)">Удалить</button>
+                        <button @onclick="async () => await Delete(phone)" class="btn btn-close"></button>
                     </td>
                 </tr>
             }
-            <tr>
-                <td>
-                    <button @onclick="Add">Добавить строку</button>
-                </td>
-            </tr>
         </tbody>
+        
     </table>
+    <button @onclick="Add" class="btn btn-outline-primary">Добавить строку</button>
 }
 
 @code {
@@ -91,3 +88,11 @@ else
         if (response.IsSuccessStatusCode) _pageData!.PhoneNumbers.Remove(phone);
     }
 }
+
+<style>
+    .input {
+        width: 100%;
+        border: none;
+        outline: none;
+    }
+</style>

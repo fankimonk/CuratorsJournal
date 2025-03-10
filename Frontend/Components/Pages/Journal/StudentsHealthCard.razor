@@ -12,12 +12,12 @@
 
 <PageTitle>Карта здоровья студентов</PageTitle>
 
-<h3>
+<h3 class="d-flex justify-content-center">
     КАРТА ЗДОРОВЬЯ СТУДЕНТОВ 
     @if (_academicYears != null)
     {
         @(" В ")
-        <select @bind="_pageData!.Attributes.AcademicYearId" @bind:after="UpdateAttributes">
+        <select @bind="_pageData!.Attributes.AcademicYearId" @bind:after="UpdateAttributes" class="input">
             <option value="">-- Выберите учебный год --</option>
             @foreach (var academicYear in _academicYears)
             {
@@ -36,44 +36,48 @@
 }
 else
 {
-    <table class="table">
+    <table class="table table-bordered">
         <thead>
             <tr>
-                <th>№</th>
-                <th>Фамилия, имя, отчество (полностью)</th>
-                <th>Пропущено учебных занятий<br/>по болезни</th>
-                <th>Примечание</th>
+                <th class="text-center">№</th>
+                <th class="text-center">Фамилия, имя, отчество (полностью)</th>
+                <th class="text-center">Пропущено учебных занятий<br />по болезни</th>
+                <th class="text-center">Примечание</th>
             </tr>
         </thead>
         <tbody>
             @foreach (var record in _pageData.StudentHealthCard)
             {
                 <tr>
-                    <input type="number" min="0" @bind="record.Number" @bind:after="async () => await Update(record)" />
-                    <select @bind="record.StudentId" @bind:after="async () => await Update(record)">
-                        <option value="">-- Выберите студента --</option>
-                        @foreach (var student in _students)
-                        {
-                            @if (record.StudentId == student.Id || !_pageData.StudentHealthCard.Any(a => a.StudentId == student.Id))
-                            {
-                                <option @key="student.Id" value="@student.Id">@student.LastName @student.FirstName @student.MiddleName</option>
-                            }
-                        }
-                    </select>
-                    <input type="number" min="0" @bind="record.MissedClasses" @bind:after="async () => await Update(record)" />
-                    <input @bind="record.Note" @bind:after="async () => await Update(record)" />
                     <td>
-                        <button @onclick="async () => await Delete(record)">Удалить</button>
+                        <input type="number" min="0" @bind="record.Number" @bind:after="async () => await Update(record)" class="input fullwidth" />
+                    </td>
+                    <td>
+                        <select @bind="record.StudentId" @bind:after="async () => await Update(record)" class="input fullwidth">
+                            <option value="">(нет)</option>
+                            @foreach (var student in _students)
+                            {
+                                @if (record.StudentId == student.Id || !_pageData.StudentHealthCard.Any(a => a.StudentId == student.Id))
+                                {
+                                    <option @key="student.Id" value="@student.Id">@student.LastName @student.FirstName @student.MiddleName</option>
+                                }
+                            }
+                        </select>
+                    </td>
+                    <td>
+                        <input type="number" min="0" @bind="record.MissedClasses" @bind:after="async () => await Update(record)" class="input fullwidth" />
+                    </td>
+                    <td>
+                        <input @bind="record.Note" @bind:after="async () => await Update(record)" class="input fullwidth" />
+                    </td>
+                    <td>
+                        <button @onclick="async () => await Delete(record)" class="btn btn-close" />
                     </td>
                 </tr>
             }
-            <tr>
-                <td>
-                    <button @onclick="Add">Добавить строку</button>
-                </td>
-            </tr>
         </tbody>
     </table>
+    <button @onclick="Add" class="btn btn-outline-primary">Добавить строку</button>
 }
 
 @code {
@@ -156,3 +160,15 @@ else
         }
     }
 }
+
+<style>
+    .input {
+        border: none;
+        outline: none;
+        background: transparent;
+    }
+
+    .fullwidth {
+        width: 100%;
+    }
+</style>

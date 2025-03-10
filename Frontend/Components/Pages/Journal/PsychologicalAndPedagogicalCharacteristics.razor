@@ -10,10 +10,8 @@
 
 <PageTitle>Психолого-педагогическая характеристика учебной группы</PageTitle>
 
-<h3>
-    ПСИХОЛОГО-ПЕДАГОГИЧЕСКАЯ <br />
-    ХАРАКТЕРИСТИКА УЧЕБНОЙ ГРУППЫ
-</h3>
+<h3 class="d-flex justify-content-center">ПСИХОЛОГО-ПЕДАГОГИЧЕСКАЯ</h3>
+<h3 class="d-flex justify-content-center">ХАРАКТЕРИСТИКА УЧЕБНОЙ ГРУППЫ</h3>
 
 @if (_pageData == null || _workers == null)
 {
@@ -24,7 +22,7 @@ else
     <textarea cols="80" rows="15" @bind="_pageData.Content" @bind:after="Update" />
     <p>
         Ф. И. О., должность специалиста
-        <select @bind="_pageData.WorkerId" @bind:after="Update">
+        <select @bind="_pageData.WorkerId" @bind:after="Update" class="input underline">
             <option value="">-- Выберите специалиста --</option>
             @foreach (var worker in _workers)
             {
@@ -36,7 +34,7 @@ else
         </select>
     </p>
     <p>
-        Дата <input type="date" @bind="_pageData.Date" @bind:after="Update" />
+        Дата <input type="date" @bind="_pageData.Date" @bind:after="Update" class="input underline" />
     </p>
 }
 
@@ -74,3 +72,15 @@ else
         }
     }
 }
+
+<style>
+    .input {
+        border: none;
+        outline: none;
+        background: transparent;
+    }
+
+    .underline {
+        border-bottom: 1px solid #000;
+    }
+</style>

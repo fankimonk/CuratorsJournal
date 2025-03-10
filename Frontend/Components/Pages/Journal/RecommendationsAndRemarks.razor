@@ -14,7 +14,7 @@
 
 <PageTitle>Рекомендации и замечания лиц, проверяющих работу куратора</PageTitle>
 
-<h3>РЕКОМЕНДАЦИИ И ЗАМЕЧАНИЯ ЛИЦ, ПРОВЕРЯЮЩИХ РАБОТУ КУРАТОРА</h3>
+<h3 class="d-flex justify-content-center">РЕКОМЕНДАЦИИ И ЗАМЕЧАНИЯ ЛИЦ, ПРОВЕРЯЮЩИХ РАБОТУ КУРАТОРА</h3>
 
 @if (_pageData == null || _workers == null)
 {
@@ -22,16 +22,16 @@
 }
 else
 {
-    <table class="table">
+    <table class="table table-bordered">
         <thead>
             <tr>
-                <th>Дата</th>
-                <th>
+                <th class="text-center">Дата</th>
+                <th class="text-center">
                     Кто проверил<br/>
                     (должность, фамилия)
                 </th>
-                <th>Рекомендации, замечания</th>
-                <th>
+                <th class="text-center">Рекомендации, замечания</th>
+                <th class="text-center">
                     Выполнение,<br/>
                     дата
                 </th>
@@ -42,40 +42,36 @@ else
             {
                 <tr>
                     <td>
-                        <input type="date" @bind="record.Date" @bind:after='async () => await Update(record)' />
+                        <input type="date" @bind="record.Date" @bind:after='async () => await Update(record)' class="input" />
                     </td>
                     <td>
-                        <select @bind="record.ReviewerId" @bind:after="async () => await Update(record)">
-                            <option value="">-- Выберите специалиста --</option>
+                        <select @bind="record.ReviewerId" @bind:after="async () => await Update(record)" class="input fullwidth">
+                            <option value="">(нет)</option>
                             @foreach (var worker in _workers)
                             {
                                 <option @key="worker.Id" value="@worker.Id">
-                                    @worker.Position.Name <br/>
+                                    @worker.Position.Name, <br/>
                                     @worker.LastName
                                 </option>
                             }
                         </select>
                     </td>
                     <td>
-                        <input @bind="record.Content" @bind:after='async () => await Update(record)' />
+                        <input @bind="record.Content" @bind:after='async () => await Update(record)' class="input fullwidth" />
                     </td>
                     <td>
-                        <input @bind="record.Result" @bind:after='async () => await Update(record)' /> 
+                        <input @bind="record.Result" @bind:after='async () => await Update(record)' class="input fullwidth" />
                         <br/>
-                        <input type="date" @bind="record.ExecutionDate" @bind:after='async () => await Update(record)' />
+                        <input type="date" @bind="record.ExecutionDate" @bind:after='async () => await Update(record)' class="input fullwidth" />
                     </td>
                     <td>
-                        <button @onclick="async () => await Delete(record)">Удалить</button>
+                        <button @onclick="async () => await Delete(record)" class="btn btn-close" />
                     </td>
                 </tr>
             }
-            <tr>
-                <td>
-                    <button @onclick="Add">Добавить строку</button>
-                </td>
-            </tr>
         </tbody>
     </table>
+    <button @onclick="Add" class="btn btn-outline-primary">Добавить строку</button>
 }
 
 @code {
@@ -131,3 +127,15 @@ else
         if (response.IsSuccessStatusCode) _pageData!.RecommendationsAndRemarks.Remove(record);
     }
 }
+
+<style>
+    .input {
+        border: none;
+        outline: none;
+        background: transparent;
+    }
+
+    .fullwidth {
+        width: 100%;
+    }
+</style>

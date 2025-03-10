@@ -97,7 +97,7 @@ namespace API.Controllers
                 group.AdmissionYear.ToString(),
                 curatorResponse,
                 department!.AbbreviatedName,
-                department!.Deanery!.Faculty!.AbbreviatedName
+                department!.Deanery!.Faculty!.Name
             );
 
             return Ok(titlePageResponse);
