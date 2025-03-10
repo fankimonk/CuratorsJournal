@@ -8,7 +8,7 @@ namespace Domain.Entities.JournalContent.Literature
     {
         public int Id { get; set; }
 
-        public int LiteratureId { get; set; }
+        public int? LiteratureId { get; set; }
         public LiteratureListRecord? Literature { get; set; }
 
         public string? ShortAnnotation { get; set; } = string.Empty;

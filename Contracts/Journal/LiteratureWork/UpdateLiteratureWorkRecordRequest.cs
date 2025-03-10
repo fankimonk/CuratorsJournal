@@ -2,6 +2,8 @@
 {
     public record UpdateLiteratureWorkRecordRequest
     (
+        int? LiteratureId,
+
         string? ShortAnnotaion
     );
 }

@@ -16,6 +16,7 @@ namespace API.Mappers.Journal
         {
             return new LiteratureWorkRecord
             {
+                LiteratureId = request.LiteratureId,
                 ShortAnnotation = request.ShortAnnotaion
             };
         }

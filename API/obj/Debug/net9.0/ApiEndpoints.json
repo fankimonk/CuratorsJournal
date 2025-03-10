@@ -1210,6 +1210,32 @@
     ]
   },
   {
+    "ContainingType": "API.Controllers.PersonalizedAccountingCardsController",
+    "Method": "GetIdsByJournal",
+    "RelativePath": "api/journal/personalizedaccountingcard/getidsbyjournal/{journalId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "journalId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.List\u00601[[Contracts.Journal.PersonalizedAccountingCards.PersonalizedAccountingCardIdResponse, Contracts, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
     "ContainingType": "API.Controllers.PsychologicalAndPedagogicalCharacteristicsController",
     "Method": "Update",
     "RelativePath": "api/journal/psychologicalpedagogicalcharacteristics/{id}",
@@ -1642,6 +1668,26 @@
     "ReturnTypes": [
       {
         "Type": "Contracts.Journal.Traditions.TraditionsPageResponse",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "API.Controllers.LiteratureController",
+    "Method": "GetAll",
+    "RelativePath": "api/literature",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.List\u00601[[Contracts.Literature.LiteratureResponse, Contracts, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "MediaTypes": [
           "text/plain",
           "application/json",

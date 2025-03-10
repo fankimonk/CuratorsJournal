@@ -1,0 +1,113 @@
+﻿@page "/journal/{journalId:int}/literaturework/{pageId:int}"
+@rendermode InteractiveServer
+
+@using Contracts.Journal
+@using Contracts.Journal.LiteratureWork
+@using Contracts.Literature
+@using Contracts.Mappers.Journal
+
+@inject HttpClient HttpClient
+
+<PageTitle>Работа с научно-методической и педагогической литературой</PageTitle>
+
+<h3>РАБОТА С НАУЧНО-МЕТОДИЧЕСКОЙ И ПЕДАГОГИЧЕСКОЙ ЛИТЕРАТУРОЙ</h3>
+<p>по вопросам идеологии и воспитания</p>
+
+@if (_pageData == null || _literature == null)
+{
+    <p><em>Загрузка...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Автор, название, библиографические данные</th>
+                <th>Краткая аннотация</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var record in _pageData.LiteratureWork)
+            {
+                <tr>
+                    <td>
+                        <select @bind="record.LiteratureId" @bind:after="async () => await Update(record)">
+                            <option value="">-- Выберите литературу --</option>
+                            @foreach (var l in _literature)
+                            {
+                                <option @key="l.Id" value="@l.Id">
+                                    @l.Author, "@l.Name", @l.BibliographicData
+                                </option>
+                            }
+                        </select>
+                    </td>
+                    <td>
+                        <input @bind="record.ShortAnnotation" @bind:after='async () => await Update(record)' />
+                    </td>
+                    <td>
+                        <button @onclick="async () => await Delete(record)">Удалить</button>
+                    </td>
+                </tr>
+            }
+            <tr>
+                <td>
+                    <button @onclick="Add">Добавить строку</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+}
+
+@code {
+    [Parameter]
+    public int PageId { get; set; }
+
+    [Parameter]
+    public int JournalId { get; set; }
+
+    private LiteratureWorkPageResponse? _pageData;
+
+    private List<LiteratureResponse>? _literature;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _pageData = await HttpClient.GetFromJsonAsync<LiteratureWorkPageResponse>("api/journal/literaturework/" + PageId.ToString());
+        _literature = await HttpClient.GetFromJsonAsync<List<LiteratureResponse>>("api/literature/");
+    }
+
+    private async Task Update(LiteratureWorkRecordResponse record)
+    {
+        Console.WriteLine("Update literature work");
+
+        var request = record.ToRequest();
+        var response = await HttpClient.PutAsJsonAsync<UpdateLiteratureWorkRecordRequest>("api/journal/literaturework/" + record.Id, request);
+
+        if (!response.IsSuccessStatusCode)
+        {
+            //TODO
+        }
+    }
+
+    private async Task Add()
+    {
+        Console.WriteLine("Add literature work");
+
+        var request = new CreateLiteratureWorkRecordRequest(null, null, PageId);
+        var response = await HttpClient.PostAsJsonAsync<CreateLiteratureWorkRecordRequest>("api/journal/literaturework", request);
+
+        if (response.IsSuccessStatusCode)
+        {
+            var addedRecord = await response.Content.ReadFromJsonAsync<LiteratureWorkRecordResponse>();
+            _pageData!.LiteratureWork.Add(addedRecord!);
+        }
+    }
+
+    private async Task Delete(LiteratureWorkRecordResponse record)
+    {
+        Console.WriteLine("Delete literature work");
+
+        var response = await HttpClient.DeleteAsync("api/journal/literaturework/" + record.Id);
+
+        if (response.IsSuccessStatusCode) _pageData!.LiteratureWork.Remove(record);
+    }
+}

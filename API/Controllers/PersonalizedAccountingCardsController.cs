@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace API.Controllers
 {
     [Route("api/journal/personalizedaccountingcard")]
+    [ApiController]
     public class PersonalizedAccountingCardsController(IPersonalizedAccountingCardsRepository entityRepository) : ControllerBase
     {
         private readonly IPersonalizedAccountingCardsRepository _entityRepository = entityRepository;
@@ -33,6 +34,15 @@ namespace API.Controllers
             if (updatedCard == null) return BadRequest();
 
             var response = updatedCard.ToResponse();
+            return Ok(response);
+        }
+
+        [HttpGet("getidsbyjournal/{journalId}")]
+        public async Task<ActionResult<List<PersonalizedAccountingCardIdResponse>>> GetIdsByJournal([FromRoute] int journalId)
+        {
+            var cards = await _entityRepository.GetByJournalId(journalId);
+
+            var response = cards.Select(c => new PersonalizedAccountingCardIdResponse(c.Id));
             return Ok(response);
         }
     }

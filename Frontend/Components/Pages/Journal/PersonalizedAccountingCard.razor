@@ -1,0 +1,82 @@
+﻿@page "/journal/{journalId:int}/personalizedaccountingcard/{pageId:int}"
+@rendermode InteractiveServer
+
+@using Contracts.Journal.PersonalizedAccountingCards
+@using Contracts.Students
+@using Contracts.Mappers.Journal.PersonalizedAccountingCards
+
+@inject HttpClient HttpClient
+
+<PageTitle>Карта персонифицированного учета</PageTitle>
+
+<h3>КАРТА ПЕРСОНИФИЦИРОВАННОГО УЧЕТА</h3>
+
+@if (_pageData == null || _students == null)
+{
+    <p><em>Загрузка...</em></p>
+}
+else
+{
+    <p>
+        <b>Фамилия, имя отчество </b>
+        <select @bind="_pageData.StudentId" @bind:after="Update">
+            <option value="">-- Выберите студента --</option>
+            @foreach (var student in _students)
+            {
+                <option @key="student.Id" value="@student.Id">@student.LastName @student.FirstName @student.MiddleName</option>
+            }
+        </select>
+    </p>
+    <p>
+        Дата рождения 
+        <input type="date" @bind="_pageData.BirthDate" @bind:after="Update" />
+    </p>
+    <p>
+        Пасспортные данные 
+        <input @bind="_pageData.PassportData" @bind:after="Update" />
+    </p>
+    <p>
+        гражданство 
+        <input @bind="_pageData.Citizenship" @bind:after="Update" />
+    </p>
+    <p>
+        Окончил УО 
+        <input @bind="_pageData.GraduatedEducationalInstitution" @bind:after="Update" />
+    </p>
+    <p>
+        Место и адрес проживания в период обучения 
+        <input @bind="_pageData.ResidentialAddress" @bind:after="Update" />
+    </p>
+}
+
+@code {
+    [Parameter]
+    public int PageId { get; set; }
+
+    [Parameter]
+    public int JournalId { get; set; }
+
+    private PersonalizedAccountingCardResponse? _pageData;
+
+    private List<StudentResponse>? _students;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _pageData = await HttpClient.GetFromJsonAsync<PersonalizedAccountingCardResponse>("api/journal/personalizedaccountingcard/" + PageId.ToString());
+        _students = await HttpClient.GetFromJsonAsync<List<StudentResponse>>("api/student/getbyjournal/" + JournalId.ToString());
+    }
+
+    private async Task Update()
+    {
+        Console.WriteLine("Update accounting card");
+
+        var request = _pageData!.ToRequest();
+        var response = await HttpClient.PutAsJsonAsync<UpdatePersonalizedAccountingCardRequest>
+            ("api/journal/personalizedaccountingcard/" + _pageData!.Id, request);
+
+        if (!response.IsSuccessStatusCode)
+        {
+            //TODO
+        }
+    }
+}

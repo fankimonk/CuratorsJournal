@@ -8,5 +8,6 @@ namespace DataAccess.Interfaces.PageRepositories.PersonalizedAccountingCards
         Task<PersonalizedAccountingCard?> CreateAsync(PersonalizedAccountingCard characteristics);
         Task<PersonalizedAccountingCard?> UpdateAsync(int id, PersonalizedAccountingCard characteristics);
         Task<bool> DeleteAsync(int id);
+        Task<List<PersonalizedAccountingCard>> GetByJournalId(int id);
     }
 }

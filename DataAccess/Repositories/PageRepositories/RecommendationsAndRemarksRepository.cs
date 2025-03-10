@@ -12,7 +12,7 @@ namespace DataAccess.Repositories.PageRepositories
         {
             if (record == null) return null;
             if (!await PageExists(record.PageId)) return null;
-            if (!await WorkerExists(record.ReviewerId)) return null;
+            if (record.ReviewerId != null && !await WorkerExists((int)record.ReviewerId)) return null;
 
             var createdRecord = await _dbContext.RecomendationsAndRemarks.AddAsync(record);
 
@@ -39,7 +39,7 @@ namespace DataAccess.Repositories.PageRepositories
         public async Task<RecomendationsAndRemarksRecord?> UpdateAsync(int id, RecomendationsAndRemarksRecord record)
         {
             if (record == null) return null;
-            if (!await WorkerExists(record.ReviewerId)) return null;
+            if (record.ReviewerId != null && !await WorkerExists((int)record.ReviewerId)) return null;
 
             var recordToUpdate = await _dbContext.RecomendationsAndRemarks.FirstOrDefaultAsync(p => p.Id == id);
             if (recordToUpdate == null) return null;

@@ -10,8 +10,12 @@ namespace DataAccess.Repositories.PageRepositories
         public async Task<StudentListRecord?> CreateAsync(StudentListRecord record)
         {
             if (record == null) return null;
-            if (!await StudentExists(record.StudentId)) return null;
-            if (record.PersonalizedAccountingCardId != null && !await CardExists((int)record.PersonalizedAccountingCardId)) return null;
+            if (record.StudentId != null && !await StudentExists((int)record.StudentId)) return null;
+            if (record.PersonalizedAccountingCardId != null)
+            {
+                if (!await CardExists((int)record.PersonalizedAccountingCardId)) return null;
+                if (record.StudentId != null && !await StudentsMatch((int)record.StudentId, (int)record.PersonalizedAccountingCardId)) return null;
+            }
             if (!await PageExists(record.PageId)) return null;
 
             var createdRecord = await _dbContext.StudentList.AddAsync(record);
@@ -40,10 +44,12 @@ namespace DataAccess.Repositories.PageRepositories
         {
             if (record == null) return null;
 
+            if (record.StudentId != null && !await StudentExists((int)record.StudentId)) return null;
+
             if (record.PersonalizedAccountingCardId != null)
             {
                 if (!await CardExists((int)record.PersonalizedAccountingCardId)) return null;
-                if (!await StudentsMatch(record.StudentId, (int)record.PersonalizedAccountingCardId)) return null;
+                if (record.StudentId != null && !await StudentsMatch((int)record.StudentId, (int)record.PersonalizedAccountingCardId)) return null;
             }
 
             var recordToUpdate = await _dbContext.StudentList.FirstOrDefaultAsync(p => p.Id == id);
@@ -51,6 +57,7 @@ namespace DataAccess.Repositories.PageRepositories
 
             recordToUpdate.Number = record.Number;
             recordToUpdate.PersonalizedAccountingCardId = record.PersonalizedAccountingCardId;
+            recordToUpdate.StudentId = record.StudentId;
 
             await _dbContext.SaveChangesAsync();
             return recordToUpdate;

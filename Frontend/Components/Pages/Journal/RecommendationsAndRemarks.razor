@@ -1,0 +1,133 @@
+﻿@page "/journal/{journalId:int}/recommendationsandremarks/{pageId:int}"
+@rendermode InteractiveServer
+
+@using Contracts.Journal
+@using Contracts.Journal.ContactPhones
+@using Contracts.Journal.PersonalizedAccountingCards
+@using Contracts.Journal.RecommendationsAndRemarks
+@using Contracts.Journal.StudentList
+@using Contracts.Mappers.Journal
+@using Contracts.Students
+@using Contracts.Workers
+
+@inject HttpClient HttpClient
+
+<PageTitle>Рекомендации и замечания лиц, проверяющих работу куратора</PageTitle>
+
+<h3>РЕКОМЕНДАЦИИ И ЗАМЕЧАНИЯ ЛИЦ, ПРОВЕРЯЮЩИХ РАБОТУ КУРАТОРА</h3>
+
+@if (_pageData == null || _workers == null)
+{
+    <p><em>Загрузка...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Дата</th>
+                <th>
+                    Кто проверил<br/>
+                    (должность, фамилия)
+                </th>
+                <th>Рекомендации, замечания</th>
+                <th>
+                    Выполнение,<br/>
+                    дата
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var record in _pageData.RecommendationsAndRemarks)
+            {
+                <tr>
+                    <td>
+                        <input type="date" @bind="record.Date" @bind:after='async () => await Update(record)' />
+                    </td>
+                    <td>
+                        <select @bind="record.ReviewerId" @bind:after="async () => await Update(record)">
+                            <option value="">-- Выберите специалиста --</option>
+                            @foreach (var worker in _workers)
+                            {
+                                <option @key="worker.Id" value="@worker.Id">
+                                    @worker.Position.Name <br/>
+                                    @worker.LastName
+                                </option>
+                            }
+                        </select>
+                    </td>
+                    <td>
+                        <input @bind="record.Content" @bind:after='async () => await Update(record)' />
+                    </td>
+                    <td>
+                        <input @bind="record.Result" @bind:after='async () => await Update(record)' /> 
+                        <br/>
+                        <input type="date" @bind="record.ExecutionDate" @bind:after='async () => await Update(record)' />
+                    </td>
+                    <td>
+                        <button @onclick="async () => await Delete(record)">Удалить</button>
+                    </td>
+                </tr>
+            }
+            <tr>
+                <td>
+                    <button @onclick="Add">Добавить строку</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+}
+
+@code {
+    [Parameter]
+    public int PageId { get; set; }
+
+    [Parameter]
+    public int JournalId { get; set; }
+
+    private RecommendationsAndRemarksPageResponse? _pageData;
+
+    private List<WorkerResponse>? _workers;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _pageData = await HttpClient.GetFromJsonAsync<RecommendationsAndRemarksPageResponse>("api/journal/recommendationsandremarks/" + PageId.ToString());
+        _workers = await HttpClient.GetFromJsonAsync<List<WorkerResponse>>("api/worker/");
+    }
+
+    private async Task Update(RecommendationsAndRemarksRecordResponse record)
+    {
+        Console.WriteLine("Update recommendation");
+
+        var request = record.ToRequest();
+        var response = await HttpClient.PutAsJsonAsync<UpdateRecommendationsAndRemarksRecordRequest>("api/journal/recommendationsandremarks/" + record.Id, request);
+
+        if (!response.IsSuccessStatusCode)
+        {
+            //TODO
+        }
+    }
+
+    private async Task Add()
+    {
+        Console.WriteLine("Add recommendation");
+
+        var request = new CreateRecommendationsAndRemarksRecordRequest(null, null, null, null, null, PageId);
+        var response = await HttpClient.PostAsJsonAsync<CreateRecommendationsAndRemarksRecordRequest>("api/journal/recommendationsandremarks", request);
+
+        if (response.IsSuccessStatusCode)
+        {
+            var addedRecord = await response.Content.ReadFromJsonAsync<RecommendationsAndRemarksRecordResponse>();
+            _pageData!.RecommendationsAndRemarks.Add(addedRecord!);
+        }
+    }
+
+    private async Task Delete(RecommendationsAndRemarksRecordResponse record)
+    {
+        Console.WriteLine("Delete recommendation");
+
+        var response = await HttpClient.DeleteAsync("api/journal/recommendationsandremarks/" + record.Id);
+
+        if (response.IsSuccessStatusCode) _pageData!.RecommendationsAndRemarks.Remove(record);
+    }
+}

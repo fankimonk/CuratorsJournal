@@ -18,8 +18,7 @@ namespace DataAccess.Configurations
             builder
                 .HasOne(rr => rr.Reviewer)
                 .WithMany(r => r.RecomendationsAndRemarks)
-                .HasForeignKey(rr => rr.ReviewerId)
-                .IsRequired();
+                .HasForeignKey(rr => rr.ReviewerId);
 
             builder
                 .HasOne(rr => rr.Page)

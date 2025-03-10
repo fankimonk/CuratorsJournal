@@ -17,6 +17,7 @@ namespace API.Mappers.Journal
             return new StudentListRecord
             {
                 Number = request.Number,
+                StudentId = request.StudentId,
                 PersonalizedAccountingCardId = request.PersonalizedAccountingCardId
             };
         }

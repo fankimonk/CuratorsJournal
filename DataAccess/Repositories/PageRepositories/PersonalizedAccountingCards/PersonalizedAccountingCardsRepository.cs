@@ -57,6 +57,13 @@ namespace DataAccess.Repositories.PageRepositories.PersonalizedAccountingCards
             return cardToUpdate;
         }
 
+        public async Task<List<PersonalizedAccountingCard>> GetByJournalId(int id)
+        {
+            return await _dbContext.PersonalizedAccountingCards
+                .Include(c => c.Page).AsNoTracking()
+                .Where(c => c.Page.JournalId == id).ToListAsync();
+        }
+
         public async Task<bool> PageExists(int id) => await PageExists(id, PageTypes.PersonalizedAccountingCardPage);
 
         private async Task<bool> StudentExists(int id) =>

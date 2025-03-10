@@ -21,9 +21,7 @@ namespace DataAccess.Configurations
             builder
                 .HasOne(lw => lw.Literature)
                 .WithMany(l => l.LiteratureWorkRecords)
-                .HasForeignKey(lw => lw.LiteratureId)
-                .IsRequired()
-                .OnDelete(DeleteBehavior.Restrict);
+                .HasForeignKey(lw => lw.LiteratureId);
         }
     }
 }

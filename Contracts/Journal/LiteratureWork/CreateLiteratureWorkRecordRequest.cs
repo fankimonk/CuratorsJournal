@@ -4,8 +4,7 @@ namespace Contracts.Journal.LiteratureWork
 {
     public record CreateLiteratureWorkRecordRequest
     (
-        [Required]
-        int LiteratureId,
+        int? LiteratureId,
 
         string? ShortAnnotaion,
 

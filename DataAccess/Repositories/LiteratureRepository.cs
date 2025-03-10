@@ -1,5 +1,6 @@
 ﻿using DataAccess.Interfaces;
 using Domain.Entities.JournalContent.Literature;
+using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess.Repositories
 {
@@ -15,9 +16,9 @@ namespace DataAccess.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<List<LiteratureListRecord>> GetAllAsync()
+        public async Task<List<LiteratureListRecord>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            return await _dbContext.LiteratureList.AsNoTracking().ToListAsync();
         }
 
         public Task<LiteratureListRecord?> UpdateAsync(int id, LiteratureListRecord literature)

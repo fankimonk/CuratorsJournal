@@ -4,17 +4,12 @@ namespace Contracts.Journal.RecommendationsAndRemarks
 {
     public record UpdateRecommendationsAndRemarksRecordRequest
     (
-        [Required]
-        DateOnly Date,
-        [Required]
-        DateOnly ExecutionDate,
+        DateOnly? Date,
+        DateOnly? ExecutionDate,
 
-        [Required]
-        string Content,
-        [Required]
-        string Result,
+        string? Content,
+        string? Result,
 
-        [Required]
-        int ReviewerId
+        int? ReviewerId
     );
 }

@@ -11,7 +11,7 @@ namespace DataAccess.Repositories.PageRepositories
         {
             if (record == null) return null;
             if (!await PageExists(record.PageId)) return null;
-            if (!await LiteratureExists(record.LiteratureId)) return null;
+            if (record.LiteratureId != null && !await LiteratureExists((int)record.LiteratureId)) return null;
 
             var createdRecord = await _dbContext.LiteratureWork.AddAsync(record);
 
@@ -38,11 +38,13 @@ namespace DataAccess.Repositories.PageRepositories
         public async Task<LiteratureWorkRecord?> UpdateAsync(int id, LiteratureWorkRecord record)
         {
             if (record == null) return null;
+            if (record.LiteratureId != null && !await LiteratureExists((int)record.LiteratureId)) return null;
 
             var recordToUpdate = await _dbContext.LiteratureWork.FirstOrDefaultAsync(p => p.Id == id);
             if (recordToUpdate == null) return null;
 
             recordToUpdate.ShortAnnotation = record.ShortAnnotation;
+            recordToUpdate.LiteratureId = record.LiteratureId;
 
             await _dbContext.SaveChangesAsync();
             return recordToUpdate;

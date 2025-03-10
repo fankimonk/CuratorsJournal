@@ -4,12 +4,9 @@ namespace Contracts.Journal.StudentList
 {
     public record CreateStudentListRecordRequest
     (
-        [Required]
-        int Number,
+        int? Number,
 
-        [Required]
-        int StudentId,
-
+        int? StudentId,
         int? PersonalizedAccountingCardId,
 
         [Required]
