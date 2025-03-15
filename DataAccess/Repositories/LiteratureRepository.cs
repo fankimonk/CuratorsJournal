@@ -17,9 +17,13 @@ namespace DataAccess.Repositories
             return createdLiterature.Entity;
         }
 
-        public Task<bool> DeleteAsync(int id)
+        public async Task<bool> DeleteAsync(int id)
         {
-            throw new NotImplementedException();
+            var deletedRows = await _dbContext.LiteratureList.Where(c => c.Id == id).ExecuteDeleteAsync();
+            if (deletedRows < 1) return false;
+
+            await _dbContext.SaveChangesAsync();
+            return true;
         }
 
         public async Task<List<LiteratureListRecord>> GetAllAsync()
@@ -27,9 +31,19 @@ namespace DataAccess.Repositories
             return await _dbContext.LiteratureList.AsNoTracking().ToListAsync();
         }
 
-        public Task<LiteratureListRecord?> UpdateAsync(int id, LiteratureListRecord literature)
+        public async Task<LiteratureListRecord?> UpdateAsync(int id, LiteratureListRecord literature)
         {
-            throw new NotImplementedException();
+            if (literature == null) return null;
+
+            var literatureToUpdate = await _dbContext.LiteratureList.FirstOrDefaultAsync(p => p.Id == id);
+            if (literatureToUpdate == null) return null;
+
+            literatureToUpdate.Author = literature.Author;
+            literatureToUpdate.Name = literature.Name;
+            literatureToUpdate.BibliographicData = literature.BibliographicData;
+
+            await _dbContext.SaveChangesAsync();
+            return literatureToUpdate;
         }
     }
 }

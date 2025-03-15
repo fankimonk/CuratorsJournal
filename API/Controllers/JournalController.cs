@@ -2,9 +2,7 @@
 using Contracts.Journal.Pages;
 using Application.Interfaces;
 using DataAccess.Interfaces;
-using Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
-using System.Linq;
 using Contracts.Curator;
 
 namespace API.Controllers

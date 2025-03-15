@@ -2,13 +2,20 @@
 
 namespace Contracts.Literature
 {
-    public record UpdateLiteratureRequest
+    public class UpdateLiteratureRequest
     (
+        string author,
+        string name,
+        string bibliographicData
+    )
+    {
         [Required]
-        string Author,
+        public string Author { get; set; } = author;
+
         [Required]
-        string Name,
+        public string Name { get; set; } = name;
+
         [Required]
-        string BibliographicData
-    );
+        public string BibliographicData { get; set; } = bibliographicData;
+    }
 }

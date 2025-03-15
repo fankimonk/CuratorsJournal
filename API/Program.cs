@@ -66,6 +66,7 @@ builder.Services.AddScoped<IHealthCardAttributesRepository, HealthCardAttributes
 builder.Services.AddScoped<IInformationHoursAccountingRepository, InformationHoursAccountingRepository>();
 builder.Services.AddScoped<IWorkersRepository, WorkersRepository>();
 builder.Services.AddScoped<IAcademicYearsRepository, AcademicYearsRepository>();
+builder.Services.AddScoped<IFacultiesRepository, FacultiesRepository>();
 
 builder.Services.AddScoped<IGroupsService, GroupsService>();
 builder.Services.AddScoped<IJournalsService, JournalsService>();

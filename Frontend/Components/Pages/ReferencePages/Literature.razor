@@ -2,6 +2,9 @@
 @rendermode InteractiveServer
 
 @using Contracts.Literature
+@using Frontend.Components.Buttons
+@using Frontend.Components.Utils
+@using Microsoft.AspNetCore.Components.QuickGrid
 
 @inject HttpClient HttpClient
 
@@ -15,45 +18,74 @@
 }
 else
 {
+    <AddButton @onclick="ShowAddModal">Добавить</AddButton>
 
-}
+    <QuickGrid Items="_literature" class="table">
+        <PropertyColumn Property="@(l => l.Author)" Sortable="true" Title="Автор" class="align-middle" />
+        <PropertyColumn Property="@(l => l.Name)" Sortable="true" Title="Название" class="align-middle" />
+        <PropertyColumn Property="@(l => l.BibliographicData)" Title="Библиографические данные" class="align-middle" />
+        <TemplateColumn class="text-end">
+            <EditButton @onclick="() => ShowEditModal(context)" />
+            <DeleteButton @onclick="async () => await Delete(context)" />
+        </TemplateColumn>
+    </QuickGrid>
 
-@* <button @onclick="ToggleShowForm" class="btn btn-primary">
-    @if (!_showForm)
-    {
-        @("Показать форму")
-    }
-    else
-    {
-        @("Скрыть форму")
-    }
-</button> *@
-
-@if (_showForm)
-{
-    <div class="row">
-        <div class="col-md-4">
-            <EditForm method="post" Model="LiteratureToAdd" OnValidSubmit="Add" FormName="add" Enhance>
-                <DataAnnotationsValidator />
-                <ValidationSummary class="text-danger" />
-                <div class="mb-3">
-                    <label for="author" class="form-label">Автор: </label>
-                    <InputText id="author" @bind-Value="LiteratureToAdd.Author" class="form-control" />
-                    <ValidationMessage For="() => LiteratureToAdd.Author" class="text-danger" />
-                </div>
-                <div class="mb-3">
-                    <label for="name" class="form-label">Название: </label>
-                    <InputText id="name" @bind-Value="LiteratureToAdd.Name" class="form-control" />
-                    <ValidationMessage For="() => LiteratureToAdd.Name" class="text-danger" />
-                </div>
-                <div class="mb-3">
-                    <label for="bibliographicData" class="form-label">Библиографические данные: </label>
-                    <InputText id="bibliographicData" @bind-Value="LiteratureToAdd.BibliographicData" class="form-control" />
-                    <ValidationMessage For="() => LiteratureToAdd.BibliographicData" class="text-danger" />
-                </div>
-                <button type="submit" class="btn btn-primary">Добавить</button>
-            </EditForm>
+    <ModalForm IsVisible="_isAddModalVisible" OnClose="CloseModal">
+        <div class="row">
+            <div class="col-md-12">
+                <EditForm method="post" Model="LiteratureToAdd" OnValidSubmit="Add" OnInvalidSubmit="ShowErrorAlert" FormName="add" Enhance>
+                    <DataAnnotationsValidator />
+                    <Alert Type="success" IsVisible="_isSuccessAlertVisible" OnClose="CloseSuccessAlert" />
+                    <Alert Type="error" IsVisible="_isErrorAlertVisible" OnClose="CloseErrorAlert">
+                        <ValidationSummary />
+                    </Alert>
+                    <div class="mb-3">
+                        <label for="author" class="form-label">Автор: </label>
+                        <InputText id="author" @bind-Value="LiteratureToAdd.Author" class="form-control" />
+                    </div>
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Название: </label>
+                        <InputText id="name" @bind-Value="LiteratureToAdd.Name" class="form-control" />
+                    </div>
+                    <div class="mb-3">
+                        <label for="bibliographicData" class="form-label">Библиографические данные: </label>
+                        <InputText id="bibliographicData" @bind-Value="LiteratureToAdd.BibliographicData" class="form-control" />
+                    </div>
+                    <AddButton type="submit">Добавить</AddButton>
+                </EditForm>
+            </div>
         </div>
+    </ModalForm>
+
+    <ModalForm IsVisible="_isEditModalVisible" OnClose="CloseModal">
+        <div class="row">
+            <div class="col-md-12">
+                <EditForm method="put" Model="LiteratureToEdit" OnValidSubmit="Update" OnInvalidSubmit="ShowErrorAlert" FormName="edit" Enhance>
+                    <DataAnnotationsValidator />
+                    <Alert Type="success" IsVisible="_isSuccessAlertVisible" OnClose="CloseSuccessAlert" />
+                    <Alert Type="error" IsVisible="_isErrorAlertVisible" OnClose="CloseErrorAlert">
+                        <ValidationSummary />
+                    </Alert>
+                    <div class="mb-3">
+                        <label for="author" class="form-label">Автор: </label>
+                        <InputText id="author" @bind-Value="LiteratureToEdit.Author" class="form-control" />
+                    </div>
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Название: </label>
+                        <InputText id="name" @bind-Value="LiteratureToEdit.Name" class="form-control" />
+                    </div>
+                    <div class="mb-3">
+                        <label for="bibliographicData" class="form-label">Библиографические данные: </label>
+                        <InputText id="bibliographicData" @bind-Value="LiteratureToEdit.BibliographicData" class="form-control" />
+                    </div>
+                    <EditButton type="submit">Редактировать</EditButton>
+                </EditForm>
+            </div>
+        </div>
+    </ModalForm>
+
+    <div class="alert-bottom">
+        <Alert Type="error" IsVisible="_isServerErrorAlertVisible" OnClose="CloseServerErrorAlert">@_errorMessage</Alert>
     </div>
 }
 
@@ -61,16 +93,30 @@ else
     [SupplyParameterFromForm]
     public CreateLiteratureRequest LiteratureToAdd { get; set; } = new("", "", "");
 
-    private List<LiteratureResponse>? _literature;
+    [SupplyParameterFromForm]
+    public UpdateLiteratureRequest LiteratureToEdit { get; set; } = new("", "", "");
+    private int _literatureToEditId = -1;
 
-    private bool _showForm = true;
+    private IQueryable<LiteratureResponse>? _literature;
+
+    private bool _isModalVisible = false;
+    private bool _isAddModal = true;
+
+    private bool _isAddModalVisible { get => _isModalVisible && _isAddModal; }
+    private bool _isEditModalVisible { get => _isModalVisible && !_isAddModal; }
+
+    private bool _isSuccessAlertVisible = false;
+    private bool _isErrorAlertVisible = false;
+
+    private bool _isServerErrorAlertVisible = false;
+    private string? _errorMessage = "";
 
     protected override async Task OnInitializedAsync()
     {
-        _literature = await HttpClient.GetFromJsonAsync<List<LiteratureResponse>>("api/literature/");
+        var literature = await HttpClient.GetFromJsonAsync<List<LiteratureResponse>>("api/literature/");
+        if (literature != null)
+            _literature = literature.AsQueryable();
     }
-
-    private void ToggleShowForm() => _showForm = !_showForm;
 
     public async Task Add()
     {
@@ -80,7 +126,117 @@ else
 
         if (response.IsSuccessStatusCode)
         {
-            //TODO
+            var added = await response.Content.ReadFromJsonAsync<LiteratureResponse>();
+            _literature = _literature!.Append(added!);
+
+            ShowSuccessAlert();
+        }
+        else
+        {
+            var errorMessage = await response.Content.ReadAsStringAsync();
+            _errorMessage = errorMessage.Split('\n').FirstOrDefault();
+            ShowServerErrorAlert();
         }
     }
+
+    public async Task Update()
+    {
+        Console.WriteLine("Update " + _literatureToEditId);
+
+        var request = new UpdateLiteratureRequest(LiteratureToEdit.Author, LiteratureToEdit.Name, LiteratureToEdit.BibliographicData);
+        var response = await HttpClient.PutAsJsonAsync<UpdateLiteratureRequest>("api/literature/" + _literatureToEditId, request);
+
+        if (response.IsSuccessStatusCode)
+        {
+            var updated = await response.Content.ReadFromJsonAsync<LiteratureResponse>();
+            var literatureToUpdate = _literature!.FirstOrDefault(l => l.Id == updated!.Id);
+
+            literatureToUpdate!.Author = updated!.Author;
+            literatureToUpdate.Name = updated.Name;
+            literatureToUpdate.BibliographicData = updated.BibliographicData;
+
+            ShowSuccessAlert();
+        }
+        else
+        {
+            var errorMessage = await response.Content.ReadAsStringAsync();
+            _errorMessage = errorMessage.Split('\n').FirstOrDefault();
+            ShowServerErrorAlert();
+        }
+    }
+
+    public async Task Delete(LiteratureResponse literature)
+    {
+        Console.WriteLine("Delete " + literature.Id);
+
+        var response = await HttpClient.DeleteAsync("api/literature/" + literature.Id);
+
+        if (response.IsSuccessStatusCode)
+        {
+            _literature = _literature!.Where(l => l.Id != literature.Id);
+        }
+        else
+        {
+            var errorMessage = await response.Content.ReadAsStringAsync();
+            _errorMessage = errorMessage.Split('\n').FirstOrDefault();
+            ShowServerErrorAlert();
+        }
+    }
+
+    private void ShowAddModal()
+    {
+        _isAddModal = true;
+        _isModalVisible = true;
+    }
+
+    private void ShowEditModal(LiteratureResponse literature)
+    {
+        _literatureToEditId = literature.Id;
+        LiteratureToEdit = new UpdateLiteratureRequest(literature.Author, literature.Name, literature.BibliographicData);
+        _isAddModal = false;
+        _isModalVisible = true;
+    }
+
+    private void CloseModal()
+    {
+        LiteratureToAdd = new("", "", "");
+        _literatureToEditId = -1;
+        LiteratureToEdit = new("", "", "");
+        _isModalVisible = false;
+        CloseSuccessAlert();
+        CloseErrorAlert();
+        CloseServerErrorAlert();
+    }
+
+    private void CloseSuccessAlert() => _isSuccessAlertVisible = false;
+
+    private void ShowSuccessAlert()
+    {
+        CloseErrorAlert();
+        _isSuccessAlertVisible = true;
+    }
+
+    private void CloseErrorAlert() => _isErrorAlertVisible = false;
+
+    private void ShowErrorAlert()
+    {
+        CloseSuccessAlert();
+        _isErrorAlertVisible = true;
+    }
+
+    private void CloseServerErrorAlert() 
+    {
+        _isServerErrorAlertVisible = false;
+        _errorMessage = "";
+    }
+
+    private void ShowServerErrorAlert() => _isServerErrorAlertVisible = true;
 }
+
+<style>
+    .alert-bottom {
+        position: fixed;
+        bottom: 0;
+        z-index: 1001;
+    }
+</style>

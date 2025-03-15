@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "VREydyOnVOY+EVAdSdmARijxMqtlj/J7x11PALcoYJ0=",
+  "Hash": "J+iT0WgP0kvRFZXxuj/zVRBbSbxQic35QUuLITgJ0Cw=",
   "Source": "Frontend",
   "BasePath": "_content/Frontend",
   "Mode": "Default",
@@ -143,6 +143,27 @@
       "OriginalItemSpec": "C:\\Dev\\Web\\CuratorsJournal\\Frontend\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.css.map"
     },
     {
+      "Identity": "C:\\Dev\\Web\\CuratorsJournal\\Frontend\\obj\\Debug\\net9.0\\compressed\\3gin1ph7ub-25o87uqmvr.gz",
+      "SourceId": "Microsoft.AspNetCore.Components.QuickGrid",
+      "SourceType": "Package",
+      "ContentRoot": "C:\\Dev\\Web\\CuratorsJournal\\Frontend\\obj\\Debug\\net9.0\\compressed\\",
+      "BasePath": "_content/Microsoft.AspNetCore.Components.QuickGrid",
+      "RelativePath": "Microsoft.AspNetCore.Components.QuickGrid.25o87uqmvr.bundle.scp.css.gz",
+      "AssetKind": "All",
+      "AssetMode": "Reference",
+      "AssetRole": "Alternative",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "C:\\Users\\kiril\\.nuget\\packages\\microsoft.aspnetcore.components.quickgrid\\9.0.3\\staticwebassets\\Microsoft.AspNetCore.Components.QuickGrid.25o87uqmvr.bundle.scp.css",
+      "AssetTraitName": "Content-Encoding",
+      "AssetTraitValue": "gzip",
+      "Fingerprint": "5tqo44gyv3",
+      "Integrity": "R868nQYiRJmInncB4hqIN+LGaLDkdWBhE2rlxj8Iuco=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "C:\\Users\\kiril\\.nuget\\packages\\microsoft.aspnetcore.components.quickgrid\\9.0.3\\staticwebassets\\Microsoft.AspNetCore.Components.QuickGrid.25o87uqmvr.bundle.scp.css"
+    },
+    {
       "Identity": "C:\\Dev\\Web\\CuratorsJournal\\Frontend\\obj\\Debug\\net9.0\\compressed\\3vg6g6wpei-khv3u5hwcm.gz",
       "SourceId": "Frontend",
       "SourceType": "Discovered",
@@ -183,6 +204,27 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "C:\\Dev\\Web\\CuratorsJournal\\Frontend\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.js.map"
+    },
+    {
+      "Identity": "C:\\Dev\\Web\\CuratorsJournal\\Frontend\\obj\\Debug\\net9.0\\compressed\\501s81g6ey-rnr89wl30t.gz",
+      "SourceId": "Frontend",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Dev\\Web\\CuratorsJournal\\Frontend\\obj\\Debug\\net9.0\\compressed\\",
+      "BasePath": "_content/Frontend",
+      "RelativePath": "icons/trash#[.{fingerprint=rnr89wl30t}]?.svg.gz",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Alternative",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "C:\\Dev\\Web\\CuratorsJournal\\Frontend\\wwwroot\\icons\\trash.svg",
+      "AssetTraitName": "Content-Encoding",
+      "AssetTraitValue": "gzip",
+      "Fingerprint": "wp6q1t5gcw",
+      "Integrity": "hCk8ZCtf0wxVty2DvJoz3LKmRQOZXp97KC13GIEA4Js=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "C:\\Dev\\Web\\CuratorsJournal\\Frontend\\wwwroot\\icons\\trash.svg"
     },
     {
       "Identity": "C:\\Dev\\Web\\CuratorsJournal\\Frontend\\obj\\Debug\\net9.0\\compressed\\5357ic02i8-d7shbmvgxk.gz",
@@ -878,6 +920,27 @@
       "OriginalItemSpec": "C:\\Dev\\Web\\CuratorsJournal\\Frontend\\wwwroot\\app.css"
     },
     {
+      "Identity": "C:\\Dev\\Web\\CuratorsJournal\\Frontend\\obj\\Debug\\net9.0\\compressed\\unlu0xluo6-eu7w3d5g1a.gz",
+      "SourceId": "Microsoft.AspNetCore.Components.QuickGrid",
+      "SourceType": "Package",
+      "ContentRoot": "C:\\Dev\\Web\\CuratorsJournal\\Frontend\\obj\\Debug\\net9.0\\compressed\\",
+      "BasePath": "_content/Microsoft.AspNetCore.Components.QuickGrid",
+      "RelativePath": "QuickGrid.razor.js.gz",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Alternative",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "C:\\Users\\kiril\\.nuget\\packages\\microsoft.aspnetcore.components.quickgrid\\9.0.3\\staticwebassets\\QuickGrid.razor.js",
+      "AssetTraitName": "Content-Encoding",
+      "AssetTraitValue": "gzip",
+      "Fingerprint": "w35qr20jze",
+      "Integrity": "XJ/VwVGZppAEmCsH3lYr55tIOxGu//a/BTyrK3XCLB4=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "C:\\Users\\kiril\\.nuget\\packages\\microsoft.aspnetcore.components.quickgrid\\9.0.3\\staticwebassets\\QuickGrid.razor.js"
+    },
+    {
       "Identity": "C:\\Dev\\Web\\CuratorsJournal\\Frontend\\obj\\Debug\\net9.0\\compressed\\ut7022pklr-cosvhxvwiu.gz",
       "SourceId": "Frontend",
       "SourceType": "Discovered",
@@ -920,12 +983,12 @@
       "OriginalItemSpec": "C:\\Dev\\Web\\CuratorsJournal\\Frontend\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.min.js"
     },
     {
-      "Identity": "C:\\Dev\\Web\\CuratorsJournal\\Frontend\\obj\\Debug\\net9.0\\compressed\\wkaqiq4loj-3t1u8wvsoe.gz",
+      "Identity": "C:\\Dev\\Web\\CuratorsJournal\\Frontend\\obj\\Debug\\net9.0\\compressed\\wkaqiq4loj-3oqa5jn5xg.gz",
       "SourceId": "Frontend",
       "SourceType": "Computed",
       "ContentRoot": "C:\\Dev\\Web\\CuratorsJournal\\Frontend\\obj\\Debug\\net9.0\\compressed\\",
       "BasePath": "_content/Frontend",
-      "RelativePath": "Frontend#[.{fingerprint=3t1u8wvsoe}]?.styles.css.gz",
+      "RelativePath": "Frontend#[.{fingerprint=3oqa5jn5xg}]?.styles.css.gz",
       "AssetKind": "All",
       "AssetMode": "CurrentProject",
       "AssetRole": "Alternative",
@@ -934,8 +997,8 @@
       "RelatedAsset": "C:\\Dev\\Web\\CuratorsJournal\\Frontend\\obj\\Debug\\net9.0\\scopedcss\\bundle\\Frontend.styles.css",
       "AssetTraitName": "Content-Encoding",
       "AssetTraitValue": "gzip",
-      "Fingerprint": "qg4j181nn8",
-      "Integrity": "Wi6qLy6XgTV9RWynz4Tk9evIueZ8R0iKOdJ7t+3Yeo0=",
+      "Fingerprint": "0719yaai7x",
+      "Integrity": "TFjaEhk5c/ZmDUgCgKMl6mC1dmyEVpHNNYfCKLSQcJE=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "C:\\Dev\\Web\\CuratorsJournal\\Frontend\\obj\\Debug\\net9.0\\scopedcss\\bundle\\Frontend.styles.css"
@@ -960,6 +1023,27 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "C:\\Dev\\Web\\CuratorsJournal\\Frontend\\obj\\Debug\\net9.0\\scopedcss\\projectbundle\\Frontend.bundle.scp.css"
+    },
+    {
+      "Identity": "C:\\Dev\\Web\\CuratorsJournal\\Frontend\\obj\\Debug\\net9.0\\compressed\\y7gumwokg3-bhlvlpyfa1.gz",
+      "SourceId": "Frontend",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Dev\\Web\\CuratorsJournal\\Frontend\\obj\\Debug\\net9.0\\compressed\\",
+      "BasePath": "_content/Frontend",
+      "RelativePath": "icons/pen#[.{fingerprint=bhlvlpyfa1}]?.svg.gz",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Alternative",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "C:\\Dev\\Web\\CuratorsJournal\\Frontend\\wwwroot\\icons\\pen.svg",
+      "AssetTraitName": "Content-Encoding",
+      "AssetTraitValue": "gzip",
+      "Fingerprint": "jwpw6c3urp",
+      "Integrity": "I3H4P6W+WhQE4/G5e7Wx20/uEf2CoKolq8pRVZPEVuU=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "C:\\Dev\\Web\\CuratorsJournal\\Frontend\\wwwroot\\icons\\pen.svg"
     },
     {
       "Identity": "C:\\Dev\\Web\\CuratorsJournal\\Frontend\\obj\\Debug\\net9.0\\compressed\\z1wdvqcdti-k8d9w2qqmf.gz",
@@ -1018,8 +1102,8 @@
       "RelatedAsset": "",
       "AssetTraitName": "ScopedCss",
       "AssetTraitValue": "ApplicationBundle",
-      "Fingerprint": "3t1u8wvsoe",
-      "Integrity": "WSNXVIjosIrarfH7zqMTq1GMIiHjZ0amUZ6Sx3O2t3U=",
+      "Fingerprint": "3oqa5jn5xg",
+      "Integrity": "fVmrVwSduDfL2JbMgCKp/HWVm0N8vbwoKiCqAsA8hQ8=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "C:\\Dev\\Web\\CuratorsJournal\\Frontend\\obj\\Debug\\net9.0\\scopedcss\\bundle\\Frontend.styles.css"
@@ -1086,6 +1170,48 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\favicon.png"
+    },
+    {
+      "Identity": "C:\\Dev\\Web\\CuratorsJournal\\Frontend\\wwwroot\\icons\\pen.svg",
+      "SourceId": "Frontend",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Dev\\Web\\CuratorsJournal\\Frontend\\wwwroot\\",
+      "BasePath": "_content/Frontend",
+      "RelativePath": "icons/pen#[.{fingerprint}]?.svg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "bhlvlpyfa1",
+      "Integrity": "f5fORbBz19VoYkEEw66ZfQGk/UYpJFq+38qV2LxC8RQ=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\icons\\pen.svg"
+    },
+    {
+      "Identity": "C:\\Dev\\Web\\CuratorsJournal\\Frontend\\wwwroot\\icons\\trash.svg",
+      "SourceId": "Frontend",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Dev\\Web\\CuratorsJournal\\Frontend\\wwwroot\\",
+      "BasePath": "_content/Frontend",
+      "RelativePath": "icons/trash#[.{fingerprint}]?.svg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "rnr89wl30t",
+      "Integrity": "+Yhzs3ABE+jL93XQyBLRJP33ywajVagt1CBsUUefNGI=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\icons\\trash.svg"
     },
     {
       "Identity": "C:\\Dev\\Web\\CuratorsJournal\\Frontend\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.css",
@@ -2010,9 +2136,378 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.min.js.map"
+    },
+    {
+      "Identity": "C:\\Users\\kiril\\.nuget\\packages\\microsoft.aspnetcore.components.quickgrid\\9.0.3\\staticwebassets\\Microsoft.AspNetCore.Components.QuickGrid.25o87uqmvr.bundle.scp.css",
+      "SourceId": "Microsoft.AspNetCore.Components.QuickGrid",
+      "SourceType": "Package",
+      "ContentRoot": "C:\\Users\\kiril\\.nuget\\packages\\microsoft.aspnetcore.components.quickgrid\\9.0.3\\staticwebassets\\",
+      "BasePath": "_content/Microsoft.AspNetCore.Components.QuickGrid",
+      "RelativePath": "Microsoft.AspNetCore.Components.QuickGrid.25o87uqmvr.bundle.scp.css",
+      "AssetKind": "All",
+      "AssetMode": "Reference",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "ScopedCss",
+      "AssetTraitValue": "ProjectBundle",
+      "Fingerprint": "25o87uqmvr",
+      "Integrity": "Nuu0BHvGBlwN6c5FSVjV9yxX0YPfwg3ufdOucRJCOz0=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "C:\\Users\\kiril\\.nuget\\packages\\microsoft.aspnetcore.components.quickgrid\\9.0.3\\staticwebassets\\Microsoft.AspNetCore.Components.QuickGrid.25o87uqmvr.bundle.scp.css"
+    },
+    {
+      "Identity": "C:\\Users\\kiril\\.nuget\\packages\\microsoft.aspnetcore.components.quickgrid\\9.0.3\\staticwebassets\\QuickGrid.razor.js",
+      "SourceId": "Microsoft.AspNetCore.Components.QuickGrid",
+      "SourceType": "Package",
+      "ContentRoot": "C:\\Users\\kiril\\.nuget\\packages\\microsoft.aspnetcore.components.quickgrid\\9.0.3\\staticwebassets\\",
+      "BasePath": "_content/Microsoft.AspNetCore.Components.QuickGrid",
+      "RelativePath": "QuickGrid.razor.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "eu7w3d5g1a",
+      "Integrity": "tnamWuQ2F5I2J8hbtBt4/9i8Mb2y2o+9Tepj5tUrSdU=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "C:\\Users\\kiril\\.nuget\\packages\\microsoft.aspnetcore.components.quickgrid\\9.0.3\\staticwebassets\\QuickGrid.razor.js"
     }
   ],
   "Endpoints": [
+    {
+      "Route": "_content/Microsoft.AspNetCore.Components.QuickGrid/Microsoft.AspNetCore.Components.QuickGrid.25o87uqmvr.bundle.scp.css",
+      "AssetFile": "C:\\Users\\kiril\\.nuget\\packages\\microsoft.aspnetcore.components.quickgrid\\9.0.3\\staticwebassets\\Microsoft.AspNetCore.Components.QuickGrid.25o87uqmvr.bundle.scp.css",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "8251"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"Nuu0BHvGBlwN6c5FSVjV9yxX0YPfwg3ufdOucRJCOz0=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 13 Feb 2025 03:07:33 GMT"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "25o87uqmvr"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-Nuu0BHvGBlwN6c5FSVjV9yxX0YPfwg3ufdOucRJCOz0="
+        },
+        {
+          "Name": "label",
+          "Value": "_content/Microsoft.AspNetCore.Components.QuickGrid/Microsoft.AspNetCore.Components.QuickGrid.bundle.scp.css"
+        }
+      ]
+    },
+    {
+      "Route": "_content/Microsoft.AspNetCore.Components.QuickGrid/Microsoft.AspNetCore.Components.QuickGrid.25o87uqmvr.bundle.scp.css.gz",
+      "AssetFile": "C:\\Dev\\Web\\CuratorsJournal\\Frontend\\obj\\Debug\\net9.0\\compressed\\3gin1ph7ub-25o87uqmvr.gz",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "2464"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"R868nQYiRJmInncB4hqIN+LGaLDkdWBhE2rlxj8Iuco=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 13 Feb 2025 03:07:32 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-R868nQYiRJmInncB4hqIN+LGaLDkdWBhE2rlxj8Iuco="
+        }
+      ]
+    },
+    {
+      "Route": "_content/Microsoft.AspNetCore.Components.QuickGrid/Microsoft.AspNetCore.Components.QuickGrid.bundle.scp.css",
+      "AssetFile": "C:\\Dev\\Web\\CuratorsJournal\\Frontend\\obj\\Debug\\net9.0\\compressed\\3gin1ph7ub-25o87uqmvr.gz",
+      "Selectors": [
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip",
+          "Quality": "0.000405679513"
+        }
+      ],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "2464"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"R868nQYiRJmInncB4hqIN+LGaLDkdWBhE2rlxj8Iuco=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 13 Feb 2025 03:07:32 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "W/\"Nuu0BHvGBlwN6c5FSVjV9yxX0YPfwg3ufdOucRJCOz0=\""
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-Nuu0BHvGBlwN6c5FSVjV9yxX0YPfwg3ufdOucRJCOz0="
+        }
+      ]
+    },
+    {
+      "Route": "_content/Microsoft.AspNetCore.Components.QuickGrid/Microsoft.AspNetCore.Components.QuickGrid.bundle.scp.css",
+      "AssetFile": "C:\\Users\\kiril\\.nuget\\packages\\microsoft.aspnetcore.components.quickgrid\\9.0.3\\staticwebassets\\Microsoft.AspNetCore.Components.QuickGrid.25o87uqmvr.bundle.scp.css",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "8251"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"Nuu0BHvGBlwN6c5FSVjV9yxX0YPfwg3ufdOucRJCOz0=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 13 Feb 2025 03:07:33 GMT"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-Nuu0BHvGBlwN6c5FSVjV9yxX0YPfwg3ufdOucRJCOz0="
+        }
+      ]
+    },
+    {
+      "Route": "_content/Microsoft.AspNetCore.Components.QuickGrid/QuickGrid.razor.js",
+      "AssetFile": "C:\\Dev\\Web\\CuratorsJournal\\Frontend\\obj\\Debug\\net9.0\\compressed\\unlu0xluo6-eu7w3d5g1a.gz",
+      "Selectors": [
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip",
+          "Quality": "0.001177856302"
+        }
+      ],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "848"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"XJ/VwVGZppAEmCsH3lYr55tIOxGu//a/BTyrK3XCLB4=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 13 Feb 2025 02:45:26 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "W/\"tnamWuQ2F5I2J8hbtBt4/9i8Mb2y2o+9Tepj5tUrSdU=\""
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-tnamWuQ2F5I2J8hbtBt4/9i8Mb2y2o+9Tepj5tUrSdU="
+        },
+        {
+          "Name": "script-type",
+          "Value": "module"
+        }
+      ]
+    },
+    {
+      "Route": "_content/Microsoft.AspNetCore.Components.QuickGrid/QuickGrid.razor.js",
+      "AssetFile": "C:\\Users\\kiril\\.nuget\\packages\\microsoft.aspnetcore.components.quickgrid\\9.0.3\\staticwebassets\\QuickGrid.razor.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "2563"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"tnamWuQ2F5I2J8hbtBt4/9i8Mb2y2o+9Tepj5tUrSdU=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 13 Feb 2025 02:45:27 GMT"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-tnamWuQ2F5I2J8hbtBt4/9i8Mb2y2o+9Tepj5tUrSdU="
+        },
+        {
+          "Name": "script-type",
+          "Value": "module"
+        }
+      ]
+    },
+    {
+      "Route": "_content/Microsoft.AspNetCore.Components.QuickGrid/QuickGrid.razor.js.gz",
+      "AssetFile": "C:\\Dev\\Web\\CuratorsJournal\\Frontend\\obj\\Debug\\net9.0\\compressed\\unlu0xluo6-eu7w3d5g1a.gz",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "848"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"XJ/VwVGZppAEmCsH3lYr55tIOxGu//a/BTyrK3XCLB4=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 13 Feb 2025 02:45:26 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-XJ/VwVGZppAEmCsH3lYr55tIOxGu//a/BTyrK3XCLB4="
+        }
+      ]
+    },
     {
       "Route": "app.css",
       "AssetFile": "C:\\Dev\\Web\\CuratorsJournal\\Frontend\\obj\\Debug\\net9.0\\compressed\\tel0g54dgw-khy4lop6wu.gz",
@@ -2394,6 +2889,175 @@
       ]
     },
     {
+      "Route": "Frontend.3oqa5jn5xg.styles.css",
+      "AssetFile": "C:\\Dev\\Web\\CuratorsJournal\\Frontend\\obj\\Debug\\net9.0\\compressed\\wkaqiq4loj-3oqa5jn5xg.gz",
+      "Selectors": [
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip",
+          "Quality": "0.000480076812"
+        }
+      ],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "2082"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"TFjaEhk5c/ZmDUgCgKMl6mC1dmyEVpHNNYfCKLSQcJE=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 14 Mar 2025 10:45:14 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "W/\"fVmrVwSduDfL2JbMgCKp/HWVm0N8vbwoKiCqAsA8hQ8=\""
+        },
+        {
+          "Name": "Link",
+          "Value": "<_content/Microsoft.AspNetCore.Components.QuickGrid/Microsoft.AspNetCore.Components.QuickGrid.25o87uqmvr.bundle.scp.css>; rel=\"preload\"; as=\"style\""
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "3oqa5jn5xg"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-fVmrVwSduDfL2JbMgCKp/HWVm0N8vbwoKiCqAsA8hQ8="
+        },
+        {
+          "Name": "label",
+          "Value": "Frontend.styles.css"
+        }
+      ]
+    },
+    {
+      "Route": "Frontend.3oqa5jn5xg.styles.css",
+      "AssetFile": "C:\\Dev\\Web\\CuratorsJournal\\Frontend\\obj\\Debug\\net9.0\\scopedcss\\bundle\\Frontend.styles.css",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "12085"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"fVmrVwSduDfL2JbMgCKp/HWVm0N8vbwoKiCqAsA8hQ8=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 14 Mar 2025 10:45:14 GMT"
+        },
+        {
+          "Name": "Link",
+          "Value": "<_content/Microsoft.AspNetCore.Components.QuickGrid/Microsoft.AspNetCore.Components.QuickGrid.25o87uqmvr.bundle.scp.css>; rel=\"preload\"; as=\"style\""
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "3oqa5jn5xg"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-fVmrVwSduDfL2JbMgCKp/HWVm0N8vbwoKiCqAsA8hQ8="
+        },
+        {
+          "Name": "label",
+          "Value": "Frontend.styles.css"
+        }
+      ]
+    },
+    {
+      "Route": "Frontend.3oqa5jn5xg.styles.css.gz",
+      "AssetFile": "C:\\Dev\\Web\\CuratorsJournal\\Frontend\\obj\\Debug\\net9.0\\compressed\\wkaqiq4loj-3oqa5jn5xg.gz",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "2082"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"TFjaEhk5c/ZmDUgCgKMl6mC1dmyEVpHNNYfCKLSQcJE=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 14 Mar 2025 10:45:14 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "3oqa5jn5xg"
+        },
+        {
+          "Name": "label",
+          "Value": "Frontend.styles.css.gz"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-TFjaEhk5c/ZmDUgCgKMl6mC1dmyEVpHNNYfCKLSQcJE="
+        }
+      ]
+    },
+    {
       "Route": "Frontend.3t1u8wvsoe.bundle.scp.css",
       "AssetFile": "C:\\Dev\\Web\\CuratorsJournal\\Frontend\\obj\\Debug\\net9.0\\compressed\\xfnzok5kqy-3t1u8wvsoe.gz",
       "Selectors": [
@@ -2555,167 +3219,6 @@
       ]
     },
     {
-      "Route": "Frontend.3t1u8wvsoe.styles.css",
-      "AssetFile": "C:\\Dev\\Web\\CuratorsJournal\\Frontend\\obj\\Debug\\net9.0\\compressed\\wkaqiq4loj-3t1u8wvsoe.gz",
-      "Selectors": [
-        {
-          "Name": "Content-Encoding",
-          "Value": "gzip",
-          "Quality": "0.000493096647"
-        }
-      ],
-      "ResponseHeaders": [
-        {
-          "Name": "Accept-Ranges",
-          "Value": "bytes"
-        },
-        {
-          "Name": "Content-Length",
-          "Value": "2027"
-        },
-        {
-          "Name": "ETag",
-          "Value": "\"Wi6qLy6XgTV9RWynz4Tk9evIueZ8R0iKOdJ7t+3Yeo0=\""
-        },
-        {
-          "Name": "Last-Modified",
-          "Value": "Mon, 10 Mar 2025 09:24:21 GMT"
-        },
-        {
-          "Name": "Cache-Control",
-          "Value": "max-age=31536000, immutable"
-        },
-        {
-          "Name": "Content-Encoding",
-          "Value": "gzip"
-        },
-        {
-          "Name": "Vary",
-          "Value": "Content-Encoding"
-        },
-        {
-          "Name": "Content-Type",
-          "Value": "text/css"
-        },
-        {
-          "Name": "ETag",
-          "Value": "W/\"WSNXVIjosIrarfH7zqMTq1GMIiHjZ0amUZ6Sx3O2t3U=\""
-        }
-      ],
-      "EndpointProperties": [
-        {
-          "Name": "fingerprint",
-          "Value": "3t1u8wvsoe"
-        },
-        {
-          "Name": "label",
-          "Value": "Frontend.styles.css"
-        },
-        {
-          "Name": "integrity",
-          "Value": "sha256-WSNXVIjosIrarfH7zqMTq1GMIiHjZ0amUZ6Sx3O2t3U="
-        }
-      ]
-    },
-    {
-      "Route": "Frontend.3t1u8wvsoe.styles.css",
-      "AssetFile": "C:\\Dev\\Web\\CuratorsJournal\\Frontend\\obj\\Debug\\net9.0\\scopedcss\\bundle\\Frontend.styles.css",
-      "Selectors": [],
-      "ResponseHeaders": [
-        {
-          "Name": "Accept-Ranges",
-          "Value": "bytes"
-        },
-        {
-          "Name": "Content-Length",
-          "Value": "11952"
-        },
-        {
-          "Name": "Content-Type",
-          "Value": "text/css"
-        },
-        {
-          "Name": "ETag",
-          "Value": "\"WSNXVIjosIrarfH7zqMTq1GMIiHjZ0amUZ6Sx3O2t3U=\""
-        },
-        {
-          "Name": "Last-Modified",
-          "Value": "Mon, 10 Mar 2025 09:24:21 GMT"
-        },
-        {
-          "Name": "Cache-Control",
-          "Value": "max-age=31536000, immutable"
-        }
-      ],
-      "EndpointProperties": [
-        {
-          "Name": "fingerprint",
-          "Value": "3t1u8wvsoe"
-        },
-        {
-          "Name": "label",
-          "Value": "Frontend.styles.css"
-        },
-        {
-          "Name": "integrity",
-          "Value": "sha256-WSNXVIjosIrarfH7zqMTq1GMIiHjZ0amUZ6Sx3O2t3U="
-        }
-      ]
-    },
-    {
-      "Route": "Frontend.3t1u8wvsoe.styles.css.gz",
-      "AssetFile": "C:\\Dev\\Web\\CuratorsJournal\\Frontend\\obj\\Debug\\net9.0\\compressed\\wkaqiq4loj-3t1u8wvsoe.gz",
-      "Selectors": [],
-      "ResponseHeaders": [
-        {
-          "Name": "Accept-Ranges",
-          "Value": "bytes"
-        },
-        {
-          "Name": "Content-Length",
-          "Value": "2027"
-        },
-        {
-          "Name": "Content-Type",
-          "Value": "text/css"
-        },
-        {
-          "Name": "ETag",
-          "Value": "\"Wi6qLy6XgTV9RWynz4Tk9evIueZ8R0iKOdJ7t+3Yeo0=\""
-        },
-        {
-          "Name": "Last-Modified",
-          "Value": "Mon, 10 Mar 2025 09:24:21 GMT"
-        },
-        {
-          "Name": "Cache-Control",
-          "Value": "max-age=31536000, immutable"
-        },
-        {
-          "Name": "Content-Encoding",
-          "Value": "gzip"
-        },
-        {
-          "Name": "Vary",
-          "Value": "Content-Encoding"
-        }
-      ],
-      "EndpointProperties": [
-        {
-          "Name": "fingerprint",
-          "Value": "3t1u8wvsoe"
-        },
-        {
-          "Name": "label",
-          "Value": "Frontend.styles.css.gz"
-        },
-        {
-          "Name": "integrity",
-          "Value": "sha256-Wi6qLy6XgTV9RWynz4Tk9evIueZ8R0iKOdJ7t+3Yeo0="
-        }
-      ]
-    },
-    {
       "Route": "Frontend.bundle.scp.css",
       "AssetFile": "C:\\Dev\\Web\\CuratorsJournal\\Frontend\\obj\\Debug\\net9.0\\compressed\\xfnzok5kqy-3t1u8wvsoe.gz",
       "Selectors": [
@@ -2854,12 +3357,12 @@
     },
     {
       "Route": "Frontend.styles.css",
-      "AssetFile": "C:\\Dev\\Web\\CuratorsJournal\\Frontend\\obj\\Debug\\net9.0\\compressed\\wkaqiq4loj-3t1u8wvsoe.gz",
+      "AssetFile": "C:\\Dev\\Web\\CuratorsJournal\\Frontend\\obj\\Debug\\net9.0\\compressed\\wkaqiq4loj-3oqa5jn5xg.gz",
       "Selectors": [
         {
           "Name": "Content-Encoding",
           "Value": "gzip",
-          "Quality": "0.000493096647"
+          "Quality": "0.000480076812"
         }
       ],
       "ResponseHeaders": [
@@ -2869,15 +3372,15 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "2027"
+          "Value": "2082"
         },
         {
           "Name": "ETag",
-          "Value": "\"Wi6qLy6XgTV9RWynz4Tk9evIueZ8R0iKOdJ7t+3Yeo0=\""
+          "Value": "\"TFjaEhk5c/ZmDUgCgKMl6mC1dmyEVpHNNYfCKLSQcJE=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Mon, 10 Mar 2025 09:24:21 GMT"
+          "Value": "Fri, 14 Mar 2025 10:45:14 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -2897,13 +3400,17 @@
         },
         {
           "Name": "ETag",
-          "Value": "W/\"WSNXVIjosIrarfH7zqMTq1GMIiHjZ0amUZ6Sx3O2t3U=\""
+          "Value": "W/\"fVmrVwSduDfL2JbMgCKp/HWVm0N8vbwoKiCqAsA8hQ8=\""
+        },
+        {
+          "Name": "Link",
+          "Value": "<_content/Microsoft.AspNetCore.Components.QuickGrid/Microsoft.AspNetCore.Components.QuickGrid.25o87uqmvr.bundle.scp.css>; rel=\"preload\"; as=\"style\""
         }
       ],
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-WSNXVIjosIrarfH7zqMTq1GMIiHjZ0amUZ6Sx3O2t3U="
+          "Value": "sha256-fVmrVwSduDfL2JbMgCKp/HWVm0N8vbwoKiCqAsA8hQ8="
         }
       ]
     },
@@ -2917,8 +3424,12 @@
           "Value": "bytes"
         },
         {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
           "Name": "Content-Length",
-          "Value": "11952"
+          "Value": "12085"
         },
         {
           "Name": "Content-Type",
@@ -2926,27 +3437,27 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"WSNXVIjosIrarfH7zqMTq1GMIiHjZ0amUZ6Sx3O2t3U=\""
+          "Value": "\"fVmrVwSduDfL2JbMgCKp/HWVm0N8vbwoKiCqAsA8hQ8=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Mon, 10 Mar 2025 09:24:21 GMT"
+          "Value": "Fri, 14 Mar 2025 10:45:14 GMT"
         },
         {
-          "Name": "Cache-Control",
-          "Value": "no-cache"
+          "Name": "Link",
+          "Value": "<_content/Microsoft.AspNetCore.Components.QuickGrid/Microsoft.AspNetCore.Components.QuickGrid.25o87uqmvr.bundle.scp.css>; rel=\"preload\"; as=\"style\""
         }
       ],
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-WSNXVIjosIrarfH7zqMTq1GMIiHjZ0amUZ6Sx3O2t3U="
+          "Value": "sha256-fVmrVwSduDfL2JbMgCKp/HWVm0N8vbwoKiCqAsA8hQ8="
         }
       ]
     },
     {
       "Route": "Frontend.styles.css.gz",
-      "AssetFile": "C:\\Dev\\Web\\CuratorsJournal\\Frontend\\obj\\Debug\\net9.0\\compressed\\wkaqiq4loj-3t1u8wvsoe.gz",
+      "AssetFile": "C:\\Dev\\Web\\CuratorsJournal\\Frontend\\obj\\Debug\\net9.0\\compressed\\wkaqiq4loj-3oqa5jn5xg.gz",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -2955,7 +3466,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "2027"
+          "Value": "2082"
         },
         {
           "Name": "Content-Type",
@@ -2963,11 +3474,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"Wi6qLy6XgTV9RWynz4Tk9evIueZ8R0iKOdJ7t+3Yeo0=\""
+          "Value": "\"TFjaEhk5c/ZmDUgCgKMl6mC1dmyEVpHNNYfCKLSQcJE=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Mon, 10 Mar 2025 09:24:21 GMT"
+          "Value": "Fri, 14 Mar 2025 10:45:14 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -2985,7 +3496,603 @@
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-Wi6qLy6XgTV9RWynz4Tk9evIueZ8R0iKOdJ7t+3Yeo0="
+          "Value": "sha256-TFjaEhk5c/ZmDUgCgKMl6mC1dmyEVpHNNYfCKLSQcJE="
+        }
+      ]
+    },
+    {
+      "Route": "icons/pen.bhlvlpyfa1.svg",
+      "AssetFile": "C:\\Dev\\Web\\CuratorsJournal\\Frontend\\obj\\Debug\\net9.0\\compressed\\y7gumwokg3-bhlvlpyfa1.gz",
+      "Selectors": [
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip",
+          "Quality": "0.003205128205"
+        }
+      ],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "311"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"I3H4P6W+WhQE4/G5e7Wx20/uEf2CoKolq8pRVZPEVuU=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 14 Mar 2025 10:58:01 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/svg+xml"
+        },
+        {
+          "Name": "ETag",
+          "Value": "W/\"f5fORbBz19VoYkEEw66ZfQGk/UYpJFq+38qV2LxC8RQ=\""
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "bhlvlpyfa1"
+        },
+        {
+          "Name": "label",
+          "Value": "icons/pen.svg"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-f5fORbBz19VoYkEEw66ZfQGk/UYpJFq+38qV2LxC8RQ="
+        }
+      ]
+    },
+    {
+      "Route": "icons/pen.bhlvlpyfa1.svg",
+      "AssetFile": "C:\\Dev\\Web\\CuratorsJournal\\Frontend\\wwwroot\\icons\\pen.svg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "528"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/svg+xml"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"f5fORbBz19VoYkEEw66ZfQGk/UYpJFq+38qV2LxC8RQ=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 14 Mar 2025 10:58:01 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "bhlvlpyfa1"
+        },
+        {
+          "Name": "label",
+          "Value": "icons/pen.svg"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-f5fORbBz19VoYkEEw66ZfQGk/UYpJFq+38qV2LxC8RQ="
+        }
+      ]
+    },
+    {
+      "Route": "icons/pen.bhlvlpyfa1.svg.gz",
+      "AssetFile": "C:\\Dev\\Web\\CuratorsJournal\\Frontend\\obj\\Debug\\net9.0\\compressed\\y7gumwokg3-bhlvlpyfa1.gz",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "311"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/svg+xml"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"I3H4P6W+WhQE4/G5e7Wx20/uEf2CoKolq8pRVZPEVuU=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 14 Mar 2025 10:58:01 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "bhlvlpyfa1"
+        },
+        {
+          "Name": "label",
+          "Value": "icons/pen.svg.gz"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-I3H4P6W+WhQE4/G5e7Wx20/uEf2CoKolq8pRVZPEVuU="
+        }
+      ]
+    },
+    {
+      "Route": "icons/pen.svg",
+      "AssetFile": "C:\\Dev\\Web\\CuratorsJournal\\Frontend\\obj\\Debug\\net9.0\\compressed\\y7gumwokg3-bhlvlpyfa1.gz",
+      "Selectors": [
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip",
+          "Quality": "0.003205128205"
+        }
+      ],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "311"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"I3H4P6W+WhQE4/G5e7Wx20/uEf2CoKolq8pRVZPEVuU=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 14 Mar 2025 10:58:01 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/svg+xml"
+        },
+        {
+          "Name": "ETag",
+          "Value": "W/\"f5fORbBz19VoYkEEw66ZfQGk/UYpJFq+38qV2LxC8RQ=\""
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-f5fORbBz19VoYkEEw66ZfQGk/UYpJFq+38qV2LxC8RQ="
+        }
+      ]
+    },
+    {
+      "Route": "icons/pen.svg",
+      "AssetFile": "C:\\Dev\\Web\\CuratorsJournal\\Frontend\\wwwroot\\icons\\pen.svg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "528"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/svg+xml"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"f5fORbBz19VoYkEEw66ZfQGk/UYpJFq+38qV2LxC8RQ=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 14 Mar 2025 10:58:01 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-f5fORbBz19VoYkEEw66ZfQGk/UYpJFq+38qV2LxC8RQ="
+        }
+      ]
+    },
+    {
+      "Route": "icons/pen.svg.gz",
+      "AssetFile": "C:\\Dev\\Web\\CuratorsJournal\\Frontend\\obj\\Debug\\net9.0\\compressed\\y7gumwokg3-bhlvlpyfa1.gz",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "311"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/svg+xml"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"I3H4P6W+WhQE4/G5e7Wx20/uEf2CoKolq8pRVZPEVuU=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 14 Mar 2025 10:58:01 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-I3H4P6W+WhQE4/G5e7Wx20/uEf2CoKolq8pRVZPEVuU="
+        }
+      ]
+    },
+    {
+      "Route": "icons/trash.rnr89wl30t.svg",
+      "AssetFile": "C:\\Dev\\Web\\CuratorsJournal\\Frontend\\obj\\Debug\\net9.0\\compressed\\501s81g6ey-rnr89wl30t.gz",
+      "Selectors": [
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip",
+          "Quality": "0.003460207612"
+        }
+      ],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "288"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"hCk8ZCtf0wxVty2DvJoz3LKmRQOZXp97KC13GIEA4Js=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 14 Mar 2025 11:01:56 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/svg+xml"
+        },
+        {
+          "Name": "ETag",
+          "Value": "W/\"+Yhzs3ABE+jL93XQyBLRJP33ywajVagt1CBsUUefNGI=\""
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "rnr89wl30t"
+        },
+        {
+          "Name": "label",
+          "Value": "icons/trash.svg"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-+Yhzs3ABE+jL93XQyBLRJP33ywajVagt1CBsUUefNGI="
+        }
+      ]
+    },
+    {
+      "Route": "icons/trash.rnr89wl30t.svg",
+      "AssetFile": "C:\\Dev\\Web\\CuratorsJournal\\Frontend\\wwwroot\\icons\\trash.svg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "539"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/svg+xml"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"+Yhzs3ABE+jL93XQyBLRJP33ywajVagt1CBsUUefNGI=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 14 Mar 2025 11:01:56 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "rnr89wl30t"
+        },
+        {
+          "Name": "label",
+          "Value": "icons/trash.svg"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-+Yhzs3ABE+jL93XQyBLRJP33ywajVagt1CBsUUefNGI="
+        }
+      ]
+    },
+    {
+      "Route": "icons/trash.rnr89wl30t.svg.gz",
+      "AssetFile": "C:\\Dev\\Web\\CuratorsJournal\\Frontend\\obj\\Debug\\net9.0\\compressed\\501s81g6ey-rnr89wl30t.gz",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "288"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/svg+xml"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"hCk8ZCtf0wxVty2DvJoz3LKmRQOZXp97KC13GIEA4Js=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 14 Mar 2025 11:01:56 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "rnr89wl30t"
+        },
+        {
+          "Name": "label",
+          "Value": "icons/trash.svg.gz"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-hCk8ZCtf0wxVty2DvJoz3LKmRQOZXp97KC13GIEA4Js="
+        }
+      ]
+    },
+    {
+      "Route": "icons/trash.svg",
+      "AssetFile": "C:\\Dev\\Web\\CuratorsJournal\\Frontend\\obj\\Debug\\net9.0\\compressed\\501s81g6ey-rnr89wl30t.gz",
+      "Selectors": [
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip",
+          "Quality": "0.003460207612"
+        }
+      ],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "288"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"hCk8ZCtf0wxVty2DvJoz3LKmRQOZXp97KC13GIEA4Js=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 14 Mar 2025 11:01:56 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/svg+xml"
+        },
+        {
+          "Name": "ETag",
+          "Value": "W/\"+Yhzs3ABE+jL93XQyBLRJP33ywajVagt1CBsUUefNGI=\""
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-+Yhzs3ABE+jL93XQyBLRJP33ywajVagt1CBsUUefNGI="
+        }
+      ]
+    },
+    {
+      "Route": "icons/trash.svg",
+      "AssetFile": "C:\\Dev\\Web\\CuratorsJournal\\Frontend\\wwwroot\\icons\\trash.svg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "539"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/svg+xml"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"+Yhzs3ABE+jL93XQyBLRJP33ywajVagt1CBsUUefNGI=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 14 Mar 2025 11:01:56 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-+Yhzs3ABE+jL93XQyBLRJP33ywajVagt1CBsUUefNGI="
+        }
+      ]
+    },
+    {
+      "Route": "icons/trash.svg.gz",
+      "AssetFile": "C:\\Dev\\Web\\CuratorsJournal\\Frontend\\obj\\Debug\\net9.0\\compressed\\501s81g6ey-rnr89wl30t.gz",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "288"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/svg+xml"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"hCk8ZCtf0wxVty2DvJoz3LKmRQOZXp97KC13GIEA4Js=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 14 Mar 2025 11:01:56 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-hCk8ZCtf0wxVty2DvJoz3LKmRQOZXp97KC13GIEA4Js="
         }
       ]
     },

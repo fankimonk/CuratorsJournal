@@ -9,6 +9,8 @@ namespace DataAccess.Configurations
         public void Configure(EntityTypeBuilder<AcademicYear> builder)
         {
             builder.HasKey(ay => ay.Id);
+
+            builder.ToTable(t => t.HasCheckConstraint("CHK_AY_StartEndYear)", "[EndYear] - [StartYear] = 1"));
         }
     }
 }

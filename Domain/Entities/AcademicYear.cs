@@ -1,5 +1,4 @@
-﻿using Domain.Entities.JournalContent;
-using Domain.Entities.JournalContent.Pages.Attributes;
+﻿using Domain.Entities.JournalContent.Pages.Attributes;
 
 namespace Domain.Entities
 {

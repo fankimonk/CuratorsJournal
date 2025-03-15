@@ -24,6 +24,18 @@ build_property.EnableCodeStyleSeverity =
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xBcHAucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Dev/Web/CuratorsJournal/Frontend/Components/Buttons/AddButton.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xCdXR0b25zXEFkZEJ1dHRvbi5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Dev/Web/CuratorsJournal/Frontend/Components/Buttons/DeleteButton.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xCdXR0b25zXERlbGV0ZUJ1dHRvbi5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Dev/Web/CuratorsJournal/Frontend/Components/Buttons/EditButton.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xCdXR0b25zXEVkaXRCdXR0b24ucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Dev/Web/CuratorsJournal/Frontend/Components/Pages/Error.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xFcnJvci5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
@@ -100,12 +112,24 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xKb3VybmFsXF9JbXBvcnRzLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Dev/Web/CuratorsJournal/Frontend/Components/Pages/ReferencePages/Faculties.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xSZWZlcmVuY2VQYWdlc1xGYWN1bHRpZXMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Dev/Web/CuratorsJournal/Frontend/Components/Pages/ReferencePages/Literature.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xSZWZlcmVuY2VQYWdlc1xMaXRlcmF0dXJlLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Dev/Web/CuratorsJournal/Frontend/Components/Routes.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xSb3V0ZXMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Dev/Web/CuratorsJournal/Frontend/Components/Utils/Alert.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xVdGlsc1xBbGVydC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Dev/Web/CuratorsJournal/Frontend/Components/Utils/ModalForm.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xVdGlsc1xNb2RhbEZvcm0ucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Dev/Web/CuratorsJournal/Frontend/Components/_Imports.razor]
