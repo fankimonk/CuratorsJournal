@@ -19,7 +19,7 @@ namespace API.Controllers
         [HttpGet]
         public async Task<ActionResult<List<AcademicYearResponse>>> GetAll()
         {
-            var academicYears = await _academicYearsRepository.GetAll();
+            var academicYears = await _academicYearsRepository.GetAllAsync();
 
             var response = academicYears.Select(a => a.ToResponse());
             return Ok(response);
@@ -28,10 +28,44 @@ namespace API.Controllers
         [HttpGet("getsinceyear/{yearSince}")]
         public async Task<ActionResult<List<AcademicYearResponse>>> GetAllSinceYear(int yearSince)
         {
-            var academicYears = await _academicYearsRepository.GetAll(yearSince);
+            var academicYears = await _academicYearsRepository.GetAllAsync(yearSince);
 
             var response = academicYears.Select(a => a.ToResponse());
             return Ok(response);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<AcademicYearResponse>> Create([FromBody] CreateAcademicYearRequest request)
+        {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+
+            var created = await _academicYearsRepository.CreateAsync(request.ToEntity());
+            if (created == null) return BadRequest();
+
+            var response = created.ToResponse();
+
+            return CreatedAtAction(nameof(Create), response);
+        }
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult<AcademicYearResponse>> Update([FromRoute] int id, [FromBody] UpdateAcademicYearRequest request)
+        {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+
+            var updated = await _academicYearsRepository.UpdateAsync(id, request.ToEntity());
+            if (updated == null) return BadRequest();
+
+            var response = updated.ToResponse();
+
+            return Ok(response);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> Delete([FromRoute] int id)
+        {
+            if (!await _academicYearsRepository.DeleteAsync(id)) return NotFound();
+
+            return NoContent();
         }
     }
 }

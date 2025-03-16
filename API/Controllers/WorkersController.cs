@@ -35,5 +35,39 @@ namespace API.Controllers
             var response = worker.ToResponse();
             return Ok(response);
         }
+
+        [HttpPost]
+        public async Task<ActionResult<WorkerResponse>> Create([FromBody] CreateWorkerRequest request)
+        {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+
+            var created = await _workersRepository.CreateAsync(request.ToEntity());
+            if (created == null) return BadRequest();
+
+            var response = created.ToResponse();
+
+            return CreatedAtAction(nameof(Create), response);
+        }
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult<WorkerResponse>> Update([FromRoute] int id, [FromBody] UpdateWorkerRequest request)
+        {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+
+            var updated = await _workersRepository.UpdateAsync(id, request.ToEntity());
+            if (updated == null) return BadRequest();
+
+            var response = updated.ToResponse();
+
+            return Ok(response);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> Delete([FromRoute] int id)
+        {
+            if (!await _workersRepository.DeleteAsync(id)) return NotFound();
+
+            return NoContent();
+        }
     }
 }

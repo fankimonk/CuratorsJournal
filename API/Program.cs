@@ -67,6 +67,13 @@ builder.Services.AddScoped<IInformationHoursAccountingRepository, InformationHou
 builder.Services.AddScoped<IWorkersRepository, WorkersRepository>();
 builder.Services.AddScoped<IAcademicYearsRepository, AcademicYearsRepository>();
 builder.Services.AddScoped<IFacultiesRepository, FacultiesRepository>();
+builder.Services.AddScoped<IPositionsRepository, PositionsRepository>();
+builder.Services.AddScoped<ISubjectsRepository, SubjectsRepository>();
+builder.Services.AddScoped<IChronicDiseasesRepository, ChronicDiseasesRepository>();
+builder.Services.AddScoped<IPEGroupsRepository, PEGroupsRepository>();
+builder.Services.AddScoped<IActivityTypesRepository, ActivityTypesRepository>();
+builder.Services.AddScoped<IDeaneriesRepository, DeaneriesRepository>();
+builder.Services.AddScoped<IDepartmentsRepository, DepartmentsRepository>();
 
 builder.Services.AddScoped<IGroupsService, GroupsService>();
 builder.Services.AddScoped<IJournalsService, JournalsService>();

@@ -1,4 +1,4 @@
-﻿using Contracts.Group;
+﻿using Contracts.Groups;
 using Domain.Entities;
 
 namespace API.Mappers
@@ -8,7 +8,7 @@ namespace API.Mappers
         public static GroupResponse ToResponse(this Group group)
         {
             return new GroupResponse(
-                group.Id, group.Number, group.AdmissionYear, group.SpecialtyId
+                group.Id, group.Number, group.AdmissionYear, group.SpecialtyId, group.CuratorId
             );
         }
 
@@ -18,7 +18,19 @@ namespace API.Mappers
             {
                 Number = request.Number,
                 AdmissionYear = request.AdmissionYear,
-                SpecialtyId = request.SpecialtyId
+                SpecialtyId = request.SpecialtyId,
+                CuratorId = request.CuratorId
+            };
+        }
+
+        public static Group ToEntity(this UpdateGroupRequest request)
+        {
+            return new Group
+            {
+                Number = request.Number,
+                AdmissionYear = request.AdmissionYear,
+                SpecialtyId = request.SpecialtyId,
+                CuratorId = request.CuratorId
             };
         }
     }

@@ -1,4 +1,4 @@
-﻿using Contracts.Group;
+﻿using Contracts.Groups;
 using Application.Interfaces;
 using DataAccess.Interfaces;
 using Microsoft.AspNetCore.Mvc;

@@ -2,7 +2,7 @@
 {
     public class StudentResponse(
         int id, string firstName, string middleName,
-        string lastName, string? phoneNumber, int groupId)
+        string lastName, string? phoneNumber, int groupId, int? userId)
     {
         public int Id { get; set; } = id;
 
@@ -13,5 +13,7 @@
         public string? PhoneNumber { get; set; } = phoneNumber;
 
         public int GroupId { get; set; } = groupId;
+
+        public int? UserId { get; set; } = userId;
     }
 }

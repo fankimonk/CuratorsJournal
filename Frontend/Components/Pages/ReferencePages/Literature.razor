@@ -84,9 +84,7 @@ else
         </div>
     </ModalForm>
 
-    <div class="alert-bottom">
-        <Alert Type="error" IsVisible="_isServerErrorAlertVisible" OnClose="CloseServerErrorAlert">@_errorMessage</Alert>
-    </div>
+    <AlertBottom IsVisible="_isServerErrorAlertVisible" OnClose="CloseServerErrorAlert">@_errorMessage</AlertBottom>
 }
 
 @code {
@@ -232,11 +230,3 @@ else
 
     private void ShowServerErrorAlert() => _isServerErrorAlertVisible = true;
 }
-
-<style>
-    .alert-bottom {
-        position: fixed;
-        bottom: 0;
-        z-index: 1001;
-    }
-</style>

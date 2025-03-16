@@ -11,5 +11,21 @@ namespace API.Mappers
                 position.Id, position.Name
             );
         }
+
+        public static Position ToEntity(this CreatePositionRequest request)
+        {
+            return new Position
+            {
+                Name = request.Name
+            };
+        }
+
+        public static Position ToEntity(this UpdatePositionRequest request)
+        {
+            return new Position
+            {
+                Name = request.Name
+            };
+        }
     }
 }

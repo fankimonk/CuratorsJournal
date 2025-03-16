@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Contracts.Group
+namespace Contracts.Groups
 {
     public record AppointCuratorRequest
     (

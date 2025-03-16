@@ -15,5 +15,29 @@ namespace API.Mappers
                 worker.Position!.ToResponse()
             );
         }
+
+        public static Worker ToEntity(this CreateWorkerRequest request)
+        {
+            return new Worker
+            {
+                FirstName = request.FirstName,
+                MiddleName = request.MiddleName,
+                LastName = request.LastName,
+                PositionId = request.PositionId,
+                UserId = request.UserId
+            };
+        }
+
+        public static Worker ToEntity(this UpdateWorkerRequest request)
+        {
+            return new Worker
+            {
+                FirstName = request.FirstName,
+                MiddleName = request.MiddleName,
+                LastName = request.LastName,
+                PositionId = request.PositionId,
+                UserId = request.UserId
+            };
+        }
     }
 }

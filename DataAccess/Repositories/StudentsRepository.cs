@@ -6,14 +6,26 @@ namespace DataAccess.Repositories
 {
     public class StudentsRepository(CuratorsJournalDBContext dbContext) : RepositoryBase(dbContext), IStudentsRepository
     {
-        public Task<Student?> CreateAsync(Student student)
+        public async Task<Student?> CreateAsync(Student student)
         {
-            throw new NotImplementedException();
+            if (student == null) return null;
+            if (!await GroupExists(student.GroupId)) return null;
+            if (student.UserId != null && !await UserExists((int)student.UserId)) return null;
+
+            var created = await _dbContext.Students.AddAsync(student);
+
+            await _dbContext.SaveChangesAsync();
+
+            return created.Entity;
         }
 
-        public Task<bool> DeleteAsync(int id)
+        public async Task<bool> DeleteAsync(int id)
         {
-            throw new NotImplementedException();
+            var deletedRows = await _dbContext.Students.Where(c => c.Id == id).ExecuteDeleteAsync();
+            if (deletedRows < 1) return false;
+
+            await _dbContext.SaveChangesAsync();
+            return true;
         }
 
         public async Task<List<Student>> GetAllAsync()
@@ -34,9 +46,24 @@ namespace DataAccess.Repositories
                 .Where(s => s.Group!.Journal!.Id == id).ToListAsync();
         }
 
-        public Task<Student?> UpdateAsync(int id, Student student)
+        public async Task<Student?> UpdateAsync(int id, Student student)
         {
-            throw new NotImplementedException();
+            if (student == null) return null;
+            if (!await GroupExists(student.GroupId)) return null;
+            if (student.UserId != null && !await UserExists((int)student.UserId)) return null;
+
+            var studentToUpdate = await _dbContext.Students.FirstOrDefaultAsync(p => p.Id == id);
+            if (studentToUpdate == null) return null;
+
+            studentToUpdate.FirstName = student.FirstName;
+            studentToUpdate.MiddleName = student.MiddleName;
+            studentToUpdate.LastName = student.LastName;
+            studentToUpdate.PhoneNumber = student.PhoneNumber;
+            studentToUpdate.GroupId = student.GroupId;
+            studentToUpdate.UserId = student.UserId;
+
+            await _dbContext.SaveChangesAsync();
+            return studentToUpdate;
         }
 
         private async Task<bool> GroupExists(int id) =>
@@ -44,5 +71,8 @@ namespace DataAccess.Repositories
 
         private async Task<bool> JournalExists(int id) =>
             await _dbContext.Journals.AsNoTracking().FirstOrDefaultAsync(j => j.Id == id) != null;
+
+        private async Task<bool> UserExists(int id) =>
+            await _dbContext.Users.AsNoTracking().FirstOrDefaultAsync(j => j.Id == id) != null;
     }
 }

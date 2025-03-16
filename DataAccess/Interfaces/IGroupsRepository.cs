@@ -10,5 +10,6 @@ namespace DataAccess.Interfaces
         Task<Group?> CreateAsync(Group group);
         Task<Group?> UpdateAsync(int id, Group group);
         Task<Group?> UpdateCuratorAsync(int id, int? curatorId);
+        Task<bool> DeleteAsync(int id);
     }
 }

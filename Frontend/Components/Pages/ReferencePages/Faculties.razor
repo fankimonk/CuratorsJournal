@@ -34,8 +34,8 @@ else
             <div class="col-md-12">
                 <EditForm method="post" Model="FacultyToAdd" OnValidSubmit="Add" OnInvalidSubmit="ShowErrorAlert" FormName="add" Enhance>
                     <DataAnnotationsValidator />
-                    <Alert Type="success" IsVisible="_isSuccessAlertVisible" />
-                    <Alert Type="error" IsVisible="_isErrorAlertVisible">
+                    <Alert Type="success" IsVisible="_isSuccessAlertVisible" OnClose="CloseSuccessAlert" />
+                    <Alert Type="error" IsVisible="_isErrorAlertVisible" OnClose="CloseErrorAlert">
                         <ValidationSummary />
                     </Alert>
                     <div class="mb-3">
@@ -57,8 +57,8 @@ else
             <div class="col-md-12">
                 <EditForm method="put" Model="FacultyToEdit" OnValidSubmit="Update" OnInvalidSubmit="ShowErrorAlert" FormName="edit" Enhance>
                     <DataAnnotationsValidator />
-                    <Alert Type="success" IsVisible="_isSuccessAlertVisible" />
-                    <Alert Type="error" IsVisible="_isErrorAlertVisible">
+                    <Alert Type="success" IsVisible="_isSuccessAlertVisible" OnClose="CloseSuccessAlert" />
+                    <Alert Type="error" IsVisible="_isErrorAlertVisible" OnClose="CloseErrorAlert">
                         <ValidationSummary />
                     </Alert>
                     <div class="mb-3">
@@ -74,6 +74,8 @@ else
             </div>
         </div>
     </ModalForm>
+
+    <AlertBottom IsVisible="_isServerErrorAlertVisible" OnClose="CloseServerErrorAlert">@_errorMessage</AlertBottom>
 }
 
 @code {
@@ -94,6 +96,9 @@ else
 
     private bool _isSuccessAlertVisible = false;
     private bool _isErrorAlertVisible = false;
+
+    private bool _isServerErrorAlertVisible = false;
+    private string? _errorMessage = "";
 
     protected override async Task OnInitializedAsync()
     {
@@ -118,8 +123,8 @@ else
         else
         {
             var errorMessage = await response.Content.ReadAsStringAsync();
-            errorMessage = errorMessage.Split('\n').FirstOrDefault();
-            Console.WriteLine(errorMessage);
+            _errorMessage = errorMessage.Split('\n').FirstOrDefault();
+            ShowServerErrorAlert();
         }
     }
 
@@ -143,8 +148,8 @@ else
         else
         {
             var errorMessage = await response.Content.ReadAsStringAsync();
-            errorMessage = errorMessage.Split('\n').FirstOrDefault();
-            Console.WriteLine(errorMessage);
+            _errorMessage = errorMessage.Split('\n').FirstOrDefault();
+            ShowServerErrorAlert();
         }
     }
 
@@ -161,8 +166,8 @@ else
         else
         {
             var errorMessage = await response.Content.ReadAsStringAsync();
-            errorMessage = errorMessage.Split('\n').FirstOrDefault();
-            Console.WriteLine(errorMessage);
+            _errorMessage = errorMessage.Split('\n').FirstOrDefault();
+            ShowServerErrorAlert();
         }
     }
 
@@ -188,6 +193,7 @@ else
         _isModalVisible = false;
         CloseSuccessAlert();
         CloseErrorAlert();
+        CloseServerErrorAlert();
     }
 
     private void CloseAlerts()
@@ -213,4 +219,12 @@ else
         CloseSuccessAlert();
         _isErrorAlertVisible = true;
     }
+
+    private void CloseServerErrorAlert()
+    {
+        _isServerErrorAlertVisible = false;
+        _errorMessage = "";
+    }
+
+    private void ShowServerErrorAlert() => _isServerErrorAlertVisible = true;
 }

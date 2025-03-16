@@ -70,6 +70,20 @@ namespace DataAccess.Repositories
             return groupToUpdate;
         }
 
+        public async Task<Group?> GetByJournalId(int id)
+        {
+            return await _dbContext.Groups.Include(g => g.Journal).AsNoTracking().FirstOrDefaultAsync(g => g.Journal!.Id == id);
+        }
+
+        public async Task<bool> DeleteAsync(int id)
+        {
+            var deletedRows = await _dbContext.Groups.Where(c => c.Id == id).ExecuteDeleteAsync();
+            if (deletedRows < 1) return false;
+
+            await _dbContext.SaveChangesAsync();
+            return true;
+        }
+
         private async Task<bool> CuratorExists(int id) =>
             await _dbContext.Curators.AsNoTracking().FirstOrDefaultAsync(c => c.Id == id) != null;
 
@@ -89,11 +103,6 @@ namespace DataAccess.Repositories
             if (historyRecord == null) return null;
 
             return historyRecord;
-        }
-
-        public async Task<Group?> GetByJournalId(int id)
-        {
-            return await _dbContext.Groups.Include(g => g.Journal).AsNoTracking().FirstOrDefaultAsync(g => g.Journal!.Id == id);
         }
     }
 }
