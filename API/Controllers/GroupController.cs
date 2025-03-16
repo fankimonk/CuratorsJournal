@@ -59,5 +59,26 @@ namespace API.Controllers
             var response = group.ToResponse();
             return Ok(response);
         }
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult<GroupResponse>> Update([FromRoute] int id, [FromBody] UpdateGroupRequest request)
+        {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+
+            var updated = await _groupsRepository.UpdateAsync(id, request.ToEntity());
+            if (updated == null) return BadRequest();
+
+            var response = updated.ToResponse();
+
+            return Ok(response);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> Delete([FromRoute] int id)
+        {
+            if (!await _groupsRepository.DeleteAsync(id)) return NotFound();
+
+            return NoContent();
+        }
     }
 }
