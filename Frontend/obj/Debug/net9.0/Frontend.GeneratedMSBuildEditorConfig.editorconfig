@@ -120,6 +120,18 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xSZWZlcmVuY2VQYWdlc1xMaXRlcmF0dXJlLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Dev/Web/CuratorsJournal/Frontend/Components/Pages/ReferencePages/Positions.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xSZWZlcmVuY2VQYWdlc1xQb3NpdGlvbnMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Dev/Web/CuratorsJournal/Frontend/Components/Pages/ReferencePages/Subjects.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xSZWZlcmVuY2VQYWdlc1xTdWJqZWN0cy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Dev/Web/CuratorsJournal/Frontend/Components/Pages/ReferencePages/Workers.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xSZWZlcmVuY2VQYWdlc1xXb3JrZXJzLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Dev/Web/CuratorsJournal/Frontend/Components/Routes.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xSb3V0ZXMucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 

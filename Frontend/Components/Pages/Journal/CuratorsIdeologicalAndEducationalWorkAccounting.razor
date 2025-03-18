@@ -1,11 +1,13 @@
-﻿@page "/journal/{journalId:int}/ideologicalandeducationalwork/{pageId:int}"
+﻿@page "/journal/{journalId:int}/CuratorsIdeologicalAndEducationalWorkAccounting/{pageId:int}"
 @rendermode InteractiveServer
 
 @using Contracts.Journal.CuratorsIdeologicalAndEducationalWorkAccounting
 @using Contracts.Mappers
 @using Contracts.Mappers.Journal
+@using Frontend.Services
 
 @inject HttpClient HttpClient
+@inject JournalState JournalState
 
 <PageTitle>Учет идеологической и воспитательной работы куратора учебной группы</PageTitle>
 
@@ -58,6 +60,8 @@ else
 
     protected override async Task OnInitializedAsync()
     {
+        JournalState.SetJournalId(JournalId);
+
         _pageData = await HttpClient.GetFromJsonAsync<IdeologicalEducationalWorkPageResponse>("api/journal/ideologicalandeducationalwork/" + PageId.ToString());
     }
 

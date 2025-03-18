@@ -1,0 +1,118 @@
+﻿@page "/journal/{journalId:int}/traditions/{pageId:int}"
+
+
+@using Contracts.Journal.Traditions
+@using Contracts.Mappers
+@using Contracts.Mappers.Journal
+
+@inject HttpClient HttpClient
+
+<PageTitle>Традиции ВУЗа, факультета, группы</PageTitle>
+
+<h3 class="d-flex justify-content-center">ТРАДИЦИИ ВУЗА, ФАКУЛЬТЕТА, ГРУППЫ</h3>
+
+@if (_pageData == null)
+{
+    <p><em>Загрузка...</em></p>
+}
+else
+{
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th class="text-center">Название традиции</th>
+                <th class="text-center">Дата</th>
+                <th class="text-center">Форма участия группы</th>
+                <th class="text-center">Примечание</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var record in _pageData.Traditions)
+            {
+                <tr>
+                    <td>
+                        <input @bind="record.Name" @bind:after="async () => await Update(record)" class="input fullwidth" />
+                    </td>
+                    <td>
+                        <input type="number" min="1" max="31" @bind="record.Day" @bind:after="async () => await Update(record)" class="input" />.
+                        <input type="number" min="1" max="12" @bind="record.Month" @bind:after="async () => await Update(record)" class="input" />
+                    </td>
+                    <td>
+                        <input @bind="record.ParticipationForm" @bind:after="async () => await Update(record)" class="input fullwidth" />
+                    </td>
+                    <td>
+                        <input @bind="record.Note" @bind:after="async () => await Update(record)" class="input fullwidth" />
+                    </td>
+                    <td>
+                        <button @onclick="async () => await Delete(record)" class="btn btn-close" />
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <button @onclick="Add" class="btn btn-outline-primary">Добавить строку</button>
+}
+
+@code {
+    [Parameter]
+    public int PageId { get; set; }
+
+    [Parameter]
+    public int JournalId { get; set; }
+
+    public TraditionsPageResponse? _pageData;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _pageData = await HttpClient.GetFromJsonAsync<TraditionsPageResponse>("api/journal/tradition/" + PageId.ToString());
+    }
+
+    private async Task Update(TraditionResponse record)
+    {
+        Console.WriteLine("Update tradition");
+
+        var request = record.ToRequest();
+        var response = await HttpClient.PutAsJsonAsync<UpdateTraditionRequest>("api/journal/tradition/" + record.Id, request);
+
+        if (!response.IsSuccessStatusCode)
+        {
+            // var updatedRecord = await response.Content.ReadFromJsonAsync<EducationalProcessScheduleRecordResponse>();
+            // record = updatedRecord!;
+        }
+    }
+
+    private async Task Add()
+    {
+        Console.WriteLine("Add tradition");
+
+        var request = new CreateTraditionRequest(null, null, null, null, null, PageId);
+        var response = await HttpClient.PostAsJsonAsync<CreateTraditionRequest>("api/journal/tradition", request);
+
+        if (response.IsSuccessStatusCode)
+        {
+            var addedRecord = await response.Content.ReadFromJsonAsync<TraditionResponse>();
+            _pageData!.Traditions.Add(addedRecord!);
+        }
+    }
+
+    private async Task Delete(TraditionResponse record)
+    {
+        Console.WriteLine("Delete traidition");
+
+        var response = await HttpClient.DeleteAsync("api/journal/tradition/" + record.Id);
+
+        if (response.IsSuccessStatusCode) _pageData!.Traditions.Remove(record);
+    }
+}
+
+<style>
+    .input {
+        border: none;
+        outline: none;
+        background: transparent;
+    }
+
+    .fullwidth {
+        width: 100%;
+    }
+</style>

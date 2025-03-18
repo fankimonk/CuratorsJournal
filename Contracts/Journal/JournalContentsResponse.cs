@@ -5,6 +5,6 @@ namespace Contracts.Journal
     public record JournalContentsResponse
     (
         int JournalId,
-        List<PageResponse> Pages
+        List<PageTypeResponse> PageTypes
     );
 }

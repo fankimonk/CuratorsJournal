@@ -1,11 +1,13 @@
-﻿@page "/journal/{journalId:int}/participationinpedagogicalseminars/{pageId:int}"
+﻿@page "/journal/{journalId:int}/CuratorsParticipationInPedagogicalSeminars/{pageId:int}"
 @rendermode InteractiveServer
 
 @using Contracts.Journal.CuratorsParticipationInPedagogicalSeminars
 @using Contracts.Mappers
 @using Contracts.Mappers.Journal
+@using Frontend.Services
 
 @inject HttpClient HttpClient
+@inject JournalState JournalState
 
 <PageTitle>Участие куратора в работе педагогических семинаров, методического объединения</PageTitle>
 
@@ -69,6 +71,8 @@ else
 
     protected override async Task OnInitializedAsync()
     {
+        JournalState.SetJournalId(JournalId);
+
         _pageData = await HttpClient.GetFromJsonAsync<ParticipationInPedagogicalSeminarsPageResponse>("api/journal/participationinpedagogicalseminars/" + PageId.ToString());
     }
 

@@ -13,14 +13,6 @@
       "PackagePath": "staticwebassets\\favicon.png"
     },
     {
-      "Id": "C:\\Dev\\Web\\CuratorsJournal\\Frontend\\wwwroot\\icons\\pen.svg",
-      "PackagePath": "staticwebassets\\icons\\pen.svg"
-    },
-    {
-      "Id": "C:\\Dev\\Web\\CuratorsJournal\\Frontend\\wwwroot\\icons\\trash.svg",
-      "PackagePath": "staticwebassets\\icons\\trash.svg"
-    },
-    {
       "Id": "C:\\Dev\\Web\\CuratorsJournal\\Frontend\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css"
     },

@@ -1,0 +1,216 @@
+﻿@page "/subjects"
+@rendermode InteractiveServer
+
+@using Contracts.Subjects
+@using Frontend.Components.Buttons
+@using Frontend.Components.Utils
+@using Microsoft.AspNetCore.Components.QuickGrid
+
+@inject HttpClient HttpClient
+
+<PageTitle>Предметы</PageTitle>
+
+<h1>Предметы</h1>
+
+@if (_subjects == null)
+{
+    <p><em>Загрузка...</em></p>
+}
+else
+{
+    <AddButton @onclick="ShowAddModal">Добавить</AddButton>
+
+    <QuickGrid Items="_subjects" class="table">
+        <PropertyColumn Property="@(l => l.Name)" Sortable="true" Title="Название" class="align-middle" />
+        <PropertyColumn Property="@(l => l.AbbreviatedName)" Sortable="true" Title="Аббревиатура" class="align-middle" />
+        <TemplateColumn class="text-end">
+            <EditButton @onclick="() => ShowEditModal(context)" />
+            <DeleteButton @onclick="async () => await Delete(context)" />
+        </TemplateColumn>
+    </QuickGrid>
+
+    <ModalForm IsVisible="_isAddModalVisible" OnClose="CloseModal">
+        <div class="row">
+            <div class="col-md-12">
+                <EditForm method="post" Model="SubjectToAdd" OnValidSubmit="Add" OnInvalidSubmit="ShowErrorAlert" FormName="add" Enhance>
+                    <DataAnnotationsValidator />
+                    <Alert Type="success" IsVisible="_isSuccessAlertVisible" OnClose="CloseSuccessAlert" />
+                    <Alert Type="error" IsVisible="_isErrorAlertVisible" OnClose="CloseErrorAlert">
+                        <ValidationSummary />
+                    </Alert>
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Название: </label>
+                        <InputText id="name" @bind-Value="SubjectToAdd.Name" class="form-control" />
+                    </div>
+                    <div class="mb-3">
+                        <label for="abbreviatedName" class="form-label">Аббревиатура: </label>
+                        <InputText id="abbreviatedName" @bind-Value="SubjectToAdd.AbbreviatedName" class="form-control" />
+                    </div>
+                    <AddButton type="submit">Добавить</AddButton>
+                </EditForm>
+            </div>
+        </div>
+    </ModalForm>
+
+    <ModalForm IsVisible="_isEditModalVisible" OnClose="CloseModal">
+        <div class="row">
+            <div class="col-md-12">
+                <EditForm method="put" Model="SubjectToEdit" OnValidSubmit="Update" OnInvalidSubmit="ShowErrorAlert" FormName="edit" Enhance>
+                    <DataAnnotationsValidator />
+                    <Alert Type="success" IsVisible="_isSuccessAlertVisible" OnClose="CloseSuccessAlert" />
+                    <Alert Type="error" IsVisible="_isErrorAlertVisible" OnClose="CloseErrorAlert">
+                        <ValidationSummary />
+                    </Alert>
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Название: </label>
+                        <InputText id="name" @bind-Value="SubjectToEdit.Name" class="form-control" />
+                    </div>
+                    <div class="mb-3">
+                        <label for="abbreviatedName" class="form-label">Аббревиатура: </label>
+                        <InputText id="abbreviatedName" @bind-Value="SubjectToEdit.AbbreviatedName" class="form-control" />
+                    </div>
+                    <EditButton type="submit">Редактировать</EditButton>
+                </EditForm>
+            </div>
+        </div>
+    </ModalForm>
+
+    <AlertBottom IsVisible="_isServerErrorAlertVisible" OnClose="CloseServerErrorAlert">@_errorMessage</AlertBottom>
+}
+
+@code {
+    [SupplyParameterFromForm]
+    public CreateSubjectRequest SubjectToAdd { get; set; } = new("", "");
+
+    [SupplyParameterFromForm]
+    public UpdateSubjectRequest SubjectToEdit { get; set; } = new("", "");
+    private int _subjectToEditId = -1;
+
+    private IQueryable<SubjectResponse>? _subjects;
+
+    private bool _isModalVisible = false;
+    private bool _isAddModal = true;
+
+    private bool _isAddModalVisible { get => _isModalVisible && _isAddModal; }
+    private bool _isEditModalVisible { get => _isModalVisible && !_isAddModal; }
+
+    private bool _isSuccessAlertVisible = false;
+    private bool _isErrorAlertVisible = false;
+
+    private bool _isServerErrorAlertVisible = false;
+    private string? _errorMessage = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        var subjects = await HttpClient.GetFromJsonAsync<List<SubjectResponse>>("api/subject/");
+        if (subjects != null)
+            _subjects = subjects.AsQueryable();
+    }
+
+    public async Task Add()
+    {
+        var response = await HttpClient.PostAsJsonAsync<CreateSubjectRequest>("api/subject", SubjectToAdd);
+
+        if (response.IsSuccessStatusCode)
+        {
+            var added = await response.Content.ReadFromJsonAsync<SubjectResponse>();
+            _subjects = _subjects!.Append(added!);
+
+            ShowSuccessAlert();
+        }
+        else
+        {
+            var errorMessage = await response.Content.ReadAsStringAsync();
+            _errorMessage = errorMessage.Split('\n').FirstOrDefault();
+            ShowServerErrorAlert();
+        }
+    }
+
+    public async Task Update()
+    {
+        var request = new UpdateSubjectRequest(SubjectToEdit.Name, SubjectToEdit.AbbreviatedName);
+        var response = await HttpClient.PutAsJsonAsync<UpdateSubjectRequest>("api/subject/" + _subjectToEditId, request);
+
+        if (response.IsSuccessStatusCode)
+        {
+            var updated = await response.Content.ReadFromJsonAsync<SubjectResponse>();
+            var toUpdate = _subjects!.FirstOrDefault(l => l.Id == updated!.Id);
+
+            toUpdate!.Name = updated!.Name;
+            toUpdate!.AbbreviatedName = updated!.AbbreviatedName;
+
+            ShowSuccessAlert();
+        }
+        else
+        {
+            var errorMessage = await response.Content.ReadAsStringAsync();
+            _errorMessage = errorMessage.Split('\n').FirstOrDefault();
+            ShowServerErrorAlert();
+        }
+    }
+
+    public async Task Delete(SubjectResponse subject)
+    {
+        var response = await HttpClient.DeleteAsync("api/subject/" + subject.Id);
+
+        if (response.IsSuccessStatusCode)
+        {
+            _subjects = _subjects!.Where(l => l.Id != subject.Id);
+        }
+        else
+        {
+            var errorMessage = await response.Content.ReadAsStringAsync();
+            _errorMessage = errorMessage.Split('\n').FirstOrDefault();
+            ShowServerErrorAlert();
+        }
+    }
+
+    private void ShowAddModal()
+    {
+        _isAddModal = true;
+        _isModalVisible = true;
+    }
+
+    private void ShowEditModal(SubjectResponse subject)
+    {
+        _subjectToEditId = subject.Id;
+        SubjectToEdit = new UpdateSubjectRequest(subject.Name, subject.AbbreviatedName);
+        _isAddModal = false;
+        _isModalVisible = true;
+    }
+
+    private void CloseModal()
+    {
+        SubjectToAdd = new("", "");
+        _subjectToEditId = -1;
+        SubjectToEdit = new("", "");
+        _isModalVisible = false;
+        CloseSuccessAlert();
+        CloseErrorAlert();
+        CloseServerErrorAlert();
+    }
+
+    private void CloseSuccessAlert() => _isSuccessAlertVisible = false;
+
+    private void ShowSuccessAlert()
+    {
+        CloseErrorAlert();
+        _isSuccessAlertVisible = true;
+    }
+
+    private void CloseErrorAlert() => _isErrorAlertVisible = false;
+
+    private void ShowErrorAlert()
+    {
+        CloseSuccessAlert();
+        _isErrorAlertVisible = true;
+    }
+
+    private void CloseServerErrorAlert()
+    {
+        _isServerErrorAlertVisible = false;
+        _errorMessage = "";
+    }
+
+    private void ShowServerErrorAlert() => _isServerErrorAlertVisible = true;
+}

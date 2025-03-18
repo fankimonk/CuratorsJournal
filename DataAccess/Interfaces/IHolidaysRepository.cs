@@ -1,5 +1,4 @@
 ﻿using Domain.Entities.JournalContent.Holidays;
-using Domain.Entities.JournalContent.Literature;
 
 namespace DataAccess.Interfaces
 {

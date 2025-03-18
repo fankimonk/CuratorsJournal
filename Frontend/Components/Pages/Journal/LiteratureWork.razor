@@ -1,12 +1,14 @@
-﻿@page "/journal/{journalId:int}/literaturework/{pageId:int}"
+﻿@page "/journal/{journalId:int}/LiteratureWork/{pageId:int}"
 @rendermode InteractiveServer
 
 @using Contracts.Journal
 @using Contracts.Journal.LiteratureWork
 @using Contracts.Literature
 @using Contracts.Mappers.Journal
+@using Frontend.Services
 
 @inject HttpClient HttpClient
+@inject JournalState JournalState
 
 <PageTitle>Работа с научно-методической и педагогической литературой</PageTitle>
 
@@ -68,6 +70,8 @@ else
 
     protected override async Task OnInitializedAsync()
     {
+        JournalState.SetJournalId(JournalId);
+
         _pageData = await HttpClient.GetFromJsonAsync<LiteratureWorkPageResponse>("api/journal/literaturework/" + PageId.ToString());
         _literature = await HttpClient.GetFromJsonAsync<List<LiteratureResponse>>("api/literature/");
     }

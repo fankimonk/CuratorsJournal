@@ -19,37 +19,38 @@ namespace DataAccess.Repositories
 
             switch(page.PageTypeId)
             {
-                case (int)PageTypes.PsychologicalAndPedagogicalCharacteristicsPage:
+                case (int)PageTypes.PsychologicalAndPedagogicalCharacteristics:
                     page.PsychologicalAndPedagogicalCharacteristics = new PsychologicalAndPedagogicalCharacteristics();
                     break;
 
-                case (int)PageTypes.DynamicsOfKeyIndicatorsPage:
+                case (int)PageTypes.DynamicsOfKeyIndicators:
                     var keyIndicators = Enum.GetValues<KeyIndicators>();
                     foreach (var ki in keyIndicators)
                     {
-                        page.DynamicsOfKeyIndicators
-                            .Add(new DynamicsOfKeyIndicatorsRecord { KeyIndicatorId = (int)ki });
+                        var record = new DynamicsOfKeyIndicatorsRecord { KeyIndicatorId = (int)ki };
+                        record.KeyIndicatorsByCourse.Add(new KeyIndicatorByCourse { Course = 1, Value = null });
+                        page.DynamicsOfKeyIndicators.Add(record);
                     }
                     break;
 
-                case (int)PageTypes.SocioPedagogicalCharacteristicsPage:
+                case (int)PageTypes.SocioPedagogicalCharacteristics:
                     page.SocioPedagogicalCharacteristics = new SocioPedagogicalCharacteristics();
                     page.SocioPedagogicalCharacteristicsPageAttributes = new SocioPedagogicalCharacteristicsPageAttributes();
                     break;
 
-                case (int)PageTypes.PersonalizedAccountingCardPage:
+                case (int)PageTypes.PersonalizedAccountingCard:
                     page.PersonalizedAccountingCard = new PersonalizedAccountingCard();
                     break;
 
-                case (int)PageTypes.StudentsHealthCardPage:
+                case (int)PageTypes.StudentsHealthCard:
                     page.HealthCardPageAttributes = new HealthCardPageAttributes();
                     break;
 
-                case (int)PageTypes.CuratorsIdeologicalAndEducationalWorkAccountingPage:
+                case (int)PageTypes.CuratorsIdeologicalAndEducationalWorkAccounting:
                     page.CuratorsIdeologicalAndEducationalWorkPageAttributes = new CuratorsIdeologicalAndEducationalWorkPageAttributes();
                     break;
 
-                case (int)PageTypes.GroupActivesPage:
+                case (int)PageTypes.GroupActives:
                     page.GroupActives.Add(new GroupActive { PositionName = "Староста" });
                     page.GroupActives.Add(new GroupActive { PositionName = "Заместитель старосты" });
                     page.GroupActives.Add(new GroupActive { PositionName = "Профорг" });
@@ -79,9 +80,32 @@ namespace DataAccess.Repositories
             return await _dbContext.Pages.AsNoTracking().FirstOrDefaultAsync(p => p.Id == id);
         }
 
-        public async Task<List<Page>> GetByJournalId(int journalId)
+        public async Task<List<Page>?> GetByJournalId(int journalId)
         {
+            if (!await JournalExists(journalId)) return null;
             return await _dbContext.Pages.AsNoTracking().Include(p => p.PageType).Where(p => p.JournalId == journalId).ToListAsync();
+        }
+
+        public async Task<List<PageType>?> GetByJournalIdGroupedByTypes(int journalId)
+        {
+            if (!await JournalExists(journalId)) return null;
+            return await _dbContext.PageTypes.Include(pt => pt.Pages).AsNoTracking()
+                .Select(pt => new PageType
+                {
+                    Id = pt.Id,
+                    Name = pt.Name,
+                    Pages = pt.Pages.Where(p => p.JournalId == journalId).ToList()
+                }).ToListAsync();
+        }
+
+        public async Task<List<Page>?> GetJournalPagesByType(int journalId, PageTypes pageType)
+        {
+            if (!await JournalExists(journalId)) return null;
+            if (!await PageTypeExists((int)pageType)) return null;
+
+            return await _dbContext.Pages.AsNoTracking()
+                .Where(p => p.JournalId == journalId && p.PageTypeId == (int)pageType)
+                .ToListAsync();
         }
 
         private async Task<bool> PageTypeExists(int id) =>

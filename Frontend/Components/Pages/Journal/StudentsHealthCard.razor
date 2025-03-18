@@ -1,4 +1,4 @@
-﻿@page "/journal/{journalId:int}/studentshealthcard/{pageId:int}"
+﻿@page "/journal/{journalId:int}/StudentsHealthCard/{pageId:int}"
 @rendermode InteractiveServer
 
 @using Contracts.AcademicYears
@@ -7,8 +7,10 @@
 @using Contracts.Mappers
 @using Contracts.Mappers.Journal
 @using Contracts.Students
+@using Frontend.Services
 
 @inject HttpClient HttpClient
+@inject JournalState JournalState
 
 <PageTitle>Карта здоровья студентов</PageTitle>
 
@@ -97,6 +99,8 @@ else
 
     protected override async Task OnInitializedAsync()
     {
+        JournalState.SetJournalId(JournalId);
+
         _pageData = await HttpClient.GetFromJsonAsync<HealthCardPageResponse>("api/journal/healthcard/" + PageId.ToString());
 
         _group = await HttpClient.GetFromJsonAsync<GroupResponse>("api/group/getbyjournal/" + JournalId.ToString());

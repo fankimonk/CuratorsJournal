@@ -1,5 +1,4 @@
 ﻿using Domain.Entities;
-using Domain.Entities.JournalContent;
 
 namespace DataAccess.Interfaces
 {

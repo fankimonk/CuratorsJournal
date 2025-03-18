@@ -109,8 +109,6 @@ else
 
     public async Task Add()
     {
-        Console.WriteLine("Add faculty");
-
         var response = await HttpClient.PostAsJsonAsync<CreateFacultyRequest>("api/faculty", FacultyToAdd);
 
         if (response.IsSuccessStatusCode)
@@ -130,8 +128,6 @@ else
 
     public async Task Update()
     {
-        Console.WriteLine("Update " + _facultyToEditId);
-
         var request = new UpdateFacultyRequest(FacultyToEdit.Name, FacultyToEdit.AbbreviatedName);
         var response = await HttpClient.PutAsJsonAsync<UpdateFacultyRequest>("api/faculty/" + _facultyToEditId, request);
 
@@ -155,8 +151,6 @@ else
 
     public async Task Delete(FacultyResponse faculty)
     {
-        Console.WriteLine("Delete " + faculty.Id);
-
         var response = await HttpClient.DeleteAsync("api/faculty/" + faculty.Id);
 
         if (response.IsSuccessStatusCode)

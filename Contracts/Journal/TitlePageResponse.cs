@@ -2,9 +2,10 @@
 
 namespace Contracts.Journal
 {
-    public class TitlePageResponse(int journalId, string groupNumber, string admissionYear, 
+    public class TitlePageResponse(int pageId, int journalId, string groupNumber, string admissionYear, 
         CuratorResponse? curator, string departmentName, string facultyName)
     {
+        public int PageId { get; set; } = pageId;
         public int JournalId { get; set; } = journalId;
         public string GroupNumber { get; set; } = groupNumber;
         public string AdmissionYear { get; set; } = admissionYear;

@@ -52,15 +52,31 @@ namespace API.Controllers
             return Ok(journalResponses);
         }
 
-        [HttpGet("{journalId}/contents")]
-        public async Task<ActionResult<JournalContentsResponse>> GetContents([FromRoute] int journalId)
+        [HttpGet("{journalId}/pages")]
+        public async Task<ActionResult<JournalPagesResponse>> GetPages([FromRoute] int journalId)
         {
             var pages = await _pagesRepository.GetByJournalId(journalId);
+            if (pages == null) return NotFound();
 
             var response = pages.Select(p => new PageResponse(
                 p.Id,
-                new PageTypeResponse(p.PageType!.Id, p.PageType.Name),
-                p.JournalId
+                p.JournalId,
+                new PageTypeResponse(p.PageType!.Id, p.PageType.Name, null)
+            )).ToList();
+
+            return Ok(new JournalPagesResponse(journalId, response));
+        }
+
+        [HttpGet("{journalId}/contents")]
+        public async Task<ActionResult<JournalContentsResponse>> GetContents([FromRoute] int journalId)
+        {
+            var pages = await _pagesRepository.GetByJournalIdGroupedByTypes(journalId);
+            if (pages == null) return NotFound();
+
+            var response = pages.Select(pt => new PageTypeResponse(
+                pt.Id,
+                pt.Name,
+                pt.Pages.Select(p => new PageResponse(p.Id, p.JournalId, null)).ToList()
             )).ToList();
 
             return Ok(new JournalContentsResponse(journalId, response));
@@ -69,8 +85,10 @@ namespace API.Controllers
         [HttpGet("{journalId}/titlepage")]
         public async Task<ActionResult<TitlePageResponse>> GetTitlePage([FromRoute] int journalId)
         {
-            var journal = await _journalsService.GetJournalsTitlePageData(journalId);
-            if (journal == null) return NotFound(nameof(journalId));
+            var titlePageData = await _journalsService.GetJournalsTitlePageData(journalId);
+            if (titlePageData == null) return NotFound(nameof(journalId));
+
+            var journal = titlePageData.Item2;
 
             var group = journal.Group;
             var department = group!.Specialty!.Department;
@@ -90,6 +108,7 @@ namespace API.Controllers
             }
 
             var titlePageResponse = new TitlePageResponse(
+                titlePageData.Item1,
                 journalId,
                 group.Number,
                 group.AdmissionYear.ToString(),

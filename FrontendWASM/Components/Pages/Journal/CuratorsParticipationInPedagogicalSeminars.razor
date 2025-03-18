@@ -1,0 +1,124 @@
+﻿@page "/journal/{journalId:int}/participationinpedagogicalseminars/{pageId:int}"
+
+@using Contracts.Journal.CuratorsParticipationInPedagogicalSeminars
+@using Contracts.Mappers
+@using Contracts.Mappers.Journal
+
+@inject HttpClient HttpClient
+
+<PageTitle>Участие куратора в работе педагогических семинаров, методического объединения</PageTitle>
+
+<h3 class="d-flex justify-content-center">УЧАСТИЕ КУРАТОРА В РАБОТЕ ПЕДАГОГИЧЕСКИХ СЕМИНАРОВ</h3>
+<h3 class="d-flex justify-content-center">МЕТОДИЧЕСКОГО ОБЪЕДИНЕНИЯ</h3>
+
+@if (_pageData == null)
+{
+    <p><em>Загрузка...</em></p>
+}
+else
+{
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th class="text-center">Дата</th>
+                <th class="text-center">Тема семинара заседания</th>
+                <th class="text-center">Форма участия</th>
+                <th class="text-center">Место проведения</th>
+                <th class="text-center">Примечания</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var record in _pageData.ParticipationInPedagogicalSeminars)
+            {
+                <tr>
+                    <td>
+                        <input type="date" @bind="record.Date" @bind:after="async () => await Update(record)" class="input" />
+                    </td>
+                    <td>
+                        <input @bind="record.Topic" @bind:after="async () => await Update(record)" class="input fullwidth" />
+                    </td>
+                    <td>
+                        <input @bind="record.ParticipationForm" @bind:after="async () => await Update(record)" class="input fullwidth" />
+                    </td>
+                    <td>
+                        <input @bind="record.SeminarLocation" @bind:after="async () => await Update(record)" class="input fullwidth" />
+                    </td>
+                    <td>
+                        <input @bind="record.Note" @bind:after="async () => await Update(record)" class="input fullwidth" />
+                    </td>
+                    <td>
+                        <button @onclick="async () => await Delete(record)" class="btn btn-close" />
+                    </td>
+                </tr>
+            }
+            
+        </tbody>
+    </table>
+    <button @onclick="Add" class="btn btn-outline-primary">Добавить строку</button>
+}
+
+@code {
+    [Parameter]
+    public int PageId { get; set; }
+
+    [Parameter]
+    public int JournalId { get; set; }
+
+    private ParticipationInPedagogicalSeminarsPageResponse? _pageData;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _pageData = await HttpClient.GetFromJsonAsync<ParticipationInPedagogicalSeminarsPageResponse>("api/journal/participationinpedagogicalseminars/" + PageId.ToString());
+    }
+
+    private async Task Add()
+    {
+        Console.WriteLine("Add participation in pedagogical seminars");
+
+        var request = new CreateParticipationInPedagogicalSeminarsRecordRequest(null, null, null, null, null, PageId);
+        var response = await HttpClient.PostAsJsonAsync<CreateParticipationInPedagogicalSeminarsRecordRequest>
+            ("api/journal/participationinpedagogicalseminars", request);
+
+        if (response.IsSuccessStatusCode)
+        {
+            var addedRecord = await response.Content.ReadFromJsonAsync<ParticipationInPedagogicalSeminarsRecordResponse>();
+            _pageData!.ParticipationInPedagogicalSeminars.Add(addedRecord!);
+        }
+    }
+
+    private async Task Update(ParticipationInPedagogicalSeminarsRecordResponse record)
+    {
+        Console.WriteLine("Update participation in pedagogical seminars");
+
+        var request = record.ToRequest();
+        var response = await HttpClient.PutAsJsonAsync<UpdateParticipationInPedagogicalSeminarsRecordRequest>
+            ("api/journal/participationinpedagogicalseminars/" + record.Id, request);
+
+        if (response.IsSuccessStatusCode)
+        {
+            // var updatedRecord = await response.Content.ReadFromJsonAsync<IdeologicalEducationalWorkRecordResponse>();
+            // record = updatedRecord!;
+        }
+    }
+
+    private async Task Delete(ParticipationInPedagogicalSeminarsRecordResponse record)
+    {
+        Console.WriteLine("Delete participation in pedagogical seminars");
+
+        var response = await HttpClient.DeleteAsync("api/journal/participationinpedagogicalseminars/" + record.Id);
+
+        if (response.IsSuccessStatusCode) _pageData!.ParticipationInPedagogicalSeminars.Remove(record);
+    }
+}
+
+<style>
+    .input {
+        border: none;
+        outline: none;
+        background: transparent;
+    }
+
+    .fullwidth {
+        width: 100%;
+    }
+</style>

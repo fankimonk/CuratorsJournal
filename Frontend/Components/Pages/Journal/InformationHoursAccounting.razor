@@ -1,11 +1,13 @@
-﻿@page "/journal/{journalId:int}/informationalhours/{pageId:int}"
+﻿@page "/journal/{journalId:int}/InformationHoursAccounting/{pageId:int}"
 @rendermode InteractiveServer
 
 @using Contracts.Journal.InformationHoursAccounting
 @using Contracts.Mappers
 @using Contracts.Mappers.Journal
+@using Frontend.Services
 
 @inject HttpClient HttpClient
+@inject JournalState JournalState
 
 <PageTitle>Учет информационных часов</PageTitle>
 
@@ -60,6 +62,8 @@ else
 
     protected override async Task OnInitializedAsync()
     {
+        JournalState.SetJournalId(JournalId);
+
         _pageData = await HttpClient.GetFromJsonAsync<InformationHoursAccountingPageResponse>("api/journal/informationhoursaccounting/" + PageId.ToString());
     }
 

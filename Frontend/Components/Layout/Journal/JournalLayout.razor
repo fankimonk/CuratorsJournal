@@ -1,8 +1,14 @@
-﻿@inherits LayoutComponentBase
+﻿@using Contracts.Journal
+@using Frontend.Services
+
+@inherits LayoutComponentBase
+
+@inject HttpClient HttpClient
+@inject JournalState JournalState
 
 <div class="page">
     <div class="sidebar">
-        <JournalNavMenu />
+        <JournalNavMenu JournalContents="_journalContents" />
     </div>
 
     <main>
@@ -19,4 +25,12 @@
 </div>
 
 @code {
+    private JournalContentsResponse? _journalContents;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await JournalState.WaitForJournalIdAsync();
+
+        _journalContents = await HttpClient.GetFromJsonAsync<JournalContentsResponse>("api/journal/" + JournalState.JournalId.ToString() + "/contents/");
+    }
 }

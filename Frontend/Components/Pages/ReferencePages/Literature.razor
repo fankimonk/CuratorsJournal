@@ -118,8 +118,6 @@ else
 
     public async Task Add()
     {
-        Console.WriteLine("Add literature");
-
         var response = await HttpClient.PostAsJsonAsync<CreateLiteratureRequest>("api/literature", LiteratureToAdd);
 
         if (response.IsSuccessStatusCode)
@@ -139,8 +137,6 @@ else
 
     public async Task Update()
     {
-        Console.WriteLine("Update " + _literatureToEditId);
-
         var request = new UpdateLiteratureRequest(LiteratureToEdit.Author, LiteratureToEdit.Name, LiteratureToEdit.BibliographicData);
         var response = await HttpClient.PutAsJsonAsync<UpdateLiteratureRequest>("api/literature/" + _literatureToEditId, request);
 
@@ -165,8 +161,6 @@ else
 
     public async Task Delete(LiteratureResponse literature)
     {
-        Console.WriteLine("Delete " + literature.Id);
-
         var response = await HttpClient.DeleteAsync("api/literature/" + literature.Id);
 
         if (response.IsSuccessStatusCode)

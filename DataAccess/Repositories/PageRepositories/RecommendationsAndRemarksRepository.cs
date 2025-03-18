@@ -54,7 +54,7 @@ namespace DataAccess.Repositories.PageRepositories
             return recordToUpdate;
         }
 
-        public async Task<bool> PageExists(int id) => await PageExists(id, PageTypes.RecomendationsAndRemarksPage);
+        public async Task<bool> PageExists(int id) => await PageExists(id, PageTypes.RecomendationsAndRemarks);
 
         private async Task<bool> WorkerExists(int id) =>
             await _dbContext.Workers.AsNoTracking().FirstOrDefaultAsync(c => c.Id == id) != null;

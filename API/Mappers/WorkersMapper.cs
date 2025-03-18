@@ -1,4 +1,5 @@
-﻿using Contracts.Workers;
+﻿using Contracts.Positions;
+using Contracts.Workers;
 using Domain.Entities;
 
 namespace API.Mappers
@@ -12,7 +13,8 @@ namespace API.Mappers
                 worker.FirstName,
                 worker.MiddleName,
                 worker.LastName,
-                worker.Position!.ToResponse()
+                worker.Position == null ? new PositionResponse(worker.PositionId, null) : worker.Position.ToResponse(),
+                worker.UserId
             );
         }
 
@@ -23,7 +25,7 @@ namespace API.Mappers
                 FirstName = request.FirstName,
                 MiddleName = request.MiddleName,
                 LastName = request.LastName,
-                PositionId = request.PositionId,
+                PositionId = (int)request.PositionId,
                 UserId = request.UserId
             };
         }
@@ -35,7 +37,7 @@ namespace API.Mappers
                 FirstName = request.FirstName,
                 MiddleName = request.MiddleName,
                 LastName = request.LastName,
-                PositionId = request.PositionId,
+                PositionId = (int)request.PositionId,
                 UserId = request.UserId
             };
         }

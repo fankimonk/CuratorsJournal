@@ -1,0 +1,206 @@
+﻿@page "/positions"
+@rendermode InteractiveServer
+
+@using Contracts.Positions
+@using Frontend.Components.Buttons
+@using Frontend.Components.Utils
+@using Microsoft.AspNetCore.Components.QuickGrid
+
+@inject HttpClient HttpClient
+
+<PageTitle>Должности</PageTitle>
+
+<h1>Должности</h1>
+
+@if (_positions == null)
+{
+    <p><em>Загрузка...</em></p>
+}
+else
+{
+    <AddButton @onclick="ShowAddModal">Добавить</AddButton>
+
+    <QuickGrid Items="_positions" class="table">
+        <PropertyColumn Property="@(l => l.Name)" Sortable="true" Title="Название" class="align-middle" />
+        <TemplateColumn class="text-end">
+            <EditButton @onclick="() => ShowEditModal(context)" />
+            <DeleteButton @onclick="async () => await Delete(context)" />
+        </TemplateColumn>
+    </QuickGrid>
+
+    <ModalForm IsVisible="_isAddModalVisible" OnClose="CloseModal">
+        <div class="row">
+            <div class="col-md-12">
+                <EditForm method="post" Model="PositionToAdd" OnValidSubmit="Add" OnInvalidSubmit="ShowErrorAlert" FormName="add" Enhance>
+                    <DataAnnotationsValidator />
+                    <Alert Type="success" IsVisible="_isSuccessAlertVisible" OnClose="CloseSuccessAlert" />
+                    <Alert Type="error" IsVisible="_isErrorAlertVisible" OnClose="CloseErrorAlert">
+                        <ValidationSummary />
+                    </Alert>
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Название: </label>
+                        <InputText id="name" @bind-Value="PositionToAdd.Name" class="form-control" />
+                    </div>
+                    <AddButton type="submit">Добавить</AddButton>
+                </EditForm>
+            </div>
+        </div>
+    </ModalForm>
+
+    <ModalForm IsVisible="_isEditModalVisible" OnClose="CloseModal">
+        <div class="row">
+            <div class="col-md-12">
+                <EditForm method="put" Model="PositionToEdit" OnValidSubmit="Update" OnInvalidSubmit="ShowErrorAlert" FormName="edit" Enhance>
+                    <DataAnnotationsValidator />
+                    <Alert Type="success" IsVisible="_isSuccessAlertVisible" OnClose="CloseSuccessAlert" />
+                    <Alert Type="error" IsVisible="_isErrorAlertVisible" OnClose="CloseErrorAlert">
+                        <ValidationSummary />
+                    </Alert>
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Название: </label>
+                        <InputText id="name" @bind-Value="PositionToEdit.Name" class="form-control" />
+                    </div>
+                    <EditButton type="submit">Редактировать</EditButton>
+                </EditForm>
+            </div>
+        </div>
+    </ModalForm>
+
+    <AlertBottom IsVisible="_isServerErrorAlertVisible" OnClose="CloseServerErrorAlert">@_errorMessage</AlertBottom>
+}
+
+@code {
+    [SupplyParameterFromForm]
+    public CreatePositionRequest PositionToAdd { get; set; } = new("");
+
+    [SupplyParameterFromForm]
+    public UpdatePositionRequest PositionToEdit { get; set; } = new("");
+    private int _positionToEditId = -1;
+
+    private IQueryable<PositionResponse>? _positions;
+
+    private bool _isModalVisible = false;
+    private bool _isAddModal = true;
+
+    private bool _isAddModalVisible { get => _isModalVisible && _isAddModal; }
+    private bool _isEditModalVisible { get => _isModalVisible && !_isAddModal; }
+
+    private bool _isSuccessAlertVisible = false;
+    private bool _isErrorAlertVisible = false;
+
+    private bool _isServerErrorAlertVisible = false;
+    private string? _errorMessage = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        var literature = await HttpClient.GetFromJsonAsync<List<PositionResponse>>("api/position/");
+        if (literature != null)
+            _positions = literature.AsQueryable();
+    }
+
+    public async Task Add()
+    {
+        var response = await HttpClient.PostAsJsonAsync<CreatePositionRequest>("api/position", PositionToAdd);
+
+        if (response.IsSuccessStatusCode)
+        {
+            var added = await response.Content.ReadFromJsonAsync<PositionResponse>();
+            _positions = _positions!.Append(added!);
+
+            ShowSuccessAlert();
+        }
+        else
+        {
+            var errorMessage = await response.Content.ReadAsStringAsync();
+            _errorMessage = errorMessage.Split('\n').FirstOrDefault();
+            ShowServerErrorAlert();
+        }
+    }
+
+    public async Task Update()
+    {
+        var request = new UpdatePositionRequest(PositionToEdit.Name);
+        var response = await HttpClient.PutAsJsonAsync<UpdatePositionRequest>("api/position/" + _positionToEditId, request);
+
+        if (response.IsSuccessStatusCode)
+        {
+            var updated = await response.Content.ReadFromJsonAsync<PositionResponse>();
+            var toUpdate = _positions!.FirstOrDefault(l => l.Id == updated!.Id);
+
+            toUpdate!.Name = updated!.Name;
+
+            ShowSuccessAlert();
+        }
+        else
+        {
+            var errorMessage = await response.Content.ReadAsStringAsync();
+            _errorMessage = errorMessage.Split('\n').FirstOrDefault();
+            ShowServerErrorAlert();
+        }
+    }
+
+    public async Task Delete(PositionResponse position)
+    {
+        var response = await HttpClient.DeleteAsync("api/position/" + position.Id);
+
+        if (response.IsSuccessStatusCode)
+        {
+            _positions = _positions!.Where(l => l.Id != position.Id);
+        }
+        else
+        {
+            var errorMessage = await response.Content.ReadAsStringAsync();
+            _errorMessage = errorMessage.Split('\n').FirstOrDefault();
+            ShowServerErrorAlert();
+        }
+    }
+
+    private void ShowAddModal()
+    {
+        _isAddModal = true;
+        _isModalVisible = true;
+    }
+
+    private void ShowEditModal(PositionResponse position)
+    {
+        _positionToEditId = position.Id;
+        PositionToEdit = new UpdatePositionRequest(position.Name);
+        _isAddModal = false;
+        _isModalVisible = true;
+    }
+
+    private void CloseModal()
+    {
+        PositionToAdd = new("");
+        _positionToEditId = -1;
+        PositionToEdit = new("");
+        _isModalVisible = false;
+        CloseSuccessAlert();
+        CloseErrorAlert();
+        CloseServerErrorAlert();
+    }
+
+    private void CloseSuccessAlert() => _isSuccessAlertVisible = false;
+
+    private void ShowSuccessAlert()
+    {
+        CloseErrorAlert();
+        _isSuccessAlertVisible = true;
+    }
+
+    private void CloseErrorAlert() => _isErrorAlertVisible = false;
+
+    private void ShowErrorAlert()
+    {
+        CloseSuccessAlert();
+        _isErrorAlertVisible = true;
+    }
+
+    private void CloseServerErrorAlert()
+    {
+        _isServerErrorAlertVisible = false;
+        _errorMessage = "";
+    }
+
+    private void ShowServerErrorAlert() => _isServerErrorAlertVisible = true;
+}

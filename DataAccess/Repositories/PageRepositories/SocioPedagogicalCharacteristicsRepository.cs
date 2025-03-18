@@ -69,6 +69,6 @@ namespace DataAccess.Repositories.PageRepositories
             return characteristicsToUpdate;
         }
 
-        public async Task<bool> PageExists(int id) => await PageExists(id, PageTypes.SocioPedagogicalCharacteristicsPage);
+        public async Task<bool> PageExists(int id) => await PageExists(id, PageTypes.SocioPedagogicalCharacteristics);
     }
 }

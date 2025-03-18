@@ -55,9 +55,7 @@ else
 
     private async Task OpenJournal(int journalId)
     {
-        NavigationManager.NavigateTo($"/journal/{journalId}/title");
-
-        var response = await HttpClient.GetFromJsonAsync<JournalContentsResponse>($"api/journal/{journalId}/contents");
+        NavigationManager.NavigateTo($"/journal/{journalId}/Title");
     }
 
 }

@@ -8,6 +8,6 @@
         public DynamicsOfKeyIndicatorsRecord? DynamicsRecord { get; set; }
 
         public int Course { get; set; }
-        public double Value { get; set; }
+        public double? Value { get; set; }
     }
 }

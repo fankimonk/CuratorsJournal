@@ -2,23 +2,23 @@
 {
     public enum PageTypes
     {
-        TitlePage = 1,
-        ContactPhonesPage = 2,
-        HolidaysPage = 3,
-        SocioPedagogicalCharacteristicsPage = 4,
-        EducationalProcessSchedulePage = 5,
-        DynamicsOfKeyIndicatorsPage = 6,
-        GroupActivesPage = 7,
-        StudentListPage = 8,
-        PersonalizedAccountingCardPage = 9,
-        StudentsHealthCardPage = 10,
-        FinalPerformanceAccountingPage = 11,
-        CuratorsIdeologicalAndEducationalWorkAccountingPage = 12,
-        InformationHoursAccountingPage = 13,
-        CuratorsParticipationInPedagogicalSeminarsPage = 14,
-        LiteratureWorkPage = 15,
-        PsychologicalAndPedagogicalCharacteristicsPage = 16,
-        RecomendationsAndRemarksPage = 17,
-        TraditionsPage = 18
+        Title = 1,
+        ContactPhones = 2,
+        Holidays = 3,
+        SocioPedagogicalCharacteristics = 4,
+        EducationalProcessSchedule = 5,
+        DynamicsOfKeyIndicators = 6,
+        GroupActives = 7,
+        StudentList = 8,
+        PersonalizedAccountingCard = 9,
+        StudentsHealthCard = 10,
+        FinalPerformanceAccounting = 11,
+        CuratorsIdeologicalAndEducationalWorkAccounting = 12,
+        InformationHoursAccounting = 13,
+        CuratorsParticipationInPedagogicalSeminars = 14,
+        LiteratureWork = 15,
+        PsychologicalAndPedagogicalCharacteristics = 16,
+        RecomendationsAndRemarks = 17,
+        Traditions = 18
     }
 }

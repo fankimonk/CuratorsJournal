@@ -6,7 +6,6 @@ C:\Dev\Web\CuratorsJournal\Frontend\wwwroot\lib\bootstrap\dist\css\bootstrap-reb
 C:\Dev\Web\CuratorsJournal\Frontend\wwwroot\lib\bootstrap\dist\css\bootstrap.rtl.css.map
 C:\Dev\Web\CuratorsJournal\Frontend\wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.css
 C:\Dev\Web\CuratorsJournal\Frontend\wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.js.map
-C:\Dev\Web\CuratorsJournal\Frontend\wwwroot\icons\trash.svg
 C:\Dev\Web\CuratorsJournal\Frontend\wwwroot\lib\bootstrap\dist\css\bootstrap-grid.rtl.css
 C:\Dev\Web\CuratorsJournal\Frontend\wwwroot\lib\bootstrap\dist\css\bootstrap.css.map
 C:\Dev\Web\CuratorsJournal\Frontend\wwwroot\lib\bootstrap\dist\css\bootstrap.rtl.min.css.map
@@ -42,13 +41,10 @@ C:\Dev\Web\CuratorsJournal\Frontend\wwwroot\lib\bootstrap\dist\css\bootstrap-gri
 C:\Dev\Web\CuratorsJournal\Frontend\wwwroot\app.css
 C:\Dev\Web\CuratorsJournal\Frontend\wwwroot\lib\bootstrap\dist\css\bootstrap-grid.rtl.min.css.map
 C:\Dev\Web\CuratorsJournal\Frontend\wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.min.js
-C:\Dev\Web\CuratorsJournal\Frontend\wwwroot\icons\pen.svg
 C:\Dev\Web\CuratorsJournal\Frontend\wwwroot\lib\bootstrap\dist\css\bootstrap-grid.rtl.min.css
 C:\Dev\Web\CuratorsJournal\Frontend\wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.min.js.map
 wwwroot\app.css
 wwwroot\favicon.png
-wwwroot\icons\pen.svg
-wwwroot\icons\trash.svg
 wwwroot\lib\bootstrap\dist\css\bootstrap.css
 wwwroot\lib\bootstrap\dist\css\bootstrap.css.map
 wwwroot\lib\bootstrap\dist\css\bootstrap.min.css

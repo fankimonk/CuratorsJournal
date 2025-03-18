@@ -1,4 +1,10 @@
-﻿<div class="top-row ps-3 navbar navbar-dark">
+﻿@using Contracts.Journal
+@using Frontend.Services
+
+@inject HttpClient HttpClient
+@inject JournalState JournalState
+
+<div class="top-row ps-3 navbar navbar-dark">
     <div class="container-fluid">
         <a class="navbar-brand" href="">Frontend</a>
     </div>
@@ -9,11 +15,32 @@
 <div class="nav-scrollable" onclick="document.querySelector('.navbar-toggler').click()">
     <nav class="nav flex-column">
         <div class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Home
-            </NavLink>
+            @if (JournalContents != null)
+            {
+                @foreach (var pt in JournalContents.PageTypes)
+                {
+                    @foreach (var page in pt.Pages!)
+                    {
+                        var pageUrl = $"/journal/{JournalContents.JournalId}/{pt.Name}/{page.Id}";
+                        <NavLink class="nav-link" href="@pageUrl" Match="NavLinkMatch.All">
+                            @pt.Name
+                        </NavLink>
+                    }
+                }
+            }
         </div>
     </nav>
 </div>
 
+@code {
+    [Parameter]
+    public JournalContentsResponse? JournalContents { get; set; }
+
+    // private Dictionary<int, string> PagesRusNames = new Dictionary<int, string>()
+    // {
+    //     { 1, "Титульная страница" },
+    //     { 2, "Контактные телефоны" },
+    //     { 3, "Контактные телефоны" },
+    // };
+}
     

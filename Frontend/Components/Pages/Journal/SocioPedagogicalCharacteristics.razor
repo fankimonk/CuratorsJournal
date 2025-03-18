@@ -1,4 +1,4 @@
-﻿@page "/journal/{journalId:int}/sociopedagogicalcharacteristics/{pageId:int}"
+﻿@page "/journal/{journalId:int}/SocioPedagogicalCharacteristics/{pageId:int}"
 @rendermode InteractiveServer
 
 @using Contracts.AcademicYears
@@ -6,8 +6,10 @@
 @using Contracts.Journal.SocioPedagogicalCharacteristics
 @using Contracts.Mappers
 @using Contracts.Mappers.Journal
+@using Frontend.Services
 
 @inject HttpClient HttpClient
+@inject JournalState JournalState
 
 <PageTitle>Социально-педагогическая характеристика</PageTitle>
 
@@ -133,9 +135,11 @@ else
 
     protected override async Task OnInitializedAsync()
     {
+        JournalState.SetJournalId(JournalId);
+
         _pageData = await HttpClient.GetFromJsonAsync<SocioPedagogicalCharacteristicsResponse>("api/journal/sociopedagogicalcharacteristics/" + PageId.ToString());
         _group = await HttpClient.GetFromJsonAsync<GroupResponse>("api/group/getbyjournal/" + JournalId.ToString());
-
+     
         var getAcademicYearsUri = "api/academicyear/getsinceyear/";
         if (_group != null)
             _academicYears = await HttpClient.GetFromJsonAsync<List<AcademicYearResponse>>(getAcademicYearsUri + _group.AdmissionYear.ToString());

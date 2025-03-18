@@ -1,0 +1,37 @@
+﻿@page "/journal/{journalId:int}/title"
+
+@using Contracts.Journal
+
+@inject HttpClient HttpClient
+
+<PageTitle>Титульная страница</PageTitle>
+
+<h3 class="d-flex justify-content-center">ЖУРНАЛ</h3>
+<h3 class="d-flex justify-content-center">КУРАТОРА УЧЕБНОЙ ГРУППЫ</h3>
+
+@if (_pageData == null)
+{
+    <p><em>Загрузка...</em></p>
+}
+else
+{
+    <p>Группа № <u>@_pageData.GroupNumber</u></p>
+    <p>Год поступления <u>@_pageData.AdmissionYear</u></p>
+    <p>Куратор <u>@if (_pageData.Curator != null)
+        @(_pageData.Curator.LastName + ' ' + _pageData.Curator.FirstName + ' ' + _pageData.Curator.MiddleName)</u>
+    </p>
+    <p>Кафедра <u>@_pageData.DepartmentName</u></p>
+    <p>Факультет <u>@_pageData.FacultyName</u></p>
+}
+
+@code {
+    [Parameter]
+    public int JournalId { get; set; }
+
+    private TitlePageResponse? _pageData;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _pageData = await HttpClient.GetFromJsonAsync<TitlePageResponse>("api/journal/" + JournalId.ToString() + "/titlepage/");
+    }
+}

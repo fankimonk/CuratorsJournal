@@ -1,0 +1,254 @@
+﻿@page "/workers"
+@rendermode InteractiveServer
+
+@using Contracts.Positions
+@using Contracts.Workers
+@using Frontend.Components.Buttons
+@using Frontend.Components.Utils
+@using Microsoft.AspNetCore.Components.QuickGrid
+
+@inject HttpClient HttpClient
+
+<PageTitle>Сотрудники</PageTitle>
+
+<h1>Сотрудники</h1>
+
+@if (_workers == null || _positions == null)
+{
+    <p><em>Загрузка...</em></p>
+}
+else
+{
+    <AddButton @onclick="ShowAddModal">Добавить</AddButton>
+
+    <QuickGrid Items="_workers" class="table">
+        <PropertyColumn Property="@(l => l.FirstName)" Sortable="true" Title="Имя" class="align-middle" />
+        <PropertyColumn Property="@(l => l.MiddleName)" Sortable="true" Title="Отчество" class="align-middle" />
+        <PropertyColumn Property="@(l => l.LastName)" Sortable="true" Title="Фамилия" class="align-middle" />
+        <PropertyColumn Property="@(l => _positions.First(p => p.Id == l.Position.Id).Name)" Sortable="true" Title="Должность" class="align-middle" />
+        <TemplateColumn class="text-end">
+            <EditButton @onclick="() => ShowEditModal(context)" />
+            <DeleteButton @onclick="async () => await Delete(context)" />
+        </TemplateColumn>
+    </QuickGrid>
+
+    <ModalForm IsVisible="_isAddModalVisible" OnClose="CloseModal">
+        <div class="row">
+            <div class="col-md-12">
+                <EditForm method="post" Model="WorkerToAdd" OnValidSubmit="Add" OnInvalidSubmit="ShowErrorAlert" FormName="add" Enhance>
+                    <DataAnnotationsValidator />
+                    <Alert Type="success" IsVisible="_isSuccessAlertVisible" OnClose="CloseSuccessAlert" />
+                    <Alert Type="error" IsVisible="_isErrorAlertVisible" OnClose="CloseErrorAlert">
+                        <ValidationSummary />
+                    </Alert>
+                    <div class="mb-3">
+                        <label for="firstName" class="form-label">Имя: </label>
+                        <InputText id="firstName" @bind-Value="WorkerToAdd.FirstName" class="form-control" />
+                    </div>
+                    <div class="mb-3">
+                        <label for="middleName" class="form-label">Отчество: </label>
+                        <InputText id="middleName" @bind-Value="WorkerToAdd.MiddleName" class="form-control" />
+                    </div>
+                    <div class="mb-3">
+                        <label for="lastName" class="form-label">Фамилия: </label>
+                        <InputText id="lastName" @bind-Value="WorkerToAdd.LastName" class="form-control" />
+                    </div>
+                    <div class="mb-3">
+                        <label for="position" class="form-label">Должность: </label>
+                        <InputSelect id="position" @bind-Value="WorkerToAdd.PositionId" class="form-control">
+                            <option value="null">(нет)</option>
+                            @foreach (var position in _positions)
+                            {
+                                <option @key="@position.Id" value="@position.Id">@position.Name</option>
+                            }
+                        </InputSelect>
+                    </div>
+                    <AddButton type="submit">Добавить</AddButton>
+                </EditForm>
+            </div>
+        </div>
+    </ModalForm>
+
+    <ModalForm IsVisible="_isEditModalVisible" OnClose="CloseModal">
+        <div class="row">
+            <div class="col-md-12">
+                <EditForm method="put" Model="WorkerToEdit" OnValidSubmit="Update" OnInvalidSubmit="ShowErrorAlert" FormName="edit" Enhance>
+                    <DataAnnotationsValidator />
+                    <Alert Type="success" IsVisible="_isSuccessAlertVisible" OnClose="CloseSuccessAlert" />
+                    <Alert Type="error" IsVisible="_isErrorAlertVisible" OnClose="CloseErrorAlert">
+                        <ValidationSummary />
+                    </Alert>
+                    <div class="mb-3">
+                        <label for="firstName" class="form-label">Имя: </label>
+                        <InputText id="firstName" @bind-Value="WorkerToEdit.FirstName" class="form-control" />
+                    </div>
+                    <div class="mb-3">
+                        <label for="middleName" class="form-label">Отчество: </label>
+                        <InputText id="middleName" @bind-Value="WorkerToEdit.MiddleName" class="form-control" />
+                    </div>
+                    <div class="mb-3">
+                        <label for="lastName" class="form-label">Фамилия: </label>
+                        <InputText id="lastName" @bind-Value="WorkerToEdit.LastName" class="form-control" />
+                    </div>
+                    <div class="mb-3">
+                        <label for="position" class="form-label">Должность: </label>
+                        <InputSelect id="position" @bind-Value="WorkerToEdit.PositionId" class="form-control">
+                            <option value="null">(нет)</option>
+                            @foreach (var position in _positions)
+                            {
+                                <option @key="@position.Id" value="@position.Id">@position.Name</option>
+                            }
+                        </InputSelect>
+                    </div>
+                    <EditButton type="submit">Редактировать</EditButton>
+                </EditForm>
+            </div>
+        </div>
+    </ModalForm>
+
+    <AlertBottom IsVisible="_isServerErrorAlertVisible" OnClose="CloseServerErrorAlert">@_errorMessage</AlertBottom>
+}
+
+@code {
+    [SupplyParameterFromForm]
+    public CreateWorkerRequest WorkerToAdd { get; set; } = new("", "", "", null, null);
+
+    [SupplyParameterFromForm]
+    public UpdateWorkerRequest WorkerToEdit { get; set; } = new("", "", "", null, null);
+    private int _workerToEditId = -1;
+
+    private IQueryable<WorkerResponse>? _workers;
+
+    private List<PositionResponse>? _positions;
+
+    private bool _isModalVisible = false;
+    private bool _isAddModal = true;
+
+    private bool _isAddModalVisible { get => _isModalVisible && _isAddModal; }
+    private bool _isEditModalVisible { get => _isModalVisible && !_isAddModal; }
+
+    private bool _isSuccessAlertVisible = false;
+    private bool _isErrorAlertVisible = false;
+
+    private bool _isServerErrorAlertVisible = false;
+    private string? _errorMessage = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        var workers = await HttpClient.GetFromJsonAsync<List<WorkerResponse>>("api/worker/");
+        if (workers != null)
+            _workers = workers.AsQueryable();
+
+        _positions = await HttpClient.GetFromJsonAsync<List<PositionResponse>>("api/position/");
+    }
+
+    public async Task Add()
+    {
+        var response = await HttpClient.PostAsJsonAsync<CreateWorkerRequest>("api/worker", WorkerToAdd);
+
+        if (response.IsSuccessStatusCode)
+        {
+            var added = await response.Content.ReadFromJsonAsync<WorkerResponse>();
+            _workers = _workers!.Append(added!);
+
+            ShowSuccessAlert();
+        }
+        else
+        {
+            var errorMessage = await response.Content.ReadAsStringAsync();
+            _errorMessage = errorMessage.Split('\n').FirstOrDefault();
+            ShowServerErrorAlert();
+        }
+    }
+
+    public async Task Update()
+    {
+        var response = await HttpClient.PutAsJsonAsync<UpdateWorkerRequest>("api/worker/" + _workerToEditId, WorkerToEdit);
+
+        if (response.IsSuccessStatusCode)
+        {
+            var updated = await response.Content.ReadFromJsonAsync<WorkerResponse>();
+            var toUpdate = _workers!.FirstOrDefault(l => l.Id == updated!.Id);
+
+            toUpdate!.FirstName = updated!.FirstName;
+            toUpdate.MiddleName = updated.MiddleName;
+            toUpdate.LastName = updated.LastName;
+            toUpdate.Position.Id = updated.Position.Id;
+            toUpdate.Position.Name = updated.Position.Name;
+            toUpdate.UserId = updated.UserId;
+
+            ShowSuccessAlert();
+        }
+        else
+        {
+            var errorMessage = await response.Content.ReadAsStringAsync();
+            _errorMessage = errorMessage.Split('\n').FirstOrDefault();
+            ShowServerErrorAlert();
+        }
+    }
+
+    public async Task Delete(WorkerResponse worker)
+    {
+        var response = await HttpClient.DeleteAsync("api/worker/" + worker.Id);
+
+        if (response.IsSuccessStatusCode)
+        {
+            _workers = _workers!.Where(l => l.Id != worker.Id);
+        }
+        else
+        {
+            var errorMessage = await response.Content.ReadAsStringAsync();
+            _errorMessage = errorMessage.Split('\n').FirstOrDefault();
+            ShowServerErrorAlert();
+        }
+    }
+
+    private void ShowAddModal()
+    {
+        _isAddModal = true;
+        _isModalVisible = true;
+    }
+
+    private void ShowEditModal(WorkerResponse worker)
+    {
+        _workerToEditId = worker.Id;
+        WorkerToEdit = new UpdateWorkerRequest(worker.FirstName, worker.MiddleName, worker.LastName, worker.Position.Id, worker.UserId);
+        _isAddModal = false;
+        _isModalVisible = true;
+    }
+
+    private void CloseModal()
+    {
+        WorkerToAdd = new("", "", "", null, null);
+        _workerToEditId = -1;
+        WorkerToEdit = new("", "", "", null, null);
+        _isModalVisible = false;
+        CloseSuccessAlert();
+        CloseErrorAlert();
+        CloseServerErrorAlert();
+    }
+
+    private void CloseSuccessAlert() => _isSuccessAlertVisible = false;
+
+    private void ShowSuccessAlert()
+    {
+        CloseErrorAlert();
+        _isSuccessAlertVisible = true;
+    }
+
+    private void CloseErrorAlert() => _isErrorAlertVisible = false;
+
+    private void ShowErrorAlert()
+    {
+        CloseSuccessAlert();
+        _isErrorAlertVisible = true;
+    }
+
+    private void CloseServerErrorAlert() 
+    {
+        _isServerErrorAlertVisible = false;
+        _errorMessage = "";
+    }
+
+    private void ShowServerErrorAlert() => _isServerErrorAlertVisible = true;
+}

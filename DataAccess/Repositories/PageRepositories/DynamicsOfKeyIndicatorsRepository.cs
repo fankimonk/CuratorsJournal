@@ -24,17 +24,17 @@ namespace DataAccess.Repositories.PageRepositories
                 .AsNoTracking().Where(c => c.PageId == pageId).ToListAsync();
         }
 
-        public async Task<KeyIndicatorByCourse?> AddValueAsync(KeyIndicatorByCourse value)
-        {
-            if (value == null) return null;
-            if (!await RecordExists(value.DynamicsRecordId)) return null;
+        //public async Task<KeyIndicatorByCourse?> AddValueAsync(KeyIndicatorByCourse value)
+        //{
+        //    if (value == null) return null;
+        //    if (!await RecordExists(value.DynamicsRecordId)) return null;
 
-            var createdValue = await _dbContext.KeyIndicatorsByCourse.AddAsync(value);
+        //    var createdValue = await _dbContext.KeyIndicatorsByCourse.AddAsync(value);
 
-            await _dbContext.SaveChangesAsync();
+        //    await _dbContext.SaveChangesAsync();
 
-            return createdValue.Entity;
-        }
+        //    return createdValue.Entity;
+        //}
 
         public async Task<KeyIndicatorByCourse?> UpdateValueAsync(int id, KeyIndicatorByCourse value)
         {
@@ -43,7 +43,6 @@ namespace DataAccess.Repositories.PageRepositories
             var valueToUpdate = await _dbContext.KeyIndicatorsByCourse.FirstOrDefaultAsync(p => p.Id == id);
             if (valueToUpdate == null) return null;
 
-            valueToUpdate.Course = value.Course;
             valueToUpdate.Value = value.Value;
 
             await _dbContext.SaveChangesAsync();
@@ -65,16 +64,43 @@ namespace DataAccess.Repositories.PageRepositories
             return recordToUpdate;
         }
 
-        public async Task<bool> DeleteValueAsync(int id)
+        public async Task<bool> AddCourseAsync(int pageId)
         {
-            var deletedRows = await _dbContext.KeyIndicatorsByCourse.Where(c => c.Id == id).ExecuteDeleteAsync();
-            if (deletedRows < 1) return false;
+            if (!await PageExists(pageId)) return false;
 
+            var records = _dbContext.DynamicsOfKeyIndicators.Include(r => r.KeyIndicatorsByCourse).Where(r => r.PageId == pageId);
+            var maxCourse = records.Select(r => r.KeyIndicatorsByCourse).SelectMany(z => z).Max(z => z.Course);
+
+            await records.ForEachAsync(r => r.KeyIndicatorsByCourse.Add(new KeyIndicatorByCourse { Course = maxCourse + 1, Value = null }));
             await _dbContext.SaveChangesAsync();
+
             return true;
         }
 
-        public async Task<bool> PageExists(int id) => await PageExists(id, PageTypes.DynamicsOfKeyIndicatorsPage);
+        public async Task<bool> DeleteCourseAsync(int pageId)
+        {
+            if (!await PageExists(pageId)) return false;
+
+            var records = _dbContext.DynamicsOfKeyIndicators.Include(r => r.KeyIndicatorsByCourse).Where(r => r.PageId == pageId);
+            var maxCourse = records.Select(r => r.KeyIndicatorsByCourse).SelectMany(z => z).Max(z => z.Course);
+            if (maxCourse == 1) return false;
+
+            await records.ForEachAsync(r => r.KeyIndicatorsByCourse.RemoveAll(z => z.Course == maxCourse));
+            await _dbContext.SaveChangesAsync();
+
+            return true;
+        }
+
+        //public async Task<bool> DeleteValueAsync(int id)
+        //{
+        //    var deletedRows = await _dbContext.KeyIndicatorsByCourse.Where(c => c.Id == id).ExecuteDeleteAsync();
+        //    if (deletedRows < 1) return false;
+
+        //    await _dbContext.SaveChangesAsync();
+        //    return true;
+        //}
+
+        public async Task<bool> PageExists(int id) => await PageExists(id, PageTypes.DynamicsOfKeyIndicators);
 
         private async Task<bool> RecordExists(int id)
             => await _dbContext.DynamicsOfKeyIndicators.AsNoTracking().FirstOrDefaultAsync(d => d.Id == id) != null;

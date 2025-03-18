@@ -31,9 +31,17 @@ namespace Application.Services
             return createdJournal;
         }
 
-        public async Task<Journal?> GetJournalsTitlePageData(int journalId)
+        public async Task<Tuple<int, Journal>?> GetJournalsTitlePageData(int journalId)
         {
-            return await _journalsRepository.GetById(journalId);
+            var journal = await _journalsRepository.GetById(journalId);
+            if (journal == null) return null;
+
+            var titlePages = await _pagesRepository.GetJournalPagesByType(journalId, PageTypes.Title);
+            if (titlePages == null || titlePages.Count == 0) return null;
+
+            var titlePage = titlePages.First();
+
+            return new(titlePage.Id, journal);
         }
     }
 }

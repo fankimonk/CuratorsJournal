@@ -50,7 +50,7 @@ namespace DataAccess.Repositories.PageRepositories
             return recordToUpdate;
         }
 
-        public async Task<bool> PageExists(int id) => await PageExists(id, PageTypes.LiteratureWorkPage);
+        public async Task<bool> PageExists(int id) => await PageExists(id, PageTypes.LiteratureWork);
 
         private async Task<bool> LiteratureExists(int id) =>
             await _dbContext.LiteratureList.AsNoTracking().FirstOrDefaultAsync(c => c.Id == id) != null;

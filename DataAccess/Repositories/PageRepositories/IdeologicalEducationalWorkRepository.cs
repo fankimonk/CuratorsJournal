@@ -54,6 +54,6 @@ namespace DataAccess.Repositories.PageRepositories
             return recordToUpdate;
         }
 
-        public async Task<bool> PageExists(int id) => await PageExists(id, PageTypes.CuratorsIdeologicalAndEducationalWorkAccountingPage);
+        public async Task<bool> PageExists(int id) => await PageExists(id, PageTypes.CuratorsIdeologicalAndEducationalWorkAccounting);
     }
 }

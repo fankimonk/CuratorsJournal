@@ -3,7 +3,7 @@
     public record PageResponse
     (
         int Id,
-        PageTypeResponse PageType,
-        int JournalId
+        int JournalId,
+        PageTypeResponse? PageType
     );
 }

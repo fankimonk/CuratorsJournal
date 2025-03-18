@@ -24,7 +24,7 @@ namespace DataAccess.Configurations
                 .HasOne(w => w.User)
                 .WithOne(u => u.Worker)
                 .HasForeignKey<Worker>(w => w.UserId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.SetNull);
         }
     }
 }

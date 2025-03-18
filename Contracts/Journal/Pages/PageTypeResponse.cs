@@ -3,6 +3,7 @@
     public record PageTypeResponse
     (
         int Id,
-        string Name
+        string Name,
+        List<PageResponse>? Pages
     );
 }

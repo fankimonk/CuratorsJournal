@@ -5,6 +5,6 @@ namespace Application.Interfaces
     public interface IJournalsService
     {
         Task<Journal?> CreateJournal(int groupId);
-        Task<Journal?> GetJournalsTitlePageData(int groupId);
+        Task<Tuple<int, Journal>?> GetJournalsTitlePageData(int groupId);
     }
 }

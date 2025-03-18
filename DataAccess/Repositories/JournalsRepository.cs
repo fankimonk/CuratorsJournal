@@ -1,6 +1,5 @@
 ﻿using DataAccess.Interfaces;
 using Domain.Entities;
-using Domain.Entities.JournalContent;
 using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess.Repositories

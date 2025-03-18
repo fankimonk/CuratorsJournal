@@ -27,21 +27,20 @@ namespace API.Mappers.Journal
             );
         }
 
-        public static KeyIndicatorByCourse ToEntity(this CreateKeyIndicatorValueRequest request)
-        {
-            return new KeyIndicatorByCourse
-            {
-                DynamicsRecordId = request.DynamicsRecordId,
-                Course = request.Course,
-                Value = request.Value
-            };
-        }
+        //public static KeyIndicatorByCourse ToEntity(this CreateKeyIndicatorValueRequest request)
+        //{
+        //    return new KeyIndicatorByCourse
+        //    {
+        //        DynamicsRecordId = request.DynamicsRecordId,
+        //        Course = request.Course,
+        //        Value = request.Value
+        //    };
+        //}
 
         public static KeyIndicatorByCourse ToEntity(this UpdateKeyIndicatorValueRequest request)
         {
             return new KeyIndicatorByCourse
             {
-                Course = request.Course,
                 Value = request.Value
             };
         }

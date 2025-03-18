@@ -1,10 +1,12 @@
-﻿@page "/journal/{journalId:int}/contactphones/{pageId:int}"
+﻿@page "/journal/{journalId:int}/ContactPhones/{pageId:int}"
 @rendermode InteractiveServer
 
+@using Frontend.Services
 @using Contracts.Journal
 @using Contracts.Journal.ContactPhones
 
 @inject HttpClient HttpClient
+@inject JournalState JournalState
 
 <PageTitle>Контактные Телефоны</PageTitle>
 
@@ -49,6 +51,8 @@ else
 
     protected override async Task OnInitializedAsync()
     {
+        JournalState.SetJournalId(JournalId);
+
         _pageData = await HttpClient.GetFromJsonAsync<ContactPhonesPageResponse>("api/journal/contactphone/" + PageId.ToString());
     }
 

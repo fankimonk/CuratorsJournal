@@ -1,8 +1,11 @@
-﻿@page "/journal/{journalId:int}/title"
+﻿@page "/journal/{journalId:int}/Title"
+@page "/journal/{journalId:int}/Title/{pageId:int}"
 
 @using Contracts.Journal
+@using Frontend.Services
 
 @inject HttpClient HttpClient
+@inject JournalState JournalState
 
 <PageTitle>Титульная страница</PageTitle>
 
@@ -17,8 +20,12 @@ else
 {
     <p>Группа № <u>@_pageData.GroupNumber</u></p>
     <p>Год поступления <u>@_pageData.AdmissionYear</u></p>
-    <p>Куратор <u>@if (_pageData.Curator != null)
-        @(_pageData.Curator.LastName + ' ' + _pageData.Curator.FirstName + ' ' + _pageData.Curator.MiddleName)</u>
+    <p>
+        Куратор 
+        <u>
+            @if (_pageData.Curator != null)
+                @(_pageData.Curator.LastName + ' ' + _pageData.Curator.FirstName + ' ' + _pageData.Curator.MiddleName)
+        </u>
     </p>
     <p>Кафедра <u>@_pageData.DepartmentName</u></p>
     <p>Факультет <u>@_pageData.FacultyName</u></p>
@@ -26,12 +33,18 @@ else
 
 @code {
     [Parameter]
+    public int PageId { get; set; }
+
+    [Parameter]
     public int JournalId { get; set; }
 
     private TitlePageResponse? _pageData;
 
     protected override async Task OnInitializedAsync()
     {
+        JournalState.SetJournalId(JournalId);
+
         _pageData = await HttpClient.GetFromJsonAsync<TitlePageResponse>("api/journal/" + JournalId.ToString() + "/titlepage/");
+        JournalState.SetPageId(_pageData!.PageId);
     }
 }

@@ -51,6 +51,6 @@ namespace DataAccess.Repositories.PageRepositories
             return traditionToUpdate;
         }
 
-        public async Task<bool> PageExists(int id) => await PageExists(id, PageTypes.TraditionsPage);
+        public async Task<bool> PageExists(int id) => await PageExists(id, PageTypes.Traditions);
     }
 }

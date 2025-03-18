@@ -48,6 +48,6 @@ namespace DataAccess.Repositories.PageRepositories
             return phoneToUpdate;
         }
 
-        public async Task<bool> PageExists(int id) => await PageExists(id, PageTypes.ContactPhonesPage);
+        public async Task<bool> PageExists(int id) => await PageExists(id, PageTypes.ContactPhones);
     }
 }

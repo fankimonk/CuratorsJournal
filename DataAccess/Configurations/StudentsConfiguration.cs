@@ -20,8 +20,7 @@ namespace DataAccess.Configurations
                 .HasOne(s => s.Group)
                 .WithMany(g => g.Students)
                 .HasForeignKey(s => s.GroupId)
-                .IsRequired()
-                .OnDelete(DeleteBehavior.Restrict);
+                .IsRequired();
 
             builder
                 .HasMany(s => s.ChronicDiseases)
@@ -43,7 +42,7 @@ namespace DataAccess.Configurations
                 .HasOne(s => s.User)
                 .WithOne(u => u.Student)
                 .HasForeignKey<Student>(s => s.UserId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.SetNull);
         }
     }
 }

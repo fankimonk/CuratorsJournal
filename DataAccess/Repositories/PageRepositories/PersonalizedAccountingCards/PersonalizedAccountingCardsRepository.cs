@@ -64,7 +64,7 @@ namespace DataAccess.Repositories.PageRepositories.PersonalizedAccountingCards
                 .Where(c => c.Page.JournalId == id).ToListAsync();
         }
 
-        public async Task<bool> PageExists(int id) => await PageExists(id, PageTypes.PersonalizedAccountingCardPage);
+        public async Task<bool> PageExists(int id) => await PageExists(id, PageTypes.PersonalizedAccountingCard);
 
         private async Task<bool> StudentExists(int id) =>
             await _dbContext.Students.AsNoTracking().FirstOrDefaultAsync(c => c.Id == id) != null;

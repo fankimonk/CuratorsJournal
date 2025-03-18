@@ -1,0 +1,81 @@
+﻿@page "/journal/{journalId:int}/holidays"
+
+
+@using Contracts.Journal
+@using Contracts.Journal.Holidays
+
+@inject HttpClient HttpClient
+
+<PageTitle>Праздники</PageTitle>
+
+@if (_pageData == null)
+{
+    <p><em>Загрузка...</em></p>
+}
+else
+{
+    @foreach (var ht in _pageData.HolidayTypes)
+    {
+        @if (@ht.Holidays.Count != 0)
+        {
+            <h1 class="d-flex justify-content-center">@ht.Name</h1>
+        }
+        <table class="table table-bordered">
+            <tbody>
+                @foreach (var h in ht.Holidays)
+                {
+                    <tr>
+                        @if (h.Day != null && h.Month != null)
+                        {
+                            if (!_monthsNumbersAndNames.ContainsKey((int)h.Month))
+                            {
+                                <td>Ошибка: некорректная дата!</td>
+                            }
+                            else
+                            {
+                                <td>@h.Day.ToString() @_monthsNumbersAndNames[(int)h.Month]</td>
+                            }
+                        }
+                        else if (h.RelativeDate != null)
+                        {
+                            <td>@h.RelativeDate</td>
+                        }
+                        else
+                        {
+                            <td>Ошибка: некорректная дата!</td>
+                        }
+                        <td>@h.Name</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+}
+
+@code {
+    [Parameter]
+    public int JournalId { get; set; }
+
+    private HolidaysPageResponse? _pageData;
+
+    private readonly Dictionary<int, string> _monthsNumbersAndNames = new Dictionary<int, string>
+    {
+        { 1, "января" },
+        { 2, "февраля" },
+        { 3, "марта" },
+        { 4, "апреля" },
+        { 5, "мая" },
+        { 6, "июня" },
+        { 7, "июля" },
+        { 8, "августа" },
+        { 9, "сентября" },
+        { 10, "октября" },
+        { 11, "ноября" },
+        { 12, "декабря" },
+    };
+
+    protected override async Task OnInitializedAsync()
+    {
+        _pageData = await HttpClient.GetFromJsonAsync<HolidaysPageResponse>("api/journal/holiday");
+    }
+}

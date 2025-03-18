@@ -1,11 +1,12 @@
-﻿@page "/journal/holidays"
-@page "/journal/{journalId:int}/holidays"
+﻿@page "/journal/{journalId:int}/Holidays/{pageId:int}"
 @rendermode InteractiveServer
 
 @using Contracts.Journal
 @using Contracts.Journal.Holidays
+@using Frontend.Services
 
 @inject HttpClient HttpClient
+@inject JournalState JournalState
 
 <PageTitle>Праздники</PageTitle>
 
@@ -55,6 +56,9 @@ else
 
 @code {
     [Parameter]
+    public int PageId { get; set; }
+
+    [Parameter]
     public int JournalId { get; set; }
 
     private HolidaysPageResponse? _pageData;
@@ -77,6 +81,8 @@ else
 
     protected override async Task OnInitializedAsync()
     {
+        JournalState.SetJournalId(JournalId);
+
         _pageData = await HttpClient.GetFromJsonAsync<HolidaysPageResponse>("api/journal/holiday");
     }
 }
