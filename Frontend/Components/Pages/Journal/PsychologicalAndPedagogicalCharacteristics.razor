@@ -53,7 +53,7 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        JournalState.SetJournalId(JournalId);
+        JournalState.Initialize(JournalId, PageId);
 
         _pageData = await HttpClient.GetFromJsonAsync<PsychologicalAndPedagogicalCharacteristicsResponse>
             ("api/journal/psychologicalpedagogicalcharacteristics/" + PageId.ToString());

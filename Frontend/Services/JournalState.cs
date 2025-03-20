@@ -8,20 +8,13 @@
 
         public int CurrentPageId { get; private set; }
 
-        public Action? OnPageChange { get; set; }
-
-        public void SetPageId(int pageId)
-        {
-            CurrentPageId = pageId;
-            OnPageChange?.Invoke();
-        }
-
-        public void SetJournalId(int journalId)
+        public void Initialize(int journalId, int pageId)
         {
             JournalId = journalId;
+            CurrentPageId = pageId;
             _tcs.TrySetResult();
         }
 
-        public Task WaitForJournalIdAsync() => _tcs.Task;
+        public Task WaitForInit() => _tcs.Task;
     }
 }

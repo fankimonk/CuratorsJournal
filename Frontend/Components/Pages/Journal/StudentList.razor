@@ -108,7 +108,7 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        JournalState.SetJournalId(JournalId);
+        JournalState.Initialize(JournalId, PageId);
 
         _pageData = await HttpClient.GetFromJsonAsync<StudentListPageResponse>("api/journal/studentlist/" + PageId.ToString());
         _students = await HttpClient.GetFromJsonAsync<List<StudentResponse>>("api/student/getbyjournal/" + JournalId.ToString());

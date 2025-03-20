@@ -76,7 +76,7 @@ namespace API.Controllers
             var response = pages.Select(pt => new PageTypeResponse(
                 pt.Id,
                 pt.Name,
-                pt.Pages.Select(p => new PageResponse(p.Id, p.JournalId, null)).ToList()
+                pt.Pages.Select(p => new PageResponse(p.Id, p.JournalId, new PageTypeResponse(pt.Id, pt.Name, null))).ToList()
             )).ToList();
 
             return Ok(new JournalContentsResponse(journalId, response));

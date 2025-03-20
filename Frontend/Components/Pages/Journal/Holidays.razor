@@ -81,7 +81,7 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        JournalState.SetJournalId(JournalId);
+        JournalState.Initialize(JournalId, PageId);
 
         _pageData = await HttpClient.GetFromJsonAsync<HolidaysPageResponse>("api/journal/holiday");
     }
