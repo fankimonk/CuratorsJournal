@@ -1,6 +1,5 @@
 ﻿@page "/journal/{journalId:int}/Traditions/{pageId:int}"
-@rendermode InteractiveServer
-
+ 
 @using Contracts.Journal.Traditions
 @using Contracts.Mappers
 @using Contracts.Mappers.Journal
@@ -66,7 +65,7 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        JournalState.Initialize(JournalId, PageId);
+        await JournalState.Initialize(JournalId, PageId);
 
         _pageData = await HttpClient.GetFromJsonAsync<TraditionsPageResponse>("api/journal/tradition/" + PageId.ToString());
     }

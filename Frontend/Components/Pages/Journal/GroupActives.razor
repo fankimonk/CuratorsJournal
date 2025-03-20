@@ -1,6 +1,5 @@
 ﻿@page "/journal/{journalId:int}/GroupActives/{pageId:int}"
-@rendermode InteractiveServer
-
+ 
 @using Contracts.Journal.GroupActives
 @using Contracts.Students
 @using Contracts.Mappers.Journal
@@ -64,7 +63,7 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        JournalState.Initialize(JournalId, PageId);
+        await JournalState.Initialize(JournalId, PageId);
 
         _pageData = await HttpClient.GetFromJsonAsync<GroupActivesPageResponse>("api/journal/groupactive/" + PageId.ToString());
         _students = await HttpClient.GetFromJsonAsync<List<StudentResponse>>("api/student/getbyjournal/" + JournalId.ToString());

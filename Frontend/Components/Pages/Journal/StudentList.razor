@@ -1,6 +1,5 @@
 ﻿@page "/journal/{journalId:int}/StudentList/{pageId:int}"
-@rendermode InteractiveServer
-
+ 
 @using Contracts.Journal
 @using Contracts.Journal.ContactPhones
 @using Contracts.Journal.PersonalizedAccountingCards
@@ -108,7 +107,7 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        JournalState.Initialize(JournalId, PageId);
+        await JournalState.Initialize(JournalId, PageId);
 
         _pageData = await HttpClient.GetFromJsonAsync<StudentListPageResponse>("api/journal/studentlist/" + PageId.ToString());
         _students = await HttpClient.GetFromJsonAsync<List<StudentResponse>>("api/student/getbyjournal/" + JournalId.ToString());

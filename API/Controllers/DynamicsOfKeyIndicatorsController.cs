@@ -40,7 +40,7 @@ namespace API.Controllers
         //    return CreatedAtAction(nameof(AddValue), response);
         //}
 
-        [HttpPut("/update/{recordId}")]
+        [HttpPut("update/{recordId}")]
         public async Task<ActionResult<DynamicsOfKeyIndicatorsRecordResponse>> Update([FromRoute] int recordId,
             [FromBody] UpdateDynamicsOfKeyIndicatorsRecordRequest request)
         {
@@ -54,7 +54,7 @@ namespace API.Controllers
             return Ok(response);
         }
 
-        [HttpPut("/updatevalue/{valueId}")]
+        [HttpPut("updatevalue/{valueId}")]
         public async Task<ActionResult<KeyIndicatorByCourseResponse>> UpdateValue([FromRoute] int valueId,
             [FromBody] UpdateKeyIndicatorValueRequest request)
         {
@@ -68,37 +68,32 @@ namespace API.Controllers
             return Ok(response);
         }
 
-        [HttpDelete("/delete/{recordId}")]
-        public async Task<ActionResult> Delete([FromRoute] int recordId)
-        {
-            if (!await _entityRepository.DeleteAsync(recordId)) return NotFound();
-
-            return NoContent();
-        }
-
-        [HttpPut("/addcourse/{pageId}")]
-        public async Task<ActionResult> AddCourse([FromRoute] int pageId)
-        {
-            if (!await _entityRepository.AddCourseAsync(pageId)) return BadRequest();
-
-            return Ok();
-        }
-
-        [HttpDelete("/deletecourse/{pageId}")]
-        public async Task<ActionResult> DeleteCourse([FromRoute] int pageId)
-        {
-            if (!await _entityRepository.DeleteCourseAsync(pageId)) return BadRequest();
-
-            return Ok();
-        }
-
-
-        //[HttpDelete("/deletevalue/{valueId}")]
-        //public async Task<ActionResult> DeleteValue([FromRoute] int valueId)
+        //[HttpDelete("/delete/{recordId}")]
+        //public async Task<ActionResult> Delete([FromRoute] int recordId)
         //{
-        //    if (!await _entityRepository.DeleteValueAsync(valueId)) return NotFound();
+        //    if (!await _entityRepository.DeleteAsync(recordId)) return NotFound();
 
         //    return NoContent();
         //}
+
+        [HttpPost("addcourse/{pageId}")]
+        public async Task<ActionResult<DynamicsOfKeyIndicatorsPageResponse>> AddCourse([FromRoute] int pageId)
+        {
+            var updated = await _entityRepository.AddCourseAsync(pageId);
+            if (updated == null) return BadRequest();
+
+            var response = updated.Select(p => p.ToResponse()).ToList();
+            return Ok(new DynamicsOfKeyIndicatorsPageResponse(pageId, response));
+        }
+
+        [HttpDelete("deletecourse/{pageId}")]
+        public async Task<ActionResult<DynamicsOfKeyIndicatorsPageResponse>> DeleteCourse([FromRoute] int pageId)
+        {
+            var updated = await _entityRepository.DeleteCourseAsync(pageId);
+            if (updated == null) return BadRequest();
+
+            var response = updated.Select(p => p.ToResponse()).ToList();
+            return Ok(new DynamicsOfKeyIndicatorsPageResponse(pageId, response));
+        }
     }
 }

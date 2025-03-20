@@ -1,6 +1,5 @@
 ﻿@page "/journal/{journalId:int}/RecomendationsAndRemarks/{pageId:int}"
-@rendermode InteractiveServer
-
+ 
 @using Contracts.Journal
 @using Contracts.Journal.ContactPhones
 @using Contracts.Journal.PersonalizedAccountingCards
@@ -89,7 +88,7 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        JournalState.Initialize(JournalId, PageId);
+        await JournalState.Initialize(JournalId, PageId);
 
         _pageData = await HttpClient.GetFromJsonAsync<RecommendationsAndRemarksPageResponse>("api/journal/recommendationsandremarks/" + PageId.ToString());
         _workers = await HttpClient.GetFromJsonAsync<List<WorkerResponse>>("api/worker/");

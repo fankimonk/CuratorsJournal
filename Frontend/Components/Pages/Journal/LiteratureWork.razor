@@ -1,6 +1,5 @@
 ﻿@page "/journal/{journalId:int}/LiteratureWork/{pageId:int}"
-@rendermode InteractiveServer
-
+ 
 @using Contracts.Journal
 @using Contracts.Journal.LiteratureWork
 @using Contracts.Literature
@@ -70,7 +69,7 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        JournalState.Initialize(JournalId, PageId);
+        await JournalState.Initialize(JournalId, PageId);
 
         _pageData = await HttpClient.GetFromJsonAsync<LiteratureWorkPageResponse>("api/journal/literaturework/" + PageId.ToString());
         _literature = await HttpClient.GetFromJsonAsync<List<LiteratureResponse>>("api/literature/");

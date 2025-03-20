@@ -1,6 +1,5 @@
 ﻿@page "/journal/{journalId:int}/StudentsHealthCard/{pageId:int}"
-@rendermode InteractiveServer
-
+ 
 @using Contracts.AcademicYears
 @using Contracts.Groups
 @using Contracts.Journal.StudentHealthCards
@@ -99,7 +98,7 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        JournalState.Initialize(JournalId, PageId);
+        await JournalState.Initialize(JournalId, PageId);
 
         _pageData = await HttpClient.GetFromJsonAsync<HealthCardPageResponse>("api/journal/healthcard/" + PageId.ToString());
 

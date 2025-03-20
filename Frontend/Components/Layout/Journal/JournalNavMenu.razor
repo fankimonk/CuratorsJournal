@@ -1,7 +1,6 @@
 ﻿@using Contracts.Journal
 @using Frontend.Services
 
-@inject HttpClient HttpClient
 @inject JournalState JournalState
 
 <div class="top-row ps-3 navbar navbar-dark">
@@ -15,13 +14,13 @@
 <div class="nav-scrollable" onclick="document.querySelector('.navbar-toggler').click()">
     <nav class="nav flex-column">
         <div class="nav-item px-3">
-            @if (JournalContents != null)
+            @if (JournalState.JournalContents != null)
             {
-                @foreach (var pt in JournalContents.PageTypes)
+                @foreach (var pt in JournalState.JournalContents.PageTypes)
                 {
                     @foreach (var page in pt.Pages!)
                     {
-                        var pageUrl = $"/journal/{JournalContents.JournalId}/{pt.Name}/{page.Id}";
+                        var pageUrl = $"/journal/{JournalState.JournalContents.JournalId}/{pt.Name}/{page.Id}";
                         <NavLink class="nav-link" href="@pageUrl" Match="NavLinkMatch.All">
                             @pt.Name
                         </NavLink>
@@ -33,14 +32,25 @@
 </div>
 
 @code {
-    [Parameter]
-    public JournalContentsResponse? JournalContents { get; set; }
-
     // private Dictionary<int, string> PagesRusNames = new Dictionary<int, string>()
     // {
     //     { 1, "Титульная страница" },
     //     { 2, "Контактные телефоны" },
     //     { 3, "Контактные телефоны" },
     // };
+
+    protected override async Task OnInitializedAsync()
+    {
+        JournalState.OnInitialize += HandleOnInitialize;
+    }
+
+    private void HandleOnInitialize()
+    {
+        StateHasChanged();
+    }
+
+    public void Dispose()
+    {
+        JournalState.OnInitialize -= HandleOnInitialize;
+    }
 }
-    

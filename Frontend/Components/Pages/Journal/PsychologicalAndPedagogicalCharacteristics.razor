@@ -1,6 +1,5 @@
 ﻿@page "/journal/{journalId:int}/PsychologicalAndPedagogicalCharacteristics/{pageId:int}"
-@rendermode InteractiveServer
-
+ 
 @using Contracts.Journal.PsychologicalAndPedagogicalCharacteristics
 @using Contracts.Mappers
 @using Contracts.Mappers.Journal
@@ -53,7 +52,7 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        JournalState.Initialize(JournalId, PageId);
+        await JournalState.Initialize(JournalId, PageId);
 
         _pageData = await HttpClient.GetFromJsonAsync<PsychologicalAndPedagogicalCharacteristicsResponse>
             ("api/journal/psychologicalpedagogicalcharacteristics/" + PageId.ToString());

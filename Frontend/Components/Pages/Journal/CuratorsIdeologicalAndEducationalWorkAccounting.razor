@@ -1,6 +1,5 @@
 ﻿@page "/journal/{journalId:int}/CuratorsIdeologicalAndEducationalWorkAccounting/{pageId:int}"
-@rendermode InteractiveServer
-
+ 
 @using Contracts.Journal.CuratorsIdeologicalAndEducationalWorkAccounting
 @using Contracts.Mappers
 @using Contracts.Mappers.Journal
@@ -60,7 +59,7 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        JournalState.Initialize(JournalId, PageId);
+        await JournalState.Initialize(JournalId, PageId);
 
         _pageData = await HttpClient.GetFromJsonAsync<IdeologicalEducationalWorkPageResponse>("api/journal/ideologicalandeducationalwork/" + PageId.ToString());
     }

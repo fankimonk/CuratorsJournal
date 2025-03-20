@@ -1,0 +1,129 @@
+﻿@page "/journal/{journalId:int}/DynamicsOfKeyIndicators/{pageId:int}"
+
+@using Contracts.Journal.DynamicsOfKeyIndicators
+@using Frontend.Components.Buttons
+@using Frontend.Services
+@using Contracts.Journal
+
+@inject HttpClient HttpClient
+@inject JournalState JournalState
+
+<PageTitle>Динамика основных показателей группы за период обучения</PageTitle>
+
+<h3 class="d-flex justify-content-center"><b>ДИНАМИКА ОСНОВНЫХ ПОКАЗАТЕЛЕЙ ГРУППЫ</b></h3>
+<h3 class="d-flex justify-content-center"><b>ЗА ПЕРИОД ОБУЧЕНИЯ</b></h3>
+
+@if (_pageData == null || _courses == null)
+{
+    <p><em>Загрузка...</em></p>
+}
+else
+{
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th rowspan="2">Основные показатели</th>
+                <th colspan="@_courses.Count">Курс</th>
+                <th rowspan="2">Примечание</th>
+            </tr>
+            <tr>
+                @foreach (var course in _courses)
+                {
+                    <th>@course</th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+
+        </tbody>
+
+    </table>
+
+    <AddButton @onclick="AddCourse">Добавить курс</AddButton>
+    <DeleteButton @onclick="DeleteCourse">Удалить курс</DeleteButton>
+}
+
+@code {
+    [Parameter]
+    public int PageId { get; set; }
+
+    [Parameter]
+    public int JournalId { get; set; }
+
+    private DynamicsOfKeyIndicatorsPageResponse? _pageData;
+
+    private List<int>? _courses;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await JournalState.Initialize(JournalId, PageId);
+
+        _pageData = await HttpClient.GetFromJsonAsync<DynamicsOfKeyIndicatorsPageResponse>("api/journal/dynamicsofkeyindicators/" + PageId.ToString());
+
+        UpdateCourses();
+    }
+
+    private void UpdateCourses()
+    {
+        if (_pageData != null)
+        {
+            _courses = _pageData.DynamicsOfKeyIndicators
+                .Select(r => r.KeyIndicatorsByCourse.Select(r => r.Course))
+                .SelectMany(r => r)
+                .GroupBy(r => r)
+                .Select(r => r.Key).ToList();
+        }
+    }
+
+    // private async Task UpdateValue(ContactPhoneResponse phone)
+    // {
+    //     var request = new UpdateContactPhoneRequest(phone.Name, phone.PhoneNumber);
+    //     var response = await HttpClient.PutAsJsonAsync<UpdateContactPhoneRequest>("api/journal/contactphone/" + phone.Id, request);
+
+    //     if (!response.IsSuccessStatusCode)
+    //     {
+    //         //TODO
+    //     }
+    // }
+
+    // private async Task UpdateRecord(ContactPhoneResponse phone)
+    // {
+    //     var request = new UpdateContactPhoneRequest(phone.Name, phone.PhoneNumber);
+    //     var response = await HttpClient.PutAsJsonAsync<UpdateContactPhoneRequest>("api/journal/contactphone/" + phone.Id, request);
+
+    //     if (!response.IsSuccessStatusCode)
+    //     {
+    //         //TODO
+    //     }
+    // }
+
+    private async Task AddCourse()
+    {
+        var response = await HttpClient.PostAsync("api/journal/dynamicsofkeyindicators/addcourse/" + PageId, null);
+
+        if (response.IsSuccessStatusCode)
+        {
+            _pageData = await response.Content.ReadFromJsonAsync<DynamicsOfKeyIndicatorsPageResponse>();
+            UpdateCourses();
+        }
+    }
+
+    private async Task DeleteCourse()
+    {
+        var response = await HttpClient.DeleteAsync("api/journal/dynamicsofkeyindicators/deletecourse/" + PageId);
+
+        if (response.IsSuccessStatusCode)
+        {
+            _pageData = await response.Content.ReadFromJsonAsync<DynamicsOfKeyIndicatorsPageResponse>();
+            UpdateCourses();
+        }
+    }
+}
+
+<style>
+    .input {
+        width: 100%;
+        border: none;
+        outline: none;
+    }
+</style>

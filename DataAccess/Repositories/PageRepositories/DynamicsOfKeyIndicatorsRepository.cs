@@ -64,9 +64,9 @@ namespace DataAccess.Repositories.PageRepositories
             return recordToUpdate;
         }
 
-        public async Task<bool> AddCourseAsync(int pageId)
+        public async Task<List<DynamicsOfKeyIndicatorsRecord>?> AddCourseAsync(int pageId)
         {
-            if (!await PageExists(pageId)) return false;
+            if (!await PageExists(pageId)) return null;
 
             var records = _dbContext.DynamicsOfKeyIndicators.Include(r => r.KeyIndicatorsByCourse).Where(r => r.PageId == pageId);
             var maxCourse = records.Select(r => r.KeyIndicatorsByCourse).SelectMany(z => z).Max(z => z.Course);
@@ -74,21 +74,21 @@ namespace DataAccess.Repositories.PageRepositories
             await records.ForEachAsync(r => r.KeyIndicatorsByCourse.Add(new KeyIndicatorByCourse { Course = maxCourse + 1, Value = null }));
             await _dbContext.SaveChangesAsync();
 
-            return true;
+            return await GetByPageIdAsync(pageId);
         }
 
-        public async Task<bool> DeleteCourseAsync(int pageId)
+        public async Task<List<DynamicsOfKeyIndicatorsRecord>?> DeleteCourseAsync(int pageId)
         {
-            if (!await PageExists(pageId)) return false;
+            if (!await PageExists(pageId)) return null;
 
             var records = _dbContext.DynamicsOfKeyIndicators.Include(r => r.KeyIndicatorsByCourse).Where(r => r.PageId == pageId);
             var maxCourse = records.Select(r => r.KeyIndicatorsByCourse).SelectMany(z => z).Max(z => z.Course);
-            if (maxCourse == 1) return false;
+            if (maxCourse == 1) return null;
 
             await records.ForEachAsync(r => r.KeyIndicatorsByCourse.RemoveAll(z => z.Course == maxCourse));
             await _dbContext.SaveChangesAsync();
 
-            return true;
+            return await GetByPageIdAsync(pageId);
         }
 
         //public async Task<bool> DeleteValueAsync(int id)

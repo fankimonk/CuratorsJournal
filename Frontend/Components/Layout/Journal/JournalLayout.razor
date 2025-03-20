@@ -4,18 +4,16 @@
 
 @inherits LayoutComponentBase
 
-@inject HttpClient HttpClient
 @inject JournalState JournalState
-@inject NavigationManager NavigationManager
 
 <div class="page">
     <div class="sidebar">
-        <JournalNavMenu JournalContents="_journalContents" />
+        <JournalNavMenu />
     </div>
 
     <main>
         <div class="top-row px-4">
-            @if (_currentPageNode != null)
+            @if (JournalState.CurrentPageNode != null)
             {
                 <a href="@GetPreviousPageUrl()" class="btn btn-primary">Назад</a>
                 <a href="@GetNextPageUrl()" class="btn btn-primary">Вперед</a>
@@ -35,45 +33,18 @@
 </div>
 
 @code {
-    private JournalContentsResponse? _journalContents;
-
-    private LinkedList<PageResponse> _pages = [];
-    private LinkedListNode<PageResponse>? _currentPageNode;
-
     protected override async Task OnInitializedAsync()
     {
-        await JournalState.WaitForInit();
-
-        _journalContents = await HttpClient.GetFromJsonAsync<JournalContentsResponse>("api/journal/" + JournalState.JournalId.ToString() + "/contents/");
-
-        foreach (var pt in _journalContents!.PageTypes)
-        {
-            foreach (var page in pt.Pages!)
-            {
-                _pages.AddLast(page);
-            }
-        }
-
-        UpdateCurrentPage();
+        JournalState.OnInitialize += HandleOnInitialize;
     }
 
-    private void UpdateCurrentPage()
-    {
-        var currentNode = _pages.First;
-        while (currentNode != null)
-        {
-            if (currentNode.Value.Id == JournalState.CurrentPageId)
-                _currentPageNode = currentNode;
-
-            currentNode = currentNode.Next;
-        }
-    }
+    private void HandleOnInitialize() => StateHasChanged();
 
     private string GetNextPageUrl()
     {
-        if (_currentPageNode == null) return ".";
+        if (JournalState.CurrentPageNode == null) return ".";
 
-        var nextPageNode = _currentPageNode.Next;
+        var nextPageNode = JournalState.CurrentPageNode.Next;
         if (nextPageNode == null) return ".";
 
         return $"/journal/{JournalState.JournalId}/{nextPageNode!.Value.PageType!.Name}/{nextPageNode.Value.Id}";
@@ -81,11 +52,16 @@
 
     private string GetPreviousPageUrl()
     {
-        if (_currentPageNode == null) return ".";
+        if (JournalState.CurrentPageNode == null) return ".";
 
-        var prevPageNode = _currentPageNode.Previous;
+        var prevPageNode = JournalState.CurrentPageNode.Previous;
         if (prevPageNode == null) return ".";
 
         return $"/journal/{JournalState.JournalId}/{prevPageNode!.Value.PageType!.Name}/{prevPageNode.Value.Id}";
+    }
+
+    public void Dispose()
+    {
+        JournalState.OnInitialize -= HandleOnInitialize;
     }
 }

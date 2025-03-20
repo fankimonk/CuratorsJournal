@@ -1,6 +1,5 @@
 ﻿@page "/journal/{journalId:int}/SocioPedagogicalCharacteristics/{pageId:int}"
-@rendermode InteractiveServer
-
+ 
 @using Contracts.AcademicYears
 @using Contracts.Groups
 @using Contracts.Journal.SocioPedagogicalCharacteristics
@@ -135,7 +134,7 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        JournalState.Initialize(JournalId, PageId);
+        await JournalState.Initialize(JournalId, PageId);
 
         _pageData = await HttpClient.GetFromJsonAsync<SocioPedagogicalCharacteristicsResponse>("api/journal/sociopedagogicalcharacteristics/" + PageId.ToString());
         _group = await HttpClient.GetFromJsonAsync<GroupResponse>("api/group/getbyjournal/" + JournalId.ToString());

@@ -1168,7 +1168,7 @@
         }
       }
     },
-    "/update/{recordId}": {
+    "/api/journal/dynamicsofkeyindicators/update/{recordId}": {
       "put": {
         "tags": [
           "DynamicsOfKeyIndicators"
@@ -1227,7 +1227,7 @@
         }
       }
     },
-    "/updatevalue/{valueId}": {
+    "/api/journal/dynamicsofkeyindicators/updatevalue/{valueId}": {
       "put": {
         "tags": [
           "DynamicsOfKeyIndicators"
@@ -1286,31 +1286,8 @@
         }
       }
     },
-    "/delete/{recordId}": {
-      "delete": {
-        "tags": [
-          "DynamicsOfKeyIndicators"
-        ],
-        "parameters": [
-          {
-            "name": "recordId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/addcourse/{pageId}": {
-      "put": {
+    "/api/journal/dynamicsofkeyindicators/addcourse/{pageId}": {
+      "post": {
         "tags": [
           "DynamicsOfKeyIndicators"
         ],
@@ -1327,12 +1304,29 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/DynamicsOfKeyIndicatorsPageResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DynamicsOfKeyIndicatorsPageResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DynamicsOfKeyIndicatorsPageResponse"
+                }
+              }
+            }
           }
         }
       }
     },
-    "/deletecourse/{pageId}": {
+    "/api/journal/dynamicsofkeyindicators/deletecourse/{pageId}": {
       "delete": {
         "tags": [
           "DynamicsOfKeyIndicators"
@@ -1350,7 +1344,24 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/DynamicsOfKeyIndicatorsPageResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DynamicsOfKeyIndicatorsPageResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DynamicsOfKeyIndicatorsPageResponse"
+                }
+              }
+            }
           }
         }
       }

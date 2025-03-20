@@ -43,6 +43,6 @@ else
     protected override async Task OnInitializedAsync()
     {
         _pageData = await HttpClient.GetFromJsonAsync<TitlePageResponse>("api/journal/" + JournalId.ToString() + "/titlepage/");
-        JournalState.Initialize(JournalId, _pageData!.PageId);
+        await JournalState.Initialize(JournalId, _pageData!.PageId);
     }
 }

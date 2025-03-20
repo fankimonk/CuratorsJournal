@@ -6,11 +6,11 @@ namespace DataAccess.Interfaces.PageRepositories
     {
         Task<List<DynamicsOfKeyIndicatorsRecord>?> GetByPageIdAsync(int pageId);
         //Task<KeyIndicatorByCourse?> AddValueAsync(KeyIndicatorByCourse record);
-        Task<bool> AddCourseAsync(int pageId);
+        Task<List<DynamicsOfKeyIndicatorsRecord>?> AddCourseAsync(int pageId);
         Task<KeyIndicatorByCourse?> UpdateValueAsync(int id, KeyIndicatorByCourse record);
         Task<DynamicsOfKeyIndicatorsRecord?> UpdateAsync(int id, DynamicsOfKeyIndicatorsRecord record);
         Task<bool> DeleteAsync(int id);
-        Task<bool> DeleteCourseAsync(int pageId);
+        Task<List<DynamicsOfKeyIndicatorsRecord>?> DeleteCourseAsync(int pageId);
         //Task<bool> DeleteValueAsync(int id);
     }
 }

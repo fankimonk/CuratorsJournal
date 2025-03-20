@@ -1,5 +1,4 @@
 ﻿@page "/journal/{journalId:int}/ContactPhones/{pageId:int}"
-@rendermode InteractiveServer
 
 @using Frontend.Services
 @using Contracts.Journal
@@ -51,15 +50,13 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        JournalState.Initialize(JournalId, PageId);
+        await JournalState.Initialize(JournalId, PageId);
 
         _pageData = await HttpClient.GetFromJsonAsync<ContactPhonesPageResponse>("api/journal/contactphone/" + PageId.ToString());
     }
 
     private async Task Update(ContactPhoneResponse phone)
     {
-        Console.WriteLine("Update phone");
-
         var request = new UpdateContactPhoneRequest(phone.Name, phone.PhoneNumber);
         var response = await HttpClient.PutAsJsonAsync<UpdateContactPhoneRequest>("api/journal/contactphone/" + phone.Id, request);
 
@@ -71,8 +68,6 @@ else
 
     private async Task Add()
     {
-        Console.WriteLine("Add phone");
-
         var request = new CreateContactPhoneRequest(null, null, PageId);
         var response = await HttpClient.PostAsJsonAsync<CreateContactPhoneRequest>("api/journal/contactphone", request);
 
@@ -85,8 +80,6 @@ else
 
     private async Task Delete(ContactPhoneResponse phone)
     {
-        Console.WriteLine("Delete phone");
-
         var response = await HttpClient.DeleteAsync("api/journal/contactphone/" + phone.Id);
 
         if (response.IsSuccessStatusCode) _pageData!.PhoneNumbers.Remove(phone);

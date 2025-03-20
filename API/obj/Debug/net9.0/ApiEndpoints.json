@@ -1,21 +1,5 @@
 [
   {
-    "ContainingType": "API.Controllers.DynamicsOfKeyIndicatorsController",
-    "Method": "AddCourse",
-    "RelativePath": "addcourse/{pageId}",
-    "HttpMethod": "PUT",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "pageId",
-        "Type": "System.Int32",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
     "ContainingType": "API.Controllers.AcademicYearsController",
     "Method": "GetAll",
     "RelativePath": "api/academicyear",
@@ -1000,6 +984,120 @@
     "ReturnTypes": [
       {
         "Type": "Contracts.Journal.DynamicsOfKeyIndicators.DynamicsOfKeyIndicatorsPageResponse",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "API.Controllers.DynamicsOfKeyIndicatorsController",
+    "Method": "AddCourse",
+    "RelativePath": "api/journal/dynamicsofkeyindicators/addcourse/{pageId}",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "pageId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "Contracts.Journal.DynamicsOfKeyIndicators.DynamicsOfKeyIndicatorsPageResponse",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "API.Controllers.DynamicsOfKeyIndicatorsController",
+    "Method": "DeleteCourse",
+    "RelativePath": "api/journal/dynamicsofkeyindicators/deletecourse/{pageId}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "pageId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "Contracts.Journal.DynamicsOfKeyIndicators.DynamicsOfKeyIndicatorsPageResponse",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "API.Controllers.DynamicsOfKeyIndicatorsController",
+    "Method": "Update",
+    "RelativePath": "api/journal/dynamicsofkeyindicators/update/{recordId}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "recordId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "request",
+        "Type": "Contracts.Journal.DynamicsOfKeyIndicators.UpdateDynamicsOfKeyIndicatorsRecordRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "Contracts.Journal.DynamicsOfKeyIndicators.DynamicsOfKeyIndicatorsRecordResponse",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "API.Controllers.DynamicsOfKeyIndicatorsController",
+    "Method": "UpdateValue",
+    "RelativePath": "api/journal/dynamicsofkeyindicators/updatevalue/{valueId}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "valueId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "request",
+        "Type": "Contracts.Journal.DynamicsOfKeyIndicators.UpdateKeyIndicatorValueRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "Contracts.Journal.DynamicsOfKeyIndicators.KeyIndicatorByCourseResponse",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -3008,100 +3106,6 @@
     "ReturnTypes": [
       {
         "Type": "Domain.Entities.Worker",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
-        "StatusCode": 200
-      }
-    ]
-  },
-  {
-    "ContainingType": "API.Controllers.DynamicsOfKeyIndicatorsController",
-    "Method": "Delete",
-    "RelativePath": "delete/{recordId}",
-    "HttpMethod": "DELETE",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "recordId",
-        "Type": "System.Int32",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "API.Controllers.DynamicsOfKeyIndicatorsController",
-    "Method": "DeleteCourse",
-    "RelativePath": "deletecourse/{pageId}",
-    "HttpMethod": "DELETE",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "pageId",
-        "Type": "System.Int32",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "API.Controllers.DynamicsOfKeyIndicatorsController",
-    "Method": "Update",
-    "RelativePath": "update/{recordId}",
-    "HttpMethod": "PUT",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "recordId",
-        "Type": "System.Int32",
-        "IsRequired": true
-      },
-      {
-        "Name": "request",
-        "Type": "Contracts.Journal.DynamicsOfKeyIndicators.UpdateDynamicsOfKeyIndicatorsRecordRequest",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": [
-      {
-        "Type": "Contracts.Journal.DynamicsOfKeyIndicators.DynamicsOfKeyIndicatorsRecordResponse",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
-        "StatusCode": 200
-      }
-    ]
-  },
-  {
-    "ContainingType": "API.Controllers.DynamicsOfKeyIndicatorsController",
-    "Method": "UpdateValue",
-    "RelativePath": "updatevalue/{valueId}",
-    "HttpMethod": "PUT",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "valueId",
-        "Type": "System.Int32",
-        "IsRequired": true
-      },
-      {
-        "Name": "request",
-        "Type": "Contracts.Journal.DynamicsOfKeyIndicators.UpdateKeyIndicatorValueRequest",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": [
-      {
-        "Type": "Contracts.Journal.DynamicsOfKeyIndicators.KeyIndicatorByCourseResponse",
         "MediaTypes": [
           "text/plain",
           "application/json",

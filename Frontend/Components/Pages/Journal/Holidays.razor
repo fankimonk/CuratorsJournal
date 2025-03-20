@@ -1,6 +1,5 @@
 ﻿@page "/journal/{journalId:int}/Holidays/{pageId:int}"
-@rendermode InteractiveServer
-
+ 
 @using Contracts.Journal
 @using Contracts.Journal.Holidays
 @using Frontend.Services
@@ -81,7 +80,7 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        JournalState.Initialize(JournalId, PageId);
+        await JournalState.Initialize(JournalId, PageId);
 
         _pageData = await HttpClient.GetFromJsonAsync<HolidaysPageResponse>("api/journal/holiday");
     }
