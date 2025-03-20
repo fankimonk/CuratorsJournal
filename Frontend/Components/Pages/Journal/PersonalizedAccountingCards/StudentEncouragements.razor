@@ -1,0 +1,88 @@
+﻿@using Contracts.Journal.PersonalizedAccountingCards.StudentEncouragements
+@using Contracts.Mappers.Journal.PersonalizedAccountingCards
+@using Frontend.Components.Buttons
+
+@inject HttpClient HttpClient
+
+@if (_studentEncouragements == null)
+{
+    <p><em>Загрузка...</em></p>
+}
+else
+{
+    <p><b>Поощрения студента</b></p>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th class="text-center">Дата</th>
+                <th class="text-center">За какие достижения</th>
+                <th class="text-center">Вид поощрения</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var record in _studentEncouragements)
+            {
+                <tr>
+                    <td>
+                        <input type="date" @bind="record.Date" @bind:after="async () => await Update(record)" class="input" />
+                    </td>
+                    <td>
+                        <input @bind="record.Achievement" @bind:after="async () => await Update(record)" class="input fullwidth" />
+                    </td>
+                    <td>
+                        <input @bind="record.EncouragementKind" @bind:after="async () => await Update(record)" class="input fullwidth" />
+                    </td>
+                    <td>
+                        <button @onclick="async () => await Delete(record)" class="btn btn-close" />
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <AddButton @onclick="Add">Добавить строку</AddButton>
+}
+
+@code {
+    [Parameter]
+    public int CardId { get; set; }
+
+    private List<StudentEncouragementResponse>? _studentEncouragements;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _studentEncouragements = await HttpClient.GetFromJsonAsync<List<StudentEncouragementResponse>>
+                ("api/journal/personalizedaccountingcard/studentencouragement/" + CardId);
+    }
+
+    private async Task Add()
+    {
+        var request = new CreateStudentEncouragementRequest(null, null, null, CardId);
+        var response = await HttpClient.PostAsJsonAsync<CreateStudentEncouragementRequest>("api/journal/personalizedaccountingcard/studentencouragement", request);
+
+        if (response.IsSuccessStatusCode)
+        {
+            var addedRecord = await response.Content.ReadFromJsonAsync<StudentEncouragementResponse>();
+            _studentEncouragements!.Add(addedRecord!);
+        }
+    }
+
+    private async Task Update(StudentEncouragementResponse record)
+    {
+        var request = record.ToRequest();
+        var response = await HttpClient.PutAsJsonAsync<UpdateStudentEncouragementRequest>
+            ("api/journal/personalizedaccountingcard/studentencouragement/" + record.Id, request);
+
+        if (!response.IsSuccessStatusCode)
+        {
+            // var updatedRecord = await response.Content.ReadFromJsonAsync<EducationalProcessScheduleRecordResponse>();
+            // record = updatedRecord!;
+        }
+    }
+
+    private async Task Delete(StudentEncouragementResponse record)
+    {
+        var response = await HttpClient.DeleteAsync("api/journal/personalizedaccountingcard/studentencouragement/" + record.Id);
+
+        if (response.IsSuccessStatusCode) _studentEncouragements!.Remove(record);
+    }
+}

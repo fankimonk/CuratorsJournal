@@ -1,5 +1,5 @@
 ﻿@page "/journal/{journalId:int}/PersonalizedAccountingCard/{pageId:int}"
- 
+
 @using Contracts.Journal.PersonalizedAccountingCards
 @using Contracts.Students
 @using Contracts.Mappers.Journal.PersonalizedAccountingCards
@@ -20,7 +20,7 @@ else
 {
     <p>
         <b>Фамилия, имя отчество </b>
-        <select @bind="_pageData.StudentId" @bind:after="Update">
+        <select @bind="_pageData.StudentId" @bind:after="Update" class="input underline">
             <option value="">-- Выберите студента --</option>
             @foreach (var student in _students)
             {
@@ -30,24 +30,29 @@ else
     </p>
     <p>
         Дата рождения 
-        <input type="date" @bind="_pageData.BirthDate" @bind:after="Update" />
+        <input type="date" @bind="_pageData.BirthDate" @bind:after="Update" class="input underline" />
     </p>
     <p>
-        Пасспортные данные 
-        <input @bind="_pageData.PassportData" @bind:after="Update" />
+        Пасспортные данные
+        <input @bind="_pageData.PassportData" @bind:after="Update" class="input underline" />
     </p>
     <p>
-        гражданство 
-        <input @bind="_pageData.Citizenship" @bind:after="Update" />
+        гражданство
+        <input @bind="_pageData.Citizenship" @bind:after="Update" class="input underline" />
     </p>
     <p>
-        Окончил УО 
-        <input @bind="_pageData.GraduatedEducationalInstitution" @bind:after="Update" />
+        Окончил УО
+        <input @bind="_pageData.GraduatedEducationalInstitution" @bind:after="Update" class="input underline" />
     </p>
     <p>
-        Место и адрес проживания в период обучения 
-        <input @bind="_pageData.ResidentialAddress" @bind:after="Update" />
+        Место и адрес проживания в период обучения
+        <input @bind="_pageData.ResidentialAddress" @bind:after="Update" class="input underline" />
     </p>
+
+    <StudentEncouragements CardId="_pageData.Id" />
+    <StudentDisciplinaryResponsibilities CardId="_pageData.Id" />
+    <IndividualWorkWithStudent CardId="_pageData.Id" />
+    <WorkWithParents CardId="_pageData.Id" />
 }
 
 @code {
@@ -61,12 +66,22 @@ else
 
     private List<StudentResponse>? _students;
 
+    // private List<StudentDisciplinaryResponsibilityResponse>? _studentResponsibilities;
+
     protected override async Task OnInitializedAsync()
     {
         await JournalState.Initialize(JournalId, PageId);
 
         _pageData = await HttpClient.GetFromJsonAsync<PersonalizedAccountingCardResponse>("api/journal/personalizedaccountingcard/" + PageId.ToString());
         _students = await HttpClient.GetFromJsonAsync<List<StudentResponse>>("api/student/getbyjournal/" + JournalId.ToString());
+
+        // if (_pageData != null)
+        // {
+            
+
+        //     _studentResponsibilities = await HttpClient.GetFromJsonAsync<List<StudentDisciplinaryResponsibilityResponse>>
+        //         ("api/journal/personalizedaccountingcard/studentdisciplinaryresponsibility/" + _pageData.Id);
+        // }
     }
 
     private async Task Update()

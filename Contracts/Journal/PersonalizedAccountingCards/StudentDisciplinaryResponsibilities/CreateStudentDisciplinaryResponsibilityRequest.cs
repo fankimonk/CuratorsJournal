@@ -3,7 +3,7 @@
 namespace Contracts.Journal.PersonalizedAccountingCards.StudentDisciplinaryResponsibilities
 {
     public class CreateStudentDisciplinaryResponsibilityRequest(
-        DateOnly? date, string? misdemeanor, string? disciplinaryResponsibilityKind, int cardId)
+        DateOnly? date, string? misdemeanor, string? disciplinaryResponsibilityKind, int personalizedAccountingCardId)
     {
         public DateOnly? Date { get; set; } = date;
 
@@ -11,6 +11,6 @@ namespace Contracts.Journal.PersonalizedAccountingCards.StudentDisciplinaryRespo
         public string? DisciplinaryResponsibilityKind { get; set; } = disciplinaryResponsibilityKind;
 
         [Required]
-        public int PersonalizedAccountingCardId { get; set; } = cardId;
+        public int PersonalizedAccountingCardId { get; set; } = personalizedAccountingCardId;
     }
 }

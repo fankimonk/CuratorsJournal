@@ -65,7 +65,6 @@ else
                 </tr>
             }
         </tbody>
-        
     </table>
     <button @onclick="Add" class="btn btn-outline-primary">Добавить строку</button>
 }
@@ -88,8 +87,6 @@ else
 
     private async Task Add()
     {
-        Console.WriteLine("Add educational process schedule");
-
         var request = new CreateEducationalProcessScheduleRecordRequest(null, null, null, null, null, null, null, null, null, PageId);
         var response = await HttpClient.PostAsJsonAsync<CreateEducationalProcessScheduleRecordRequest>("api/journal/educationalprocessschedule", request);
 
@@ -102,8 +99,6 @@ else
 
     private async Task Update(EducationalProcessScheduleRecordResponse record)
     {
-        Console.WriteLine("Update educational process schedule");
-
         var request = record.ToRequest();
         var response = await HttpClient.PutAsJsonAsync<UpdateEducationalProcessScheduleRecordRequest>
             ("api/journal/educationalprocessschedule/" + record.Id, request);
@@ -117,21 +112,8 @@ else
 
     private async Task Delete(EducationalProcessScheduleRecordResponse record)
     {
-        Console.WriteLine("Delete educational process schedule");
-
         var response = await HttpClient.DeleteAsync("api/journal/educationalprocessschedule/" + record.Id);
 
         if (response.IsSuccessStatusCode) _pageData!.EducationalProcessSchedule.Remove(record);
     }
 }
-
-<style>
-    .input {
-        border: none;
-        outline: none;
-    }
-
-    .fullwidth {
-        width: 100%;
-    }
-</style>

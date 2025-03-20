@@ -3,7 +3,7 @@
 namespace Contracts.Journal.PersonalizedAccountingCards.StudentEncouragements
 {
     public class CreateStudentEncouragementRequest(
-        DateOnly? date, string? achievement, string? encouragementKind, int cardId)
+        DateOnly? date, string? achievement, string? encouragementKind, int personalizedAccountingCardId)
     {
         public DateOnly? Date { get; set; } = date;
 
@@ -11,6 +11,6 @@ namespace Contracts.Journal.PersonalizedAccountingCards.StudentEncouragements
         public string? EncouragementKind { get; set; } = encouragementKind;
 
         [Required]
-        public int PersonalizedAccountingCardId { get; set; } = cardId;
+        public int PersonalizedAccountingCardId { get; set; } = personalizedAccountingCardId;
     }
 }

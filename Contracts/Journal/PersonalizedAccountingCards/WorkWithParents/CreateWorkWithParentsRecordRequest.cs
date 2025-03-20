@@ -3,7 +3,7 @@
 namespace Contracts.Journal.PersonalizedAccountingCards.WorkWithParents
 {
     public class CreateWorkWithParentsRecordRequest(
-        DateOnly? date, string? workContent, string? note, int cardId)
+        DateOnly? date, string? workContent, string? note, int personalizedAccountingCardId)
     {
         public DateOnly? Date { get; set; } = date;
 
@@ -11,6 +11,6 @@ namespace Contracts.Journal.PersonalizedAccountingCards.WorkWithParents
         public string? Note { get; set; } = note;
 
         [Required]
-        public int PersonalizedAccountingCardId { get; set; } = cardId;
+        public int PersonalizedAccountingCardId { get; set; } = personalizedAccountingCardId;
     }
 }

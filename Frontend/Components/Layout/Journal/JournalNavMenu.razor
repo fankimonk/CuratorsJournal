@@ -22,7 +22,18 @@
                     {
                         var pageUrl = $"/journal/{JournalState.JournalContents.JournalId}/{pt.Name}/{page.Id}";
                         <NavLink class="nav-link" href="@pageUrl" Match="NavLinkMatch.All">
-                            @pt.Name
+                            @if (PagesRusNames.ContainsKey(pt.Id))
+                            {
+                                <div class="text-nowrap">
+                                    @PagesRusNames[pt.Id].ToString()
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="text-nowrap">
+                                    @pt.Name
+                                </div>
+                            }
                         </NavLink>
                     }
                 }
@@ -32,12 +43,17 @@
 </div>
 
 @code {
-    // private Dictionary<int, string> PagesRusNames = new Dictionary<int, string>()
-    // {
-    //     { 1, "Титульная страница" },
-    //     { 2, "Контактные телефоны" },
-    //     { 3, "Контактные телефоны" },
-    // };
+    private Dictionary<int, string> PagesRusNames = new Dictionary<int, string>()
+    {
+        { 1, "Титульная страница" },
+        { 2, "Контактные телефоны" },
+        { 3, "Праздники" },
+        { 4, "Социально-педагогическая характеристика" },
+        { 5, "График учебного процесса" },
+        { 6, "Динамика основных показателей группы за период обучения" },
+        { 7, "Актив учебной группы" },
+        { 8, "Список студентов" }
+    };
 
     protected override async Task OnInitializedAsync()
     {

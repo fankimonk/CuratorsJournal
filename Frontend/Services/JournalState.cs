@@ -34,6 +34,8 @@ namespace Frontend.Services
                 await FetchContents();
             }
 
+            UpdateCurrentPage();
+
             OnInitialize?.Invoke();
         }
 
@@ -54,8 +56,6 @@ namespace Frontend.Services
                     _pages.AddLast(page);
                 }
             }
-
-            UpdateCurrentPage();
         }
 
         private void UpdateCurrentPage()

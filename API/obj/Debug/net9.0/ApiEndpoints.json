@@ -1935,6 +1935,600 @@
     ]
   },
   {
+    "ContainingType": "API.Controllers.IndividualInformationController",
+    "Method": "Add",
+    "RelativePath": "api/journal/personalizedaccountingcard/individualinformation",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "Contracts.Journal.PersonalizedAccountingCards.IndividualInformation.CreateIndividualInformationRecordRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "Contracts.Journal.PersonalizedAccountingCards.IndividualInformation.IndividualInformationRecordResponse",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "API.Controllers.IndividualInformationController",
+    "Method": "GetByCard",
+    "RelativePath": "api/journal/personalizedaccountingcard/individualinformation/{cardId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "cardId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.List\u00601[[Contracts.Journal.PersonalizedAccountingCards.IndividualInformation.IndividualInformationRecordResponse, Contracts, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "API.Controllers.IndividualInformationController",
+    "Method": "Update",
+    "RelativePath": "api/journal/personalizedaccountingcard/individualinformation/{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "request",
+        "Type": "Contracts.Journal.PersonalizedAccountingCards.IndividualInformation.UpdateIndividualInformationRecordRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "Contracts.Journal.PersonalizedAccountingCards.IndividualInformation.IndividualInformationRecordResponse",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "API.Controllers.IndividualInformationController",
+    "Method": "Delete",
+    "RelativePath": "api/journal/personalizedaccountingcard/individualinformation/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "API.Controllers.IndividualWorkController",
+    "Method": "Add",
+    "RelativePath": "api/journal/personalizedaccountingcard/individualwork",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "Contracts.Journal.PersonalizedAccountingCards.IndividualWorkWithStudents.CreateIndividualWorkWithStudentRecordRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "Contracts.Journal.PersonalizedAccountingCards.IndividualWorkWithStudents.IndividualWorkWithStudentRecordResponse",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "API.Controllers.IndividualWorkController",
+    "Method": "GetByCard",
+    "RelativePath": "api/journal/personalizedaccountingcard/individualwork/{cardId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "cardId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.List\u00601[[Contracts.Journal.PersonalizedAccountingCards.IndividualWorkWithStudents.IndividualWorkWithStudentRecordResponse, Contracts, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "API.Controllers.IndividualWorkController",
+    "Method": "Update",
+    "RelativePath": "api/journal/personalizedaccountingcard/individualwork/{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "request",
+        "Type": "Contracts.Journal.PersonalizedAccountingCards.IndividualWorkWithStudents.UpdateIndividualWorkWithStudentRecordRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "Contracts.Journal.PersonalizedAccountingCards.IndividualWorkWithStudents.IndividualWorkWithStudentRecordResponse",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "API.Controllers.IndividualWorkController",
+    "Method": "Delete",
+    "RelativePath": "api/journal/personalizedaccountingcard/individualwork/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "API.Controllers.ParentalInformationController",
+    "Method": "Add",
+    "RelativePath": "api/journal/personalizedaccountingcard/parentalinformation",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "Contracts.Journal.PersonalizedAccountingCards.ParentalInformation.CreateParentalInformationRecordRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "Contracts.Journal.PersonalizedAccountingCards.ParentalInformation.ParentalInformationRecordResponse",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "API.Controllers.ParentalInformationController",
+    "Method": "GetByCard",
+    "RelativePath": "api/journal/personalizedaccountingcard/parentalinformation/{cardId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "cardId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.List\u00601[[Contracts.Journal.PersonalizedAccountingCards.ParentalInformation.ParentalInformationRecordResponse, Contracts, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "API.Controllers.ParentalInformationController",
+    "Method": "Update",
+    "RelativePath": "api/journal/personalizedaccountingcard/parentalinformation/{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "request",
+        "Type": "Contracts.Journal.PersonalizedAccountingCards.ParentalInformation.UpdateParentalInformationRecordRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "Contracts.Journal.PersonalizedAccountingCards.ParentalInformation.ParentalInformationRecordResponse",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "API.Controllers.ParentalInformationController",
+    "Method": "Delete",
+    "RelativePath": "api/journal/personalizedaccountingcard/parentalinformation/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "API.Controllers.StudentDisciplinaryResponsibilitiesController",
+    "Method": "Add",
+    "RelativePath": "api/journal/personalizedaccountingcard/studentdisciplinaryresponsibility",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "Contracts.Journal.PersonalizedAccountingCards.StudentDisciplinaryResponsibilities.CreateStudentDisciplinaryResponsibilityRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "Contracts.Journal.PersonalizedAccountingCards.StudentDisciplinaryResponsibilities.StudentDisciplinaryResponsibilityResponse",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "API.Controllers.StudentDisciplinaryResponsibilitiesController",
+    "Method": "GetByCard",
+    "RelativePath": "api/journal/personalizedaccountingcard/studentdisciplinaryresponsibility/{cardId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "cardId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.List\u00601[[Contracts.Journal.PersonalizedAccountingCards.StudentDisciplinaryResponsibilities.StudentDisciplinaryResponsibilityResponse, Contracts, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "API.Controllers.StudentDisciplinaryResponsibilitiesController",
+    "Method": "Update",
+    "RelativePath": "api/journal/personalizedaccountingcard/studentdisciplinaryresponsibility/{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "request",
+        "Type": "Contracts.Journal.PersonalizedAccountingCards.StudentDisciplinaryResponsibilities.UpdateStudentStudentDisciplinaryResponsibilityRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "Contracts.Journal.PersonalizedAccountingCards.StudentDisciplinaryResponsibilities.StudentDisciplinaryResponsibilityResponse",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "API.Controllers.StudentDisciplinaryResponsibilitiesController",
+    "Method": "Delete",
+    "RelativePath": "api/journal/personalizedaccountingcard/studentdisciplinaryresponsibility/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "API.Controllers.StudentEncouragementsController",
+    "Method": "AddStudentEncouragement",
+    "RelativePath": "api/journal/personalizedaccountingcard/studentencouragement",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "Contracts.Journal.PersonalizedAccountingCards.StudentEncouragements.CreateStudentEncouragementRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "Contracts.Journal.PersonalizedAccountingCards.StudentEncouragements.StudentEncouragementResponse",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "API.Controllers.StudentEncouragementsController",
+    "Method": "GetEncouragementsByCard",
+    "RelativePath": "api/journal/personalizedaccountingcard/studentencouragement/{cardId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "cardId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.List\u00601[[Contracts.Journal.PersonalizedAccountingCards.StudentEncouragements.StudentEncouragementResponse, Contracts, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "API.Controllers.StudentEncouragementsController",
+    "Method": "UpdateStudentEncouragement",
+    "RelativePath": "api/journal/personalizedaccountingcard/studentencouragement/{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "request",
+        "Type": "Contracts.Journal.PersonalizedAccountingCards.StudentEncouragements.UpdateStudentEncouragementRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "Contracts.Journal.PersonalizedAccountingCards.StudentEncouragements.StudentEncouragementResponse",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "API.Controllers.StudentEncouragementsController",
+    "Method": "Delete",
+    "RelativePath": "api/journal/personalizedaccountingcard/studentencouragement/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "API.Controllers.WorkWithParentsController",
+    "Method": "Add",
+    "RelativePath": "api/journal/personalizedaccountingcard/workwithparents",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "Contracts.Journal.PersonalizedAccountingCards.WorkWithParents.CreateWorkWithParentsRecordRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "Contracts.Journal.PersonalizedAccountingCards.WorkWithParents.WorkWithParentsRecordResponse",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "API.Controllers.WorkWithParentsController",
+    "Method": "GetByCard",
+    "RelativePath": "api/journal/personalizedaccountingcard/workwithparents/{cardId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "cardId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.List\u00601[[Contracts.Journal.PersonalizedAccountingCards.WorkWithParents.WorkWithParentsRecordResponse, Contracts, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "API.Controllers.WorkWithParentsController",
+    "Method": "Update",
+    "RelativePath": "api/journal/personalizedaccountingcard/workwithparents/{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "request",
+        "Type": "Contracts.Journal.PersonalizedAccountingCards.WorkWithParents.UpdateWorkWithParentsRecordRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "Contracts.Journal.PersonalizedAccountingCards.WorkWithParents.WorkWithParentsRecordResponse",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "API.Controllers.WorkWithParentsController",
+    "Method": "Delete",
+    "RelativePath": "api/journal/personalizedaccountingcard/workwithparents/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "API.Controllers.PsychologicalAndPedagogicalCharacteristicsController",
     "Method": "Update",
     "RelativePath": "api/journal/psychologicalpedagogicalcharacteristics/{id}",

@@ -3,7 +3,7 @@
 namespace Contracts.Journal.PersonalizedAccountingCards.IndividualWorkWithStudents
 {
     public class CreateIndividualWorkWithStudentRecordRequest(
-        DateOnly? date, string? workDoneAndRecommendations, string? result, int cardId)
+        DateOnly? date, string? workDoneAndRecommendations, string? result, int personalizedAccountingCardId)
     {
         public DateOnly? Date { get; set; } = date;
 
@@ -11,6 +11,6 @@ namespace Contracts.Journal.PersonalizedAccountingCards.IndividualWorkWithStuden
         public string? Result { get; set; } = result;
 
         [Required]
-        public int PersonalizedAccountingCardId { get; set; } = cardId;
+        public int PersonalizedAccountingCardId { get; set; } = personalizedAccountingCardId;
     }
 }

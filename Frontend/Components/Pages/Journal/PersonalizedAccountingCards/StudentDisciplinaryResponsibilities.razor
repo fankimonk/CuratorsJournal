@@ -1,0 +1,89 @@
+﻿@using Contracts.Journal.PersonalizedAccountingCards.StudentDisciplinaryResponsibilities
+@using Contracts.Mappers.Journal.PersonalizedAccountingCards
+@using Frontend.Components.Buttons
+
+@inject HttpClient HttpClient
+
+@if (_studentResponsibilities == null)
+{
+    <p><em>Загрузка...</em></p>
+}
+else
+{
+    <p><b>Отметки о дисциплинарной ответственности</b></p>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th class="text-center">Дата</th>
+                <th class="text-center">За какой проступок</th>
+                <th class="text-center">Вид</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var record in _studentResponsibilities)
+            {
+                <tr>
+                    <td>
+                        <input type="date" @bind="record.Date" @bind:after="async () => await Update(record)" class="input" />
+                    </td>
+                    <td>
+                        <input @bind="record.Misdemeanor" @bind:after="async () => await Update(record)" class="input fullwidth" />
+                    </td>
+                    <td>
+                        <input @bind="record.DisciplinaryResponsibilityKind" @bind:after="async () => await Update(record)" class="input fullwidth" />
+                    </td>
+                    <td>
+                        <button @onclick="async () => await Delete(record)" class="btn btn-close" />
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <AddButton @onclick="Add">Добавить строку</AddButton>
+}
+
+@code {
+    [Parameter]
+    public int CardId { get; set; }
+
+    private List<StudentDisciplinaryResponsibilityResponse>? _studentResponsibilities;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _studentResponsibilities = await HttpClient.GetFromJsonAsync<List<StudentDisciplinaryResponsibilityResponse>>
+                ("api/journal/personalizedaccountingcard/studentdisciplinaryresponsibility/" + CardId);
+    }
+
+    private async Task Add()
+    {
+        var request = new CreateStudentDisciplinaryResponsibilityRequest(null, null, null, CardId);
+        var response = await HttpClient.PostAsJsonAsync<CreateStudentDisciplinaryResponsibilityRequest>
+            ("api/journal/personalizedaccountingcard/studentdisciplinaryresponsibility", request);
+
+        if (response.IsSuccessStatusCode)
+        {
+            var addedRecord = await response.Content.ReadFromJsonAsync<StudentDisciplinaryResponsibilityResponse>();
+            _studentResponsibilities!.Add(addedRecord!);
+        }
+    }
+
+    private async Task Update(StudentDisciplinaryResponsibilityResponse record)
+    {
+        var request = record.ToRequest();
+        var response = await HttpClient.PutAsJsonAsync<UpdateStudentStudentDisciplinaryResponsibilityRequest>
+            ("api/journal/personalizedaccountingcard/studentdisciplinaryresponsibility/" + record.Id, request);
+
+        if (!response.IsSuccessStatusCode)
+        {
+            // var updatedRecord = await response.Content.ReadFromJsonAsync<EducationalProcessScheduleRecordResponse>();
+            // record = updatedRecord!;
+        }
+    }
+
+    private async Task Delete(StudentDisciplinaryResponsibilityResponse record)
+    {
+        var response = await HttpClient.DeleteAsync("api/journal/personalizedaccountingcard/studentdisciplinaryresponsibility/" + record.Id);
+
+        if (response.IsSuccessStatusCode) _studentResponsibilities!.Remove(record);
+    }
+}

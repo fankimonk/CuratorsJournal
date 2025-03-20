@@ -5,6 +5,10 @@
       "PackagePath": "staticwebassets\\Frontend.3t1u8wvsoe.bundle.scp.css"
     },
     {
+      "Id": "C:\\Dev\\Web\\CuratorsJournal\\Frontend\\wwwroot\\InputStyles.css",
+      "PackagePath": "staticwebassets\\InputStyles.css"
+    },
+    {
       "Id": "C:\\Dev\\Web\\CuratorsJournal\\Frontend\\wwwroot\\app.css",
       "PackagePath": "staticwebassets\\app.css"
     },

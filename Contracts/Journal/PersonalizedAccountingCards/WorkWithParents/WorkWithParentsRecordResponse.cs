@@ -1,7 +1,7 @@
 ﻿namespace Contracts.Journal.PersonalizedAccountingCards.WorkWithParents
 {
     public class WorkWithParentsRecordResponse(
-        int id, DateOnly? date, string? workContent, string? note, int cardId)
+        int id, DateOnly? date, string? workContent, string? note, int personalizedAccountingCardId)
     {
         public int Id { get; set; } = id;
 
@@ -10,6 +10,6 @@
         public string? WorkContent { get; set; } = workContent;
         public string? Note { get; set; } = note;
 
-        public int PersonalizedAccountingCardId { get; set; } = cardId;
+        public int PersonalizedAccountingCardId { get; set; } = personalizedAccountingCardId;
     }
 }

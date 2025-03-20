@@ -4,7 +4,7 @@ namespace Contracts.Journal.PersonalizedAccountingCards.IndividualInformation
 {
     public class CreateIndividualInformationRecordRequest(
         string? activityName, DateOnly? startDate, DateOnly? endDate,
-        string? result, string? note, int? activityTypeId, int cardId)
+        string? result, string? note, int? activityTypeId, int personalizedAccountingCardId)
     {
         public string? ActivityName { get; set; } = activityName;
 
@@ -17,6 +17,6 @@ namespace Contracts.Journal.PersonalizedAccountingCards.IndividualInformation
         public int? ActivityTypeId { get; set; } = activityTypeId;
 
         [Required]
-        public int PersonalizedAccountingCardId { get; set; } = cardId;
+        public int PersonalizedAccountingCardId { get; set; } = personalizedAccountingCardId;
     }
 }

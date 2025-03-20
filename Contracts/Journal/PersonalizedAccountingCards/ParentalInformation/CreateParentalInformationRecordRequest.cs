@@ -6,7 +6,7 @@ namespace Contracts.Journal.PersonalizedAccountingCards.ParentalInformation
         string? firstName, string? middleName, string? lastName,
         string? placeOfResidence, string? placeOfWork, string? position,
         string? homePhoneNumber, string? workPhoneNumber, string? mobilePhoneNumber,
-        string? otherInformation, int cardId)
+        string? otherInformation, int personalizedAccountingCardId)
     {
         public string? FirstName { get; set; } = firstName;
         public string? MiddleName { get; set; } = middleName;
@@ -32,6 +32,6 @@ namespace Contracts.Journal.PersonalizedAccountingCards.ParentalInformation
         public string? OtherInformation { get; set; } = otherInformation;
 
         [Required]
-        public int PersonalizedAccountingCardId { get; set; } = cardId;
+        public int PersonalizedAccountingCardId { get; set; } = personalizedAccountingCardId;
     }
 }

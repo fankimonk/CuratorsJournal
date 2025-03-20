@@ -22,19 +22,41 @@ else
     <table class="table table-bordered">
         <thead>
             <tr>
-                <th rowspan="2">Основные показатели</th>
-                <th colspan="@_courses.Count">Курс</th>
-                <th rowspan="2">Примечание</th>
+                <th rowspan="2" class="text-center align-middle">Основные показатели</th>
+                <th colspan="@_courses.Count" class="text-center align-middle">Курс</th>
+                <th rowspan="2" class="text-center align-middle">Примечание</th>
             </tr>
             <tr>
                 @foreach (var course in _courses)
                 {
-                    <th>@course</th>
+                    <th class="text-center align-middle">@course</th>
                 }
             </tr>
         </thead>
         <tbody>
-
+            @foreach (var record in _pageData.DynamicsOfKeyIndicators)
+            {
+                var keyIndicatorId = record.KeyIndicator.Id;
+                <tr>
+                    <td>@IndicatorsNames[keyIndicatorId]</td>
+                    @foreach (var i in record.KeyIndicatorsByCourse)
+                    {
+                        <td>
+                            @if (keyIndicatorId == 5)
+                            {
+                                <input type="number" min="0" step="0.01" @bind="i.Value" @bind:after='async () => await UpdateValue(i)' class="input fullwidth" />
+                            }
+                            else
+                            {
+                                <input type="number" min="0" step="1" @bind="i.Value" @bind:after='async () => await UpdateValue(i)' class="input fullwidth" />
+                            }
+                        </td>
+                    }
+                    <td>
+                        <input @bind="record.Note" @bind:after='async () => await UpdateRecord(record)' class="input fullwidth" />
+                    </td>
+                </tr>
+            }
         </tbody>
 
     </table>
@@ -54,11 +76,22 @@ else
 
     private List<int>? _courses;
 
+    private Dictionary<int, string> IndicatorsNames = new Dictionary<int, string>
+    {
+        { 1, "Общее количество студентов"},
+        { 2, "Отчислено студентов" },
+        { 3, "Восстановлено" },
+        { 4, "Переведено с платной на бюджетную форму обучения, снижена плата за обучение" },
+        { 5, "Средний балл успеваемости" },
+        { 6, "Количество студентов-отличников" }
+    };
+
     protected override async Task OnInitializedAsync()
     {
         await JournalState.Initialize(JournalId, PageId);
 
-        _pageData = await HttpClient.GetFromJsonAsync<DynamicsOfKeyIndicatorsPageResponse>("api/journal/dynamicsofkeyindicators/" + PageId.ToString());
+        _pageData = await HttpClient.GetFromJsonAsync<DynamicsOfKeyIndicatorsPageResponse>
+            ("api/journal/dynamicsofkeyindicators/" + PageId.ToString());
 
         UpdateCourses();
     }
@@ -68,34 +101,36 @@ else
         if (_pageData != null)
         {
             _courses = _pageData.DynamicsOfKeyIndicators
-                .Select(r => r.KeyIndicatorsByCourse.Select(r => r.Course))
-                .SelectMany(r => r)
-                .GroupBy(r => r)
-                .Select(r => r.Key).ToList();
+            .Select(r => r.KeyIndicatorsByCourse.Select(r => r.Course))
+            .SelectMany(r => r)
+            .GroupBy(r => r)
+            .Select(r => r.Key).ToList();
         }
     }
 
-    // private async Task UpdateValue(ContactPhoneResponse phone)
-    // {
-    //     var request = new UpdateContactPhoneRequest(phone.Name, phone.PhoneNumber);
-    //     var response = await HttpClient.PutAsJsonAsync<UpdateContactPhoneRequest>("api/journal/contactphone/" + phone.Id, request);
+    private async Task UpdateValue(KeyIndicatorByCourseResponse record)
+    {
+        var request = new UpdateKeyIndicatorValueRequest(record.Value);
+        var response = await HttpClient.PutAsJsonAsync<UpdateKeyIndicatorValueRequest>
+            ("api/journal/dynamicsofkeyindicators/updatevalue/" + record.Id, request);
 
-    //     if (!response.IsSuccessStatusCode)
-    //     {
-    //         //TODO
-    //     }
-    // }
+        if (!response.IsSuccessStatusCode)
+        {
+            //TODO
+        }
+    }
 
-    // private async Task UpdateRecord(ContactPhoneResponse phone)
-    // {
-    //     var request = new UpdateContactPhoneRequest(phone.Name, phone.PhoneNumber);
-    //     var response = await HttpClient.PutAsJsonAsync<UpdateContactPhoneRequest>("api/journal/contactphone/" + phone.Id, request);
+    private async Task UpdateRecord(DynamicsOfKeyIndicatorsRecordResponse record)
+    {
+        var request = new UpdateDynamicsOfKeyIndicatorsRecordRequest(record.Note);
+        var response = await HttpClient.PutAsJsonAsync<UpdateDynamicsOfKeyIndicatorsRecordRequest>
+            ("api/journal/dynamicsofkeyindicators/update/" + record.Id, request);
 
-    //     if (!response.IsSuccessStatusCode)
-    //     {
-    //         //TODO
-    //     }
-    // }
+        if (!response.IsSuccessStatusCode)
+        {
+            //TODO
+        }
+    }
 
     private async Task AddCourse()
     {
@@ -119,11 +154,3 @@ else
         }
     }
 }
-
-<style>
-    .input {
-        width: 100%;
-        border: none;
-        outline: none;
-    }
-</style>

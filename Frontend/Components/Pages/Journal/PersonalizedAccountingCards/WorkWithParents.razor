@@ -1,0 +1,93 @@
+﻿@using Contracts.Journal.PersonalizedAccountingCards.IndividualWorkWithStudents
+@using Contracts.Journal.PersonalizedAccountingCards.WorkWithParents
+@using Contracts.Mappers.Journal.PersonalizedAccountingCards
+@using Frontend.Components.Buttons
+
+@inject HttpClient HttpClient
+
+@if (_individualWork == null)
+{
+    <p><em>Загрузка...</em></p>
+}
+else
+{
+    <h3 class="d-flex justify-content-center"><b>РАБОТА С РОДИТЕЛЯМИ/РОДСТВЕННИКАМИ,</b></h3>
+    <h3 class="d-flex justify-content-center"><b>ЛИЦАМИ, ИХ ЗАМЕНЯЮЩИМИ</b></h3>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th class="text-center align-middle">Дата</th>
+                <th class="text-center align-middle">
+                    Проведенная работа и рекомендации ППС,<br />
+                    специалистов СППС
+                </th>
+                <th class="text-center align-middle">Результат</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var record in _individualWork)
+            {
+                <tr>
+                    <td>
+                        <input type="date" @bind="record.Date" @bind:after="async () => await Update(record)" class="input" />
+                    </td>
+                    <td>
+                        <input @bind="record.WorkContent" @bind:after="async () => await Update(record)" class="input fullwidth" />
+                    </td>
+                    <td>
+                        <input @bind="record.Note" @bind:after="async () => await Update(record)" class="input fullwidth" />
+                    </td>
+                    <td>
+                        <button @onclick="async () => await Delete(record)" class="btn btn-close" />
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <AddButton @onclick="Add">Добавить строку</AddButton>
+}
+
+@code {
+    [Parameter]
+    public int CardId { get; set; }
+
+    private List<WorkWithParentsRecordResponse>? _individualWork;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _individualWork = await HttpClient.GetFromJsonAsync<List<WorkWithParentsRecordResponse>>
+                ("api/journal/personalizedaccountingcard/workwithparents/" + CardId);
+    }
+
+    private async Task Add()
+    {
+        var request = new CreateWorkWithParentsRecordRequest(null, null, null, CardId);
+        var response = await HttpClient.PostAsJsonAsync<CreateWorkWithParentsRecordRequest>("api/journal/personalizedaccountingcard/workwithparents", request);
+
+        if (response.IsSuccessStatusCode)
+        {
+            var addedRecord = await response.Content.ReadFromJsonAsync<WorkWithParentsRecordResponse>();
+            _individualWork!.Add(addedRecord!);
+        }
+    }
+
+    private async Task Update(WorkWithParentsRecordResponse record)
+    {
+        var request = record.ToRequest();
+        var response = await HttpClient.PutAsJsonAsync<UpdateWorkWithParentsRecordRequest>
+            ("api/journal/personalizedaccountingcard/workwithparents/" + record.Id, request);
+
+        if (!response.IsSuccessStatusCode)
+        {
+            // var updatedRecord = await response.Content.ReadFromJsonAsync<EducationalProcessScheduleRecordResponse>();
+            // record = updatedRecord!;
+        }
+    }
+
+    private async Task Delete(WorkWithParentsRecordResponse record)
+    {
+        var response = await HttpClient.DeleteAsync("api/journal/personalizedaccountingcard/workwithparents/" + record.Id);
+
+        if (response.IsSuccessStatusCode) _individualWork!.Remove(record);
+    }
+}

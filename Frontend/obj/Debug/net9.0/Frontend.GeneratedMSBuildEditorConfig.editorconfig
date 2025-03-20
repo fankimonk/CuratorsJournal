@@ -80,8 +80,24 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xKb3VybmFsXExpdGVyYXR1cmVXb3JrLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Dev/Web/CuratorsJournal/Frontend/Components/Pages/Journal/PersonalizedAccountingCard.razor]
-build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xKb3VybmFsXFBlcnNvbmFsaXplZEFjY291bnRpbmdDYXJkLnJhem9y
+[C:/Dev/Web/CuratorsJournal/Frontend/Components/Pages/Journal/PersonalizedAccountingCards/IndividualWorkWithStudent.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xKb3VybmFsXFBlcnNvbmFsaXplZEFjY291bnRpbmdDYXJkc1xJbmRpdmlkdWFsV29ya1dpdGhTdHVkZW50LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Dev/Web/CuratorsJournal/Frontend/Components/Pages/Journal/PersonalizedAccountingCards/PersonalizedAccountingCard.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xKb3VybmFsXFBlcnNvbmFsaXplZEFjY291bnRpbmdDYXJkc1xQZXJzb25hbGl6ZWRBY2NvdW50aW5nQ2FyZC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Dev/Web/CuratorsJournal/Frontend/Components/Pages/Journal/PersonalizedAccountingCards/StudentDisciplinaryResponsibilities.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xKb3VybmFsXFBlcnNvbmFsaXplZEFjY291bnRpbmdDYXJkc1xTdHVkZW50RGlzY2lwbGluYXJ5UmVzcG9uc2liaWxpdGllcy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Dev/Web/CuratorsJournal/Frontend/Components/Pages/Journal/PersonalizedAccountingCards/StudentEncouragements.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xKb3VybmFsXFBlcnNvbmFsaXplZEFjY291bnRpbmdDYXJkc1xTdHVkZW50RW5jb3VyYWdlbWVudHMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Dev/Web/CuratorsJournal/Frontend/Components/Pages/Journal/PersonalizedAccountingCards/WorkWithParents.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xKb3VybmFsXFBlcnNvbmFsaXplZEFjY291bnRpbmdDYXJkc1xXb3JrV2l0aFBhcmVudHMucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Dev/Web/CuratorsJournal/Frontend/Components/Pages/Journal/PsychologicalAndPedagogicalCharacteristics.razor]
