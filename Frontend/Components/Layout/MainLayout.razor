@@ -1,4 +1,8 @@
-﻿@inherits LayoutComponentBase
+﻿@using Frontend.Services
+
+@inherits LayoutComponentBase
+
+@inject AppState AppState
 
 <div class="page">
     <div class="sidebar">
@@ -21,3 +25,10 @@
     <a href="." class="reload">Reload</a>
     <span class="dismiss">🗙</span>
 </div>
+
+@code {
+    protected async override Task OnInitializedAsync()
+    {
+        await AppState.FetchUser();
+    }
+}

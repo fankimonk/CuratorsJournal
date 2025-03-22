@@ -3,6 +3,7 @@
 @using Contracts.Journal
 @using Contracts.Journal.Holidays
 @using Frontend.Services
+@using Frontend.Utils
 
 @inject HttpClient HttpClient
 @inject JournalState JournalState
@@ -19,7 +20,7 @@ else
     {
         @if (@ht.Holidays.Count != 0)
         {
-            <h1 class="d-flex justify-content-center">@ht.Name</h1>
+            <h3 class="d-flex justify-content-center">@ht.Name</h3>
         }
         <table class="table table-bordered">
             <tbody>
@@ -28,13 +29,13 @@ else
                     <tr>
                         @if (h.Day != null && h.Month != null)
                         {
-                            if (!_monthsNumbersAndNames.ContainsKey((int)h.Month))
+                            if (!MonthsUtils.MonthsDateNames.ContainsKey((int)h.Month))
                             {
                                 <td>Ошибка: некорректная дата!</td>
                             }
                             else
                             {
-                                <td>@h.Day.ToString() @_monthsNumbersAndNames[(int)h.Month]</td>
+                                <td>@h.Day.ToString() @MonthsUtils.MonthsDateNames[(int)h.Month]</td>
                             }
                         }
                         else if (h.RelativeDate != null)
@@ -61,22 +62,6 @@ else
     public int JournalId { get; set; }
 
     private HolidaysPageResponse? _pageData;
-
-    private readonly Dictionary<int, string> _monthsNumbersAndNames = new Dictionary<int, string>
-    {
-        { 1, "января" },
-        { 2, "февраля" },
-        { 3, "марта" },
-        { 4, "апреля" },
-        { 5, "мая" },
-        { 6, "июня" },
-        { 7, "июля" },
-        { 8, "августа" },
-        { 9, "сентября" },
-        { 10, "октября" },
-        { 11, "ноября" },
-        { 12, "декабря" },
-    };
 
     protected override async Task OnInitializedAsync()
     {

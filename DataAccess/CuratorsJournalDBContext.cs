@@ -2,6 +2,7 @@
 using Domain.Entities;
 using Domain.Entities.JournalContent;
 using Domain.Entities.JournalContent.DynamicsOfKeyIndicators;
+using Domain.Entities.JournalContent.FinalPerformanceAccounting;
 using Domain.Entities.JournalContent.Holidays;
 using Domain.Entities.JournalContent.Literature;
 using Domain.Entities.JournalContent.Pages;
@@ -73,6 +74,9 @@ namespace DataAccess
         public DbSet<LiteratureListRecord> LiteratureList { get; set; }
         public DbSet<KeyIndicator> KeyIndicators { get; set; }
         public DbSet<KeyIndicatorByCourse> KeyIndicatorsByCourse { get; set; }
+        public DbSet<CertificationType> CertificationTypes { get; set; }
+        public DbSet<PerformanceAccountingGrade> PerformanceAccountingGrades { get; set; }
+        public DbSet<PerformanceAccountingColumn> PerformanceAccountingColumns { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -135,6 +139,9 @@ namespace DataAccess
             modelBuilder.ApplyConfiguration(new LiteratureListConfiguration());
             modelBuilder.ApplyConfiguration(new KeyIndicatorsConfiguration());
             modelBuilder.ApplyConfiguration(new KeyIndicatorsByCourseConfiguration());
+            modelBuilder.ApplyConfiguration(new CertificationTypesConfiguration());
+            modelBuilder.ApplyConfiguration(new PerformanceAccountingGradesConfiguration());
+            modelBuilder.ApplyConfiguration(new PerformanceAccountingColumnsConfiguration());
 
             base.OnModelCreating(modelBuilder);
         }

@@ -3,7 +3,7 @@ using Contracts.Journal;
 
 namespace Frontend.Services
 {
-    public class JournalState
+    public class JournalState(HttpClient httpClient)
     {
         public int JournalId { get; private set; }
 
@@ -15,14 +15,9 @@ namespace Frontend.Services
 
         public Action? OnInitialize;
 
-        private readonly HttpClient _httpClient;
+        private readonly HttpClient _httpClient = httpClient;
 
         private LinkedList<PageResponse> _pages = [];
-
-        public JournalState(HttpClient httpClient)
-        {
-            _httpClient = httpClient;
-        }
 
         public async Task Initialize(int journalId, int pageId)
         {

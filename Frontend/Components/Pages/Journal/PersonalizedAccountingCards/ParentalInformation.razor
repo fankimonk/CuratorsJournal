@@ -1,0 +1,116 @@
+﻿@using Contracts.Journal.PersonalizedAccountingCards.ParentalInformation
+@using Contracts.Mappers.Journal.PersonalizedAccountingCards
+@using Frontend.Components.Buttons
+
+@inject HttpClient HttpClient
+
+@if (_parentalInformation == null)
+{
+    <p><em>Загрузка...</em></p>
+}
+else
+{
+    <p><b>Сведения о родителях и/или других родственниках, законных представителях</b></p>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th class="text-center">Фамилия</th>
+                <th class="text-center">Имя</th>
+                <th class="text-center">Отчество</th>
+                <th class="text-center">Место жительства и/или место пребывания</th>
+                <th class="text-center">Место работы</th>
+                <th class="text-center">Занимаемая должность</th>
+                <th class="text-center">Телефон (дом.)</th>
+                <th class="text-center">Телефон (раоч.)</th>
+                <th class="text-center">Телефон (моб.)</th>
+                <th class="text-center">Другие сведения</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var record in _parentalInformation)
+            {
+                <tr>
+                    <td>
+                        <input @bind="record.LastName" @bind:after="async () => await Update(record)" class="input fullwidth" />
+                    </td>
+                    <td>
+                        <input @bind="record.FirstName" @bind:after="async () => await Update(record)" class="input fullwidth" />
+                    </td>
+                    <td>
+                        <input @bind="record.MiddleName" @bind:after="async () => await Update(record)" class="input fullwidth" />
+                    </td>
+                    <td>
+                        <input @bind="record.PlaceOfResidence" @bind:after="async () => await Update(record)" class="input fullwidth" />
+                    </td>
+                    <td>
+                        <input @bind="record.PlaceOfWork" @bind:after="async () => await Update(record)" class="input fullwidth" />
+                    </td>
+                    <td>
+                        <input @bind="record.Position" @bind:after="async () => await Update(record)" class="input fullwidth" />
+                    </td>
+                    <td>
+                        <input @bind="record.HomePhoneNumber" @bind:after="async () => await Update(record)" class="input fullwidth" />
+                    </td>
+                    <td>
+                        <input @bind="record.WorkPhoneNumber" @bind:after="async () => await Update(record)" class="input fullwidth" />
+                    </td>
+                    <td>
+                        <input @bind="record.MobilePhoneNumber" @bind:after="async () => await Update(record)" class="input fullwidth" />
+                    </td>
+                    <td>
+                        <input @bind="record.OtherInformation" @bind:after="async () => await Update(record)" class="input fullwidth" />
+                    </td>
+                    <td>
+                        <button @onclick="async () => await Delete(record)" class="btn btn-close" />
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <AddButton @onclick="Add">Добавить строку</AddButton>
+}
+
+@code {
+    [Parameter]
+    public int CardId { get; set; }
+
+    private List<ParentalInformationRecordResponse>? _parentalInformation;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _parentalInformation = await HttpClient.GetFromJsonAsync<List<ParentalInformationRecordResponse>>
+                ("api/journal/personalizedaccountingcard/parentalinformation/" + CardId);
+    }
+
+    private async Task Add()
+    {
+        var request = new CreateParentalInformationRecordRequest(null, null, null, null, null, null, null, null, null, null, CardId);
+        var response = await HttpClient.PostAsJsonAsync<CreateParentalInformationRecordRequest>("api/journal/personalizedaccountingcard/parentalinformation", request);
+
+        if (response.IsSuccessStatusCode)
+        {
+            var addedRecord = await response.Content.ReadFromJsonAsync<ParentalInformationRecordResponse>();
+            _parentalInformation!.Add(addedRecord!);
+        }
+    }
+
+    private async Task Update(ParentalInformationRecordResponse record)
+    {
+        var request = record.ToRequest();
+        var response = await HttpClient.PutAsJsonAsync<UpdateParentalInformationRecordRequest>
+            ("api/journal/personalizedaccountingcard/parentalinformation/" + record.Id, request);
+
+        if (!response.IsSuccessStatusCode)
+        {
+            // var updatedRecord = await response.Content.ReadFromJsonAsync<EducationalProcessScheduleRecordResponse>();
+            // record = updatedRecord!;
+        }
+    }
+
+    private async Task Delete(ParentalInformationRecordResponse record)
+    {
+        var response = await HttpClient.DeleteAsync("api/journal/personalizedaccountingcard/parentalinformation/" + record.Id);
+
+        if (response.IsSuccessStatusCode) _parentalInformation!.Remove(record);
+    }
+}

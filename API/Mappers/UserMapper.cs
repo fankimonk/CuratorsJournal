@@ -8,7 +8,7 @@ namespace API.Mappers
         public static UserResponse ToResponse(this User user)
         {
             if (user.Role == null) throw new ArgumentNullException(nameof(user.Role));
-            return new UserResponse(user.UserName, user.Role.Name);
+            return new UserResponse(user.Id, user.UserName, user.Role.Name);
         }
     }
 }

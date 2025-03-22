@@ -1207,6 +1207,209 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "API.Controllers.FinalPerformanceAccountingController",
+    "Method": "GetPageData",
+    "RelativePath": "api/journal/finalperformanceaccounting/{pageId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "pageId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "Contracts.Journal.FinalPerformanceAccounting.FinalPerformanceAccountingPageResponse",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "API.Controllers.FinalPerformanceAccountingController",
+    "Method": "AddColumn",
+    "RelativePath": "api/journal/finalperformanceaccounting/column",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "Contracts.Journal.FinalPerformanceAccounting.CreatePerformanceAccountingColumnRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "Contracts.Journal.FinalPerformanceAccounting.PerformanceAccountingColumnResponse",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "API.Controllers.FinalPerformanceAccountingController",
+    "Method": "UpdateColumn",
+    "RelativePath": "api/journal/finalperformanceaccounting/column/{columnId}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "columnId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "request",
+        "Type": "Contracts.Journal.FinalPerformanceAccounting.UpdatePerformanceAccountingColumnRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "Contracts.Journal.FinalPerformanceAccounting.PerformanceAccountingColumnResponse",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "API.Controllers.FinalPerformanceAccountingController",
+    "Method": "DeleteColumn",
+    "RelativePath": "api/journal/finalperformanceaccounting/column/{columnId}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "columnId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "API.Controllers.FinalPerformanceAccountingController",
+    "Method": "UpdateGrade",
+    "RelativePath": "api/journal/finalperformanceaccounting/grade/{gradeId}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "gradeId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "request",
+        "Type": "Contracts.Journal.FinalPerformanceAccounting.UpdatePerformanceAccountingGradeRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "Contracts.Journal.FinalPerformanceAccounting.PerformanceAccountingGradeResponse",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "API.Controllers.FinalPerformanceAccountingController",
+    "Method": "AddRecord",
+    "RelativePath": "api/journal/finalperformanceaccounting/record",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "Contracts.Journal.FinalPerformanceAccounting.CreatePerformanceAccountingRecordRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "Contracts.Journal.FinalPerformanceAccounting.PerformanceAccountingRecordResponse",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "API.Controllers.FinalPerformanceAccountingController",
+    "Method": "UpdateRecord",
+    "RelativePath": "api/journal/finalperformanceaccounting/record/{recordId}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "recordId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "request",
+        "Type": "Contracts.Journal.FinalPerformanceAccounting.UpdatePerformanceAccountingRecordRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "Contracts.Journal.FinalPerformanceAccounting.PerformanceAccountingRecordResponse",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "API.Controllers.FinalPerformanceAccountingController",
+    "Method": "DeleteRecord",
+    "RelativePath": "api/journal/finalperformanceaccounting/record/{recordId}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "recordId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "API.Controllers.GroupActivesController",
     "Method": "AddGroupActive",
     "RelativePath": "api/journal/groupactive",
@@ -1553,6 +1756,37 @@
       }
     ],
     "ReturnTypes": []
+  },
+  {
+    "ContainingType": "API.Controllers.IdeologicalEducationalWorkController",
+    "Method": "UpdateAttributes",
+    "RelativePath": "api/journal/ideologicalandeducationalwork/updateattributes/{attributesId}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "attributesId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "request",
+        "Type": "Contracts.Journal.CuratorsIdeologicalAndEducationalWorkAccounting.UpdateIdeologicalAndEducationalWorkAttributesRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "Contracts.Journal.CuratorsIdeologicalAndEducationalWorkAccounting.IdeologicalAndEducationalWorkAttributesResponse",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
   },
   {
     "ContainingType": "API.Controllers.InformationHoursAccountingController",

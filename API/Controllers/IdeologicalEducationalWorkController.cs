@@ -1,15 +1,18 @@
 ﻿using API.Mappers;
 using API.Mappers.Journal;
 using Contracts.Journal.CuratorsIdeologicalAndEducationalWorkAccounting;
+using DataAccess.Interfaces;
 using DataAccess.Interfaces.PageRepositories;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
     [Route("api/journal/ideologicalandeducationalwork")]
-    public class IdeologicalEducationalWorkController(IIdeologicalEducationalWorkRepository ideologicalEducationalWorkRepository) : ControllerBase
+    public class IdeologicalEducationalWorkController(IIdeologicalEducationalWorkRepository ideologicalEducationalWorkRepository,
+        IIdeologicalAndEducationalWorkPageAttributesRepository attributesRepository) : ControllerBase
     {
         private readonly IIdeologicalEducationalWorkRepository _ideologicalEducationalWorkRepository = ideologicalEducationalWorkRepository;
+        private readonly IIdeologicalAndEducationalWorkPageAttributesRepository _attributesRepository = attributesRepository;
 
         [HttpGet("{pageId}")]
         public async Task<ActionResult<IdeologicalEducationalWorkPageResponse>> GetRecordsByPage([FromRoute] int pageId)
@@ -18,7 +21,11 @@ namespace API.Controllers
             if (records == null) return BadRequest();
 
             var response = records.Select(r => r.ToResponse()).ToList();
-            return Ok(new IdeologicalEducationalWorkPageResponse(pageId, response));
+
+            var attributes = await _attributesRepository.GetByPageId(pageId);
+            if (attributes == null) return BadRequest();
+
+            return Ok(new IdeologicalEducationalWorkPageResponse(pageId, attributes.ToResponse(), response));
         }
 
         [HttpPost]
@@ -57,6 +64,17 @@ namespace API.Controllers
             if (!await _ideologicalEducationalWorkRepository.DeleteAsync(recordId)) return NotFound();
 
             return NoContent();
+        }
+
+        [HttpPut("updateattributes/{attributesId}")]
+        public async Task<ActionResult<IdeologicalAndEducationalWorkAttributesResponse>> UpdateAttributes([FromRoute] int attributesId,
+            [FromBody] UpdateIdeologicalAndEducationalWorkAttributesRequest request)
+        {
+            var attributes = await _attributesRepository.UpdateAttributes(attributesId, request.Month, request.Year);
+            if (attributes == null) return BadRequest();
+
+            var response = attributes.ToResponse();
+            return Ok(response);
         }
     }
 }

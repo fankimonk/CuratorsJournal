@@ -9,7 +9,7 @@
 
         public string? RelativeDate { get; set; }
 
-        public string Name { get; set; } = string.Empty;
+        public string? Name { get; set; } = string.Empty;
 
         public int TypeId { get; set; }
         public HolidayType? Type { get; set; }

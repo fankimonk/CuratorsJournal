@@ -5,6 +5,7 @@
 @inherits LayoutComponentBase
 
 @inject JournalState JournalState
+@inject AppState AppState
 
 <div class="page">
     <div class="sidebar">
@@ -35,6 +36,7 @@
 @code {
     protected override async Task OnInitializedAsync()
     {
+        await AppState.FetchUser();
         JournalState.OnInitialize += HandleOnInitialize;
     }
 

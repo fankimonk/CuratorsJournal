@@ -12,6 +12,8 @@ using DataAccess.Repositories.PageRepositories;
 using DataAccess.Interfaces.PageRepositories;
 using DataAccess.Interfaces.PageRepositories.PersonalizedAccountingCards;
 using DataAccess.Repositories.PageRepositories.PersonalizedAccountingCards;
+using DataAccess.Interfaces.PageRepositories.FinalPerformanceAccounting;
+using DataAccess.Repositories.PageRepositories.FinalPerformanceAccounting;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -74,6 +76,11 @@ builder.Services.AddScoped<IPEGroupsRepository, PEGroupsRepository>();
 builder.Services.AddScoped<IActivityTypesRepository, ActivityTypesRepository>();
 builder.Services.AddScoped<IDeaneriesRepository, DeaneriesRepository>();
 builder.Services.AddScoped<IDepartmentsRepository, DepartmentsRepository>();
+builder.Services.AddScoped<ICertificationTypesRepository, CertificationTypesRepository>();
+builder.Services.AddScoped<IPerformanceAccountingRecordsRepository, PerformanceAccountingRecordsRepository>();
+builder.Services.AddScoped<IIdeologicalAndEducationalWorkPageAttributesRepository, IdeologicalAndEducationalWorkPageAttributesRepository>();
+builder.Services.AddScoped<IPerformanceAccountingGradesRepository, PerformanceAccountingGradesRepository>();
+builder.Services.AddScoped<IPerformanceAccountingColumnsRepository, PerformanceAccountingColumnsRepository>();
 
 builder.Services.AddScoped<IGroupsService, GroupsService>();
 builder.Services.AddScoped<IJournalsService, JournalsService>();
@@ -81,6 +88,17 @@ builder.Services.AddScoped<IUsersService, UsersService>();
 
 builder.Services.AddScoped<IJwtProvider, JwtProvider>();
 builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
+
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(policy =>
+    {
+        policy.WithOrigins("https://localhost:7275")
+              .AllowAnyHeader()
+              .AllowAnyMethod()
+              .AllowCredentials();
+    });
+});
 
 var app = builder.Build();
 
@@ -100,6 +118,8 @@ app.UseCookiePolicy(new CookiePolicyOptions
     HttpOnly = HttpOnlyPolicy.Always,
     Secure = CookieSecurePolicy.Always
 });
+
+app.UseCors();
 
 app.UseAuthentication();
 app.UseAuthorization();

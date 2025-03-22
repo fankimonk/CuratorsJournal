@@ -1,6 +1,7 @@
 ﻿using DataAccess.Interfaces;
 using Domain.Entities.JournalContent;
 using Domain.Entities.JournalContent.DynamicsOfKeyIndicators;
+using Domain.Entities.JournalContent.FinalPerformanceAccounting;
 using Domain.Entities.JournalContent.Pages;
 using Domain.Entities.JournalContent.Pages.Attributes;
 using Domain.Entities.JournalContent.PersonalizedAccountingCardContent;
@@ -54,6 +55,14 @@ namespace DataAccess.Repositories
                     page.GroupActives.Add(new GroupActive { PositionName = "Староста" });
                     page.GroupActives.Add(new GroupActive { PositionName = "Заместитель старосты" });
                     page.GroupActives.Add(new GroupActive { PositionName = "Профорг" });
+                    break;
+
+                case (int)PageTypes.FinalPerformanceAccounting:
+                    for (int i = 0; i < 6; i++)
+                    {
+                        page.PerformanceAccountingColumns.Add(new PerformanceAccountingColumn { CertificationTypeId = 1, SubjectId = null });
+                        page.PerformanceAccountingColumns.Add(new PerformanceAccountingColumn { CertificationTypeId = 2, SubjectId = null });
+                    }
                     break;
 
                 default:

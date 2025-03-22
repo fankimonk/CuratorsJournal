@@ -1,4 +1,5 @@
 ﻿using Domain.Entities.JournalContent;
+using Domain.Entities.JournalContent.FinalPerformanceAccounting;
 using Domain.Entities.JournalContent.PersonalizedAccountingCardContent;
 
 namespace Domain.Entities

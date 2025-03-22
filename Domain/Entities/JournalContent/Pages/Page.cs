@@ -1,4 +1,5 @@
 ﻿using Domain.Entities.JournalContent.DynamicsOfKeyIndicators;
+using Domain.Entities.JournalContent.FinalPerformanceAccounting;
 using Domain.Entities.JournalContent.Literature;
 using Domain.Entities.JournalContent.Pages.Attributes;
 using Domain.Entities.JournalContent.PersonalizedAccountingCardContent;
@@ -21,6 +22,7 @@ namespace Domain.Entities.JournalContent.Pages
         public List<DynamicsOfKeyIndicatorsRecord> DynamicsOfKeyIndicators { get; set; } = [];
         public List<EducationalProcessScheduleRecord> EducationalProcessSchedule { get; set; } = [];
         public List<FinalPerformanceAccountingRecord> FinalPerformanceAccounting { get; set; } = [];
+        public List<PerformanceAccountingColumn> PerformanceAccountingColumns { get; set; } = [];
         public List<GroupActive> GroupActives { get; set; } = [];
         public List<InformationHoursAccountingRecord> InformationHoursAccounting { get; set; } = [];
         public List<LiteratureWorkRecord> LiteratureWork { get; set; } = [];

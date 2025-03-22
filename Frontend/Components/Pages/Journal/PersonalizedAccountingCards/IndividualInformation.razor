@@ -1,0 +1,119 @@
+﻿@using Contracts.ActivityTypes
+@using Contracts.Journal.PersonalizedAccountingCards.IndividualInformation
+@using Contracts.Journal.PersonalizedAccountingCards.ParentalInformation
+@using Contracts.Journal.PersonalizedAccountingCards.StudentEncouragements
+@using Contracts.Mappers.Journal.PersonalizedAccountingCards
+@using Frontend.Components.Buttons
+
+@inject HttpClient HttpClient
+
+@if (_individualInformation == null || _activityTypes == null)
+{
+    <p><em>Загрузка...</em></p>
+}
+else
+{
+    <p><b>Индивидуальные сведения</b></p>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th class="text-center align-middle">
+                    Участие в научной работе,<br/>
+                    олимпиадах, студенческих конференциях,<br/>
+                    спортивной и общественной жизни вуза,<br/>
+                    факультета, группы, общежития,<br/>
+                    ПО ОО "БРСМ", и т.д
+                </th>
+                <th>Вид участия</th>
+                <th>Дата начала</th>
+                <th>Дата окончания</th>
+                <th>Результат</th>
+                <th>Примечание</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var record in _individualInformation)
+            {
+                <tr>
+                    <td>
+                        <input @bind="record.ActivityName" @bind:after="async () => await Update(record)" class="input fullwidth" />
+                    </td>
+                    <td>
+                        <select @bind="record.ActivityTypeId" @bind:after="async () => await Update(record)" class="input fullwidth">
+                            <option value="">(нет)</option>
+                            @foreach (var at in _activityTypes)
+                            {
+                                <option @key="at.Id" value="@at.Id">@at.Name</option>
+                            }
+                        </select>
+                    </td>
+                    <td>
+                        <input type="date" @bind="record.StartDate" @bind:after="async () => await Update(record)" class="input fullwidth" />
+                    </td>
+                    <td>
+                        <input type="date" @bind="record.EndDate" @bind:after="async () => await Update(record)" class="input fullwidth" />
+                    </td>
+                    <td>
+                        <input @bind="record.Result" @bind:after="async () => await Update(record)" class="input fullwidth" />
+                    </td>
+                    <td>
+                        <input @bind="record.Note" @bind:after="async () => await Update(record)" class="input fullwidth" />
+                    </td>
+                    <td>
+                        <button @onclick="async () => await Delete(record)" class="btn btn-close" />
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <AddButton @onclick="Add">Добавить строку</AddButton>
+}
+
+@code {
+    [Parameter]
+    public int CardId { get; set; }
+
+    private List<IndividualInformationRecordResponse>? _individualInformation;
+
+    private List<ActivityTypeResponse>? _activityTypes;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _individualInformation = await HttpClient.GetFromJsonAsync<List<IndividualInformationRecordResponse>>
+                ("api/journal/personalizedaccountingcard/individualinformation/" + CardId);
+
+        _activityTypes = await HttpClient.GetFromJsonAsync<List<ActivityTypeResponse>>("api/activitytype");
+    }
+
+    private async Task Add()
+    {
+        var request = new CreateIndividualInformationRecordRequest(null, null, null, null, null, null, CardId);
+        var response = await HttpClient.PostAsJsonAsync<CreateIndividualInformationRecordRequest>("api/journal/personalizedaccountingcard/individualinformation", request);
+
+        if (response.IsSuccessStatusCode)
+        {
+            var addedRecord = await response.Content.ReadFromJsonAsync<IndividualInformationRecordResponse>();
+            _individualInformation!.Add(addedRecord!);
+        }
+    }
+
+    private async Task Update(IndividualInformationRecordResponse record)
+    {
+        var request = record.ToRequest();
+        var response = await HttpClient.PutAsJsonAsync<UpdateIndividualInformationRecordRequest>
+            ("api/journal/personalizedaccountingcard/individualinformation/" + record.Id, request);
+
+        if (!response.IsSuccessStatusCode)
+        {
+            // var updatedRecord = await response.Content.ReadFromJsonAsync<EducationalProcessScheduleRecordResponse>();
+            // record = updatedRecord!;
+        }
+    }
+
+    private async Task Delete(IndividualInformationRecordResponse record)
+    {
+        var response = await HttpClient.DeleteAsync("api/journal/personalizedaccountingcard/individualinformation/" + record.Id);
+
+        if (response.IsSuccessStatusCode) _individualInformation!.Remove(record);
+    }
+}

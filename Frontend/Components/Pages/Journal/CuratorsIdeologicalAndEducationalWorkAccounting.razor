@@ -1,9 +1,10 @@
 ﻿@page "/journal/{journalId:int}/CuratorsIdeologicalAndEducationalWorkAccounting/{pageId:int}"
- 
+
 @using Contracts.Journal.CuratorsIdeologicalAndEducationalWorkAccounting
 @using Contracts.Mappers
 @using Contracts.Mappers.Journal
 @using Frontend.Services
+@using Frontend.Utils
 
 @inject HttpClient HttpClient
 @inject JournalState JournalState
@@ -18,6 +19,17 @@
 }
 else
 {
+    <h3 class="d-flex justify-content-center">
+        в 
+        <select @bind="_pageData.Attributes.Month" @bind:after="UpdateAttributes" class="input underline">
+            <option value="">(нет)</option>
+            @foreach (var item in MonthsUtils.InMonthsNames)
+            {
+                <option @key="item.Key" value="@item.Key">@MonthsUtils.InMonthsNames[item.Key]</option>
+            }
+        </select> 
+        <input type="number" min="0" @bind="_pageData.Attributes.Year" @bind:after="UpdateAttributes" class="input underline" />
+    </h3>
     <table class="table table-bordered">
         <thead>
             <tr>
@@ -98,6 +110,18 @@ else
         {
             var addedRecord = await response.Content.ReadFromJsonAsync<IdeologicalEducationalWorkRecordResponse>();
             _pageData!.IdeologicalEducationalWork.Add(addedRecord!);
+        }
+    }
+
+    private async Task UpdateAttributes()
+    {
+        var request = new UpdateIdeologicalAndEducationalWorkAttributesRequest(_pageData!.Attributes.Month, _pageData!.Attributes.Year);
+        var response = await HttpClient.PutAsJsonAsync<UpdateIdeologicalAndEducationalWorkAttributesRequest>
+            ("api/journal/ideologicalandeducationalwork/updateattributes/" + _pageData!.Attributes.Id, request);
+
+        if (!response.IsSuccessStatusCode)
+        {
+            //TODO
         }
     }
 }

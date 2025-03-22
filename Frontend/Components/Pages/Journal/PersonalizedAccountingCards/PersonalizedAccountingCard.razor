@@ -49,6 +49,8 @@ else
         <input @bind="_pageData.ResidentialAddress" @bind:after="Update" class="input underline" />
     </p>
 
+    <ParentalInformation CardId="_pageData.Id" />
+    <IndividualInformation CardId="_pageData.Id" />
     <StudentEncouragements CardId="_pageData.Id" />
     <StudentDisciplinaryResponsibilities CardId="_pageData.Id" />
     <IndividualWorkWithStudent CardId="_pageData.Id" />

@@ -29,7 +29,7 @@ namespace API.Controllers
             if (registrationResult.Error != null || registrationResult.User == null) return BadRequest(registrationResult.Error);
 
             var user = registrationResult.User;
-            return Ok(new UserResponse(user.UserName, user.Role!.Name));
+            return Ok(new UserResponse(user.Id, user.UserName, user.Role!.Name));
         }
 
         [HttpPost("login")]
@@ -52,7 +52,7 @@ namespace API.Controllers
         {
             var userId = HttpContext.User.Claims.FirstOrDefault(c => c.Type == CustomClaims.UserId);
             var user = await _usersRepository.GetByIdAsync(int.Parse(userId!.Value));
-            return Ok(new UserResponse(user!.UserName, user.Role!.Name));
+            return Ok(new UserResponse(user!.Id, user!.UserName, user.Role!.Name));
         }
 
         [HttpPost("logout")]
