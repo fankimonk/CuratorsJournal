@@ -1,7 +1,5 @@
 ﻿using API.Mappers;
-using Contracts.CertificationTypes;
 using Contracts.Journal.FinalPerformanceAccounting;
-using Contracts.Subjects;
 using DataAccess.Interfaces.PageRepositories.FinalPerformanceAccounting;
 using Domain.Entities.JournalContent.FinalPerformanceAccounting;
 using Microsoft.AspNetCore.Mvc;
@@ -22,8 +20,8 @@ namespace API.Controllers
             var records = await _recordsRepository.GetByPageIdAsync(pageId);
             if (records == null) return BadRequest();
 
-            var columns = await _columnsRepository.GetByPageIdAsync(pageId);
-            if (columns == null) return BadRequest();
+            var certificationTypes = await _columnsRepository.GetByPageIdGroupByCertificationTypes(pageId);
+            if (certificationTypes == null) return BadRequest();
 
             var recordsResponse = records.Select(r => new PerformanceAccountingRecordResponse(
                 r.Id,
@@ -36,14 +34,9 @@ namespace API.Controllers
                 )
             ).ToList();
 
-            var columnsResponse = columns.Select(c => new PerformanceAccountingColumnResponse(
-                c.Id,
-                c.CertificationType!.ToResponse(),
-                c.Subject == null ? null : c.Subject.ToResponse()
-                )
-            ).ToList();
+            var certificationTypesResponse = certificationTypes.Select(c => c.ToResponse()).ToList();
 
-            var pageResponse = new FinalPerformanceAccountingPageResponse(pageId, recordsResponse, columnsResponse);
+            var pageResponse = new FinalPerformanceAccountingPageResponse(pageId, recordsResponse, certificationTypesResponse);
             return Ok(pageResponse);
         }
 
@@ -62,7 +55,15 @@ namespace API.Controllers
             var createdRecord = await _recordsRepository.CreateAsync(record);
             if (createdRecord == null) return BadRequest();
 
-            var response = new PerformanceAccountingRecordResponse(createdRecord.Id, createdRecord.Number, createdRecord.StudentId, null);
+            var response = new PerformanceAccountingRecordResponse(
+                createdRecord.Id, 
+                createdRecord.Number, 
+                createdRecord.StudentId,
+                createdRecord.PerformanceAccountingGrades
+                    .Select(g => new PerformanceAccountingGradeResponse(
+                        g.Id, g.IsPassed, g.Grade, g.PerformanceAccountingColumnId))
+                    .ToList()
+            );
             return CreatedAtAction(nameof(AddRecord), response);
         }
 
@@ -110,7 +111,7 @@ namespace API.Controllers
 
             var response = new PerformanceAccountingColumnResponse(
                 createdColumn.Id,
-                createdColumn.CertificationType!.ToResponse(),
+                createdColumn.CertificationTypeId,
                 createdColumn.Subject == null ? null : createdColumn.Subject.ToResponse()
             );
             return CreatedAtAction(nameof(AddRecord), response);
@@ -132,7 +133,7 @@ namespace API.Controllers
 
             var response = new PerformanceAccountingColumnResponse(
                 updated.Id,
-                updated.CertificationType!.ToResponse(),
+                updated.CertificationTypeId,
                 updated.Subject == null ? null : updated.Subject.ToResponse()
             );
             return Ok(response);

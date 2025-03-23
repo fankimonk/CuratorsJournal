@@ -1,7 +1,10 @@
-﻿namespace Contracts.Journal.Holidays
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Contracts.Journal.Holidays
 {
-    public record CreateHolidayTypeRequest
-    (
-        string Name
-    );
+    public class CreateHolidayTypeRequest(string name)
+    {
+        [Required]
+        public string Name { get; set; } = name;
+    }
 }

@@ -21,6 +21,12 @@ namespace DataAccess.Configurations
                 .WithMany(t => t.Holidays)
                 .HasForeignKey(h => h.TypeId)
                 .IsRequired();
+
+            builder
+                .HasOne(h => h.Page)
+                .WithMany(p => p.Holidays)
+                .HasForeignKey(h => h.PageId)
+                .IsRequired();
         }
     }
 }

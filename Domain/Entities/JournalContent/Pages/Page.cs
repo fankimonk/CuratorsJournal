@@ -1,5 +1,6 @@
 ﻿using Domain.Entities.JournalContent.DynamicsOfKeyIndicators;
 using Domain.Entities.JournalContent.FinalPerformanceAccounting;
+using Domain.Entities.JournalContent.Holidays;
 using Domain.Entities.JournalContent.Literature;
 using Domain.Entities.JournalContent.Pages.Attributes;
 using Domain.Entities.JournalContent.PersonalizedAccountingCardContent;
@@ -30,6 +31,7 @@ namespace Domain.Entities.JournalContent.Pages
         public List<StudentsHealthCardRecord> StudentsHealthCards { get; set; } = [];
         public List<Tradition> Traditions { get; set; } = [];
         public List<StudentListRecord> StudentList { get; set; } = [];
+        public List<Holiday> Holidays { get; set; } = [];
 
         public PersonalizedAccountingCard? PersonalizedAccountingCard { get; set; }
         public PsychologicalAndPedagogicalCharacteristics? PsychologicalAndPedagogicalCharacteristics { get; set; }

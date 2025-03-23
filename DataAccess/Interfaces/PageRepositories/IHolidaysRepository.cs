@@ -1,10 +1,12 @@
-﻿using Domain.Entities.JournalContent.Holidays;
+﻿using DataAccess.Interfaces.PageRepositories;
+using Domain.Entities.JournalContent.Holidays;
 
 namespace DataAccess.Interfaces
 {
-    public interface IHolidaysRepository
+    public interface IHolidaysRepository : IPageRepositoryBase
     {
-        Task<List<HolidayType>> GetGroupedByTypes();
+        Task<List<HolidayType>> GetAllTypesAsync();
+        Task<List<HolidayType>?> GetByPageIdAsync(int pageId);
         Task<Holiday?> CreateAsync(Holiday holiday);
         Task<Holiday?> UpdateAsync(int id, Holiday holiday);
         Task<bool> DeleteAsync(int id);

@@ -1,4 +1,6 @@
-﻿namespace Domain.Entities.JournalContent.Holidays
+﻿using Domain.Entities.JournalContent.Pages;
+
+namespace Domain.Entities.JournalContent.Holidays
 {
     public class Holiday
     {
@@ -11,7 +13,12 @@
 
         public string? Name { get; set; } = string.Empty;
 
+        public bool IsRelativeDate { get; set; }
+
         public int TypeId { get; set; }
         public HolidayType? Type { get; set; }
+
+        public int PageId { get; set; }
+        public Page? Page { get; set; }
     }
 }

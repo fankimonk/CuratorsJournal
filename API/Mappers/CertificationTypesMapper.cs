@@ -1,4 +1,5 @@
-﻿using Contracts.CertificationTypes;
+﻿using API.Mappers.Journal.FinalPerformanceAccounting;
+using Contracts.CertificationTypes;
 using Domain.Entities;
 
 namespace API.Mappers
@@ -8,7 +9,7 @@ namespace API.Mappers
         public static CertificationTypeResponse ToResponse(this CertificationType position)
         {
             return new CertificationTypeResponse(
-                position.Id, position.Name
+                position.Id, position.Name, position.PerformanceAccountingColumns?.Select(c => c.ToResponse()).ToList()
             );
         }
 

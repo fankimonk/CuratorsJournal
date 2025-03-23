@@ -1,15 +1,14 @@
-﻿using Contracts.CertificationTypes;
-using Contracts.Subjects;
+﻿using Contracts.Subjects;
 
 namespace Contracts.Journal.FinalPerformanceAccounting
 {
     public class PerformanceAccountingColumnResponse(
-        int id, CertificationTypeResponse certificationType,
+        int id, int certificationTypeId,
         SubjectResponse? subjectResponse)
     {
         public int Id { get; set; } = id;
 
-        public CertificationTypeResponse CertificationType { get; set; } = certificationType;
+        public int CertificationTypeId { get; set; } = certificationTypeId;
 
         public SubjectResponse? SubjectResponse { get; set; } = subjectResponse;
     }

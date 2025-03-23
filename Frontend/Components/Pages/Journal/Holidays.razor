@@ -1,7 +1,8 @@
 ﻿@page "/journal/{journalId:int}/Holidays/{pageId:int}"
- 
+
 @using Contracts.Journal
 @using Contracts.Journal.Holidays
+@using Frontend.Components.Buttons
 @using Frontend.Services
 @using Frontend.Utils
 
@@ -18,39 +19,44 @@ else
 {
     @foreach (var ht in _pageData.HolidayTypes)
     {
-        @if (@ht.Holidays.Count != 0)
-        {
-            <h3 class="d-flex justify-content-center">@ht.Name</h3>
-        }
+        <h3 class="d-flex justify-content-center">@ht.Name</h3>
         <table class="table table-bordered">
             <tbody>
                 @foreach (var h in ht.Holidays)
                 {
                     <tr>
-                        @if (h.Day != null && h.Month != null)
-                        {
-                            if (!MonthsUtils.MonthsDateNames.ContainsKey((int)h.Month))
+                        <td>
+                            <input id="isRelativeDate" type="checkbox" @bind="h.IsRelativeDate" @bind:after="async () => await Update(h)" class="input" />
+                            <label for="isRelativeDate">Относит. дата</label>
+                        </td>
+                        <td>
+                            @if (!h.IsRelativeDate)
                             {
-                                <td>Ошибка: некорректная дата!</td>
+                                <input type="number" min="0" max="31" step="1" @bind="h.Day" @bind:after="async () => await Update(h)" class="input underline" />
                             }
                             else
                             {
-                                <td>@h.Day.ToString() @MonthsUtils.MonthsDateNames[(int)h.Month]</td>
+                                <input @bind="h.RelativeDate" @bind:after="async () => await Update(h)" class="input underline" />
                             }
-                        }
-                        else if (h.RelativeDate != null)
-                        {
-                            <td>@h.RelativeDate</td>
-                        }
-                        else
-                        {
-                            <td>Ошибка: некорректная дата!</td>
-                        }
-                        <td>@h.Name</td>
+                            <select @bind="h.Month" @bind:after="async () => await Update(h)" class="input underline">
+                                <option value="">(нет)</option>
+                                @foreach (var m in MonthsUtils.MonthsDateNames)
+                                {
+                                    <option @key="m.Key" value="@m.Key">@m.Value</option>
+                                }
+                            </select>
+                        </td>
+                        <td>
+                            <input @bind="h.Name" @bind:after="async () => await Update(h)" class="input underline" />
+                        </td>
+                        <td>
+                            <DeleteButton @onclick="async () => await Delete(h)" />
+                        </td>
                     </tr>
                 }
             </tbody>
         </table>
+        <AddButton @onclick="async () => await Add(ht.Id)">Добавить</AddButton>
     }
 }
 
@@ -67,6 +73,36 @@ else
     {
         await JournalState.Initialize(JournalId, PageId);
 
-        _pageData = await HttpClient.GetFromJsonAsync<HolidaysPageResponse>("api/journal/holiday");
+        _pageData = await HttpClient.GetFromJsonAsync<HolidaysPageResponse>("api/journal/holiday/" + PageId);
+    }
+
+    private async Task Add(int typeId)
+    {
+        var request = new CreateHolidayRequest(null, null, null, null, false, typeId, PageId);
+        var response = await HttpClient.PostAsJsonAsync<CreateHolidayRequest>("api/journal/holiday", request);
+
+        if (response.IsSuccessStatusCode)
+        {
+            var addedRecord = await response.Content.ReadFromJsonAsync<HolidayResponse>();
+            _pageData!.HolidayTypes.FirstOrDefault(ht => ht.Id == typeId)!.Holidays.Add(addedRecord!);
+        }
+    }
+
+    private async Task Update(HolidayResponse holiday)
+    {
+        var request = new UpdateHolidayRequest(holiday.Day, holiday.Month, holiday.RelativeDate, holiday.Name, holiday.IsRelativeDate);
+        var response = await HttpClient.PutAsJsonAsync<UpdateHolidayRequest>("api/journal/holiday/" + holiday.Id, request);
+
+        if (!response.IsSuccessStatusCode)
+        {
+            //TODO
+        }
+    }
+
+    private async Task Delete(HolidayResponse holiday)
+    {
+        var response = await HttpClient.DeleteAsync("api/journal/holiday/" + holiday.Id);
+
+        if (response.IsSuccessStatusCode) _pageData!.HolidayTypes.FirstOrDefault(ht => ht.Id == holiday.HolidayTypeId)!.Holidays.Remove(holiday);
     }
 }

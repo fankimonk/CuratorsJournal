@@ -1,4 +1,5 @@
 ﻿using DataAccess.Interfaces.PageRepositories.FinalPerformanceAccounting;
+using Domain.Entities;
 using Domain.Entities.JournalContent.FinalPerformanceAccounting;
 using Domain.Enums.Journal;
 using Microsoft.EntityFrameworkCore;
@@ -45,6 +46,21 @@ namespace DataAccess.Repositories.PageRepositories.FinalPerformanceAccounting
 
             await _dbContext.SaveChangesAsync();
             return true;
+        }
+
+        public async Task<List<CertificationType>?> GetByPageIdGroupByCertificationTypes(int pageId)
+        {
+            if (!await PageExists(pageId)) return null;
+            return await _dbContext.CertificationTypes
+                .Include(ct => ct.PerformanceAccountingColumns)
+                .ThenInclude(c => c.Subject)
+                .AsNoTracking()
+                .Select(ct => new CertificationType
+                {
+                    Id = ct.Id,
+                    Name = ct.Name,
+                    PerformanceAccountingColumns = ct.PerformanceAccountingColumns.Where(c => c.PageId == pageId).ToList()
+                }).ToListAsync();
         }
 
         public async Task<List<PerformanceAccountingColumn>?> GetByPageIdAsync(int pageId)

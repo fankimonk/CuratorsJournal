@@ -11,6 +11,8 @@ namespace Contracts.Journal.Holidays
         int? Month,
 
         string? RelativeDate,
-        string? Name
+        string? Name,
+
+        bool IsRelativeDate
     );
 }

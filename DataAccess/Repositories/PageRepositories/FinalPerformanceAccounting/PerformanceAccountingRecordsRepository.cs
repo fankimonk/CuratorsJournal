@@ -25,7 +25,10 @@ namespace DataAccess.Repositories.PageRepositories.FinalPerformanceAccounting
 
             await _dbContext.SaveChangesAsync();
 
-            return created.Entity;
+            return await _dbContext.FinalPerformanceAccounting
+                .AsNoTracking()
+                .Include(r => r.PerformanceAccountingGrades)
+                .FirstOrDefaultAsync(r => r.Id == created.Entity.Id);
         }
 
         public async Task<bool> DeleteAsync(int id)

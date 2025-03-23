@@ -11,6 +11,15 @@ namespace Contracts.Journal.Holidays
         int? Month,
 
         string? RelativeDate,
-        string? Name
+        string? Name,
+
+        [Required]
+        bool IsRelativeDate,
+
+        [Required]
+        int HolidayTypeId,
+
+        [Required]
+        int PageId
     );
 }
