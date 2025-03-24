@@ -1,8 +1,12 @@
 ﻿@page "/journal/{journalId:int}/Holidays/{pageId:int}"
 
+@inherits TablePageBase
+
 @using Contracts.Journal
 @using Contracts.Journal.Holidays
 @using Frontend.Components.Buttons
+@using Frontend.Components.Pages.ReferencePages.HolidayType
+@using Frontend.Components.Utils
 @using Frontend.Services
 @using Frontend.Utils
 
@@ -19,26 +23,30 @@ else
 {
     @foreach (var ht in _pageData.HolidayTypes)
     {
-        <h3 class="d-flex justify-content-center">@ht.Name</h3>
+        <h3 class="d-flex justify-content-center">
+            @ht.Name 
+            <EditButton @onclick="() => ShowModal(ht)" />
+        </h3>
         <table class="table table-bordered">
             <tbody>
                 @foreach (var h in ht.Holidays)
                 {
-                    <tr>
-                        <td>
+                    <tr class="@GetRowClass(h.Id)">
+                        <td class="align-middle col-sm-1">
                             <input id="isRelativeDate" type="checkbox" @bind="h.IsRelativeDate" @bind:after="async () => await Update(h)" class="input" />
-                            <label for="isRelativeDate">Относит. дата</label>
+                            <label for="isRelativeDate">Относ. дата</label>
                         </td>
-                        <td>
+                        <td class="align-middle col-5">
                             @if (!h.IsRelativeDate)
                             {
-                                <input type="number" min="0" max="31" step="1" @bind="h.Day" @bind:after="async () => await Update(h)" class="input underline" />
+                                <input type="number" min="1" max="31" step="1" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))"
+                                    @bind="h.Day" @bind:after="async () => await Update(h)" class="input" />
                             }
                             else
                             {
-                                <input @bind="h.RelativeDate" @bind:after="async () => await Update(h)" class="input underline" />
+                                <input @bind="h.RelativeDate" @bind:after="async () => await Update(h)" class="input" />
                             }
-                            <select @bind="h.Month" @bind:after="async () => await Update(h)" class="input underline">
+                            <select @bind="h.Month" @bind:after="async () => await Update(h)" class="input">
                                 <option value="">(нет)</option>
                                 @foreach (var m in MonthsUtils.MonthsDateNames)
                                 {
@@ -46,10 +54,10 @@ else
                                 }
                             </select>
                         </td>
-                        <td>
-                            <input @bind="h.Name" @bind:after="async () => await Update(h)" class="input underline" />
+                        <td class="align-middle col-5">
+                            <input @bind="h.Name" @bind:after="async () => await Update(h)" class="input" />
                         </td>
-                        <td>
+                        <td class="align-middle">
                             <DeleteButton @onclick="async () => await Delete(h)" />
                         </td>
                     </tr>
@@ -58,6 +66,15 @@ else
         </table>
         <AddButton @onclick="async () => await Add(ht.Id)">Добавить</AddButton>
     }
+
+    <EditHolidayTypeModalForm IsVisible="_isModalVisible"
+        TypeToEditId="_typeToEditId"
+        TypeToEdit="TypeToEdit"
+        OnClose="CloseModal"
+        UpdateValue="UpdateType"
+        ShowServerErrorAlert="ShowServerErrorAlert" />
+
+    <AlertBottom IsVisible="_isServerErrorAlertVisible" OnClose="CloseServerErrorAlert">@_errorMessage</AlertBottom>
 }
 
 @code {
@@ -69,11 +86,28 @@ else
 
     private HolidaysPageResponse? _pageData;
 
+    private bool _isModalVisible = false;
+
+    [SupplyParameterFromForm]
+    public UpdateHolidayTypeRequest TypeToEdit { get; set; } = new("");
+    private int _typeToEditId = -1;
+
     protected override async Task OnInitializedAsync()
     {
         await JournalState.Initialize(JournalId, PageId);
 
         _pageData = await HttpClient.GetFromJsonAsync<HolidaysPageResponse>("api/journal/holiday/" + PageId);
+    }
+
+    private void AddType(HolidayTypeResponse added)
+    {
+        _pageData!.HolidayTypes.Add(added);
+    }
+
+    private void UpdateType(HolidayTypeResponse type)
+    {
+        var toUpdate = _pageData!.HolidayTypes.FirstOrDefault(t => t.Id == type.Id);
+        toUpdate!.Name = type.Name;
     }
 
     private async Task Add(int typeId)
@@ -86,16 +120,26 @@ else
             var addedRecord = await response.Content.ReadFromJsonAsync<HolidayResponse>();
             _pageData!.HolidayTypes.FirstOrDefault(ht => ht.Id == typeId)!.Holidays.Add(addedRecord!);
         }
+        else
+        {
+            var errorMessage = (await response.Content.ReadAsStringAsync()).Split('\n').FirstOrDefault();
+            ShowServerErrorAlert(errorMessage);
+        }
     }
 
     private async Task Update(HolidayResponse holiday)
     {
+        _rowsWithErrors.Remove(holiday.Id);
+        CloseServerErrorAlert();
+
         var request = new UpdateHolidayRequest(holiday.Day, holiday.Month, holiday.RelativeDate, holiday.Name, holiday.IsRelativeDate);
         var response = await HttpClient.PutAsJsonAsync<UpdateHolidayRequest>("api/journal/holiday/" + holiday.Id, request);
 
         if (!response.IsSuccessStatusCode)
         {
-            //TODO
+            _rowsWithErrors.Add(holiday.Id);
+            var errorMessage = (await response.Content.ReadAsStringAsync()).Split('\n').FirstOrDefault();
+            ShowServerErrorAlert(errorMessage);
         }
     }
 
@@ -104,5 +148,24 @@ else
         var response = await HttpClient.DeleteAsync("api/journal/holiday/" + holiday.Id);
 
         if (response.IsSuccessStatusCode) _pageData!.HolidayTypes.FirstOrDefault(ht => ht.Id == holiday.HolidayTypeId)!.Holidays.Remove(holiday);
+        else
+        {
+            var errorMessage = (await response.Content.ReadAsStringAsync()).Split('\n').FirstOrDefault();
+            ShowServerErrorAlert(errorMessage);
+        }
+    }
+
+    private void ShowModal(HolidayTypeResponse type)
+    {
+        _typeToEditId = type.Id;
+        TypeToEdit = new UpdateHolidayTypeRequest(type.Name);
+        _isModalVisible = true;
+    }
+
+    private void CloseModal()
+    {
+        _typeToEditId = -1;
+        TypeToEdit = new("");
+        _isModalVisible = false;
     }
 }

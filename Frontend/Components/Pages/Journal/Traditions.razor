@@ -1,9 +1,14 @@
 ﻿@page "/journal/{journalId:int}/Traditions/{pageId:int}"
- 
+
+@inherits TablePageBase
+
 @using Contracts.Journal.Traditions
 @using Contracts.Mappers
 @using Contracts.Mappers.Journal
+@using Frontend.Components.Buttons
+@using Frontend.Components.Utils
 @using Frontend.Services
+@using Frontend.Utils
 
 @inject HttpClient HttpClient
 @inject JournalState JournalState
@@ -30,13 +35,20 @@ else
         <tbody>
             @foreach (var record in _pageData.Traditions)
             {
-                <tr>
+                <tr class="@GetRowClass(record.Id)">
                     <td>
                         <input @bind="record.Name" @bind:after="async () => await Update(record)" class="input fullwidth" />
                     </td>
                     <td>
-                        <input type="number" min="1" max="31" @bind="record.Day" @bind:after="async () => await Update(record)" class="input" />.
-                        <input type="number" min="1" max="12" @bind="record.Month" @bind:after="async () => await Update(record)" class="input" />
+                        <input type="number" min="1" max="31" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))"
+                            @bind="record.Day" @bind:after="async () => await Update(record)" class="input" />.
+                        <select @bind="record.Month" @bind:after="async () => await Update(record)" class="input">
+                            <option value="">(нет)</option>
+                            @foreach (var m in MonthsUtils.MonthsDateNames)
+                            {
+                                <option @key="m.Key" value="@m.Key">@m.Value</option>
+                            }
+                        </select>
                     </td>
                     <td>
                         <input @bind="record.ParticipationForm" @bind:after="async () => await Update(record)" class="input fullwidth" />
@@ -45,13 +57,15 @@ else
                         <input @bind="record.Note" @bind:after="async () => await Update(record)" class="input fullwidth" />
                     </td>
                     <td>
-                        <button @onclick="async () => await Delete(record)" class="btn btn-close" />
+                        <DeleteButton @onclick="async () => await Delete(record)" />
                     </td>
                 </tr>
             }
         </tbody>
     </table>
-    <button @onclick="Add" class="btn btn-outline-primary">Добавить строку</button>
+    <AddButton @onclick="Add">Добавить строку</AddButton>
+
+    <AlertBottom IsVisible="_isServerErrorAlertVisible" OnClose="CloseServerErrorAlert">@_errorMessage</AlertBottom>
 }
 
 @code {
@@ -72,22 +86,22 @@ else
 
     private async Task Update(TraditionResponse record)
     {
-        Console.WriteLine("Update tradition");
+        _rowsWithErrors.Remove(record.Id);
+        CloseServerErrorAlert();
 
         var request = record.ToRequest();
         var response = await HttpClient.PutAsJsonAsync<UpdateTraditionRequest>("api/journal/tradition/" + record.Id, request);
 
         if (!response.IsSuccessStatusCode)
         {
-            // var updatedRecord = await response.Content.ReadFromJsonAsync<EducationalProcessScheduleRecordResponse>();
-            // record = updatedRecord!;
+            _rowsWithErrors.Add(record.Id);
+            var errorMessage = (await response.Content.ReadAsStringAsync()).Split('\n').FirstOrDefault();
+            ShowServerErrorAlert(errorMessage);
         }
     }
 
     private async Task Add()
     {
-        Console.WriteLine("Add tradition");
-
         var request = new CreateTraditionRequest(null, null, null, null, null, PageId);
         var response = await HttpClient.PostAsJsonAsync<CreateTraditionRequest>("api/journal/tradition", request);
 
@@ -96,14 +110,22 @@ else
             var addedRecord = await response.Content.ReadFromJsonAsync<TraditionResponse>();
             _pageData!.Traditions.Add(addedRecord!);
         }
+        else
+        {
+            var errorMessage = (await response.Content.ReadAsStringAsync()).Split('\n').FirstOrDefault();
+            ShowServerErrorAlert(errorMessage);
+        }
     }
 
     private async Task Delete(TraditionResponse record)
     {
-        Console.WriteLine("Delete traidition");
-
         var response = await HttpClient.DeleteAsync("api/journal/tradition/" + record.Id);
 
         if (response.IsSuccessStatusCode) _pageData!.Traditions.Remove(record);
+        else
+        {
+            var errorMessage = (await response.Content.ReadAsStringAsync()).Split('\n').FirstOrDefault();
+            ShowServerErrorAlert(errorMessage);
+        }
     }
 }

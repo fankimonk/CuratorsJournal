@@ -1,0 +1,2 @@
+C:\Dev\Web\CuratorsJournal\Frontend\wwwroot\TextAreaStyles.css
+C:\Dev\Web\CuratorsJournal\Frontend\wwwroot\js\input.js

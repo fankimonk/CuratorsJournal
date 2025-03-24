@@ -1,0 +1,54 @@
+﻿@inherits ModalFormBase
+
+@using Contracts.Journal.Holidays
+@using Frontend.Components.Buttons
+@using Frontend.Components.Utils
+
+@inject HttpClient HttpClient
+
+<Modal IsVisible="IsVisible" OnClose="CloseModal">
+    <div class="row">
+        <div class="col-md-12">
+            <EditForm method="put" Model="TypeToEdit" OnValidSubmit="Update" OnInvalidSubmit="ShowErrorAlert" FormName="edit" Enhance>
+                <DataAnnotationsValidator />
+                <Alert Type="success" IsVisible="_isSuccessAlertVisible" OnClose="CloseSuccessAlert" />
+                <Alert Type="error" IsVisible="_isErrorAlertVisible" OnClose="CloseErrorAlert">
+                    <ValidationSummary />
+                </Alert>
+                <div class="mb-3">
+                    <label for="name" class="form-label">Название: </label>
+                    <InputText id="name" @bind-Value="TypeToEdit.Name" class="form-control" />
+                </div>
+                <EditButton type="submit">Редактировать</EditButton>
+            </EditForm>
+        </div>
+    </div>
+</Modal>
+
+@code {
+    [Parameter]
+    public int TypeToEditId { get; set; }
+    [Parameter]
+    public UpdateHolidayTypeRequest TypeToEdit { get; set; } = new("");
+
+    [Parameter]
+    public EventCallback<HolidayTypeResponse> UpdateValue { get; set; }
+
+    public async Task Update()
+    {
+        var response = await HttpClient.PutAsJsonAsync<UpdateHolidayTypeRequest>("api/journal/holiday/type/" + TypeToEditId, TypeToEdit);
+
+        if (response.IsSuccessStatusCode)
+        {
+            var updated = await response.Content.ReadFromJsonAsync<HolidayTypeResponse>();
+            await UpdateValue.InvokeAsync(updated);
+
+            ShowSuccessAlert();
+        }
+        else
+        {
+            var errorMessage = (await response.Content.ReadAsStringAsync()).Split('\n').FirstOrDefault();
+            await ShowServerErrorAlert.InvokeAsync(errorMessage);
+        }
+    }
+}

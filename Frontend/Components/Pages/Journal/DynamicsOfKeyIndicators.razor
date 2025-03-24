@@ -1,7 +1,10 @@
 ﻿@page "/journal/{journalId:int}/DynamicsOfKeyIndicators/{pageId:int}"
 
+@inherits TablePageBase
+
 @using Contracts.Journal.DynamicsOfKeyIndicators
 @using Frontend.Components.Buttons
+@using Frontend.Components.Utils
 @using Frontend.Services
 @using Contracts.Journal
 
@@ -37,18 +40,19 @@ else
             @foreach (var record in _pageData.DynamicsOfKeyIndicators)
             {
                 var keyIndicatorId = record.KeyIndicator.Id;
-                <tr>
+                <tr class="@GetRowClass(record.Id)">
                     <td>@IndicatorsNames[keyIndicatorId]</td>
                     @foreach (var i in record.KeyIndicatorsByCourse)
                     {
-                        <td>
+                        <td class="@GetCellClass(i.Id)">
                             @if (keyIndicatorId == 5)
                             {
                                 <input type="number" min="0" step="0.01" @bind="i.Value" @bind:after='async () => await UpdateValue(i)' class="input fullwidth" />
                             }
                             else
                             {
-                                <input type="number" min="0" step="1" @bind="i.Value" @bind:after='async () => await UpdateValue(i)' class="input fullwidth" />
+                                <input type="number" min="0" step="1" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))"
+                                @bind="i.Value" @bind:after='async () => await UpdateValue(i)' class="input fullwidth" />
                             }
                         </td>
                     }
@@ -63,6 +67,8 @@ else
 
     <AddButton @onclick="AddCourse">Добавить курс</AddButton>
     <DeleteButton @onclick="DeleteCourse">Удалить курс</DeleteButton>
+
+    <AlertBottom IsVisible="_isServerErrorAlertVisible" OnClose="CloseServerErrorAlert">@_errorMessage</AlertBottom>
 }
 
 @code {
@@ -110,25 +116,35 @@ else
 
     private async Task UpdateValue(KeyIndicatorByCourseResponse record)
     {
+        _cellsWithErrors.Remove(record.Id);
+        CloseServerErrorAlert();
+
         var request = new UpdateKeyIndicatorValueRequest(record.Value);
         var response = await HttpClient.PutAsJsonAsync<UpdateKeyIndicatorValueRequest>
             ("api/journal/dynamicsofkeyindicators/updatevalue/" + record.Id, request);
 
         if (!response.IsSuccessStatusCode)
         {
-            //TODO
+            _cellsWithErrors.Add(record.Id);
+            var errorMessage = (await response.Content.ReadAsStringAsync()).Split('\n').FirstOrDefault();
+            ShowServerErrorAlert(errorMessage);
         }
     }
 
     private async Task UpdateRecord(DynamicsOfKeyIndicatorsRecordResponse record)
     {
+        _rowsWithErrors.Remove(record.Id);
+        CloseServerErrorAlert();
+
         var request = new UpdateDynamicsOfKeyIndicatorsRecordRequest(record.Note);
         var response = await HttpClient.PutAsJsonAsync<UpdateDynamicsOfKeyIndicatorsRecordRequest>
             ("api/journal/dynamicsofkeyindicators/update/" + record.Id, request);
 
         if (!response.IsSuccessStatusCode)
         {
-            //TODO
+            _rowsWithErrors.Add(record.Id);
+            var errorMessage = (await response.Content.ReadAsStringAsync()).Split('\n').FirstOrDefault();
+            ShowServerErrorAlert(errorMessage);
         }
     }
 
@@ -141,16 +157,33 @@ else
             _pageData = await response.Content.ReadFromJsonAsync<DynamicsOfKeyIndicatorsPageResponse>();
             UpdateCourses();
         }
+        else
+        {
+            var errorMessage = (await response.Content.ReadAsStringAsync()).Split('\n').FirstOrDefault();
+            ShowServerErrorAlert(errorMessage);
+        }
     }
 
     private async Task DeleteCourse()
     {
+        if (_courses!.Count < 2)
+        {
+            var errorMessage = "Курсов не может быть меньше 1";
+            ShowServerErrorAlert(errorMessage);
+            return;
+        }
+
         var response = await HttpClient.DeleteAsync("api/journal/dynamicsofkeyindicators/deletecourse/" + PageId);
 
         if (response.IsSuccessStatusCode)
         {
             _pageData = await response.Content.ReadFromJsonAsync<DynamicsOfKeyIndicatorsPageResponse>();
             UpdateCourses();
+        }
+        else
+        {
+            var errorMessage = (await response.Content.ReadAsStringAsync()).Split('\n').FirstOrDefault();
+            ShowServerErrorAlert(errorMessage);
         }
     }
 }

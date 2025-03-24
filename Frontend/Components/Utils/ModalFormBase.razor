@@ -1,0 +1,36 @@
+﻿@code {
+    [Parameter]
+    public bool IsVisible { get; set; }
+
+    [Parameter]
+    public EventCallback OnClose { get; set; }
+
+    [Parameter]
+    public EventCallback<string?> ShowServerErrorAlert { get; set; }
+
+    protected bool _isSuccessAlertVisible = false;
+    protected bool _isErrorAlertVisible = false;
+
+    protected void CloseSuccessAlert() => _isSuccessAlertVisible = false;
+
+    protected void ShowSuccessAlert()
+    {
+        CloseErrorAlert();
+        _isSuccessAlertVisible = true;
+    }
+
+    protected void CloseErrorAlert() => _isErrorAlertVisible = false;
+
+    protected void ShowErrorAlert()
+    {
+        CloseSuccessAlert();
+        _isErrorAlertVisible = true;
+    }
+
+    protected async Task CloseModal()
+    {
+        CloseErrorAlert();
+        CloseSuccessAlert();
+        await OnClose.InvokeAsync();
+    }
+}

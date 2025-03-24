@@ -1,8 +1,12 @@
 ﻿@page "/journal/{journalId:int}/CuratorsParticipationInPedagogicalSeminars/{pageId:int}"
- 
+
+@inherits TablePageBase
+
 @using Contracts.Journal.CuratorsParticipationInPedagogicalSeminars
 @using Contracts.Mappers
 @using Contracts.Mappers.Journal
+@using Frontend.Components.Buttons
+@using Frontend.Components.Utils
 @using Frontend.Services
 
 @inject HttpClient HttpClient
@@ -32,7 +36,7 @@ else
         <tbody>
             @foreach (var record in _pageData.ParticipationInPedagogicalSeminars)
             {
-                <tr>
+                <tr class="@GetRowClass(record.Id)">
                     <td>
                         <input type="date" @bind="record.Date" @bind:after="async () => await Update(record)" class="input" />
                     </td>
@@ -49,14 +53,16 @@ else
                         <input @bind="record.Note" @bind:after="async () => await Update(record)" class="input fullwidth" />
                     </td>
                     <td>
-                        <button @onclick="async () => await Delete(record)" class="btn btn-close" />
+                        <DeleteButton @onclick="async () => await Delete(record)" />
                     </td>
                 </tr>
             }
-            
+
         </tbody>
     </table>
-    <button @onclick="Add" class="btn btn-outline-primary">Добавить строку</button>
+    <AddButton @onclick="Add">Добавить строку</AddButton>
+
+    <AlertBottom IsVisible="_isServerErrorAlertVisible" OnClose="CloseServerErrorAlert">@_errorMessage</AlertBottom>
 }
 
 @code {
@@ -77,8 +83,6 @@ else
 
     private async Task Add()
     {
-        Console.WriteLine("Add participation in pedagogical seminars");
-
         var request = new CreateParticipationInPedagogicalSeminarsRecordRequest(null, null, null, null, null, PageId);
         var response = await HttpClient.PostAsJsonAsync<CreateParticipationInPedagogicalSeminarsRecordRequest>
             ("api/journal/participationinpedagogicalseminars", request);
@@ -88,29 +92,39 @@ else
             var addedRecord = await response.Content.ReadFromJsonAsync<ParticipationInPedagogicalSeminarsRecordResponse>();
             _pageData!.ParticipationInPedagogicalSeminars.Add(addedRecord!);
         }
+        else
+        {
+            var errorMessage = (await response.Content.ReadAsStringAsync()).Split('\n').FirstOrDefault();
+            ShowServerErrorAlert(errorMessage);
+        }
     }
 
     private async Task Update(ParticipationInPedagogicalSeminarsRecordResponse record)
     {
-        Console.WriteLine("Update participation in pedagogical seminars");
+        _rowsWithErrors.Remove(record.Id);
+        CloseServerErrorAlert();
 
         var request = record.ToRequest();
         var response = await HttpClient.PutAsJsonAsync<UpdateParticipationInPedagogicalSeminarsRecordRequest>
             ("api/journal/participationinpedagogicalseminars/" + record.Id, request);
 
-        if (response.IsSuccessStatusCode)
+        if (!response.IsSuccessStatusCode)
         {
-            // var updatedRecord = await response.Content.ReadFromJsonAsync<IdeologicalEducationalWorkRecordResponse>();
-            // record = updatedRecord!;
+            _rowsWithErrors.Add(record.Id);
+            var errorMessage = (await response.Content.ReadAsStringAsync()).Split('\n').FirstOrDefault();
+            ShowServerErrorAlert(errorMessage);
         }
     }
 
     private async Task Delete(ParticipationInPedagogicalSeminarsRecordResponse record)
     {
-        Console.WriteLine("Delete participation in pedagogical seminars");
-
         var response = await HttpClient.DeleteAsync("api/journal/participationinpedagogicalseminars/" + record.Id);
 
         if (response.IsSuccessStatusCode) _pageData!.ParticipationInPedagogicalSeminars.Remove(record);
+        else
+        {
+            var errorMessage = (await response.Content.ReadAsStringAsync()).Split('\n').FirstOrDefault();
+            ShowServerErrorAlert(errorMessage);
+        }
     }
 }

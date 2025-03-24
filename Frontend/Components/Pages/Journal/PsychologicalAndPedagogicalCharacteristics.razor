@@ -1,9 +1,12 @@
 ﻿@page "/journal/{journalId:int}/PsychologicalAndPedagogicalCharacteristics/{pageId:int}"
  
+@inherits PageBase
+
 @using Contracts.Journal.PsychologicalAndPedagogicalCharacteristics
 @using Contracts.Mappers
 @using Contracts.Mappers.Journal
 @using Contracts.Workers
+@using Frontend.Components.Utils
 @using Frontend.Services
 
 @inject HttpClient HttpClient
@@ -37,6 +40,8 @@ else
     <p>
         Дата <input type="date" @bind="_pageData.Date" @bind:after="Update" class="input underline" />
     </p>
+
+    <AlertBottom IsVisible="_isServerErrorAlertVisible" OnClose="CloseServerErrorAlert">@_errorMessage</AlertBottom>
 }
 
 @code {
@@ -62,16 +67,14 @@ else
 
     private async Task Update()
     {
-        Console.WriteLine("Update psychological and pedagogical characteristics");
-
         var request = _pageData!.ToRequest();
         var response = await HttpClient.PutAsJsonAsync<UpdatePsychologicalAndPedagogicalCharacteristicsRequest>
             ("api/journal/psychologicalpedagogicalcharacteristics/" + _pageData!.Id, request);
 
-        if (response.IsSuccessStatusCode)
+        if (!response.IsSuccessStatusCode)
         {
-            // var updatedRecord = await response.Content.ReadFromJsonAsync<IdeologicalEducationalWorkRecordResponse>();
-            // record = updatedRecord!;
+            var errorMessage = (await response.Content.ReadAsStringAsync()).Split('\n').FirstOrDefault();
+            ShowServerErrorAlert(errorMessage);
         }
     }
 }

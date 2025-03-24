@@ -1,9 +1,13 @@
 ﻿@page "/journal/{journalId:int}/LiteratureWork/{pageId:int}"
- 
+
+@inherits TablePageBase
+
 @using Contracts.Journal
 @using Contracts.Journal.LiteratureWork
 @using Contracts.Literature
 @using Contracts.Mappers.Journal
+@using Frontend.Components.Buttons
+@using Frontend.Components.Utils
 @using Frontend.Services
 
 @inject HttpClient HttpClient
@@ -30,7 +34,7 @@ else
         <tbody>
             @foreach (var record in _pageData.LiteratureWork)
             {
-                <tr>
+                <tr class="@GetRowClass(record.Id)">
                     <td>
                         <select @bind="record.LiteratureId" @bind:after="async () => await Update(record)" class="input fullwidth">
                             <option value="">(нет)</option>
@@ -46,14 +50,16 @@ else
                         <input @bind="record.ShortAnnotation" @bind:after='async () => await Update(record)' class="input fullwidth" />
                     </td>
                     <td>
-                        <button @onclick="async () => await Delete(record)" class="btn btn-close"/>
+                        <DeleteButton @onclick="async () => await Delete(record)"/>
                     </td>
                 </tr>
             }
-           
+
         </tbody>
     </table>
-    <button @onclick="Add" class="btn btn-outline-primary">Добавить строку</button>
+    <AddButton @onclick="Add">Добавить строку</AddButton>
+
+    <AlertBottom IsVisible="_isServerErrorAlertVisible" OnClose="CloseServerErrorAlert">@_errorMessage</AlertBottom>
 }
 
 @code {
@@ -77,21 +83,22 @@ else
 
     private async Task Update(LiteratureWorkRecordResponse record)
     {
-        Console.WriteLine("Update literature work");
+        _rowsWithErrors.Remove(record.Id);
+        CloseServerErrorAlert();
 
         var request = record.ToRequest();
         var response = await HttpClient.PutAsJsonAsync<UpdateLiteratureWorkRecordRequest>("api/journal/literaturework/" + record.Id, request);
 
         if (!response.IsSuccessStatusCode)
         {
-            //TODO
+            _rowsWithErrors.Add(record.Id);
+            var errorMessage = (await response.Content.ReadAsStringAsync()).Split('\n').FirstOrDefault();
+            ShowServerErrorAlert(errorMessage);
         }
     }
 
     private async Task Add()
     {
-        Console.WriteLine("Add literature work");
-
         var request = new CreateLiteratureWorkRecordRequest(null, null, PageId);
         var response = await HttpClient.PostAsJsonAsync<CreateLiteratureWorkRecordRequest>("api/journal/literaturework", request);
 
@@ -100,14 +107,22 @@ else
             var addedRecord = await response.Content.ReadFromJsonAsync<LiteratureWorkRecordResponse>();
             _pageData!.LiteratureWork.Add(addedRecord!);
         }
+        else
+        {
+            var errorMessage = (await response.Content.ReadAsStringAsync()).Split('\n').FirstOrDefault();
+            ShowServerErrorAlert(errorMessage);
+        }
     }
 
     private async Task Delete(LiteratureWorkRecordResponse record)
     {
-        Console.WriteLine("Delete literature work");
-
         var response = await HttpClient.DeleteAsync("api/journal/literaturework/" + record.Id);
 
         if (response.IsSuccessStatusCode) _pageData!.LiteratureWork.Remove(record);
+        else
+        {
+            var errorMessage = (await response.Content.ReadAsStringAsync()).Split('\n').FirstOrDefault();
+            ShowServerErrorAlert(errorMessage);
+        }
     }
 }

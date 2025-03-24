@@ -1,0 +1,9 @@
+﻿@inherits PageBase
+
+@code {
+    protected List<int> _rowsWithErrors = [];
+    protected List<int> _cellsWithErrors = [];
+
+    protected string GetRowClass(int rowId) => _rowsWithErrors.Contains(rowId) ? "table-danger" : "";
+    protected string GetCellClass(int cellId) => _cellsWithErrors.Contains(cellId) ? "table-danger" : "";
+}

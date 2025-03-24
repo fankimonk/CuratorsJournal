@@ -1,8 +1,12 @@
 ﻿@page "/journal/{journalId:int}/CuratorsIdeologicalAndEducationalWorkAccounting/{pageId:int}"
 
+@inherits TablePageBase
+
 @using Contracts.Journal.CuratorsIdeologicalAndEducationalWorkAccounting
 @using Contracts.Mappers
 @using Contracts.Mappers.Journal
+@using Frontend.Components.Buttons
+@using Frontend.Components.Utils
 @using Frontend.Services
 @using Frontend.Utils
 
@@ -27,8 +31,9 @@ else
             {
                 <option @key="item.Key" value="@item.Key">@MonthsUtils.InMonthsNames[item.Key]</option>
             }
-        </select> 
-        <input type="number" min="0" @bind="_pageData.Attributes.Year" @bind:after="UpdateAttributes" class="input underline" />
+        </select>
+        <input type="number" min="0" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))"
+        @bind="_pageData.Attributes.Year" @bind:after="UpdateAttributes" class="input underline" />
     </h3>
     <table class="table table-bordered">
         <thead>
@@ -40,7 +45,7 @@ else
         <tbody>
             @foreach (var record in _pageData.IdeologicalEducationalWork)
             {
-                <tr>
+                <tr class="@GetRowClass(record.Id)">
                     <td>
                         с <input type="date" @bind="record.StartDate" @bind:after="async () => await Update(record)" class="input" />
                         <br />
@@ -50,14 +55,16 @@ else
                         <input @bind="record.WorkContent" @bind:after="async () => await Update(record)" class="input fullwidth" />
                     </td>
                     <td>
-                        <button @onclick="async () => await Delete(record)" class="btn btn-close" />
+                        <DeleteButton @onclick="async () => await Delete(record)" />
                     </td>
                 </tr>
             }
-            
+
         </tbody>
     </table>
-    <button @onclick="Add" class="btn btn-outline-primary">Добавить строку</button>
+    <AddButton @onclick="Add">Добавить строку</AddButton>
+
+    <AlertBottom IsVisible="_isServerErrorAlertVisible" OnClose="CloseServerErrorAlert">@_errorMessage</AlertBottom>
 }
 
 @code {
@@ -78,31 +85,42 @@ else
 
     private async Task Update(IdeologicalEducationalWorkRecordResponse record)
     {
-        Console.WriteLine("Update ideological and educational work");
+        _rowsWithErrors.Remove(record.Id);
+        CloseServerErrorAlert();
+
+        if (record.StartDate > record.EndDate)
+        {
+            _rowsWithErrors.Add(record.Id);
+            ShowServerErrorAlert("Дата начала не может быть позже даты окончания");
+            return;
+        }
 
         var request = record.ToRequest();
         var response = await HttpClient.PutAsJsonAsync<UpdateIdeologicalEducationalWorkRecordRequest>
             ("api/journal/ideologicalandeducationalwork/" + record.Id, request);
 
-        if (response.IsSuccessStatusCode)
+        if (!response.IsSuccessStatusCode)
         {
-            //TODO
+            _rowsWithErrors.Add(record.Id);
+            var errorMessage = (await response.Content.ReadAsStringAsync()).Split('\n').FirstOrDefault();
+            ShowServerErrorAlert(errorMessage);
         }
     }
 
     private async Task Delete(IdeologicalEducationalWorkRecordResponse record)
     {
-        Console.WriteLine("Delete ideological and educational work");
-
         var response = await HttpClient.DeleteAsync("api/journal/ideologicalandeducationalwork/" + record.Id);
 
         if (response.IsSuccessStatusCode) _pageData!.IdeologicalEducationalWork.Remove(record);
+        else
+        {
+            var errorMessage = (await response.Content.ReadAsStringAsync()).Split('\n').FirstOrDefault();
+            ShowServerErrorAlert(errorMessage);
+        }
     }
 
     private async Task Add()
     {
-        Console.WriteLine("Add ideological and educational work");
-
         var request = new CreateIdeologicalEducationalWorkRecordRequest(null, null, null, PageId);
         var response = await HttpClient.PostAsJsonAsync<CreateIdeologicalEducationalWorkRecordRequest>("api/journal/ideologicalandeducationalwork", request);
 
@@ -110,6 +128,11 @@ else
         {
             var addedRecord = await response.Content.ReadFromJsonAsync<IdeologicalEducationalWorkRecordResponse>();
             _pageData!.IdeologicalEducationalWork.Add(addedRecord!);
+        }
+        else
+        {
+            var errorMessage = (await response.Content.ReadAsStringAsync()).Split('\n').FirstOrDefault();
+            ShowServerErrorAlert(errorMessage);
         }
     }
 
@@ -121,7 +144,8 @@ else
 
         if (!response.IsSuccessStatusCode)
         {
-            //TODO
+            var errorMessage = (await response.Content.ReadAsStringAsync()).Split('\n').FirstOrDefault();
+            ShowServerErrorAlert(errorMessage);
         }
     }
 }

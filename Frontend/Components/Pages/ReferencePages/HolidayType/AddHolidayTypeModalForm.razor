@@ -1,0 +1,52 @@
+﻿@inherits ModalFormBase
+
+@using Contracts.Journal.Holidays
+@using Frontend.Components.Buttons
+@using Frontend.Components.Utils
+
+@inject HttpClient HttpClient
+
+<Modal IsVisible="IsVisible" OnClose="CloseModal">
+    <div class="row">
+        <div class="col-md-12">
+            <EditForm method="post" Model="TypeToAdd" OnValidSubmit="Add" OnInvalidSubmit="ShowErrorAlert" FormName="add" Enhance>
+                <DataAnnotationsValidator />
+                <Alert Type="success" IsVisible="_isSuccessAlertVisible" OnClose="CloseSuccessAlert" />
+                <Alert Type="error" IsVisible="_isErrorAlertVisible" OnClose="CloseErrorAlert">
+                    <ValidationSummary />
+                </Alert>
+                <div class="mb-3">
+                    <label for="name" class="form-label">Название: </label>
+                    <InputText id="name" @bind-Value="TypeToAdd.Name" class="form-control" />
+                </div>
+                <AddButton type="submit">Добавить</AddButton>
+            </EditForm>
+        </div>
+    </div>
+</Modal>
+
+@code {
+    [Parameter]
+    public CreateHolidayTypeRequest TypeToAdd { get; set; } = new("");
+
+    [Parameter]
+    public EventCallback<HolidayTypeResponse> AddValue { get; set; }
+
+    public async Task Add()
+    {
+        var response = await HttpClient.PostAsJsonAsync<CreateHolidayTypeRequest>("api/journal/holiday/type", TypeToAdd);
+
+        if (response.IsSuccessStatusCode)
+        {
+            var added = await response.Content.ReadFromJsonAsync<HolidayTypeResponse>();
+            await AddValue.InvokeAsync(added);
+
+            ShowSuccessAlert();
+        }
+        else
+        {
+            var errorMessage = (await response.Content.ReadAsStringAsync()).Split('\n').FirstOrDefault();
+            await ShowServerErrorAlert.InvokeAsync(errorMessage);
+        }
+    }
+}

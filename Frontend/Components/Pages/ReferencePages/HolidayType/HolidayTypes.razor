@@ -1,0 +1,135 @@
+﻿@page "/HolidayTypes"
+
+@using Contracts.Journal.Holidays
+@using Contracts.Positions
+@using Frontend.Components.Buttons
+@using Frontend.Components.Utils
+@using Microsoft.AspNetCore.Components.QuickGrid
+
+@inject HttpClient HttpClient
+
+<PageTitle>Группы праздников</PageTitle>
+
+<h1>Группы праздников</h1>
+
+@if (_holidayTypes == null)
+{
+    <p><em>Загрузка...</em></p>
+}
+else
+{
+    <AddButton @onclick="ShowAddModal">Добавить</AddButton>
+
+    <QuickGrid Items="_holidayTypes" class="table">
+        <PropertyColumn Property="@(l => l.Name)" Sortable="true" Title="Название" class="align-middle" />
+        <TemplateColumn class="text-end">
+            <EditButton @onclick="() => ShowEditModal(context)" />
+            <DeleteButton @onclick="async () => await Delete(context)" />
+        </TemplateColumn>
+    </QuickGrid>
+
+    <AddHolidayTypeModalForm 
+        IsVisible="_isAddModalVisible"
+        TypeToAdd="TypeToAdd"
+        OnClose="CloseModal"
+        AddValue="AddTableValue"
+        ShowServerErrorAlert="ShowServerErrorAlert"/>
+
+    <EditHolidayTypeModalForm
+        IsVisible="_isEditModalVisible"
+        TypeToEditId="_typeToEditId"
+        TypeToEdit="TypeToEdit"
+        OnClose="CloseModal"
+        UpdateValue="UpdateTableValue"
+        ShowServerErrorAlert="ShowServerErrorAlert"/>
+
+    <AlertBottom IsVisible="_isServerErrorAlertVisible" OnClose="CloseServerErrorAlert">@_errorMessage</AlertBottom>
+}
+
+@code {
+    [SupplyParameterFromForm]
+    public CreateHolidayTypeRequest TypeToAdd { get; set; } = new("");
+
+    [SupplyParameterFromForm]
+    public UpdateHolidayTypeRequest TypeToEdit { get; set; } = new("");
+    private int _typeToEditId = -1;
+
+    private IQueryable<HolidayTypeResponse>? _holidayTypes;
+
+    private bool _isModalVisible = false;
+    private bool _isAddModal = true;
+
+    private bool _isAddModalVisible { get => _isModalVisible && _isAddModal; }
+    private bool _isEditModalVisible { get => _isModalVisible && !_isAddModal; }
+
+    private bool _isServerErrorAlertVisible = false;
+    private string? _errorMessage = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        var types = await HttpClient.GetFromJsonAsync<List<HolidayTypeResponse>>("api/journal/holiday/type");
+        if (types != null)
+            _holidayTypes = types.AsQueryable();
+    }
+
+    private void AddTableValue(HolidayTypeResponse added)
+    {
+        _holidayTypes = _holidayTypes!.Append(added!);
+    }
+
+    private void UpdateTableValue(HolidayTypeResponse updated)
+    {
+        var toUpdate = _holidayTypes!.FirstOrDefault(l => l.Id == updated!.Id);
+        toUpdate!.Name = updated.Name;
+    }
+
+    public async Task Delete(HolidayTypeResponse type)
+    {
+        var response = await HttpClient.DeleteAsync("api/journal/holiday/type/" + type.Id);
+
+        if (response.IsSuccessStatusCode)
+        {
+            _holidayTypes = _holidayTypes!.Where(l => l.Id != type.Id);
+        }
+        else
+        {
+            var errorMessage = (await response.Content.ReadAsStringAsync()).Split('\n').FirstOrDefault();
+            ShowServerErrorAlert(errorMessage);
+        }
+    }
+
+    private void ShowAddModal()
+    {
+        _isAddModal = true;
+        _isModalVisible = true;
+    }
+
+    private void ShowEditModal(HolidayTypeResponse type)
+    {
+        _typeToEditId = type.Id;
+        TypeToEdit = new UpdateHolidayTypeRequest(type.Name);
+        _isAddModal = false;
+        _isModalVisible = true;
+    }
+
+    private void CloseModal()
+    {
+        TypeToAdd = new("");
+        _typeToEditId = -1;
+        TypeToEdit = new("");
+        _isModalVisible = false;
+        CloseServerErrorAlert();
+    }
+
+    private void CloseServerErrorAlert()
+    {
+        _isServerErrorAlertVisible = false;
+        _errorMessage = "";
+    }
+
+    private void ShowServerErrorAlert(string? errorMessage)
+    {
+        _errorMessage = errorMessage;
+        _isServerErrorAlertVisible = true;
+    }
+}

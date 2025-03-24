@@ -6,9 +6,9 @@ namespace Contracts.Journal.ContactPhones
     (
         string? Name,
 
-        [Phone]
-        [MinLength(7)]
-        [MaxLength(19)]
+        [Phone(ErrorMessage = "Введен невалидный номер")]
+        [MinLength(7, ErrorMessage = "Номер должен иметь хотя бы 7 символов")]
+        [MaxLength(19, ErrorMessage = "Номер не может превышать 19 символов")]
         string? PhoneNumber
     );
 }

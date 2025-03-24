@@ -4,6 +4,7 @@ namespace Contracts.Journal.EducationalProcessSchedule
 {
     public record CreateEducationalProcessScheduleRecordRequest
     (
+        [Range(1, int.MaxValue)]
         int? SemesterNumber,
 
         DateOnly? StartDate,

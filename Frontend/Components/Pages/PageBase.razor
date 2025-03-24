@@ -1,0 +1,16 @@
+﻿@code {
+    protected bool _isServerErrorAlertVisible = false;
+    protected string? _errorMessage = "";
+
+    protected void CloseServerErrorAlert()
+    {
+        _isServerErrorAlertVisible = false;
+        _errorMessage = "";
+    }
+
+    protected void ShowServerErrorAlert(string? errorMessage)
+    {
+        _errorMessage = errorMessage;
+        _isServerErrorAlertVisible = true;
+    }
+}

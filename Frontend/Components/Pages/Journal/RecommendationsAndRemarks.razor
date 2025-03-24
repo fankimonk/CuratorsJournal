@@ -1,5 +1,7 @@
 ﻿@page "/journal/{journalId:int}/RecomendationsAndRemarks/{pageId:int}"
- 
+
+@inherits TablePageBase
+
 @using Contracts.Journal
 @using Contracts.Journal.ContactPhones
 @using Contracts.Journal.PersonalizedAccountingCards
@@ -8,6 +10,8 @@
 @using Contracts.Mappers.Journal
 @using Contracts.Students
 @using Contracts.Workers
+@using Frontend.Components.Buttons
+@using Frontend.Components.Utils
 @using Frontend.Services
 
 @inject HttpClient HttpClient
@@ -41,7 +45,7 @@ else
         <tbody>
             @foreach (var record in _pageData.RecommendationsAndRemarks)
             {
-                <tr>
+                <tr class="@GetRowClass(record.Id)">
                     <td>
                         <input type="date" @bind="record.Date" @bind:after='async () => await Update(record)' class="input" />
                     </td>
@@ -66,13 +70,15 @@ else
                         <input type="date" @bind="record.ExecutionDate" @bind:after='async () => await Update(record)' class="input fullwidth" />
                     </td>
                     <td>
-                        <button @onclick="async () => await Delete(record)" class="btn btn-close" />
+                        <DeleteButton @onclick="async () => await Delete(record)" />
                     </td>
                 </tr>
             }
         </tbody>
     </table>
-    <button @onclick="Add" class="btn btn-outline-primary">Добавить строку</button>
+    <AddButton @onclick="Add">Добавить строку</AddButton>
+
+    <AlertBottom IsVisible="_isServerErrorAlertVisible" OnClose="CloseServerErrorAlert">@_errorMessage</AlertBottom>
 }
 
 @code {
@@ -96,21 +102,22 @@ else
 
     private async Task Update(RecommendationsAndRemarksRecordResponse record)
     {
-        Console.WriteLine("Update recommendation");
+        _rowsWithErrors.Remove(record.Id);
+        CloseServerErrorAlert();
 
         var request = record.ToRequest();
         var response = await HttpClient.PutAsJsonAsync<UpdateRecommendationsAndRemarksRecordRequest>("api/journal/recommendationsandremarks/" + record.Id, request);
 
         if (!response.IsSuccessStatusCode)
         {
-            //TODO
+            _rowsWithErrors.Add(record.Id);
+            var errorMessage = (await response.Content.ReadAsStringAsync()).Split('\n').FirstOrDefault();
+            ShowServerErrorAlert(errorMessage);
         }
     }
 
     private async Task Add()
     {
-        Console.WriteLine("Add recommendation");
-
         var request = new CreateRecommendationsAndRemarksRecordRequest(null, null, null, null, null, PageId);
         var response = await HttpClient.PostAsJsonAsync<CreateRecommendationsAndRemarksRecordRequest>("api/journal/recommendationsandremarks", request);
 
@@ -119,14 +126,22 @@ else
             var addedRecord = await response.Content.ReadFromJsonAsync<RecommendationsAndRemarksRecordResponse>();
             _pageData!.RecommendationsAndRemarks.Add(addedRecord!);
         }
+        else
+        {
+            var errorMessage = (await response.Content.ReadAsStringAsync()).Split('\n').FirstOrDefault();
+            ShowServerErrorAlert(errorMessage);
+        }
     }
 
     private async Task Delete(RecommendationsAndRemarksRecordResponse record)
     {
-        Console.WriteLine("Delete recommendation");
-
         var response = await HttpClient.DeleteAsync("api/journal/recommendationsandremarks/" + record.Id);
 
         if (response.IsSuccessStatusCode) _pageData!.RecommendationsAndRemarks.Remove(record);
+        else
+        {
+            var errorMessage = (await response.Content.ReadAsStringAsync()).Split('\n').FirstOrDefault();
+            ShowServerErrorAlert(errorMessage);
+        }
     }
 }

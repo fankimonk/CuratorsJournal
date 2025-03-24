@@ -1,8 +1,12 @@
 ﻿@page "/journal/{journalId:int}/GroupActives/{pageId:int}"
- 
+
+@inherits PageBase
+
 @using Contracts.Journal.GroupActives
 @using Contracts.Students
 @using Contracts.Mappers.Journal
+@using Frontend.Components.Buttons
+@using Frontend.Components.Utils
 @using Frontend.Services
 
 @inject HttpClient HttpClient
@@ -42,12 +46,14 @@ else
             </select>
             @if (i > 2)
             {
-                <button @onclick="async () => await Delete(active)" class="btn btn-close" />
+                <DeleteButton @onclick="async () => await Delete(active)" />
             }
         </p>
         i++;
     }
-    <button @onclick="Add" class="btn btn-outline-primary">Добавить</button>
+    <AddButton @onclick="Add">Добавить</AddButton>
+
+    <AlertBottom IsVisible="_isServerErrorAlertVisible" OnClose="CloseServerErrorAlert">@_errorMessage</AlertBottom>
 }
 
 @code {
@@ -71,21 +77,18 @@ else
 
     private async Task Update(GroupActiveResponse active)
     {
-        Console.WriteLine("Update group active");
-
         var request = active.ToRequest();
         var response = await HttpClient.PutAsJsonAsync<UpdateGroupActiveRequest>("api/journal/groupactive/" + active.Id, request);
 
         if (!response.IsSuccessStatusCode)
         {
-            //TODO
+            var errorMessage = (await response.Content.ReadAsStringAsync()).Split('\n').FirstOrDefault();
+            ShowServerErrorAlert(errorMessage);
         }
     }
 
     private async Task Add()
     {
-        Console.WriteLine("Add group active");
-
         var request = new CreateGroupActiveRequest(null, null, PageId);
         var response = await HttpClient.PostAsJsonAsync<CreateGroupActiveRequest>("api/journal/groupactive", request);
 
@@ -94,14 +97,22 @@ else
             var addedActive = await response.Content.ReadFromJsonAsync<GroupActiveResponse>();
             _pageData!.GroupActives.Add(addedActive!);
         }
+        else
+        {
+            var errorMessage = (await response.Content.ReadAsStringAsync()).Split('\n').FirstOrDefault();
+            ShowServerErrorAlert(errorMessage);
+        }
     }
 
     private async Task Delete(GroupActiveResponse active)
     {
-        Console.WriteLine("Delete group active");
-
         var response = await HttpClient.DeleteAsync("api/journal/groupactive/" + active.Id);
 
         if (response.IsSuccessStatusCode) _pageData!.GroupActives.Remove(active);
+        else
+        {
+            var errorMessage = (await response.Content.ReadAsStringAsync()).Split('\n').FirstOrDefault();
+            ShowServerErrorAlert(errorMessage);
+        }
     }
 }

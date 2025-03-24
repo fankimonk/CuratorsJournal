@@ -27,7 +27,7 @@ else
         </TemplateColumn>
     </QuickGrid>
 
-    <ModalForm IsVisible="_isAddModalVisible" OnClose="CloseModal">
+    <Modal IsVisible="_isAddModalVisible" OnClose="CloseModal">
         <div class="row">
             <div class="col-md-12">
                 <EditForm method="post" Model="PositionToAdd" OnValidSubmit="Add" OnInvalidSubmit="ShowErrorAlert" FormName="add" Enhance>
@@ -44,9 +44,9 @@ else
                 </EditForm>
             </div>
         </div>
-    </ModalForm>
+    </Modal>
 
-    <ModalForm IsVisible="_isEditModalVisible" OnClose="CloseModal">
+    <Modal IsVisible="_isEditModalVisible" OnClose="CloseModal">
         <div class="row">
             <div class="col-md-12">
                 <EditForm method="put" Model="PositionToEdit" OnValidSubmit="Update" OnInvalidSubmit="ShowErrorAlert" FormName="edit" Enhance>
@@ -63,7 +63,7 @@ else
                 </EditForm>
             </div>
         </div>
-    </ModalForm>
+    </Modal>
 
     <AlertBottom IsVisible="_isServerErrorAlertVisible" OnClose="CloseServerErrorAlert">@_errorMessage</AlertBottom>
 }

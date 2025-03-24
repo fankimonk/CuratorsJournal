@@ -1,5 +1,10 @@
 ﻿@page "/journal/{journalId:int}/ContactPhones/{pageId:int}"
 
+@inherits TablePageBase
+
+@using Frontend.Components.Buttons
+@using Frontend.Components.Inputs
+@using Frontend.Components.Utils
 @using Frontend.Services
 @using Contracts.Journal
 @using Contracts.Journal.ContactPhones
@@ -21,22 +26,25 @@ else
         <tbody>
             @foreach (var phone in _pageData.PhoneNumbers)
             {
-                <tr>
-                    <td>
+                <tr class="@GetRowClass(phone.Id)">
+                    <td class="align-middle col-6">
+                        @* <GrowingTextArea @bind-Value="phone.Name" /> *@
                         <input @bind="phone.Name" @bind:after='async () => await Update(phone)' class="input fullwidth" />
                     </td>
-                    <td>
-                        <input type="tel" @bind="phone.PhoneNumber" @bind:after='async () => await Update(phone)' class="input fullwidth" />
+                    <td class="align-top col-6">
+                        <input type="tel" maxlength="19" @bind="phone.PhoneNumber" @bind:after='async () => await Update(phone)' class="input fullwidth" />
                     </td>
                     <td>
-                        <button @onclick="async () => await Delete(phone)" class="btn btn-close"></button>
+                        <DeleteButton @onclick="async () => await Delete(phone)"></DeleteButton>
                     </td>
                 </tr>
             }
         </tbody>
-        
+
     </table>
-    <button @onclick="Add" class="btn btn-outline-primary">Добавить строку</button>
+    <AddButton @onclick="Add">Добавить строку</AddButton>
+
+    <AlertBottom IsVisible="_isServerErrorAlertVisible" OnClose="CloseServerErrorAlert">@_errorMessage</AlertBottom>
 }
 
 @code {
@@ -57,12 +65,17 @@ else
 
     private async Task Update(ContactPhoneResponse phone)
     {
-        var request = new UpdateContactPhoneRequest(phone.Name, phone.PhoneNumber);
+        _rowsWithErrors.Remove(phone.Id);
+        CloseServerErrorAlert();
+
+        var request = new UpdateContactPhoneRequest(phone.Name, phone.PhoneNumber == "" ? null : phone.PhoneNumber);
         var response = await HttpClient.PutAsJsonAsync<UpdateContactPhoneRequest>("api/journal/contactphone/" + phone.Id, request);
 
         if (!response.IsSuccessStatusCode)
         {
-            //TODO
+            _rowsWithErrors.Add(phone.Id);
+            var errorMessage = (await response.Content.ReadAsStringAsync()).Split('\n').FirstOrDefault();
+            ShowServerErrorAlert(errorMessage);
         }
     }
 
@@ -76,6 +89,11 @@ else
             var addedPhone = await response.Content.ReadFromJsonAsync<ContactPhoneResponse>();
             _pageData!.PhoneNumbers.Add(addedPhone!);
         }
+        else
+        {
+            var errorMessage = (await response.Content.ReadAsStringAsync()).Split('\n').FirstOrDefault();
+            ShowServerErrorAlert(errorMessage);
+        }
     }
 
     private async Task Delete(ContactPhoneResponse phone)
@@ -83,5 +101,10 @@ else
         var response = await HttpClient.DeleteAsync("api/journal/contactphone/" + phone.Id);
 
         if (response.IsSuccessStatusCode) _pageData!.PhoneNumbers.Remove(phone);
+        else
+        {
+            var errorMessage = (await response.Content.ReadAsStringAsync()).Split('\n').FirstOrDefault();
+            ShowServerErrorAlert(errorMessage);
+        }
     }
 }

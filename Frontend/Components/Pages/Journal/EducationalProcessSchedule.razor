@@ -1,8 +1,11 @@
 ﻿@page "/journal/{journalId:int}/EducationalProcessSchedule/{pageId:int}"
- 
+
+@inherits TablePageBase
+
 @using Contracts.Journal.EducationalProcessSchedule
 @using Contracts.Mappers
 @using Contracts.Mappers.Journal
+@using Frontend.Components.Utils
 @using Frontend.Services
 
 @inject HttpClient HttpClient
@@ -32,9 +35,10 @@ else
         <tbody>
             @foreach (var record in _pageData.EducationalProcessSchedule)
             {
-                <tr>
+                <tr class="@GetRowClass(record.Id)">
                     <td>
-                        <input type="number" min="0" @bind="record.SemesterNumber" @bind:after="async () => await Update(record)" class="input fullwidth" />
+                        <input type="number" min="1" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))"
+                            @bind="record.SemesterNumber" @bind:after="async () => await Update(record)" class="input fullwidth" />
                     </td>
                     <td>
                         <input type="date" @bind="record.StartDate" @bind:after="async () => await Update(record)" class="input" />
@@ -67,6 +71,8 @@ else
         </tbody>
     </table>
     <button @onclick="Add" class="btn btn-outline-primary">Добавить строку</button>
+
+    <AlertBottom IsVisible="_isServerErrorAlertVisible" OnClose="CloseServerErrorAlert">@_errorMessage</AlertBottom>
 }
 
 @code {
@@ -95,18 +101,27 @@ else
             var addedRecord = await response.Content.ReadFromJsonAsync<EducationalProcessScheduleRecordResponse>();
             _pageData!.EducationalProcessSchedule.Add(addedRecord!);
         }
+        else
+        {
+            var errorMessage = (await response.Content.ReadAsStringAsync()).Split('\n').FirstOrDefault();
+            ShowServerErrorAlert(errorMessage);
+        }
     }
 
     private async Task Update(EducationalProcessScheduleRecordResponse record)
     {
+        _rowsWithErrors.Remove(record.Id);
+        CloseServerErrorAlert();
+
         var request = record.ToRequest();
         var response = await HttpClient.PutAsJsonAsync<UpdateEducationalProcessScheduleRecordRequest>
             ("api/journal/educationalprocessschedule/" + record.Id, request);
 
         if (!response.IsSuccessStatusCode)
         {
-            // var updatedRecord = await response.Content.ReadFromJsonAsync<EducationalProcessScheduleRecordResponse>();
-            // record = updatedRecord!;
+            _rowsWithErrors.Add(record.Id);
+            var errorMessage = (await response.Content.ReadAsStringAsync()).Split('\n').FirstOrDefault();
+            ShowServerErrorAlert(errorMessage);
         }
     }
 
@@ -115,5 +130,10 @@ else
         var response = await HttpClient.DeleteAsync("api/journal/educationalprocessschedule/" + record.Id);
 
         if (response.IsSuccessStatusCode) _pageData!.EducationalProcessSchedule.Remove(record);
+        else
+        {
+            var errorMessage = (await response.Content.ReadAsStringAsync()).Split('\n').FirstOrDefault();
+            ShowServerErrorAlert(errorMessage);
+        }
     }
 }
