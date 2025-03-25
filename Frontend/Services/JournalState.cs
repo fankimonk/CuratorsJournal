@@ -13,6 +13,8 @@ namespace Frontend.Services
 
         public LinkedListNode<PageResponse>? CurrentPageNode { get; private set; }
 
+        public Dictionary<int, bool> PageTypesNavLinksExpanded = [];
+
         public Action? OnInitialize;
 
         private readonly HttpClient _httpClient = httpClient;
@@ -27,9 +29,19 @@ namespace Frontend.Services
             {
                 JournalId = journalId;
                 await FetchContents();
+
+                foreach (var pt in JournalContents!.PageTypes.Where(pt => pt.MaxPages != 1))
+                {
+                    PageTypesNavLinksExpanded.Add(pt.Id, false);
+                }
             }
 
             UpdateCurrentPage();
+
+            if (PageTypesNavLinksExpanded.ContainsKey(CurrentPageNode!.Value!.PageType!.Id))
+            {
+                PageTypesNavLinksExpanded[CurrentPageNode.Value.PageType.Id] = true;
+            }
 
             OnInitialize?.Invoke();
         }
@@ -59,7 +71,10 @@ namespace Frontend.Services
             while (currentNode != null)
             {
                 if (currentNode.Value.Id == CurrentPageId)
+                {
                     CurrentPageNode = currentNode;
+                    break;
+                }
 
                 currentNode = currentNode.Next;
             }

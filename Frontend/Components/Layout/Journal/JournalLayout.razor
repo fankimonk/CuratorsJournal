@@ -6,6 +6,7 @@
 
 @inject JournalState JournalState
 @inject AppState AppState
+@inject NavigationManager NavigationManager
 
 <div class="page">
     <div class="sidebar">
@@ -16,8 +17,19 @@
         <div class="top-row px-4">
             @if (JournalState.CurrentPageNode != null)
             {
-                <a href="@GetPreviousPageUrl()" class="btn btn-primary">Назад</a>
-                <a href="@GetNextPageUrl()" class="btn btn-primary">Вперед</a>
+                @* <div class="container">
+                    <div class="row justify-content-lg-end">
+                        <div class="col-1 d-flex align-items-center justify-content-center">
+                            
+                        </div>
+                        <div class="col-1 d-flex align-items-center justify-content-center">
+                            
+                        </div>
+                    </div>
+                </div> *@
+                <button @onclick="GoToThePrevPage" class="btn btn-primary" disabled="@IsPrevButtonDisabled()">Назад</button>
+                <button @onclick="GoToTheNextPage" class="btn btn-primary ms-4" disabled="@IsNextButtonDisabled()">Вперед</button>
+                
             }
         </div>
 
@@ -41,6 +53,12 @@
     }
 
     private void HandleOnInitialize() => StateHasChanged();
+
+    private bool IsPrevButtonDisabled() => JournalState.CurrentPageNode == null || JournalState.CurrentPageNode.Previous == null;
+    private bool IsNextButtonDisabled() => JournalState.CurrentPageNode == null || JournalState.CurrentPageNode.Next == null;
+
+    private void GoToThePrevPage() => NavigationManager.NavigateTo(GetPreviousPageUrl());
+    private void GoToTheNextPage() => NavigationManager.NavigateTo(GetNextPageUrl());
 
     private string GetNextPageUrl()
     {

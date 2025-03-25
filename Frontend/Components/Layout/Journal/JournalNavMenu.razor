@@ -19,26 +19,32 @@
             {
                 @foreach (var pt in JournalState.JournalContents.PageTypes)
                 {
-                    <NavLink class="nav-link" @onclick="ToggleExpandSubNav">
-                        Expand
-                    </NavLink>
+                    @if (pt.MaxPages != 1)
+                    {
+                        <NavLink class="nav-link" style="cursor:pointer;" @onclick="() => ToggleExpandSubNav(pt.Id)">
+                            @pt.Name
+                        </NavLink>
+                    }
                     @foreach (var page in pt.Pages!)
                     {
-                        var pageUrl = $"/journal/{JournalState.JournalContents.JournalId}/{pt.Name}/{page.Id}";
-                        <NavLink class="nav-link" href="@pageUrl" Match="NavLinkMatch.All">
-                            @if (PagesRusNames.ContainsKey(pt.Id))
-                            {
-                                <div class="text-nowrap">
-                                    @PagesRusNames[pt.Id].ToString()
-                                </div>
-                            }
-                            else
-                            {
-                                <div class="text-nowrap">
-                                    @pt.Name
-                                </div>
-                            }
-                        </NavLink>
+                        if (!JournalState.PageTypesNavLinksExpanded.ContainsKey(pt.Id) || JournalState.PageTypesNavLinksExpanded[pt.Id])
+                        {
+                            var pageUrl = $"/journal/{JournalState.JournalContents.JournalId}/{pt.Name}/{page.Id}";
+                            <NavLink class="@GetNavLinkClass(pt.Id)" href="@pageUrl" Match="NavLinkMatch.All">
+                                @if (PagesRusNames.ContainsKey(pt.Id))
+                                {
+                                    <div class="text-nowrap">
+                                        @PagesRusNames[pt.Id].ToString()
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="text-nowrap">
+                                        @pt.Name
+                                    </div>
+                                }
+                            </NavLink>
+                        }
                     }
                 }
             }
@@ -47,9 +53,6 @@
 </div>
 
 @code {
-    private bool _expandSubNav = false;
-    private void ToggleExpandSubNav() => _expandSubNav = !_expandSubNav;
-
     private Dictionary<int, string> PagesRusNames = new Dictionary<int, string>()
     {
         { 1, "Титульная страница" },
@@ -61,6 +64,16 @@
         { 7, "Актив учебной группы" },
         { 8, "Список студентов" }
     };
+
+    private void ToggleExpandSubNav(int pageTypeId)
+    {
+        if (JournalState.PageTypesNavLinksExpanded.ContainsKey(pageTypeId))
+        {
+            JournalState.PageTypesNavLinksExpanded[pageTypeId] = !JournalState.PageTypesNavLinksExpanded[pageTypeId];
+        }
+    }
+
+    private string GetNavLinkClass(int pageTypeId) => JournalState.PageTypesNavLinksExpanded.ContainsKey(pageTypeId) ? "nav-link ms-4" : "nav-link";
 
     protected override async Task OnInitializedAsync()
     {

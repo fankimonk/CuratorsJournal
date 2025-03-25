@@ -61,7 +61,7 @@ namespace API.Controllers
             var response = pages.Select(p => new PageResponse(
                 p.Id,
                 p.JournalId,
-                new PageTypeResponse(p.PageType!.Id, p.PageType.Name, null)
+                new PageTypeResponse(p.PageType!.Id, p.PageType.Name, p.PageType.MaxPages, null)
             )).ToList();
 
             return Ok(new JournalPagesResponse(journalId, response));
@@ -76,7 +76,8 @@ namespace API.Controllers
             var response = pages.Select(pt => new PageTypeResponse(
                 pt.Id,
                 pt.Name,
-                pt.Pages.Select(p => new PageResponse(p.Id, p.JournalId, new PageTypeResponse(pt.Id, pt.Name, null))).ToList()
+                pt.MaxPages,
+                pt.Pages.Select(p => new PageResponse(p.Id, p.JournalId, new PageTypeResponse(pt.Id, pt.Name, pt.MaxPages, null))).ToList()
             )).ToList();
 
             return Ok(new JournalContentsResponse(journalId, response));

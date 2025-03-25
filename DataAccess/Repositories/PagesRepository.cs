@@ -103,6 +103,7 @@ namespace DataAccess.Repositories
                 {
                     Id = pt.Id,
                     Name = pt.Name,
+                    MaxPages = pt.MaxPages,
                     Pages = pt.Pages.Where(p => p.JournalId == journalId).ToList()
                 }).ToListAsync();
         }

@@ -13,6 +13,8 @@ namespace DataAccess.Configurations
 
             builder.Property(pt => pt.Name).HasColumnType("nvarchar(max)");
 
+            builder.ToTable(t => t.HasCheckConstraint("CHK_PageTypes_MaxPages", "[MaxPages] >= 1"));
+
             var pageTypes = Enum
                 .GetValues<PageTypes>()
                 .Select(pt => new PageType

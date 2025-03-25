@@ -10134,6 +10134,11 @@
             "type": "string",
             "nullable": true
           },
+          "maxPages": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
           "pages": {
             "type": "array",
             "items": {
@@ -10153,6 +10158,11 @@
           },
           "name": {
             "type": "string",
+            "nullable": true
+          },
+          "maxPages": {
+            "type": "integer",
+            "format": "int32",
             "nullable": true
           },
           "pages": {

@@ -4,6 +4,7 @@
     (
         int Id,
         string Name,
+        int? MaxPages,
         List<PageResponse>? Pages
     );
 }
