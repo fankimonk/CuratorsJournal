@@ -27,17 +27,15 @@ else
     <table class="table table-bordered">
         <thead>
             <tr>
-                <th class="text-center">№</th>
-                <th class="text-center">Фамилия, имя отчество (полностью)</th>
-                <th class="text-center">
+                <th class="col-1 text-center align-middle">№</th>
+                <th class="col-7 text-center align-middle">Фамилия, имя отчество (полностью)</th>
+                <th class="col-2 text-center align-middle">
                     Контактный<br/>
                     телефон
                 </th>
-                <th class="text-center">
-                    № страни-<br/>
-                    цы персо-<br/>
-                    нифици-<br/>
-                    рованного<br/>
+                <th class="col-2 text-center align-middle">
+                    № страницы<br/>
+                    персонифицированного<br/>
                     учета
                 </th>
             </tr>
@@ -87,13 +85,15 @@ else
                         </select>
                     </td>
                     <td>
-                        <DeleteButton @onclick="async () => await Delete(record)" />
+                        <DeleteButton @onclick="() => OpenDeleteModal(record.Id)" />
                     </td>
                 </tr>
             }
         </tbody>
     </table>
     <AddButton @onclick="Add">Добавить строку</AddButton>
+
+    <ConfirmDeleteModal IsVisible="_isDeleteModalVisible" OnClose="CloseDeleteModal" IdToDelete="_idToDelete" OnDeleteById="Delete" />
 
     <AlertBottom IsVisible="_isServerErrorAlertVisible" OnClose="CloseServerErrorAlert">@_errorMessage</AlertBottom>
 }
@@ -154,11 +154,11 @@ else
         }
     }
 
-    private async Task Delete(StudentListRecordResponse record)
+    private async Task Delete(int recordId)
     {
-        var response = await HttpClient.DeleteAsync("api/journal/studentlist/" + record.Id);
+        var response = await HttpClient.DeleteAsync("api/journal/studentlist/" + recordId);
 
-        if (response.IsSuccessStatusCode) _pageData!.StudentList.Remove(record);
+        if (response.IsSuccessStatusCode) _pageData!.StudentList.RemoveAll(r => r.Id == recordId);
         else
         {
             var errorMessage = (await response.Content.ReadAsStringAsync()).Split('\n').FirstOrDefault();

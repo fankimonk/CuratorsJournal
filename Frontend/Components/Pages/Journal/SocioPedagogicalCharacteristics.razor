@@ -34,7 +34,7 @@ else
             @if (_academicYears != null)
             {
                 @(" в ")
-                <select @bind="_pageData.Attributes.AcademicYearId" @bind:after="UpdateAttributes" class="input underline">
+                <select @bind="_pageData.Attributes.AcademicYearId" @bind:after="UpdateAttributes" class="input underline text-center">
                     <option value="">(нет)</option>
                     @foreach (var academicYear in _academicYears)
                     {

@@ -1,0 +1,49 @@
+﻿@using Frontend.Components.Buttons
+
+<Modal IsVisible="IsVisible" OnClose="CloseModal">
+    <div class="container">
+        <div class="row">
+            <div class="col d-flex align-items-center justify-content-center">
+                <h3><b>Вы уверены?</b></h3>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col d-flex align-items-center justify-content-center">
+                <DeleteButton @onclick="OnDeleteClick" style="width:100%;">Да, удалить</DeleteButton>
+            </div>
+            <div class="col d-flex align-items-center justify-content-center">
+                <button @onclick="CloseModal" class="btn btn-outline-primary" style="width:100%;">Нет, закрыть</button>
+            </div>
+        </div>
+    </div>
+</Modal>
+
+@code {
+    [Parameter]
+    public bool IsVisible { get; set; }
+
+    [Parameter]
+    public int? IdToDelete { get; set; }
+
+    [Parameter]
+    public EventCallback OnClose { get; set; }
+
+    [Parameter]
+    public EventCallback<int> OnDeleteById { get; set; }
+
+    [Parameter]
+    public EventCallback OnDelete { get; set; }
+
+    private async Task OnDeleteClick()
+    {
+        if (IdToDelete != null) await OnDeleteById.InvokeAsync((int)IdToDelete);
+        else await OnDelete.InvokeAsync();
+
+        await OnClose.InvokeAsync();
+    }
+
+    private async Task CloseModal()
+    {
+        await OnClose.InvokeAsync();
+    }
+}

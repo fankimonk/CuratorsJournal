@@ -26,11 +26,11 @@ else
     <table class="table table-bordered">
         <thead>
             <tr>
-                <th class="text-center">Дата</th>
-                <th class="text-center">Тема семинара заседания</th>
-                <th class="text-center">Форма участия</th>
-                <th class="text-center">Место проведения</th>
-                <th class="text-center">Примечания</th>
+                <th class="col-1 text-center">Дата</th>
+                <th class="col-3 text-center">Тема семинара заседания</th>
+                <th class="col-2 text-center">Форма участия</th>
+                <th class="col-2 text-center">Место проведения</th>
+                <th class="col-4 text-center">Примечания</th>
             </tr>
         </thead>
         <tbody>
@@ -53,7 +53,7 @@ else
                         <input @bind="record.Note" @bind:after="async () => await Update(record)" class="input fullwidth" />
                     </td>
                     <td>
-                        <DeleteButton @onclick="async () => await Delete(record)" />
+                        <DeleteButton @onclick="() => OpenDeleteModal(record.Id)" />
                     </td>
                 </tr>
             }
@@ -61,6 +61,8 @@ else
         </tbody>
     </table>
     <AddButton @onclick="Add">Добавить строку</AddButton>
+
+    <ConfirmDeleteModal IsVisible="_isDeleteModalVisible" OnClose="CloseDeleteModal" IdToDelete="_idToDelete" OnDeleteById="Delete" />
 
     <AlertBottom IsVisible="_isServerErrorAlertVisible" OnClose="CloseServerErrorAlert">@_errorMessage</AlertBottom>
 }
@@ -116,11 +118,11 @@ else
         }
     }
 
-    private async Task Delete(ParticipationInPedagogicalSeminarsRecordResponse record)
+    private async Task Delete(int recordId)
     {
-        var response = await HttpClient.DeleteAsync("api/journal/participationinpedagogicalseminars/" + record.Id);
+        var response = await HttpClient.DeleteAsync("api/journal/participationinpedagogicalseminars/" + recordId);
 
-        if (response.IsSuccessStatusCode) _pageData!.ParticipationInPedagogicalSeminars.Remove(record);
+        if (response.IsSuccessStatusCode) _pageData!.ParticipationInPedagogicalSeminars.RemoveAll(r => r.Id == recordId);
         else
         {
             var errorMessage = (await response.Content.ReadAsStringAsync()).Split('\n').FirstOrDefault();

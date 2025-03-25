@@ -25,21 +25,21 @@ else
 {
     <h3 class="d-flex justify-content-center">
         в 
-        <select @bind="_pageData.Attributes.Month" @bind:after="UpdateAttributes" class="input underline">
+        <select @bind="_pageData.Attributes.Month" @bind:after="UpdateAttributes" class="input underline text-center">
             <option value="">(нет)</option>
             @foreach (var item in MonthsUtils.InMonthsNames)
             {
                 <option @key="item.Key" value="@item.Key">@MonthsUtils.InMonthsNames[item.Key]</option>
             }
         </select>
-        <input type="number" min="0" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))"
-        @bind="_pageData.Attributes.Year" @bind:after="UpdateAttributes" class="input underline" />
+        <input type="number" min="0" max="10000" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))"
+        @bind="_pageData.Attributes.Year" @bind:after="UpdateAttributes" class="input underline text-center" />
     </h3>
     <table class="table table-bordered">
         <thead>
             <tr>
-                <th class="text-center">Срок выполнения</th>
-                <th class="text-center">Содержание работы</th>
+                <th class="col-2 text-center">Срок выполнения</th>
+                <th class="col-10 text-center">Содержание работы</th>
             </tr>
         </thead>
         <tbody>
@@ -55,7 +55,7 @@ else
                         <input @bind="record.WorkContent" @bind:after="async () => await Update(record)" class="input fullwidth" />
                     </td>
                     <td>
-                        <DeleteButton @onclick="async () => await Delete(record)" />
+                        <DeleteButton @onclick="() => OpenDeleteModal(record.Id)" />
                     </td>
                 </tr>
             }
@@ -63,6 +63,8 @@ else
         </tbody>
     </table>
     <AddButton @onclick="Add">Добавить строку</AddButton>
+
+    <ConfirmDeleteModal IsVisible="_isDeleteModalVisible" OnClose="CloseDeleteModal" IdToDelete="_idToDelete" OnDeleteById="Delete" />
 
     <AlertBottom IsVisible="_isServerErrorAlertVisible" OnClose="CloseServerErrorAlert">@_errorMessage</AlertBottom>
 }
@@ -107,11 +109,11 @@ else
         }
     }
 
-    private async Task Delete(IdeologicalEducationalWorkRecordResponse record)
+    private async Task Delete(int recordId)
     {
-        var response = await HttpClient.DeleteAsync("api/journal/ideologicalandeducationalwork/" + record.Id);
+        var response = await HttpClient.DeleteAsync("api/journal/ideologicalandeducationalwork/" + recordId);
 
-        if (response.IsSuccessStatusCode) _pageData!.IdeologicalEducationalWork.Remove(record);
+        if (response.IsSuccessStatusCode) _pageData!.IdeologicalEducationalWork.RemoveAll(r => r.Id == recordId);
         else
         {
             var errorMessage = (await response.Content.ReadAsStringAsync()).Split('\n').FirstOrDefault();

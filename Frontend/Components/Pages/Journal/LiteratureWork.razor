@@ -27,8 +27,8 @@ else
     <table class="table table-bordered">
         <thead>
             <tr>
-                <th class="text-center">Автор, название, библиографические данные</th>
-                <th class="text-center">Краткая аннотация</th>
+                <th class="col-5 text-center">Автор, название, библиографические данные</th>
+                <th class="col-7 text-center">Краткая аннотация</th>
             </tr>
         </thead>
         <tbody>
@@ -50,7 +50,7 @@ else
                         <input @bind="record.ShortAnnotation" @bind:after='async () => await Update(record)' class="input fullwidth" />
                     </td>
                     <td>
-                        <DeleteButton @onclick="async () => await Delete(record)"/>
+                        <DeleteButton @onclick="() => OpenDeleteModal(record.Id)"/>
                     </td>
                 </tr>
             }
@@ -58,6 +58,8 @@ else
         </tbody>
     </table>
     <AddButton @onclick="Add">Добавить строку</AddButton>
+
+    <ConfirmDeleteModal IsVisible="_isDeleteModalVisible" OnClose="CloseDeleteModal" IdToDelete="_idToDelete" OnDeleteById="Delete" />
 
     <AlertBottom IsVisible="_isServerErrorAlertVisible" OnClose="CloseServerErrorAlert">@_errorMessage</AlertBottom>
 }
@@ -114,11 +116,11 @@ else
         }
     }
 
-    private async Task Delete(LiteratureWorkRecordResponse record)
+    private async Task Delete(int recordId)
     {
-        var response = await HttpClient.DeleteAsync("api/journal/literaturework/" + record.Id);
+        var response = await HttpClient.DeleteAsync("api/journal/literaturework/" + recordId);
 
-        if (response.IsSuccessStatusCode) _pageData!.LiteratureWork.Remove(record);
+        if (response.IsSuccessStatusCode) _pageData!.LiteratureWork.RemoveAll(r => r.Id == recordId);
         else
         {
             var errorMessage = (await response.Content.ReadAsStringAsync()).Split('\n').FirstOrDefault();

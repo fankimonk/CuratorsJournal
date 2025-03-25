@@ -24,8 +24,7 @@ else
     @foreach (var ht in _pageData.HolidayTypes)
     {
         <h3 class="d-flex justify-content-center">
-            @ht.Name 
-            <EditButton @onclick="() => ShowModal(ht)" />
+            @ht.Name
         </h3>
         <table class="table table-bordered">
             <tbody>
@@ -40,7 +39,7 @@ else
                             @if (!h.IsRelativeDate)
                             {
                                 <input type="number" min="1" max="31" step="1" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))"
-                                    @bind="h.Day" @bind:after="async () => await Update(h)" class="input" />
+                                @bind="h.Day" @bind:after="async () => await Update(h)" class="input" />
                             }
                             else
                             {
@@ -54,11 +53,11 @@ else
                                 }
                             </select>
                         </td>
-                        <td class="align-middle col-5">
+                        <td class="align-middle col-6">
                             <input @bind="h.Name" @bind:after="async () => await Update(h)" class="input" />
                         </td>
                         <td class="align-middle">
-                            <DeleteButton @onclick="async () => await Delete(h)" />
+                            <DeleteButton @onclick="() => OpenDeleteModal(h.Id)" />
                         </td>
                     </tr>
                 }
@@ -67,12 +66,7 @@ else
         <AddButton @onclick="async () => await Add(ht.Id)">Добавить</AddButton>
     }
 
-    <EditHolidayTypeModalForm IsVisible="_isModalVisible"
-        TypeToEditId="_typeToEditId"
-        TypeToEdit="TypeToEdit"
-        OnClose="CloseModal"
-        UpdateValue="UpdateType"
-        ShowServerErrorAlert="ShowServerErrorAlert" />
+    <ConfirmDeleteModal IsVisible="_isDeleteModalVisible" OnClose="CloseDeleteModal" IdToDelete="_idToDelete" OnDeleteById="Delete" />
 
     <AlertBottom IsVisible="_isServerErrorAlertVisible" OnClose="CloseServerErrorAlert">@_errorMessage</AlertBottom>
 }
@@ -97,17 +91,6 @@ else
         await JournalState.Initialize(JournalId, PageId);
 
         _pageData = await HttpClient.GetFromJsonAsync<HolidaysPageResponse>("api/journal/holiday/" + PageId);
-    }
-
-    private void AddType(HolidayTypeResponse added)
-    {
-        _pageData!.HolidayTypes.Add(added);
-    }
-
-    private void UpdateType(HolidayTypeResponse type)
-    {
-        var toUpdate = _pageData!.HolidayTypes.FirstOrDefault(t => t.Id == type.Id);
-        toUpdate!.Name = type.Name;
     }
 
     private async Task Add(int typeId)
@@ -143,29 +126,14 @@ else
         }
     }
 
-    private async Task Delete(HolidayResponse holiday)
+    private async Task Delete(int holidayId)
     {
-        var response = await HttpClient.DeleteAsync("api/journal/holiday/" + holiday.Id);
-
-        if (response.IsSuccessStatusCode) _pageData!.HolidayTypes.FirstOrDefault(ht => ht.Id == holiday.HolidayTypeId)!.Holidays.Remove(holiday);
+        var response = await HttpClient.DeleteAsync("api/journal/holiday/" + holidayId);
+        if (response.IsSuccessStatusCode) _pageData!.HolidayTypes.ForEach(ht => ht.Holidays.RemoveAll(h => h.Id == holidayId));
         else
         {
             var errorMessage = (await response.Content.ReadAsStringAsync()).Split('\n').FirstOrDefault();
             ShowServerErrorAlert(errorMessage);
         }
-    }
-
-    private void ShowModal(HolidayTypeResponse type)
-    {
-        _typeToEditId = type.Id;
-        TypeToEdit = new UpdateHolidayTypeRequest(type.Name);
-        _isModalVisible = true;
-    }
-
-    private void CloseModal()
-    {
-        _typeToEditId = -1;
-        TypeToEdit = new("");
-        _isModalVisible = false;
     }
 }

@@ -1,4 +1,5 @@
 ﻿@using Contracts.Journal
+@using Frontend.Components.Buttons
 @using Frontend.Services
 
 @inject JournalState JournalState
@@ -18,6 +19,9 @@
             {
                 @foreach (var pt in JournalState.JournalContents.PageTypes)
                 {
+                    <NavLink class="nav-link" @onclick="ToggleExpandSubNav">
+                        Expand
+                    </NavLink>
                     @foreach (var page in pt.Pages!)
                     {
                         var pageUrl = $"/journal/{JournalState.JournalContents.JournalId}/{pt.Name}/{page.Id}";
@@ -43,6 +47,9 @@
 </div>
 
 @code {
+    private bool _expandSubNav = false;
+    private void ToggleExpandSubNav() => _expandSubNav = !_expandSubNav;
+
     private Dictionary<int, string> PagesRusNames = new Dictionary<int, string>()
     {
         { 1, "Титульная страница" },

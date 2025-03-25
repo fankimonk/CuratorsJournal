@@ -1,10 +1,13 @@
 ﻿@page "/journal/{journalId:int}/FinalPerformanceAccounting/{pageId:int}"
 
+@inherits TablePageBase
+
 @using Contracts.CertificationTypes
 @using Contracts.Journal
 @using Contracts.Journal.FinalPerformanceAccounting
 @using Contracts.Students
 @using Frontend.Components.Buttons
+@using Frontend.Components.Utils
 @using Frontend.Services
 
 @inject HttpClient HttpClient
@@ -23,9 +26,9 @@ else
     <table class="table table-bordered">
         <thead>
             <tr>
-                <th rowspan="3" class="text-center align-middle">№</th>
-                <th rowspan="3" class="text-center align-middle">Ф. И. О. студента</th>
-                <th colspan="@GetColumnCount()" class="text-center align-middle">Название дисциплины</th>
+                <th rowspan="3" class="col-1 text-center align-middle">№</th>
+                <th rowspan="3" class="col-2 text-center align-middle">Ф. И. О. студента</th>
+                <th colspan="@GetColumnCount()" class="col-9 text-center align-middle">Название дисциплины</th>
             </tr>
             <tr>
                 @foreach (var ct in GetNotEmptyCertificationTypes())
@@ -46,7 +49,7 @@ else
         <tbody>
             @foreach (var record in _pageData.Records)
             {
-                <tr>
+                <tr class="@GetRowClass(record.Id)">
                     <td>
                         <input type="number" min="0" @bind="record.Number" @bind:after='async () => await UpdateRecord(record)' class="input fullwidth" />
                     </td>
@@ -67,7 +70,7 @@ else
                         @foreach (var column in ct.PerformanceAccountingColumns!)
                         {
                             var grade = record.Grades!.FirstOrDefault(g => g.ColumnId == column.Id);
-                            <td>
+                            <td class="@GetCellClass(grade!.Id)">
                                 @if (ct.Id != 2)
                                 {
                                     <input type="number" min="0" max="10" @bind="grade!.Grade" @bind:after="async () => await UpdateGrade(grade)" />
@@ -80,13 +83,18 @@ else
                         }
                     }
                     <td>
-                        <DeleteButton @onclick="async () => await DeleteRecord(record)" />
+                        <DeleteButton @onclick="() => OpenDeleteModal(record.Id)" />
                     </td>
                 </tr>
             }
         </tbody>
     </table>
+
     <AddButton @onclick="AddRecord">Добавить строку</AddButton>
+
+    <ConfirmDeleteModal IsVisible="_isDeleteModalVisible" OnClose="CloseDeleteModal" IdToDelete="_idToDelete" OnDeleteById="DeleteRecord" />
+
+    <AlertBottom IsVisible="_isServerErrorAlertVisible" OnClose="CloseServerErrorAlert">@_errorMessage</AlertBottom>
 }
 
 @code {
@@ -113,23 +121,33 @@ else
 
     private async Task UpdateRecord(PerformanceAccountingRecordResponse record)
     {
+        _rowsWithErrors.Remove(record.Id);
+        CloseServerErrorAlert();
+
         var request = new UpdatePerformanceAccountingRecordRequest(record.Number, record.StudentId);
         var response = await HttpClient.PutAsJsonAsync<UpdatePerformanceAccountingRecordRequest>("api/journal/finalperformanceaccounting/record/" + record.Id, request);
 
         if (!response.IsSuccessStatusCode)
         {
-            //TODO
+            _rowsWithErrors.Add(record.Id);
+            var errorMessage = (await response.Content.ReadAsStringAsync()).Split('\n').FirstOrDefault();
+            ShowServerErrorAlert(errorMessage);
         }
     }
 
     private async Task UpdateGrade(PerformanceAccountingGradeResponse grade)
     {
+        _cellsWithErrors.Remove(grade.Id);
+        CloseServerErrorAlert();
+
         var request = new UpdatePerformanceAccountingGradeRequest(grade.IsPassed, grade.Grade);
         var response = await HttpClient.PutAsJsonAsync<UpdatePerformanceAccountingGradeRequest>("api/journal/finalperformanceaccounting/grade/" + grade.Id, request);
 
         if (!response.IsSuccessStatusCode)
         {
-            //TODO
+            _cellsWithErrors.Add(grade.Id);
+            var errorMessage = (await response.Content.ReadAsStringAsync()).Split('\n').FirstOrDefault();
+            ShowServerErrorAlert(errorMessage);
         }
     }
 
@@ -143,12 +161,22 @@ else
             var addedRecord = await response.Content.ReadFromJsonAsync<PerformanceAccountingRecordResponse>();
             _pageData!.Records.Add(addedRecord!);
         }
+        else
+        {
+            var errorMessage = (await response.Content.ReadAsStringAsync()).Split('\n').FirstOrDefault();
+            ShowServerErrorAlert(errorMessage);
+        }
     }
 
-    private async Task DeleteRecord(PerformanceAccountingRecordResponse record)
+    private async Task DeleteRecord(int recordId)
     {
-        var response = await HttpClient.DeleteAsync("api/journal/finalperformanceaccounting/record/" + record.Id);
+        var response = await HttpClient.DeleteAsync("api/journal/finalperformanceaccounting/record/" + recordId);
 
-        if (response.IsSuccessStatusCode) _pageData!.Records.Remove(record);
+        if (response.IsSuccessStatusCode) _pageData!.Records.RemoveAll(r => r.Id == recordId);
+        else
+        {
+            var errorMessage = (await response.Content.ReadAsStringAsync()).Split('\n').FirstOrDefault();
+            ShowServerErrorAlert(errorMessage);
+        }
     }
 }

@@ -10,7 +10,7 @@
 
 <PageTitle>Карта персонифицированного учета</PageTitle>
 
-<h3>КАРТА ПЕРСОНИФИЦИРОВАННОГО УЧЕТА</h3>
+<h3 class="d-flex justify-content-center">КАРТА ПЕРСОНИФИЦИРОВАННОГО УЧЕТА</h3>
 
 @if (_pageData == null || _students == null)
 {
@@ -21,7 +21,7 @@ else
     <p>
         <b>Фамилия, имя отчество </b>
         <select @bind="_pageData.StudentId" @bind:after="Update" class="input underline">
-            <option value="">-- Выберите студента --</option>
+            <option value="">(нет)</option>
             @foreach (var student in _students)
             {
                 <option @key="student.Id" value="@student.Id">@student.LastName @student.FirstName @student.MiddleName</option>

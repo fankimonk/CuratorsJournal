@@ -30,13 +30,13 @@ else
     <table class="table table-bordered">
         <thead>
             <tr>
-                <th class="text-center">Дата</th>
-                <th class="text-center">
+                <th class="col-1 text-center align-middle">Дата</th>
+                <th class="col-3 text-center align-middle">
                     Кто проверил<br/>
                     (должность, фамилия)
                 </th>
-                <th class="text-center">Рекомендации, замечания</th>
-                <th class="text-center">
+                <th class="col-6 text-center align-middle">Рекомендации, замечания</th>
+                <th class="col-2 text-center align-middle">
                     Выполнение,<br/>
                     дата
                 </th>
@@ -65,18 +65,20 @@ else
                         <input @bind="record.Content" @bind:after='async () => await Update(record)' class="input fullwidth" />
                     </td>
                     <td>
-                        <input @bind="record.Result" @bind:after='async () => await Update(record)' class="input fullwidth" />
+                        <input @bind="record.Result" @bind:after='async () => await Update(record)' class="input fullwidth underline" />
                         <br/>
                         <input type="date" @bind="record.ExecutionDate" @bind:after='async () => await Update(record)' class="input fullwidth" />
                     </td>
                     <td>
-                        <DeleteButton @onclick="async () => await Delete(record)" />
+                        <DeleteButton @onclick="() => OpenDeleteModal(record.Id)" />
                     </td>
                 </tr>
             }
         </tbody>
     </table>
     <AddButton @onclick="Add">Добавить строку</AddButton>
+
+    <ConfirmDeleteModal IsVisible="_isDeleteModalVisible" OnClose="CloseDeleteModal" IdToDelete="_idToDelete" OnDeleteById="Delete" />
 
     <AlertBottom IsVisible="_isServerErrorAlertVisible" OnClose="CloseServerErrorAlert">@_errorMessage</AlertBottom>
 }
@@ -133,11 +135,11 @@ else
         }
     }
 
-    private async Task Delete(RecommendationsAndRemarksRecordResponse record)
+    private async Task Delete(int recordId)
     {
-        var response = await HttpClient.DeleteAsync("api/journal/recommendationsandremarks/" + record.Id);
+        var response = await HttpClient.DeleteAsync("api/journal/recommendationsandremarks/" + recordId);
 
-        if (response.IsSuccessStatusCode) _pageData!.RecommendationsAndRemarks.Remove(record);
+        if (response.IsSuccessStatusCode) _pageData!.RecommendationsAndRemarks.RemoveAll(r => r.Id == recordId);
         else
         {
             var errorMessage = (await response.Content.ReadAsStringAsync()).Split('\n').FirstOrDefault();

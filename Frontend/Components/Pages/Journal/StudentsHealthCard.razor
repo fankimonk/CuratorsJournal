@@ -22,8 +22,8 @@
     @if (_academicYears != null)
     {
         @(" В ")
-        <select @bind="_pageData!.Attributes.AcademicYearId" @bind:after="UpdateAttributes" class="input">
-            <option value="">-- Выберите учебный год --</option>
+        <select @bind="_pageData!.Attributes.AcademicYearId" @bind:after="UpdateAttributes" class="text-center input">
+            <option value="">(нет)</option>
             @foreach (var academicYear in _academicYears)
             {
                 <option @key="academicYear.Id" value="@academicYear.Id">
@@ -44,10 +44,10 @@ else
     <table class="table table-bordered">
         <thead>
             <tr>
-                <th class="text-center">№</th>
-                <th class="text-center">Фамилия, имя, отчество (полностью)</th>
-                <th class="text-center">Пропущено учебных занятий<br />по болезни</th>
-                <th class="text-center">Примечание</th>
+                <th class="col-1 text-center align-middle">№</th>
+                <th class="col-5 text-center align-middle">Фамилия, имя, отчество (полностью)</th>
+                <th class="col-3 text-center align-middle">Пропущено учебных занятий<br />по болезни</th>
+                <th class="col-3 text-center align-middle">Примечание</th>
             </tr>
         </thead>
         <tbody>
@@ -78,13 +78,15 @@ else
                         <input @bind="record.Note" @bind:after="async () => await Update(record)" class="input fullwidth" />
                     </td>
                     <td>
-                        <DeleteButton @onclick="async () => await Delete(record)" />
+                        <DeleteButton @onclick="() => OpenDeleteModal(record.Id)" />
                     </td>
                 </tr>
             }
         </tbody>
     </table>
     <AddButton @onclick="Add">Добавить строку</AddButton>
+
+    <ConfirmDeleteModal IsVisible="_isDeleteModalVisible" OnClose="CloseDeleteModal" IdToDelete="_idToDelete" OnDeleteById="Delete" />
 
     <AlertBottom IsVisible="_isServerErrorAlertVisible" OnClose="CloseServerErrorAlert">@_errorMessage</AlertBottom>
 }
@@ -155,11 +157,11 @@ else
         }
     }
 
-    private async Task Delete(HealthCardRecordResponse record)
+    private async Task Delete(int recordId)
     {
-        var response = await HttpClient.DeleteAsync("api/journal/healthcard/" + record.Id);
+        var response = await HttpClient.DeleteAsync("api/journal/healthcard/" + recordId);
 
-        if (response.IsSuccessStatusCode) _pageData!.StudentHealthCard.Remove(record);
+        if (response.IsSuccessStatusCode) _pageData!.StudentHealthCard.RemoveAll(r => r.Id == recordId);
         else
         {
             var errorMessage = (await response.Content.ReadAsStringAsync()).Split('\n').FirstOrDefault();

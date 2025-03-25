@@ -46,12 +46,14 @@ else
             </select>
             @if (i > 2)
             {
-                <DeleteButton @onclick="async () => await Delete(active)" />
+                <DeleteButton @onclick="() => OpenDeleteModal(active.Id)" />
             }
         </p>
         i++;
     }
     <AddButton @onclick="Add">Добавить</AddButton>
+
+    <ConfirmDeleteModal IsVisible="_isDeleteModalVisible" OnClose="CloseDeleteModal" IdToDelete="_idToDelete" OnDeleteById="Delete" />
 
     <AlertBottom IsVisible="_isServerErrorAlertVisible" OnClose="CloseServerErrorAlert">@_errorMessage</AlertBottom>
 }
@@ -104,11 +106,11 @@ else
         }
     }
 
-    private async Task Delete(GroupActiveResponse active)
+    private async Task Delete(int activeId)
     {
-        var response = await HttpClient.DeleteAsync("api/journal/groupactive/" + active.Id);
+        var response = await HttpClient.DeleteAsync("api/journal/groupactive/" + activeId);
 
-        if (response.IsSuccessStatusCode) _pageData!.GroupActives.Remove(active);
+        if (response.IsSuccessStatusCode) _pageData!.GroupActives.RemoveAll(a => a.Id == activeId);
         else
         {
             var errorMessage = (await response.Content.ReadAsStringAsync()).Split('\n').FirstOrDefault();

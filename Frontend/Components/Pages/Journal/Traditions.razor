@@ -26,10 +26,10 @@ else
     <table class="table table-bordered">
         <thead>
             <tr>
-                <th class="text-center">Название традиции</th>
-                <th class="text-center">Дата</th>
-                <th class="text-center">Форма участия группы</th>
-                <th class="text-center">Примечание</th>
+                <th class="col-3 text-center">Название традиции</th>
+                <th class="col-3 text-center">Дата</th>
+                <th class="col-3 text-center">Форма участия группы</th>
+                <th class="col-3 text-center">Примечание</th>
             </tr>
         </thead>
         <tbody>
@@ -57,13 +57,15 @@ else
                         <input @bind="record.Note" @bind:after="async () => await Update(record)" class="input fullwidth" />
                     </td>
                     <td>
-                        <DeleteButton @onclick="async () => await Delete(record)" />
+                        <DeleteButton @onclick="() => OpenDeleteModal(record.Id)" />
                     </td>
                 </tr>
             }
         </tbody>
     </table>
     <AddButton @onclick="Add">Добавить строку</AddButton>
+
+    <ConfirmDeleteModal IsVisible="_isDeleteModalVisible" OnClose="CloseDeleteModal" IdToDelete="_idToDelete" OnDeleteById="Delete" />
 
     <AlertBottom IsVisible="_isServerErrorAlertVisible" OnClose="CloseServerErrorAlert">@_errorMessage</AlertBottom>
 }
@@ -117,11 +119,11 @@ else
         }
     }
 
-    private async Task Delete(TraditionResponse record)
+    private async Task Delete(int recordId)
     {
-        var response = await HttpClient.DeleteAsync("api/journal/tradition/" + record.Id);
+        var response = await HttpClient.DeleteAsync("api/journal/tradition/" + recordId);
 
-        if (response.IsSuccessStatusCode) _pageData!.Traditions.Remove(record);
+        if (response.IsSuccessStatusCode) _pageData!.Traditions.RemoveAll(r => r.Id == recordId);
         else
         {
             var errorMessage = (await response.Content.ReadAsStringAsync()).Split('\n').FirstOrDefault();

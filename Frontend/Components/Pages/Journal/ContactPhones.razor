@@ -35,7 +35,7 @@ else
                         <input type="tel" maxlength="19" @bind="phone.PhoneNumber" @bind:after='async () => await Update(phone)' class="input fullwidth" />
                     </td>
                     <td>
-                        <DeleteButton @onclick="async () => await Delete(phone)"></DeleteButton>
+                        <DeleteButton @onclick="() => OpenDeleteModal(phone.Id)"></DeleteButton>
                     </td>
                 </tr>
             }
@@ -43,6 +43,8 @@ else
 
     </table>
     <AddButton @onclick="Add">Добавить строку</AddButton>
+
+    <ConfirmDeleteModal IsVisible="_isDeleteModalVisible" OnClose="CloseDeleteModal" IdToDelete="_idToDelete" OnDeleteById="Delete" />
 
     <AlertBottom IsVisible="_isServerErrorAlertVisible" OnClose="CloseServerErrorAlert">@_errorMessage</AlertBottom>
 }
@@ -96,11 +98,11 @@ else
         }
     }
 
-    private async Task Delete(ContactPhoneResponse phone)
+    private async Task Delete(int phoneId)
     {
-        var response = await HttpClient.DeleteAsync("api/journal/contactphone/" + phone.Id);
+        var response = await HttpClient.DeleteAsync("api/journal/contactphone/" + phoneId);
 
-        if (response.IsSuccessStatusCode) _pageData!.PhoneNumbers.Remove(phone);
+        if (response.IsSuccessStatusCode) _pageData!.PhoneNumbers.RemoveAll(p => p.Id == phoneId);
         else
         {
             var errorMessage = (await response.Content.ReadAsStringAsync()).Split('\n').FirstOrDefault();

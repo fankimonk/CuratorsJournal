@@ -23,7 +23,7 @@
 }
 else
 {
-    <textarea cols="80" rows="15" @bind="_pageData.Content" @bind:after="Update" />
+    <textarea rows="28" @bind="_pageData.Content" @bind:after="Update" class="fullwidth" style="resize:none;" />
     <p>
         Ф. И. О., должность специалиста
         <select @bind="_pageData.WorkerId" @bind:after="Update" class="input underline">

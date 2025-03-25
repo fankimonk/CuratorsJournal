@@ -5,6 +5,7 @@
 @using Contracts.Journal.EducationalProcessSchedule
 @using Contracts.Mappers
 @using Contracts.Mappers.Journal
+@using Frontend.Components.Buttons
 @using Frontend.Components.Utils
 @using Frontend.Services
 
@@ -24,12 +25,12 @@ else
     <table class="table table-bordered">
         <thead>
             <tr>
-                <th class="text-center">Семестр</th>
-                <th class="text-center">Начало</th>
-                <th class="text-center">Окончание</th>
-                <th class="text-center">Сессия</th>
-                <th class="text-center">Практика</th>
-                <th class="text-center">Каникулы</th>
+                <th class="col-1 text-center">Семестр</th>
+                <th class="col-2 text-center">Начало</th>
+                <th class="col-2 text-center">Окончание</th>
+                <th class="col-2 text-center">Сессия</th>
+                <th class="col-3 text-center">Практика</th>
+                <th class="col-2 text-center">Каникулы</th>
             </tr>
         </thead>
         <tbody>
@@ -64,13 +65,15 @@ else
                         по <input type="date" @bind="record.VacationEndDate" @bind:after="async () => await Update(record)" class="input" />
                     </td>
                     <td>
-                        <button @onclick="async () => await Delete(record)" class="btn btn-close" />
+                        <DeleteButton @onclick="() => OpenDeleteModal(record.Id)" />
                     </td>
                 </tr>
             }
         </tbody>
     </table>
-    <button @onclick="Add" class="btn btn-outline-primary">Добавить строку</button>
+    <AddButton @onclick="Add">Добавить строку</AddButton>
+
+    <ConfirmDeleteModal IsVisible="_isDeleteModalVisible" OnClose="CloseDeleteModal" IdToDelete="_idToDelete" OnDeleteById="Delete" />
 
     <AlertBottom IsVisible="_isServerErrorAlertVisible" OnClose="CloseServerErrorAlert">@_errorMessage</AlertBottom>
 }
@@ -125,11 +128,11 @@ else
         }
     }
 
-    private async Task Delete(EducationalProcessScheduleRecordResponse record)
+    private async Task Delete(int recordId)
     {
-        var response = await HttpClient.DeleteAsync("api/journal/educationalprocessschedule/" + record.Id);
+        var response = await HttpClient.DeleteAsync("api/journal/educationalprocessschedule/" + recordId);
 
-        if (response.IsSuccessStatusCode) _pageData!.EducationalProcessSchedule.Remove(record);
+        if (response.IsSuccessStatusCode) _pageData!.EducationalProcessSchedule.RemoveAll(r => r.Id == recordId);
         else
         {
             var errorMessage = (await response.Content.ReadAsStringAsync()).Split('\n').FirstOrDefault();
