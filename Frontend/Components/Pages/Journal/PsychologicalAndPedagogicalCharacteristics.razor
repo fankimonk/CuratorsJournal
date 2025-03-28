@@ -6,6 +6,7 @@
 @using Contracts.Mappers
 @using Contracts.Mappers.Journal
 @using Contracts.Workers
+@using Frontend.Components.Buttons
 @using Frontend.Components.Utils
 @using Frontend.Services
 
@@ -36,6 +37,7 @@ else
                 </option>
             }
         </select>
+        <ReferenceButton Uri="/Workers" ButtonSize="ButtonSizes.Small" />
     </p>
     <p>
         Дата <input type="date" @bind="_pageData.Date" @bind:after="Update" class="input underline" />

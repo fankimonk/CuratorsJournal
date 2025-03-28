@@ -1,7 +1,7 @@
 ﻿namespace Contracts.Journal.FinalPerformanceAccounting
 {
-    public record UpdatePerformanceAccountingColumnRequest
-    (
-        int? SubjectId
-    );
+    public class UpdatePerformanceAccountingColumnRequest(int? subjectId)
+    {
+        public int? SubjectId { get; set; } = subjectId;
+    }
 }

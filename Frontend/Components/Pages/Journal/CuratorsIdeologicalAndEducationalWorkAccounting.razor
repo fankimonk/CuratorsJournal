@@ -25,7 +25,7 @@ else
 {
     <h3 class="d-flex justify-content-center">
         в 
-        <select @bind="_pageData.Attributes.Month" @bind:after="UpdateAttributes" class="input underline text-center">
+        <select @bind="_pageData.Attributes.Month" @bind:after="UpdateAttributes" class="input underline text-center me-2 ms-2">
             <option value="">(нет)</option>
             @foreach (var item in MonthsUtils.InMonthsNames)
             {
@@ -33,7 +33,7 @@ else
             }
         </select>
         <input type="number" min="0" max="10000" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))"
-        @bind="_pageData.Attributes.Year" @bind:after="UpdateAttributes" class="input underline text-center" />
+        @bind="_pageData.Attributes.Year" @bind:after="UpdateAttributes" class="input underline text-center" placeholder="год" />
     </h3>
     <table class="table table-bordered">
         <thead>

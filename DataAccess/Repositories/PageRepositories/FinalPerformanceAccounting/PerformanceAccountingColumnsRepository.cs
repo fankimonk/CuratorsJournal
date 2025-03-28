@@ -38,7 +38,7 @@ namespace DataAccess.Repositories.PageRepositories.FinalPerformanceAccounting
         {
             var column = await _dbContext.PerformanceAccountingColumns.AsNoTracking().FirstOrDefaultAsync(c => c.Id == id);
             if (column == null) return false;
-            if (!await CheckForDelete(column)) return false;
+            //if (!await CheckForDelete(column)) return false;
 
             await _dbContext.PerformanceAccountingGrades.Where(g => g.PerformanceAccountingColumnId == id).ExecuteDeleteAsync();
 
@@ -89,7 +89,7 @@ namespace DataAccess.Repositories.PageRepositories.FinalPerformanceAccounting
             toUpdate.SubjectId = column.SubjectId;
 
             await _dbContext.SaveChangesAsync();
-            return toUpdate;
+            return await _dbContext.PerformanceAccountingColumns.Include(c => c.Subject).AsNoTracking().FirstOrDefaultAsync(c => c.Id == id);
         }
 
         public async Task<bool> PageExists(int id) => await PageExists(id, PageTypes.FinalPerformanceAccounting);
@@ -111,7 +111,7 @@ namespace DataAccess.Repositories.PageRepositories.FinalPerformanceAccounting
 
             if (certificationType == null) return false;
 
-            return !((certificationType.Id == 1 || certificationType.Id == 2) && (certificationType.PerformanceAccountingColumns.Count <= 6));
+            return !((certificationType.Id == 1 || certificationType.Id == 2) && (certificationType.PerformanceAccountingColumns.Where(c => c.PageId == column.PageId).Count() <= 6));
         }
     }
 }

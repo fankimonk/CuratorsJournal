@@ -21,7 +21,38 @@
 }
 else
 {
-    @foreach (var ht in _pageData.HolidayTypes)
+    <AddButton @onclick="OpenAddTypeModal" IsDisabled="_pageData.HolidayTypes.Where(ht => ht.Holidays.Count == 0).Count() == 0">Добавить категорию</AddButton>
+    <Modal IsVisible="_isAddTypeModalVisible" OnClose="CloseAddTypeModal">
+        <div class="container">
+            <div class="row">
+                <div class="col d-flex align-items-center justify-content-center">
+                    <h3>Добавить категорию</h3>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col d-flex align-items-center justify-content-center">
+                    <select @bind="_typeToAddId" class="input underline mb-3 fullwidth">
+                        @foreach (var ht in _pageData.HolidayTypes.Where(ht => ht.Holidays.Count == 0))
+                        {
+                            <option @key="ht.Id" value="@ht.Id">@ht.Name</option>
+                        }
+                    </select>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col d-flex align-items-start justify-content-start">
+                    <ReferenceButton Uri="/HolidayTypes">Категории праздников</ReferenceButton>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col d-flex align-items-center justify-content-center">
+                    <AddButton IsDisabled="@(_typeToAddId == -1)" @onclick="async () => { await Add(_typeToAddId); CloseAddTypeModal(); }" style="width:100%">Добавить</AddButton>
+                </div>
+            </div>
+        </div>
+    </Modal>
+
+    @foreach (var ht in _pageData.HolidayTypes.Where(ht => ht.Holidays.Count > 0))
     {
         <h3 class="d-flex justify-content-center">
             @ht.Name
@@ -80,11 +111,9 @@ else
 
     private HolidaysPageResponse? _pageData;
 
-    private bool _isModalVisible = false;
+    private int _typeToAddId = -1;
 
-    [SupplyParameterFromForm]
-    public UpdateHolidayTypeRequest TypeToEdit { get; set; } = new("");
-    private int _typeToEditId = -1;
+    private bool _isAddTypeModalVisible = false;
 
     protected override async Task OnInitializedAsync()
     {
@@ -135,5 +164,16 @@ else
             var errorMessage = (await response.Content.ReadAsStringAsync()).Split('\n').FirstOrDefault();
             ShowServerErrorAlert(errorMessage);
         }
+    }
+
+    private void OpenAddTypeModal()
+    {
+        _isAddTypeModalVisible = true;
+    }
+
+    private void CloseAddTypeModal()
+    {
+        _isAddTypeModalVisible = false;
+        _typeToAddId = -1;
     }
 }

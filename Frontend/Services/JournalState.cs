@@ -30,6 +30,7 @@ namespace Frontend.Services
                 JournalId = journalId;
                 await FetchContents();
 
+                PageTypesNavLinksExpanded.Clear();
                 foreach (var pt in JournalContents!.PageTypes.Where(pt => pt.MaxPages != 1))
                 {
                     PageTypesNavLinksExpanded.Add(pt.Id, false);

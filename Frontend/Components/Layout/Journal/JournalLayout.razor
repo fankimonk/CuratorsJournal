@@ -1,5 +1,6 @@
 ﻿@using Contracts.Journal
 @using Contracts.Journal.Pages
+@using Frontend.Components.Buttons
 @using Frontend.Services
 
 @inherits LayoutComponentBase
@@ -14,22 +15,31 @@
     </div>
 
     <main>
-        <div class="top-row px-4">
+        <div class="top-row px-4 justify-content-between">
             @if (JournalState.CurrentPageNode != null)
             {
-                @* <div class="container">
-                    <div class="row justify-content-lg-end">
-                        <div class="col-1 d-flex align-items-center justify-content-center">
-                            
-                        </div>
-                        <div class="col-1 d-flex align-items-center justify-content-center">
-                            
-                        </div>
-                    </div>
-                </div> *@
-                <button @onclick="GoToThePrevPage" class="btn btn-primary" disabled="@IsPrevButtonDisabled()">Назад</button>
-                <button @onclick="GoToTheNextPage" class="btn btn-primary ms-4" disabled="@IsNextButtonDisabled()">Вперед</button>
-                
+                <div class="col-2">
+                    @switch (JournalState.CurrentPageNode.Value.PageType!.Id)
+                    {
+                        case 3:
+                            <ReferenceButton Uri="/HolidayTypes">Категории праздников</ReferenceButton>
+                            break;
+                        case 4:
+                            <ReferenceButton>Учебные годы</ReferenceButton>
+                            break;
+                        case 7:
+                            <ReferenceButton>Студенты</ReferenceButton>
+                            break;
+                        case 10:
+                            <ReferenceButton>Учебные годы</ReferenceButton>
+                            break;
+                    }
+                </div>
+
+                <div class="col-0">
+                    <button @onclick="GoToThePrevPage" class="btn btn-primary ms-5" disabled="@IsPrevButtonDisabled()">Назад</button>
+                    <button @onclick="GoToTheNextPage" class="btn btn-primary ms-2" disabled="@IsNextButtonDisabled()">Вперед</button>
+                </div>
             }
         </div>
 

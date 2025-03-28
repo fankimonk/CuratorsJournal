@@ -101,7 +101,7 @@ namespace API.Controllers
 
             var column = new PerformanceAccountingColumn
             {
-                CertificationTypeId = request.CertificationTypeId,
+                CertificationTypeId = (int)request.CertificationTypeId,
                 PageId = request.PageId,
                 SubjectId = request.SubjectId
             };

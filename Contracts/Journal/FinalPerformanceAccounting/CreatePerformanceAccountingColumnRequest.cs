@@ -1,15 +1,17 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Contracts.Journal.FinalPerformanceAccounting
 {
-    public record CreatePerformanceAccountingColumnRequest
-    (
+    public class CreatePerformanceAccountingColumnRequest(int? certificationTypeId, int? subjectId, int pageId)
+    {
         [Required]
-        int CertificationTypeId,
+        [NotNull]
+        public int? CertificationTypeId { get; set; } = certificationTypeId;
 
-        int? SubjectId,
+        public int? SubjectId { get; set; } = subjectId;
 
         [Required]
-        int PageId
-    );
+        public int PageId { get; set; } = pageId;
+    }
 }

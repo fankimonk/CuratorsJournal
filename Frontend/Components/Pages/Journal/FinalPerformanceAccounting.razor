@@ -6,6 +6,7 @@
 @using Contracts.Journal
 @using Contracts.Journal.FinalPerformanceAccounting
 @using Contracts.Students
+@using Contracts.Subjects
 @using Frontend.Components.Buttons
 @using Frontend.Components.Utils
 @using Frontend.Services
@@ -17,17 +18,74 @@
 
 <h3 class="d-flex justify-content-center">УЧЕТ ИТОГОВОЙ УСПЕВАЕМОСТИ СТУДЕНТОВ ГРУППЫ</h3>
 
-@if (_pageData == null || _students == null)
+@if (_pageData == null || _students == null || _subjects == null || _certificationTypes == null)
 {
     <p><em>Загрузка...</em></p>
 }
 else
 {
+    <div class="mb-3">
+        <AddButton @onclick="OpenAddColumnModal">Добавить столбец</AddButton>
+    </div>
+
+    <Modal IsVisible="_isAddColumnModalVisible" OnClose="CloseAddColumnModal">
+        <div class="row">
+            <div class="col d-flex align-items-center justify-content-center">
+                <h3>Добавить столбец</h3>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <EditForm method="post" Model="_addColumnRequest" OnValidSubmit="AddColumn" FormName="add" Enhance>
+                    <div class="mb-3">
+                        <InputSelect id="certificationType" 
+                        TValue="int?" 
+                        Value="_addColumnRequest.CertificationTypeId" 
+                        ValueChanged="ResetAddColumnRequestSubject"
+                        ValueExpression="@(() => _addColumnRequest.CertificationTypeId)"
+                        class="form-control">
+                            <option value="">(нет)</option>
+                            @foreach (var ct in _certificationTypes)
+                            {
+                                <option @key="ct.Id" value="@ct.Id">@ct.Name</option>
+                            }
+                        </InputSelect>
+                    </div>
+                    <div class="mb-3">
+                        <ReferenceButton Uri="/CertificationTypes">Типы аттестации</ReferenceButton>
+                    </div>
+                    @if (_addColumnRequest.CertificationTypeId != null)
+                    {
+                        <div class="mb-3">
+                            <label for="subject" class="form-label">Предмет: </label>
+                            <InputSelect id="subject" @bind-Value="_addColumnRequest.SubjectId" class="form-control">
+                                <option value="">(нет)</option>
+                                @foreach (var s in GetSubjectsThatAreNotInCertificationType((int)_addColumnRequest.CertificationTypeId))
+                                {
+                                    <option @key="s.Id" value="@s.Id">@s.Name</option>
+                                }
+                            </InputSelect>
+                        </div>
+                        <div class="mb-3">
+                            <ReferenceButton Uri="/Subjects">Предметы</ReferenceButton>
+                        </div>
+                    }
+                    <div class="mb-3">
+                        <EditButton type="submit" style="width:100%;">Добавить</EditButton>
+                    </div>
+                </EditForm>
+            </div>
+        </div>
+    </Modal>
+
     <table class="table table-bordered">
         <thead>
             <tr>
                 <th rowspan="3" class="col-1 text-center align-middle">№</th>
-                <th rowspan="3" class="col-2 text-center align-middle">Ф. И. О. студента</th>
+                <th rowspan="3" class="col-2 text-center align-middle">
+                    Ф. И. О. студента
+                    <ReferenceButton Uri="/Students" ButtonSize="ButtonSizes.Small" />
+                </th>
                 <th colspan="@GetColumnCount()" class="col-9 text-center align-middle">Название дисциплины</th>
             </tr>
             <tr>
@@ -41,7 +99,7 @@ else
                 {
                     @foreach (var column in ct.PerformanceAccountingColumns!)
                     {
-                        <th class="text-center align-middle">@column.SubjectResponse?.Name</th>
+                        <th class="text-center align-middle" @onclick="() => OpenEditColumnModal(column)" style="cursor:pointer;">@column.SubjectResponse?.AbbreviatedName</th>
                     }
                 }
             </tr>
@@ -73,7 +131,8 @@ else
                             <td class="@GetCellClass(grade!.Id)">
                                 @if (ct.Id != 2)
                                 {
-                                    <input type="number" min="0" max="10" @bind="grade!.Grade" @bind:after="async () => await UpdateGrade(grade)" />
+                                    <input type="number" min="0" max="10" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))"
+                                    @bind="grade!.Grade" @bind:after="async () => await UpdateGrade(grade)" />
                                 }
                                 else
                                 {
@@ -94,6 +153,43 @@ else
 
     <ConfirmDeleteModal IsVisible="_isDeleteModalVisible" OnClose="CloseDeleteModal" IdToDelete="_idToDelete" OnDeleteById="DeleteRecord" />
 
+    <Modal IsVisible="_isEditColumnModalVisible" OnClose="CloseEditColumnModal">
+        <div class="row">
+            <div class="col d-flex align-items-center justify-content-center">
+                <h3>Редактировать столбец</h3>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <EditForm method="put" Model="_editColumnRequest" OnValidSubmit="UpdateColumn" FormName="edit" Enhance>
+                    <div class="mb-3">
+                        <label for="subject" class="form-label">Предмет: </label>
+                        <InputSelect id="subject" @bind-Value="_editColumnRequest.SubjectId" class="form-control">
+                            <option value="">(нет)</option>
+                            @foreach (var s in GetSubjectsThatAreNotInCertificationType(_columnToEdit.CertificationTypeId, _columnToEdit.SubjectResponse?.Id))
+                            {
+                                <option @key="s.Id" value="@s.Id">@s.Name</option>
+                            }
+                        </InputSelect>
+                    </div>
+                    <div class="mb-3">
+                        <ReferenceButton Uri="/Subjects">Предметы</ReferenceButton>
+                    </div>
+                    <div class="mb-3">
+                        <EditButton type="submit" style="width:100%;">Сохранить</EditButton>
+                    </div>
+                </EditForm>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <DeleteButton @onclick="() => OpenDeleteColumnModal(_columnToEdit.Id)" style="width:100%;">Удалить</DeleteButton>
+            </div>
+        </div>
+    </Modal>
+
+    <ConfirmDeleteModal IsVisible="_isDeleteColumnModalVisible" OnClose="CloseDeleteColumnModal" IdToDelete="_idToDelete" OnDeleteById="DeleteColumn" />
+
     <AlertBottom IsVisible="_isServerErrorAlertVisible" OnClose="CloseServerErrorAlert">@_errorMessage</AlertBottom>
 }
 
@@ -107,13 +203,36 @@ else
     private FinalPerformanceAccountingPageResponse? _pageData;
 
     private List<StudentResponse>? _students;
+    private List<SubjectResponse>? _subjects;
+    private List<CertificationTypeResponse>? _certificationTypes;
+
+    private bool _isEditColumnModalVisible = false;
+    private bool _isDeleteColumnModalVisible = false;
+
+    [SupplyParameterFromForm]
+    private UpdatePerformanceAccountingColumnRequest _editColumnRequest { get; set; } = new(-1);
+    private PerformanceAccountingColumnResponse _columnToEdit { get; set; } = new(-1, -1, null);
+
+    private bool _isAddColumnModalVisible = false;
+
+    [SupplyParameterFromForm]
+    private CreatePerformanceAccountingColumnRequest _addColumnRequest { get; set; } = new(null, null, -1);
 
     protected override async Task OnInitializedAsync()
     {
         await JournalState.Initialize(JournalId, PageId);
 
-        _pageData = await HttpClient.GetFromJsonAsync<FinalPerformanceAccountingPageResponse>("api/journal/finalperformanceaccounting/" + PageId.ToString());
+        await FetchPageData();
         _students = await HttpClient.GetFromJsonAsync<List<StudentResponse>>("api/student/getbyjournal/" + JournalId.ToString());
+        _subjects = await HttpClient.GetFromJsonAsync<List<SubjectResponse>>("api/subject");
+        _certificationTypes = await HttpClient.GetFromJsonAsync<List<CertificationTypeResponse>>("api/certificationtype");
+
+        _addColumnRequest.PageId = PageId;
+    }
+
+    private async Task FetchPageData()
+    {
+        _pageData = await HttpClient.GetFromJsonAsync<FinalPerformanceAccountingPageResponse>("api/journal/finalperformanceaccounting/" + PageId.ToString());
     }
 
     private int GetColumnCount() => _pageData!.CertificationTypes.SelectMany(ct => ct.PerformanceAccountingColumns!).Count();
@@ -179,4 +298,115 @@ else
             ShowServerErrorAlert(errorMessage);
         }
     }
+
+    private async Task UpdateColumn()
+    {
+        var response = await HttpClient.PutAsJsonAsync<UpdatePerformanceAccountingColumnRequest>
+            ("api/journal/finalperformanceaccounting/column/" + _columnToEdit.Id, _editColumnRequest);
+
+        if (response.IsSuccessStatusCode)
+        {
+            var updated = await response.Content.ReadFromJsonAsync<PerformanceAccountingColumnResponse>();
+            _columnToEdit.SubjectResponse = updated!.SubjectResponse;
+
+            StateHasChanged();
+            CloseEditColumnModal();
+        }
+        else
+        {
+            var errorMessage = (await response.Content.ReadAsStringAsync()).Split('\n').FirstOrDefault();
+            ShowServerErrorAlert(errorMessage);
+        }
+    }
+
+    private async Task DeleteColumn(int id)
+    {
+        var response = await HttpClient.DeleteAsync("api/journal/finalperformanceaccounting/column/" + id);
+
+        if (response.IsSuccessStatusCode)
+        {
+            var certificationType = _pageData!.CertificationTypes
+                .FirstOrDefault(ct => ct.Id == _columnToEdit.CertificationTypeId);
+
+            certificationType!.PerformanceAccountingColumns!.RemoveAll(r => r.Id == id);
+
+            if (certificationType.PerformanceAccountingColumns.Count == 0) _pageData.CertificationTypes.Remove(certificationType);
+
+            CloseEditColumnModal();
+        }
+        else
+        {
+            var errorMessage = (await response.Content.ReadAsStringAsync()).Split('\n').FirstOrDefault();
+            ShowServerErrorAlert(errorMessage);
+        }
+    }
+
+    private async Task AddColumn()
+    {
+        var response = await HttpClient.PostAsJsonAsync<CreatePerformanceAccountingColumnRequest>("api/journal/finalperformanceaccounting/column", _addColumnRequest);
+
+        if (response.IsSuccessStatusCode)
+        {
+            await FetchPageData();
+            CloseAddColumnModal();
+        }
+        else
+        {
+            var errorMessage = (await response.Content.ReadAsStringAsync()).Split('\n').FirstOrDefault();
+            ShowServerErrorAlert(errorMessage);
+        }
+    }
+
+    private void OpenEditColumnModal(PerformanceAccountingColumnResponse column)
+    {
+        _editColumnRequest = new UpdatePerformanceAccountingColumnRequest(column.SubjectResponse?.Id);
+        _columnToEdit = column;
+        _isEditColumnModalVisible = true;
+    }
+
+    private void CloseEditColumnModal()
+    {
+        _isEditColumnModalVisible = false;
+        _editColumnRequest = new(-1);
+        _columnToEdit = new(-1, -1, null);
+    }
+
+    private IEnumerable<SubjectResponse> GetSubjectsThatAreNotInCertificationType(int certificationTypeId, int? subjectId = null)
+    {
+        return _subjects!.Where(s => !_pageData!.CertificationTypes
+                         .FirstOrDefault(ct => ct.Id == certificationTypeId)!
+                         .PerformanceAccountingColumns!.Select(c => c.SubjectResponse?.Id)
+                         .Contains(s.Id) || subjectId == s.Id);
+    }
+
+    private void CloseDeleteColumnModal()
+    {
+        _isDeleteColumnModalVisible = false;
+        _idToDelete = null;
+    }
+
+    private void OpenDeleteColumnModal(int idToDelete)
+    {
+        _idToDelete = idToDelete;
+        _isDeleteColumnModalVisible = true;
+    }
+
+    private void OpenAddColumnModal()
+    {
+        _isAddColumnModalVisible = true;
+    }
+
+    private void CloseAddColumnModal()
+    {
+        _isAddColumnModalVisible = false;
+        _addColumnRequest = new(null, null, PageId);
+    }
+
+    private void ResetAddColumnRequestSubject(int? ctId)
+    {
+        _addColumnRequest.CertificationTypeId = ctId;
+        _addColumnRequest.SubjectId = null;
+    }
+
+    private bool IsAddColumnModalSubjectSelectDisabled() => _addColumnRequest.CertificationTypeId == null;
 }

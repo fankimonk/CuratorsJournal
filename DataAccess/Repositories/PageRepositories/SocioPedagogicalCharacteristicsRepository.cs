@@ -8,27 +8,6 @@ namespace DataAccess.Repositories.PageRepositories
     public class SocioPedagogicalCharacteristicsRepository(CuratorsJournalDBContext dBContext)
         : PageRepositoryBase(dBContext), ISocioPedagogicalCharacteristicsRepository
     {
-        public async Task<SocioPedagogicalCharacteristics?> CreateAsync(SocioPedagogicalCharacteristics characteristics)
-        {
-            if (characteristics == null) return null;
-            if (!await PageExists(characteristics.PageId)) return null;
-
-            var createdCharacteristics = await _dbContext.SocioPedagogicalCharacteristics.AddAsync(characteristics);
-
-            await _dbContext.SaveChangesAsync();
-
-            return createdCharacteristics.Entity;
-        }
-
-        public async Task<bool> DeleteAsync(int id)
-        {
-            var deletedRows = await _dbContext.SocioPedagogicalCharacteristics.Where(c => c.Id == id).ExecuteDeleteAsync();
-            if (deletedRows < 1) return false;
-
-            await _dbContext.SaveChangesAsync();
-            return true;
-        }
-
         public async Task<SocioPedagogicalCharacteristics?> GetByPageIdAsync(int id)
         {
             var pageExists = await PageExists(id);
@@ -66,7 +45,7 @@ namespace DataAccess.Repositories.PageRepositories
             characteristicsToUpdate.OtherInformation = characteristics.OtherInformation;
 
             await _dbContext.SaveChangesAsync();
-            return characteristicsToUpdate;
+            return await GetByPageIdAsync(characteristicsToUpdate.PageId);
         }
 
         public async Task<bool> PageExists(int id) => await PageExists(id, PageTypes.SocioPedagogicalCharacteristics);

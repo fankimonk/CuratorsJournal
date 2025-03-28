@@ -136,7 +136,7 @@ else
     </p>
     <p>
         16. Другие сведения <br />
-        <input @bind="_pageData.OtherInformation" @bind:after="Update" class="input fullwidth underline" />
+        <textarea rows="4" style="resize:vertical;" @bind="_pageData.OtherInformation" @bind:after="Update" class="fullwidth" />
     </p>
 
     <AlertBottom IsVisible="_isServerErrorAlertVisible" OnClose="CloseServerErrorAlert">@_errorMessage</AlertBottom>
@@ -171,8 +171,6 @@ else
 
     private async Task Update()
     {
-        Console.WriteLine("Update socio pedagogical characteristics");
-
         var request = _pageData!.ToRequest();
         var response = await HttpClient.PutAsJsonAsync<UpdateSocioPedagogicalCharacteristicsRequest>
             ("api/journal/sociopedagogicalcharacteristics/" + _pageData!.Id, request);

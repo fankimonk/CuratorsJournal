@@ -3,6 +3,7 @@
 @using Contracts.Journal.PersonalizedAccountingCards
 @using Contracts.Students
 @using Contracts.Mappers.Journal.PersonalizedAccountingCards
+@using Frontend.Components.Buttons
 @using Frontend.Services
 
 @inject HttpClient HttpClient
@@ -27,6 +28,7 @@ else
                 <option @key="student.Id" value="@student.Id">@student.LastName @student.FirstName @student.MiddleName</option>
             }
         </select>
+        <ReferenceButton ButtonSize="ButtonSizes.Small" />
     </p>
     <p>
         Дата рождения 

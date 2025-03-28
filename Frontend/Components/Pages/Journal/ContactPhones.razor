@@ -29,7 +29,7 @@ else
                 <tr class="@GetRowClass(phone.Id)">
                     <td class="align-middle col-6">
                         @* <GrowingTextArea @bind-Value="phone.Name" /> *@
-                        <input @bind="phone.Name" @bind:after='async () => await Update(phone)' class="input fullwidth" />
+                        <textarea rows="1" style="resize:vertical" @bind="phone.Name" @bind:after='async () => await Update(phone)' class="input fullwidth" />
                     </td>
                     <td class="align-top col-6">
                         <input type="tel" maxlength="19" @bind="phone.PhoneNumber" @bind:after='async () => await Update(phone)' class="input fullwidth" />
@@ -63,6 +63,11 @@ else
         await JournalState.Initialize(JournalId, PageId);
 
         _pageData = await HttpClient.GetFromJsonAsync<ContactPhonesPageResponse>("api/journal/contactphone/" + PageId.ToString());
+    }
+
+    private async Task UpdateName(string name)
+    {
+        
     }
 
     private async Task Update(ContactPhoneResponse phone)

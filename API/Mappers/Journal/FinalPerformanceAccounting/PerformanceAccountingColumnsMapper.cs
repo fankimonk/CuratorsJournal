@@ -24,7 +24,7 @@ namespace API.Mappers.Journal.FinalPerformanceAccounting
         {
             return new PerformanceAccountingColumn
             {
-                CertificationTypeId = request.CertificationTypeId,
+                CertificationTypeId = (int)request.CertificationTypeId,
                 SubjectId = request.SubjectId,
                 PageId = request.PageId
             };
