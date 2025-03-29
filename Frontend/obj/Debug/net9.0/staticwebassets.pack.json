@@ -5,10 +5,6 @@
       "PackagePath": "staticwebassets\\Frontend.3t1u8wvsoe.bundle.scp.css"
     },
     {
-      "Id": "C:\\Dev\\Web\\CuratorsJournal\\Frontend\\wwwroot\\InputStyles.css",
-      "PackagePath": "staticwebassets\\InputStyles.css"
-    },
-    {
       "Id": "C:\\Dev\\Web\\CuratorsJournal\\Frontend\\wwwroot\\app.css",
       "PackagePath": "staticwebassets\\app.css"
     },
@@ -191,6 +187,14 @@
     {
       "Id": "C:\\Dev\\Web\\CuratorsJournal\\Frontend\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.min.js.map",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.min.js.map"
+    },
+    {
+      "Id": "C:\\Dev\\Web\\CuratorsJournal\\Frontend\\wwwroot\\mystyles.css",
+      "PackagePath": "staticwebassets\\mystyles.css"
+    },
+    {
+      "Id": "C:\\Dev\\Web\\CuratorsJournal\\Frontend\\wwwroot\\textarea.js",
+      "PackagePath": "staticwebassets\\textarea.js"
     },
     {
       "Id": "obj\\Debug\\net9.0\\staticwebassets\\msbuild.Frontend.Microsoft.AspNetCore.StaticWebAssetEndpoints.props",

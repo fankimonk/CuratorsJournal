@@ -11,3 +11,14 @@
 .fullwidth {
     width: 100%;
 }
+
+.flex-container {
+    display: flex;
+    align-items: center;
+}
+
+.flex-input {
+    flex: 1;
+    margin-left: 8px;
+    margin-right: 8px;
+}

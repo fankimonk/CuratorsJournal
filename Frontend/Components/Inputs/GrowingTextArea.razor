@@ -1,17 +1,25 @@
 ﻿@inject IJSRuntime JSRuntime
 
 <textarea rows="1"
-    @bind="Value"
-    class="input fullwidth"
-    data-auto-resize="true"
-    style="overflow:hidden; resize:none;"
-    oninput="this.style.height = 'auto'; this.style.height = (this.scrollHeight) + 'px';">
+id="@Id"
+@bind="Value"
+class="input fullwidth"
+style="overflow:hidden; resize:none;"
+oninput="this.style.height = 'auto'; this.style.height = (this.scrollHeight) + 'px';">
 </textarea>
 
 @code {
     [Parameter]
-    public virtual string Value { get; set; } = string.Empty;
+    public string Value { get; set; } = string.Empty;
 
     [Parameter] 
     public EventCallback<string> ValueChanged { get; set; }
+
+    [Parameter]
+    public int Id { get; set; }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await JSRuntime.InvokeVoidAsync("resizeTextArea", Id);
+    }
 }

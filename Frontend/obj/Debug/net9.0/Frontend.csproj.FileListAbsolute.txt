@@ -99,4 +99,5 @@ C:\Dev\Web\CuratorsJournal\Frontend\bin\Debug\net9.0\Microsoft.JSInterop.dll
 C:\Dev\Web\CuratorsJournal\Frontend\obj\Debug\net9.0\compressed\unlu0xluo6-eu7w3d5g1a.gz
 C:\Dev\Web\CuratorsJournal\Frontend\obj\Debug\net9.0\compressed\3gin1ph7ub-25o87uqmvr.gz
 C:\Dev\Web\CuratorsJournal\Frontend\obj\Debug\net9.0\compressed\wkaqiq4loj-3oqa5jn5xg.gz
-C:\Dev\Web\CuratorsJournal\Frontend\obj\Debug\net9.0\compressed\nm5xq5vcse-jti8vopcpo.gz
+C:\Dev\Web\CuratorsJournal\Frontend\obj\Debug\net9.0\compressed\40c5ve33ph-kbylhf9is7.gz
+C:\Dev\Web\CuratorsJournal\Frontend\obj\Debug\net9.0\compressed\yfpirp1akv-cw3ymtwl3x.gz

@@ -5,6 +5,7 @@ C:\Dev\Web\CuratorsJournal\Frontend\wwwroot\lib\bootstrap\dist\js\bootstrap.esm.
 C:\Dev\Web\CuratorsJournal\Frontend\wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.min.css.map
 C:\Dev\Web\CuratorsJournal\Frontend\wwwroot\lib\bootstrap\dist\css\bootstrap.rtl.css.map
 C:\Dev\Web\CuratorsJournal\Frontend\wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.css
+C:\Dev\Web\CuratorsJournal\Frontend\wwwroot\textarea.js
 C:\Dev\Web\CuratorsJournal\Frontend\wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.js.map
 C:\Dev\Web\CuratorsJournal\Frontend\wwwroot\lib\bootstrap\dist\css\bootstrap-grid.rtl.css
 C:\Dev\Web\CuratorsJournal\Frontend\wwwroot\lib\bootstrap\dist\css\bootstrap.css.map
@@ -27,7 +28,6 @@ C:\Dev\Web\CuratorsJournal\Frontend\wwwroot\lib\bootstrap\dist\css\bootstrap-reb
 C:\Dev\Web\CuratorsJournal\Frontend\wwwroot\lib\bootstrap\dist\js\bootstrap.esm.min.js
 C:\Dev\Web\CuratorsJournal\Frontend\wwwroot\lib\bootstrap\dist\css\bootstrap.css
 C:\Dev\Web\CuratorsJournal\Frontend\wwwroot\lib\bootstrap\dist\js\bootstrap.min.js.map
-C:\Dev\Web\CuratorsJournal\Frontend\wwwroot\InputStyles.css
 C:\Dev\Web\CuratorsJournal\Frontend\wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.css.map
 C:\Dev\Web\CuratorsJournal\Frontend\wwwroot\lib\bootstrap\dist\js\bootstrap.min.js
 C:\Dev\Web\CuratorsJournal\Frontend\wwwroot\lib\bootstrap\dist\js\bootstrap.js
@@ -42,11 +42,11 @@ C:\Dev\Web\CuratorsJournal\Frontend\wwwroot\lib\bootstrap\dist\css\bootstrap-gri
 C:\Dev\Web\CuratorsJournal\Frontend\wwwroot\app.css
 C:\Dev\Web\CuratorsJournal\Frontend\wwwroot\lib\bootstrap\dist\css\bootstrap-grid.rtl.min.css.map
 C:\Dev\Web\CuratorsJournal\Frontend\wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.min.js
+C:\Dev\Web\CuratorsJournal\Frontend\wwwroot\mystyles.css
 C:\Dev\Web\CuratorsJournal\Frontend\wwwroot\lib\bootstrap\dist\css\bootstrap-grid.rtl.min.css
 C:\Dev\Web\CuratorsJournal\Frontend\wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.min.js.map
 wwwroot\app.css
 wwwroot\favicon.png
-wwwroot\InputStyles.css
 wwwroot\lib\bootstrap\dist\css\bootstrap.css
 wwwroot\lib\bootstrap\dist\css\bootstrap.css.map
 wwwroot\lib\bootstrap\dist\css\bootstrap.min.css
@@ -91,3 +91,5 @@ wwwroot\lib\bootstrap\dist\js\bootstrap.js
 wwwroot\lib\bootstrap\dist\js\bootstrap.js.map
 wwwroot\lib\bootstrap\dist\js\bootstrap.min.js
 wwwroot\lib\bootstrap\dist\js\bootstrap.min.js.map
+wwwroot\mystyles.css
+wwwroot\textarea.js

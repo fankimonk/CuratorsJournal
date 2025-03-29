@@ -10,6 +10,7 @@
 
 @inject HttpClient HttpClient
 @inject JournalState JournalState
+@inject IJSRuntime JSRuntime
 
 <PageTitle>Динамика основных показателей группы за период обучения</PageTitle>
 
@@ -57,7 +58,8 @@ else
                         </td>
                     }
                     <td>
-                        <input @bind="record.Note" @bind:after='async () => await UpdateRecord(record)' class="input fullwidth" />
+                        <textarea rows="1" style="overflow:hidden; resize:none;" oninput="this.style.height = 'auto'; this.style.height = (this.scrollHeight) + 'px';"
+                            @bind="record.Note" @bind:after='async () => await UpdateRecord(record)' class="input fullwidth" />
                     </td>
                 </tr>
             }
@@ -102,6 +104,12 @@ else
             ("api/journal/dynamicsofkeyindicators/" + PageId.ToString());
 
         UpdateCourses();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await Task.Delay(10);
+        await JSRuntime.InvokeVoidAsync("resizeTextAreas");
     }
 
     private void UpdateCourses()

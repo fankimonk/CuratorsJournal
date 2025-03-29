@@ -1,13 +1,17 @@
 ﻿@page "/journal/{journalId:int}/PersonalizedAccountingCard/{pageId:int}"
 
+@inherits PageBase
+
 @using Contracts.Journal.PersonalizedAccountingCards
 @using Contracts.Students
 @using Contracts.Mappers.Journal.PersonalizedAccountingCards
 @using Frontend.Components.Buttons
+@using Frontend.Components.Utils
 @using Frontend.Services
 
 @inject HttpClient HttpClient
 @inject JournalState JournalState
+@inject IJSRuntime JSRuntime
 
 <PageTitle>Карта персонифицированного учета</PageTitle>
 
@@ -19,9 +23,9 @@
 }
 else
 {
-    <p>
+    <p class="flex-container">
         <b>Фамилия, имя отчество </b>
-        <select @bind="_pageData.StudentId" @bind:after="Update" class="input underline">
+        <select @bind="_pageData.StudentId" @bind:after="Update" class="input underline flex-input">
             <option value="">(нет)</option>
             @foreach (var student in _students)
             {
@@ -30,33 +34,43 @@ else
         </select>
         <ReferenceButton ButtonSize="ButtonSizes.Small" />
     </p>
-    <p>
+    <p class="flex-container">
         Дата рождения 
-        <input type="date" @bind="_pageData.BirthDate" @bind:after="Update" class="input underline" />
+        <input type="date" @bind="_pageData.BirthDate" @bind:after="Update" class="input underline flex-input" />
     </p>
     <p>
-        Пасспортные данные
-        <input @bind="_pageData.PassportData" @bind:after="Update" class="input underline" />
+        Паспортные данные <br/>
+        <textarea rows="1" style="overflow:hidden; resize:none;" oninput="this.style.height = 'auto'; this.style.height = (this.scrollHeight) + 'px';"
+            @bind="_pageData.PassportData" @bind:after="Update" class="input underline fullwidth" />
     </p>
-    <p>
+    <p class="flex-container">
         гражданство
-        <input @bind="_pageData.Citizenship" @bind:after="Update" class="input underline" />
+        <input @bind="_pageData.Citizenship" @bind:after="Update" class="input underline flex-input" />
     </p>
     <p>
-        Окончил УО
-        <input @bind="_pageData.GraduatedEducationalInstitution" @bind:after="Update" class="input underline" />
+        Окончил УО <br/>
+        <textarea rows="1" style="overflow:hidden; resize:none;" oninput="this.style.height = 'auto'; this.style.height = (this.scrollHeight) + 'px';"
+            @bind="_pageData.GraduatedEducationalInstitution" @bind:after="Update" class="input underline fullwidth" />
     </p>
     <p>
-        Место и адрес проживания в период обучения
-        <input @bind="_pageData.ResidentialAddress" @bind:after="Update" class="input underline" />
+        Место и адрес проживания в период обучения <br/>
+        <textarea rows="1" style="overflow:hidden; resize:none;" oninput="this.style.height = 'auto'; this.style.height = (this.scrollHeight) + 'px';"
+            @bind="_pageData.ResidentialAddress" @bind:after="Update" class="input underline fullwidth" />
     </p>
 
-    <ParentalInformation CardId="_pageData.Id" />
+    <div class="mb-5"></div>
+
+    <div class="mb-5">
+        <ParentalInformation CardId="_pageData.Id" />
+    </div>
+
     <IndividualInformation CardId="_pageData.Id" />
     <StudentEncouragements CardId="_pageData.Id" />
     <StudentDisciplinaryResponsibilities CardId="_pageData.Id" />
     <IndividualWorkWithStudent CardId="_pageData.Id" />
     <WorkWithParents CardId="_pageData.Id" />
+
+    <AlertBottom IsVisible="_isServerErrorAlertVisible" OnClose="CloseServerErrorAlert">@_errorMessage</AlertBottom>
 }
 
 @code {
@@ -70,35 +84,30 @@ else
 
     private List<StudentResponse>? _students;
 
-    // private List<StudentDisciplinaryResponsibilityResponse>? _studentResponsibilities;
-
     protected override async Task OnInitializedAsync()
     {
         await JournalState.Initialize(JournalId, PageId);
 
         _pageData = await HttpClient.GetFromJsonAsync<PersonalizedAccountingCardResponse>("api/journal/personalizedaccountingcard/" + PageId.ToString());
         _students = await HttpClient.GetFromJsonAsync<List<StudentResponse>>("api/student/getbyjournal/" + JournalId.ToString());
+    }
 
-        // if (_pageData != null)
-        // {
-            
-
-        //     _studentResponsibilities = await HttpClient.GetFromJsonAsync<List<StudentDisciplinaryResponsibilityResponse>>
-        //         ("api/journal/personalizedaccountingcard/studentdisciplinaryresponsibility/" + _pageData.Id);
-        // }
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await Task.Delay(10);
+        await JSRuntime.InvokeVoidAsync("resizeTextAreas");
     }
 
     private async Task Update()
     {
-        Console.WriteLine("Update accounting card");
-
         var request = _pageData!.ToRequest();
         var response = await HttpClient.PutAsJsonAsync<UpdatePersonalizedAccountingCardRequest>
             ("api/journal/personalizedaccountingcard/" + _pageData!.Id, request);
 
         if (!response.IsSuccessStatusCode)
         {
-            //TODO
+            var errorMessage = (await response.Content.ReadAsStringAsync()).Split('\n').FirstOrDefault();
+            ShowServerErrorAlert(errorMessage);
         }
     }
 }

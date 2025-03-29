@@ -11,6 +11,7 @@
 
 @inject HttpClient HttpClient
 @inject JournalState JournalState
+@inject IJSRuntime JSRuntime
 
 <PageTitle>Контактные Телефоны</PageTitle>
 
@@ -28,8 +29,8 @@ else
             {
                 <tr class="@GetRowClass(phone.Id)">
                     <td class="align-middle col-6">
-                        @* <GrowingTextArea @bind-Value="phone.Name" /> *@
-                        <textarea rows="1" style="resize:vertical" @bind="phone.Name" @bind:after='async () => await Update(phone)' class="input fullwidth" />
+                        <textarea rows="1" style="overflow:hidden; resize:none;" oninput="this.style.height = 'auto'; this.style.height = (this.scrollHeight) + 'px';"
+                        @bind="phone.Name" @bind:after='async () => await Update(phone)' class="input fullwidth" />
                     </td>
                     <td class="align-top col-6">
                         <input type="tel" maxlength="19" @bind="phone.PhoneNumber" @bind:after='async () => await Update(phone)' class="input fullwidth" />
@@ -40,8 +41,8 @@ else
                 </tr>
             }
         </tbody>
-
     </table>
+
     <AddButton @onclick="Add">Добавить строку</AddButton>
 
     <ConfirmDeleteModal IsVisible="_isDeleteModalVisible" OnClose="CloseDeleteModal" IdToDelete="_idToDelete" OnDeleteById="Delete" />
@@ -65,9 +66,10 @@ else
         _pageData = await HttpClient.GetFromJsonAsync<ContactPhonesPageResponse>("api/journal/contactphone/" + PageId.ToString());
     }
 
-    private async Task UpdateName(string name)
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        
+        await Task.Delay(10);
+        await JSRuntime.InvokeVoidAsync("resizeTextAreas");
     }
 
     private async Task Update(ContactPhoneResponse phone)

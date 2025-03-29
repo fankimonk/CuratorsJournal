@@ -12,6 +12,7 @@
 
 @inject HttpClient HttpClient
 @inject JournalState JournalState
+@inject IJSRuntime JSRuntime
 
 <PageTitle>Праздники</PageTitle>
 
@@ -85,7 +86,8 @@ else
                             </select>
                         </td>
                         <td class="align-middle col-6">
-                            <input @bind="h.Name" @bind:after="async () => await Update(h)" class="input" />
+                            <textarea rows="1" style="overflow:hidden; resize:none;" oninput="this.style.height = 'auto'; this.style.height = (this.scrollHeight) + 'px';"
+                                @bind="h.Name" @bind:after="async () => await Update(h)" class="input fullwidth" />
                         </td>
                         <td class="align-middle">
                             <DeleteButton @onclick="() => OpenDeleteModal(h.Id)" />
@@ -120,6 +122,12 @@ else
         await JournalState.Initialize(JournalId, PageId);
 
         _pageData = await HttpClient.GetFromJsonAsync<HolidaysPageResponse>("api/journal/holiday/" + PageId);
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await Task.Delay(10);
+        await JSRuntime.InvokeVoidAsync("resizeTextAreas");
     }
 
     private async Task Add(int typeId)

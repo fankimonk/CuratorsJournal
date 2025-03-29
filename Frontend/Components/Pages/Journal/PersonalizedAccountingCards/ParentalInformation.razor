@@ -10,20 +10,20 @@
 }
 else
 {
-    <p><b>Сведения о родителях и/или других родственниках, законных представителях</b></p>
+    <h5><b>Сведения о родителях и/или других родственниках, законных представителях</b></h5>
     <table class="table table-bordered">
         <thead>
             <tr>
-                <th class="text-center">Фамилия</th>
-                <th class="text-center">Имя</th>
-                <th class="text-center">Отчество</th>
-                <th class="text-center">Место жительства и/или место пребывания</th>
-                <th class="text-center">Место работы</th>
-                <th class="text-center">Занимаемая должность</th>
-                <th class="text-center">Телефон (дом.)</th>
-                <th class="text-center">Телефон (раоч.)</th>
-                <th class="text-center">Телефон (моб.)</th>
-                <th class="text-center">Другие сведения</th>
+                <th class="text-center align-middle">Фамилия</th>
+                <th class="text-center align-middle">Имя</th>
+                <th class="text-center align-middle">Отчество</th>
+                <th class="text-center align-middle">Место жительства и/или место пребывания</th>
+                <th class="text-center align-middle">Место работы</th>
+                <th class="text-center align-middle">Занимаемая должность</th>
+                <th class="text-center align-middle">Телефон (дом.)</th>
+                <th class="text-center align-middle">Телефон (раоч.)</th>
+                <th class="text-center align-middle">Телефон (моб.)</th>
+                <th class="text-center align-middle">Другие сведения</th>
             </tr>
         </thead>
         <tbody>
@@ -31,37 +31,44 @@ else
             {
                 <tr>
                     <td>
-                        <input @bind="record.LastName" @bind:after="async () => await Update(record)" class="input fullwidth" />
+                        <textarea rows="1" style="overflow:hidden; resize:none;" oninput="this.style.height = 'auto'; this.style.height = (this.scrollHeight) + 'px';"
+                            @bind="record.LastName" @bind:after="async () => await Update(record)" class="input fullwidth" />
                     </td>
                     <td>
-                        <input @bind="record.FirstName" @bind:after="async () => await Update(record)" class="input fullwidth" />
+                        <textarea rows="1" style="overflow:hidden; resize:none;" oninput="this.style.height = 'auto'; this.style.height = (this.scrollHeight) + 'px';"
+                            @bind="record.FirstName" @bind:after="async () => await Update(record)" class="input fullwidth" />
                     </td>
                     <td>
-                        <input @bind="record.MiddleName" @bind:after="async () => await Update(record)" class="input fullwidth" />
+                        <textarea rows="1" style="overflow:hidden; resize:none;" oninput="this.style.height = 'auto'; this.style.height = (this.scrollHeight) + 'px';"
+                            @bind="record.MiddleName" @bind:after="async () => await Update(record)" class="input fullwidth" />
                     </td>
                     <td>
-                        <input @bind="record.PlaceOfResidence" @bind:after="async () => await Update(record)" class="input fullwidth" />
+                        <textarea rows="1" style="overflow:hidden; resize:none;" oninput="this.style.height = 'auto'; this.style.height = (this.scrollHeight) + 'px';"
+                            @bind="record.PlaceOfResidence" @bind:after="async () => await Update(record)" class="input fullwidth" />
                     </td>
                     <td>
-                        <input @bind="record.PlaceOfWork" @bind:after="async () => await Update(record)" class="input fullwidth" />
+                        <textarea rows="1" style="overflow:hidden; resize:none;" oninput="this.style.height = 'auto'; this.style.height = (this.scrollHeight) + 'px';"
+                            @bind="record.PlaceOfWork" @bind:after="async () => await Update(record)" class="input fullwidth" />
                     </td>
                     <td>
-                        <input @bind="record.Position" @bind:after="async () => await Update(record)" class="input fullwidth" />
+                        <textarea rows="1" style="overflow:hidden; resize:none;" oninput="this.style.height = 'auto'; this.style.height = (this.scrollHeight) + 'px';"
+                            @bind="record.Position" @bind:after="async () => await Update(record)" class="input fullwidth" />
                     </td>
                     <td>
-                        <input @bind="record.HomePhoneNumber" @bind:after="async () => await Update(record)" class="input fullwidth" />
+                        <input type="tel" maxlength="19" @bind="record.HomePhoneNumber" @bind:after="async () => await Update(record)" class="input fullwidth" />
                     </td>
                     <td>
-                        <input @bind="record.WorkPhoneNumber" @bind:after="async () => await Update(record)" class="input fullwidth" />
+                        <input type="tel" maxlength="19" @bind="record.WorkPhoneNumber" @bind:after="async () => await Update(record)" class="input fullwidth" />
                     </td>
                     <td>
-                        <input @bind="record.MobilePhoneNumber" @bind:after="async () => await Update(record)" class="input fullwidth" />
+                        <input type="tel" maxlength="19" @bind="record.MobilePhoneNumber" @bind:after="async () => await Update(record)" class="input fullwidth" />
                     </td>
                     <td>
-                        <input @bind="record.OtherInformation" @bind:after="async () => await Update(record)" class="input fullwidth" />
+                        <textarea rows="1" style="overflow:hidden; resize:none;" oninput="this.style.height = 'auto'; this.style.height = (this.scrollHeight) + 'px';"
+                            @bind="record.OtherInformation" @bind:after="async () => await Update(record)" class="input fullwidth" />
                     </td>
                     <td>
-                        <button @onclick="async () => await Delete(record)" class="btn btn-close" />
+                        <DeleteButton @onclick="async () => await Delete(record)" />
                     </td>
                 </tr>
             }

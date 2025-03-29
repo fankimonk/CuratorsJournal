@@ -1,10 +1,11 @@
 ﻿@page "/"
- 
+
 @using Contracts.Journal
 @using Frontend.Components.Buttons
 
 @inject HttpClient HttpClient
 @inject NavigationManager NavigationManager
+@inject IJSRuntime JS
 
 <PageTitle>Журналы</PageTitle>
 
@@ -32,10 +33,10 @@ else
                         @if (journal.Curator != null) 
                         {
                             @(
-                                            journal.Curator.LastName + ' ' +
-                                            journal.Curator.FirstName + ' ' +
-                                            journal.Curator.MiddleName
-                                         )
+                                                            journal.Curator.LastName + ' ' +
+                                                            journal.Curator.FirstName + ' ' +
+                                                            journal.Curator.MiddleName
+                                                         )
                         }
                     </td>
                 </tr>

@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "Mv2pcClNsGE9KYVGFdvle+oU3JQVfttBW58Ea9ae8XY=",
+  "Hash": "fi7r+K1Cd5yxRP9vf6L47W7ha7RNFHu+hGEOZv55T4o=",
   "Source": "Frontend",
   "BasePath": "_content/Frontend",
   "Mode": "Default",
@@ -183,6 +183,27 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "C:\\Dev\\Web\\CuratorsJournal\\Frontend\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.css"
+    },
+    {
+      "Identity": "C:\\Dev\\Web\\CuratorsJournal\\Frontend\\obj\\Debug\\net9.0\\compressed\\40c5ve33ph-kbylhf9is7.gz",
+      "SourceId": "Frontend",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Dev\\Web\\CuratorsJournal\\Frontend\\obj\\Debug\\net9.0\\compressed\\",
+      "BasePath": "_content/Frontend",
+      "RelativePath": "textarea#[.{fingerprint=kbylhf9is7}]?.js.gz",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Alternative",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "C:\\Dev\\Web\\CuratorsJournal\\Frontend\\wwwroot\\textarea.js",
+      "AssetTraitName": "Content-Encoding",
+      "AssetTraitValue": "gzip",
+      "Fingerprint": "ser4t6i1gl",
+      "Integrity": "PCeUhcH/tK+YRKUlPEtz7Wx3ueBw7KEqgU5eyTc7u1Q=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "C:\\Dev\\Web\\CuratorsJournal\\Frontend\\wwwroot\\textarea.js"
     },
     {
       "Identity": "C:\\Dev\\Web\\CuratorsJournal\\Frontend\\obj\\Debug\\net9.0\\compressed\\46ij5gg5xl-6pdc2jztkx.gz",
@@ -647,27 +668,6 @@
       "OriginalItemSpec": "C:\\Dev\\Web\\CuratorsJournal\\Frontend\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.min.js.map"
     },
     {
-      "Identity": "C:\\Dev\\Web\\CuratorsJournal\\Frontend\\obj\\Debug\\net9.0\\compressed\\nm5xq5vcse-jti8vopcpo.gz",
-      "SourceId": "Frontend",
-      "SourceType": "Discovered",
-      "ContentRoot": "C:\\Dev\\Web\\CuratorsJournal\\Frontend\\obj\\Debug\\net9.0\\compressed\\",
-      "BasePath": "_content/Frontend",
-      "RelativePath": "InputStyles#[.{fingerprint=jti8vopcpo}]?.css.gz",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Alternative",
-      "AssetMergeBehavior": "",
-      "AssetMergeSource": "",
-      "RelatedAsset": "C:\\Dev\\Web\\CuratorsJournal\\Frontend\\wwwroot\\InputStyles.css",
-      "AssetTraitName": "Content-Encoding",
-      "AssetTraitValue": "gzip",
-      "Fingerprint": "ip6wfld701",
-      "Integrity": "9lxCHHqIHx5TAK9z7Eh9PGFmeJin+ppqsHPB1T8lml0=",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "C:\\Dev\\Web\\CuratorsJournal\\Frontend\\wwwroot\\InputStyles.css"
-    },
-    {
       "Identity": "C:\\Dev\\Web\\CuratorsJournal\\Frontend\\obj\\Debug\\net9.0\\compressed\\nojv9iz2ay-r4e9w2rdcm.gz",
       "SourceId": "Frontend",
       "SourceType": "Discovered",
@@ -1025,6 +1025,27 @@
       "OriginalItemSpec": "C:\\Dev\\Web\\CuratorsJournal\\Frontend\\obj\\Debug\\net9.0\\scopedcss\\projectbundle\\Frontend.bundle.scp.css"
     },
     {
+      "Identity": "C:\\Dev\\Web\\CuratorsJournal\\Frontend\\obj\\Debug\\net9.0\\compressed\\yfpirp1akv-cw3ymtwl3x.gz",
+      "SourceId": "Frontend",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Dev\\Web\\CuratorsJournal\\Frontend\\obj\\Debug\\net9.0\\compressed\\",
+      "BasePath": "_content/Frontend",
+      "RelativePath": "mystyles#[.{fingerprint=cw3ymtwl3x}]?.css.gz",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Alternative",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "C:\\Dev\\Web\\CuratorsJournal\\Frontend\\wwwroot\\mystyles.css",
+      "AssetTraitName": "Content-Encoding",
+      "AssetTraitValue": "gzip",
+      "Fingerprint": "6qt4jxaji5",
+      "Integrity": "ghmLG4DprZ2xg42+x2iNphnpekudXV0aw3MgKXlYUEo=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "C:\\Dev\\Web\\CuratorsJournal\\Frontend\\wwwroot\\mystyles.css"
+    },
+    {
       "Identity": "C:\\Dev\\Web\\CuratorsJournal\\Frontend\\obj\\Debug\\net9.0\\compressed\\z1wdvqcdti-k8d9w2qqmf.gz",
       "SourceId": "Frontend",
       "SourceType": "Discovered",
@@ -1149,27 +1170,6 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\favicon.png"
-    },
-    {
-      "Identity": "C:\\Dev\\Web\\CuratorsJournal\\Frontend\\wwwroot\\InputStyles.css",
-      "SourceId": "Frontend",
-      "SourceType": "Discovered",
-      "ContentRoot": "C:\\Dev\\Web\\CuratorsJournal\\Frontend\\wwwroot\\",
-      "BasePath": "_content/Frontend",
-      "RelativePath": "InputStyles#[.{fingerprint}]?.css",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "AssetMergeBehavior": "",
-      "AssetMergeSource": "",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "Fingerprint": "jti8vopcpo",
-      "Integrity": "R4A8Xflqh6wBCdo+zsbVr7eVPU4nAtyCBrYiVYN4PUU=",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\InputStyles.css"
     },
     {
       "Identity": "C:\\Dev\\Web\\CuratorsJournal\\Frontend\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.css",
@@ -2094,6 +2094,48 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.min.js.map"
+    },
+    {
+      "Identity": "C:\\Dev\\Web\\CuratorsJournal\\Frontend\\wwwroot\\mystyles.css",
+      "SourceId": "Frontend",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Dev\\Web\\CuratorsJournal\\Frontend\\wwwroot\\",
+      "BasePath": "_content/Frontend",
+      "RelativePath": "mystyles#[.{fingerprint}]?.css",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "cw3ymtwl3x",
+      "Integrity": "PPIkoSPYaaUhUtj2w2k5Y7n5QuO9MeDICJbrkTV291U=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\mystyles.css"
+    },
+    {
+      "Identity": "C:\\Dev\\Web\\CuratorsJournal\\Frontend\\wwwroot\\textarea.js",
+      "SourceId": "Frontend",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Dev\\Web\\CuratorsJournal\\Frontend\\wwwroot\\",
+      "BasePath": "_content/Frontend",
+      "RelativePath": "textarea#[.{fingerprint}]?.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "kbylhf9is7",
+      "Integrity": "AP6ySZD9E/ARMvK6xowh4pgZDQeQRg5h+our1vlY0kA=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\textarea.js"
     },
     {
       "Identity": "C:\\Users\\kiril\\.nuget\\packages\\microsoft.aspnetcore.components.quickgrid\\9.0.3\\staticwebassets\\Microsoft.AspNetCore.Components.QuickGrid.25o87uqmvr.bundle.scp.css",
@@ -3455,304 +3497,6 @@
         {
           "Name": "integrity",
           "Value": "sha256-TFjaEhk5c/ZmDUgCgKMl6mC1dmyEVpHNNYfCKLSQcJE="
-        }
-      ]
-    },
-    {
-      "Route": "InputStyles.css",
-      "AssetFile": "C:\\Dev\\Web\\CuratorsJournal\\Frontend\\obj\\Debug\\net9.0\\compressed\\nm5xq5vcse-jti8vopcpo.gz",
-      "Selectors": [
-        {
-          "Name": "Content-Encoding",
-          "Value": "gzip",
-          "Quality": "0.006993006993"
-        }
-      ],
-      "ResponseHeaders": [
-        {
-          "Name": "Accept-Ranges",
-          "Value": "bytes"
-        },
-        {
-          "Name": "Content-Length",
-          "Value": "142"
-        },
-        {
-          "Name": "ETag",
-          "Value": "\"9lxCHHqIHx5TAK9z7Eh9PGFmeJin+ppqsHPB1T8lml0=\""
-        },
-        {
-          "Name": "Last-Modified",
-          "Value": "Thu, 20 Mar 2025 14:32:47 GMT"
-        },
-        {
-          "Name": "Cache-Control",
-          "Value": "no-cache"
-        },
-        {
-          "Name": "Content-Encoding",
-          "Value": "gzip"
-        },
-        {
-          "Name": "Vary",
-          "Value": "Content-Encoding"
-        },
-        {
-          "Name": "Content-Type",
-          "Value": "text/css"
-        },
-        {
-          "Name": "ETag",
-          "Value": "W/\"R4A8Xflqh6wBCdo+zsbVr7eVPU4nAtyCBrYiVYN4PUU=\""
-        }
-      ],
-      "EndpointProperties": [
-        {
-          "Name": "integrity",
-          "Value": "sha256-R4A8Xflqh6wBCdo+zsbVr7eVPU4nAtyCBrYiVYN4PUU="
-        }
-      ]
-    },
-    {
-      "Route": "InputStyles.css",
-      "AssetFile": "C:\\Dev\\Web\\CuratorsJournal\\Frontend\\wwwroot\\InputStyles.css",
-      "Selectors": [],
-      "ResponseHeaders": [
-        {
-          "Name": "Accept-Ranges",
-          "Value": "bytes"
-        },
-        {
-          "Name": "Content-Length",
-          "Value": "177"
-        },
-        {
-          "Name": "Content-Type",
-          "Value": "text/css"
-        },
-        {
-          "Name": "ETag",
-          "Value": "\"R4A8Xflqh6wBCdo+zsbVr7eVPU4nAtyCBrYiVYN4PUU=\""
-        },
-        {
-          "Name": "Last-Modified",
-          "Value": "Thu, 20 Mar 2025 14:32:47 GMT"
-        },
-        {
-          "Name": "Cache-Control",
-          "Value": "no-cache"
-        }
-      ],
-      "EndpointProperties": [
-        {
-          "Name": "integrity",
-          "Value": "sha256-R4A8Xflqh6wBCdo+zsbVr7eVPU4nAtyCBrYiVYN4PUU="
-        }
-      ]
-    },
-    {
-      "Route": "InputStyles.css.gz",
-      "AssetFile": "C:\\Dev\\Web\\CuratorsJournal\\Frontend\\obj\\Debug\\net9.0\\compressed\\nm5xq5vcse-jti8vopcpo.gz",
-      "Selectors": [],
-      "ResponseHeaders": [
-        {
-          "Name": "Accept-Ranges",
-          "Value": "bytes"
-        },
-        {
-          "Name": "Content-Length",
-          "Value": "142"
-        },
-        {
-          "Name": "Content-Type",
-          "Value": "text/css"
-        },
-        {
-          "Name": "ETag",
-          "Value": "\"9lxCHHqIHx5TAK9z7Eh9PGFmeJin+ppqsHPB1T8lml0=\""
-        },
-        {
-          "Name": "Last-Modified",
-          "Value": "Thu, 20 Mar 2025 14:32:47 GMT"
-        },
-        {
-          "Name": "Cache-Control",
-          "Value": "no-cache"
-        },
-        {
-          "Name": "Content-Encoding",
-          "Value": "gzip"
-        },
-        {
-          "Name": "Vary",
-          "Value": "Content-Encoding"
-        }
-      ],
-      "EndpointProperties": [
-        {
-          "Name": "integrity",
-          "Value": "sha256-9lxCHHqIHx5TAK9z7Eh9PGFmeJin+ppqsHPB1T8lml0="
-        }
-      ]
-    },
-    {
-      "Route": "InputStyles.jti8vopcpo.css",
-      "AssetFile": "C:\\Dev\\Web\\CuratorsJournal\\Frontend\\obj\\Debug\\net9.0\\compressed\\nm5xq5vcse-jti8vopcpo.gz",
-      "Selectors": [
-        {
-          "Name": "Content-Encoding",
-          "Value": "gzip",
-          "Quality": "0.006993006993"
-        }
-      ],
-      "ResponseHeaders": [
-        {
-          "Name": "Accept-Ranges",
-          "Value": "bytes"
-        },
-        {
-          "Name": "Content-Length",
-          "Value": "142"
-        },
-        {
-          "Name": "ETag",
-          "Value": "\"9lxCHHqIHx5TAK9z7Eh9PGFmeJin+ppqsHPB1T8lml0=\""
-        },
-        {
-          "Name": "Last-Modified",
-          "Value": "Thu, 20 Mar 2025 14:32:47 GMT"
-        },
-        {
-          "Name": "Cache-Control",
-          "Value": "max-age=31536000, immutable"
-        },
-        {
-          "Name": "Content-Encoding",
-          "Value": "gzip"
-        },
-        {
-          "Name": "Vary",
-          "Value": "Content-Encoding"
-        },
-        {
-          "Name": "Content-Type",
-          "Value": "text/css"
-        },
-        {
-          "Name": "ETag",
-          "Value": "W/\"R4A8Xflqh6wBCdo+zsbVr7eVPU4nAtyCBrYiVYN4PUU=\""
-        }
-      ],
-      "EndpointProperties": [
-        {
-          "Name": "fingerprint",
-          "Value": "jti8vopcpo"
-        },
-        {
-          "Name": "label",
-          "Value": "InputStyles.css"
-        },
-        {
-          "Name": "integrity",
-          "Value": "sha256-R4A8Xflqh6wBCdo+zsbVr7eVPU4nAtyCBrYiVYN4PUU="
-        }
-      ]
-    },
-    {
-      "Route": "InputStyles.jti8vopcpo.css",
-      "AssetFile": "C:\\Dev\\Web\\CuratorsJournal\\Frontend\\wwwroot\\InputStyles.css",
-      "Selectors": [],
-      "ResponseHeaders": [
-        {
-          "Name": "Accept-Ranges",
-          "Value": "bytes"
-        },
-        {
-          "Name": "Content-Length",
-          "Value": "177"
-        },
-        {
-          "Name": "Content-Type",
-          "Value": "text/css"
-        },
-        {
-          "Name": "ETag",
-          "Value": "\"R4A8Xflqh6wBCdo+zsbVr7eVPU4nAtyCBrYiVYN4PUU=\""
-        },
-        {
-          "Name": "Last-Modified",
-          "Value": "Thu, 20 Mar 2025 14:32:47 GMT"
-        },
-        {
-          "Name": "Cache-Control",
-          "Value": "max-age=31536000, immutable"
-        }
-      ],
-      "EndpointProperties": [
-        {
-          "Name": "fingerprint",
-          "Value": "jti8vopcpo"
-        },
-        {
-          "Name": "label",
-          "Value": "InputStyles.css"
-        },
-        {
-          "Name": "integrity",
-          "Value": "sha256-R4A8Xflqh6wBCdo+zsbVr7eVPU4nAtyCBrYiVYN4PUU="
-        }
-      ]
-    },
-    {
-      "Route": "InputStyles.jti8vopcpo.css.gz",
-      "AssetFile": "C:\\Dev\\Web\\CuratorsJournal\\Frontend\\obj\\Debug\\net9.0\\compressed\\nm5xq5vcse-jti8vopcpo.gz",
-      "Selectors": [],
-      "ResponseHeaders": [
-        {
-          "Name": "Accept-Ranges",
-          "Value": "bytes"
-        },
-        {
-          "Name": "Content-Length",
-          "Value": "142"
-        },
-        {
-          "Name": "Content-Type",
-          "Value": "text/css"
-        },
-        {
-          "Name": "ETag",
-          "Value": "\"9lxCHHqIHx5TAK9z7Eh9PGFmeJin+ppqsHPB1T8lml0=\""
-        },
-        {
-          "Name": "Last-Modified",
-          "Value": "Thu, 20 Mar 2025 14:32:47 GMT"
-        },
-        {
-          "Name": "Cache-Control",
-          "Value": "max-age=31536000, immutable"
-        },
-        {
-          "Name": "Content-Encoding",
-          "Value": "gzip"
-        },
-        {
-          "Name": "Vary",
-          "Value": "Content-Encoding"
-        }
-      ],
-      "EndpointProperties": [
-        {
-          "Name": "fingerprint",
-          "Value": "jti8vopcpo"
-        },
-        {
-          "Name": "label",
-          "Value": "InputStyles.css.gz"
-        },
-        {
-          "Name": "integrity",
-          "Value": "sha256-9lxCHHqIHx5TAK9z7Eh9PGFmeJin+ppqsHPB1T8lml0="
         }
       ]
     },
@@ -16865,6 +16609,602 @@
         {
           "Name": "integrity",
           "Value": "sha256-mLLuMjFYOIYX8xSc8UD/TLCKJOjlhcscgrxC5va1aAs="
+        }
+      ]
+    },
+    {
+      "Route": "mystyles.css",
+      "AssetFile": "C:\\Dev\\Web\\CuratorsJournal\\Frontend\\obj\\Debug\\net9.0\\compressed\\yfpirp1akv-cw3ymtwl3x.gz",
+      "Selectors": [
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip",
+          "Quality": "0.004878048780"
+        }
+      ],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "204"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"ghmLG4DprZ2xg42+x2iNphnpekudXV0aw3MgKXlYUEo=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 29 Mar 2025 11:01:02 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "W/\"PPIkoSPYaaUhUtj2w2k5Y7n5QuO9MeDICJbrkTV291U=\""
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-PPIkoSPYaaUhUtj2w2k5Y7n5QuO9MeDICJbrkTV291U="
+        }
+      ]
+    },
+    {
+      "Route": "mystyles.css",
+      "AssetFile": "C:\\Dev\\Web\\CuratorsJournal\\Frontend\\wwwroot\\mystyles.css",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "328"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"PPIkoSPYaaUhUtj2w2k5Y7n5QuO9MeDICJbrkTV291U=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 29 Mar 2025 11:01:02 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-PPIkoSPYaaUhUtj2w2k5Y7n5QuO9MeDICJbrkTV291U="
+        }
+      ]
+    },
+    {
+      "Route": "mystyles.css.gz",
+      "AssetFile": "C:\\Dev\\Web\\CuratorsJournal\\Frontend\\obj\\Debug\\net9.0\\compressed\\yfpirp1akv-cw3ymtwl3x.gz",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "204"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"ghmLG4DprZ2xg42+x2iNphnpekudXV0aw3MgKXlYUEo=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 29 Mar 2025 11:01:02 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-ghmLG4DprZ2xg42+x2iNphnpekudXV0aw3MgKXlYUEo="
+        }
+      ]
+    },
+    {
+      "Route": "mystyles.cw3ymtwl3x.css",
+      "AssetFile": "C:\\Dev\\Web\\CuratorsJournal\\Frontend\\obj\\Debug\\net9.0\\compressed\\yfpirp1akv-cw3ymtwl3x.gz",
+      "Selectors": [
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip",
+          "Quality": "0.004878048780"
+        }
+      ],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "204"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"ghmLG4DprZ2xg42+x2iNphnpekudXV0aw3MgKXlYUEo=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 29 Mar 2025 11:01:02 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "W/\"PPIkoSPYaaUhUtj2w2k5Y7n5QuO9MeDICJbrkTV291U=\""
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "cw3ymtwl3x"
+        },
+        {
+          "Name": "label",
+          "Value": "mystyles.css"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-PPIkoSPYaaUhUtj2w2k5Y7n5QuO9MeDICJbrkTV291U="
+        }
+      ]
+    },
+    {
+      "Route": "mystyles.cw3ymtwl3x.css",
+      "AssetFile": "C:\\Dev\\Web\\CuratorsJournal\\Frontend\\wwwroot\\mystyles.css",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "328"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"PPIkoSPYaaUhUtj2w2k5Y7n5QuO9MeDICJbrkTV291U=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 29 Mar 2025 11:01:02 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "cw3ymtwl3x"
+        },
+        {
+          "Name": "label",
+          "Value": "mystyles.css"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-PPIkoSPYaaUhUtj2w2k5Y7n5QuO9MeDICJbrkTV291U="
+        }
+      ]
+    },
+    {
+      "Route": "mystyles.cw3ymtwl3x.css.gz",
+      "AssetFile": "C:\\Dev\\Web\\CuratorsJournal\\Frontend\\obj\\Debug\\net9.0\\compressed\\yfpirp1akv-cw3ymtwl3x.gz",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "204"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"ghmLG4DprZ2xg42+x2iNphnpekudXV0aw3MgKXlYUEo=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 29 Mar 2025 11:01:02 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "cw3ymtwl3x"
+        },
+        {
+          "Name": "label",
+          "Value": "mystyles.css.gz"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-ghmLG4DprZ2xg42+x2iNphnpekudXV0aw3MgKXlYUEo="
+        }
+      ]
+    },
+    {
+      "Route": "textarea.js",
+      "AssetFile": "C:\\Dev\\Web\\CuratorsJournal\\Frontend\\obj\\Debug\\net9.0\\compressed\\40c5ve33ph-kbylhf9is7.gz",
+      "Selectors": [
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip",
+          "Quality": "0.005747126437"
+        }
+      ],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "173"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"PCeUhcH/tK+YRKUlPEtz7Wx3ueBw7KEqgU5eyTc7u1Q=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 29 Mar 2025 10:42:22 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "W/\"AP6ySZD9E/ARMvK6xowh4pgZDQeQRg5h+our1vlY0kA=\""
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-AP6ySZD9E/ARMvK6xowh4pgZDQeQRg5h+our1vlY0kA="
+        }
+      ]
+    },
+    {
+      "Route": "textarea.js",
+      "AssetFile": "C:\\Dev\\Web\\CuratorsJournal\\Frontend\\wwwroot\\textarea.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "250"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"AP6ySZD9E/ARMvK6xowh4pgZDQeQRg5h+our1vlY0kA=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 29 Mar 2025 10:42:22 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-AP6ySZD9E/ARMvK6xowh4pgZDQeQRg5h+our1vlY0kA="
+        }
+      ]
+    },
+    {
+      "Route": "textarea.js.gz",
+      "AssetFile": "C:\\Dev\\Web\\CuratorsJournal\\Frontend\\obj\\Debug\\net9.0\\compressed\\40c5ve33ph-kbylhf9is7.gz",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "173"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"PCeUhcH/tK+YRKUlPEtz7Wx3ueBw7KEqgU5eyTc7u1Q=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 29 Mar 2025 10:42:22 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-PCeUhcH/tK+YRKUlPEtz7Wx3ueBw7KEqgU5eyTc7u1Q="
+        }
+      ]
+    },
+    {
+      "Route": "textarea.kbylhf9is7.js",
+      "AssetFile": "C:\\Dev\\Web\\CuratorsJournal\\Frontend\\obj\\Debug\\net9.0\\compressed\\40c5ve33ph-kbylhf9is7.gz",
+      "Selectors": [
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip",
+          "Quality": "0.005747126437"
+        }
+      ],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "173"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"PCeUhcH/tK+YRKUlPEtz7Wx3ueBw7KEqgU5eyTc7u1Q=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 29 Mar 2025 10:42:22 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "W/\"AP6ySZD9E/ARMvK6xowh4pgZDQeQRg5h+our1vlY0kA=\""
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "kbylhf9is7"
+        },
+        {
+          "Name": "label",
+          "Value": "textarea.js"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-AP6ySZD9E/ARMvK6xowh4pgZDQeQRg5h+our1vlY0kA="
+        }
+      ]
+    },
+    {
+      "Route": "textarea.kbylhf9is7.js",
+      "AssetFile": "C:\\Dev\\Web\\CuratorsJournal\\Frontend\\wwwroot\\textarea.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "250"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"AP6ySZD9E/ARMvK6xowh4pgZDQeQRg5h+our1vlY0kA=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 29 Mar 2025 10:42:22 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "kbylhf9is7"
+        },
+        {
+          "Name": "label",
+          "Value": "textarea.js"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-AP6ySZD9E/ARMvK6xowh4pgZDQeQRg5h+our1vlY0kA="
+        }
+      ]
+    },
+    {
+      "Route": "textarea.kbylhf9is7.js.gz",
+      "AssetFile": "C:\\Dev\\Web\\CuratorsJournal\\Frontend\\obj\\Debug\\net9.0\\compressed\\40c5ve33ph-kbylhf9is7.gz",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "173"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"PCeUhcH/tK+YRKUlPEtz7Wx3ueBw7KEqgU5eyTc7u1Q=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 29 Mar 2025 10:42:22 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "kbylhf9is7"
+        },
+        {
+          "Name": "label",
+          "Value": "textarea.js.gz"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-PCeUhcH/tK+YRKUlPEtz7Wx3ueBw7KEqgU5eyTc7u1Q="
         }
       ]
     }

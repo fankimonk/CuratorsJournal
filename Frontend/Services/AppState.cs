@@ -1,4 +1,5 @@
 ﻿using API.Contracts.User;
+using Microsoft.JSInterop;
 
 namespace Frontend.Services
 {

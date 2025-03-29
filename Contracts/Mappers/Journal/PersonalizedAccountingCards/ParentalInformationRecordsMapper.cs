@@ -8,7 +8,7 @@ namespace Contracts.Mappers.Journal.PersonalizedAccountingCards
         {
             return new UpdateParentalInformationRecordRequest(
                 record.FirstName, record.MiddleName, record.LastName,
-                record.PlaceOfResidence, record.PlaceOfResidence, record.Position,
+                record.PlaceOfResidence, record.PlaceOfWork, record.Position,
                 record.HomePhoneNumber, record.WorkPhoneNumber, record.MobilePhoneNumber,
                 record.OtherInformation
             );

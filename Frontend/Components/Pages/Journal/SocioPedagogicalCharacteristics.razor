@@ -12,6 +12,7 @@
 
 @inject HttpClient HttpClient
 @inject JournalState JournalState
+@inject IJSRuntime JSRuntime
 
 <PageTitle>Социально-педагогическая характеристика</PageTitle>
 
@@ -136,7 +137,8 @@ else
     </p>
     <p>
         16. Другие сведения <br />
-        <textarea rows="4" style="resize:vertical;" @bind="_pageData.OtherInformation" @bind:after="Update" class="fullwidth" />
+        <textarea rows="1" style="overflow:hidden; resize:none;" oninput="this.style.height = 'auto'; this.style.height = (this.scrollHeight) + 'px';"
+            @bind="_pageData.OtherInformation" @bind:after="Update" class="input underline fullwidth" />
     </p>
 
     <AlertBottom IsVisible="_isServerErrorAlertVisible" OnClose="CloseServerErrorAlert">@_errorMessage</AlertBottom>
@@ -167,6 +169,12 @@ else
             _academicYears = await HttpClient.GetFromJsonAsync<List<AcademicYearResponse>>(getAcademicYearsUri + _group.AdmissionYear.ToString());
         else
             _academicYears = await HttpClient.GetFromJsonAsync<List<AcademicYearResponse>>(getAcademicYearsUri);
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await Task.Delay(10);
+        await JSRuntime.InvokeVoidAsync("resizeTextAreas");
     }
 
     private async Task Update()
