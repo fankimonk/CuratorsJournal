@@ -12,7 +12,7 @@ namespace Contracts.Mappers.Journal.PersonalizedAccountingCards
                 record.EndDate,
                 record.Result,
                 record.Note,
-                record.ActivityTypeId
+                record.ParticipationKind
             );
         }
     }

@@ -6,6 +6,28 @@ namespace DataAccess.Repositories
 {
     public class StudentsRepository(CuratorsJournalDBContext dbContext) : RepositoryBase(dbContext), IStudentsRepository
     {
+        public async Task<ChronicDisease?> AddChronicDiseaseAsync(int studentId, int diseaseId)
+        {
+            if (!await StudentExists(studentId) || !await ChronicDiseaseExists(diseaseId)) return null;
+
+            var created = await _dbContext.StudentsChronicDiseases.AddAsync
+                (new StudentChronicDisease { StudentId = studentId, ChronicDiseaseId = diseaseId });
+
+            await _dbContext.SaveChangesAsync();
+            return await _dbContext.ChronicDiseases.AsNoTracking().FirstOrDefaultAsync(cd => cd.Id == diseaseId);
+        }
+
+        public async Task<PEGroup?> AddPEGroupAsync(int studentId, int peGroupId)
+        {
+            if (!await StudentExists(studentId) || !await PEGroupExists(peGroupId)) return null;
+
+            var created = await _dbContext.StudentsPEGroups.AddAsync
+                (new StudentPEGroup { StudentId = studentId, PEGroupId = peGroupId });
+
+            await _dbContext.SaveChangesAsync();
+            return await _dbContext.PEGroups.AsNoTracking().FirstOrDefaultAsync(cd => cd.Id == peGroupId);
+        }
+
         public async Task<Student?> CreateAsync(Student student)
         {
             if (student == null) return null;
@@ -22,6 +44,28 @@ namespace DataAccess.Repositories
         public async Task<bool> DeleteAsync(int id)
         {
             var deletedRows = await _dbContext.Students.Where(c => c.Id == id).ExecuteDeleteAsync();
+            if (deletedRows < 1) return false;
+
+            await _dbContext.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<bool> DeleteChronicDiseaseAsync(int studentId, int diseaseId)
+        {
+            var deletedRows = await _dbContext.StudentsChronicDiseases
+                .Where(sc => sc.StudentId == studentId && sc.ChronicDiseaseId == diseaseId).ExecuteDeleteAsync();
+
+            if (deletedRows < 1) return false;
+
+            await _dbContext.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<bool> DeletePEGroupAsync(int studentId, int peGroupId)
+        {
+            var deletedRows = await _dbContext.StudentsPEGroups
+                .Where(sc => sc.StudentId == studentId && sc.PEGroupId == peGroupId).ExecuteDeleteAsync();
+
             if (deletedRows < 1) return false;
 
             await _dbContext.SaveChangesAsync();
@@ -74,5 +118,30 @@ namespace DataAccess.Repositories
 
         private async Task<bool> UserExists(int id) =>
             await _dbContext.Users.AsNoTracking().FirstOrDefaultAsync(j => j.Id == id) != null;
+
+        private async Task<bool> StudentExists(int id) =>
+            await _dbContext.Students.AsNoTracking().FirstOrDefaultAsync(j => j.Id == id) != null;
+
+        private async Task<bool> ChronicDiseaseExists(int id) =>
+            await _dbContext.ChronicDiseases.AsNoTracking().FirstOrDefaultAsync(j => j.Id == id) != null;
+
+        private async Task<bool> PEGroupExists(int id) =>
+            await _dbContext.PEGroups.AsNoTracking().FirstOrDefaultAsync(j => j.Id == id) != null;
+
+        public async Task<List<ChronicDisease>?> GetChronicDiseasesAsync(int studentId)
+        {
+            var student = await _dbContext.Students.Include(s => s.ChronicDiseases).AsNoTracking().FirstOrDefaultAsync(s => s.Id == studentId);
+            if (student == null) return null;
+
+            return student.ChronicDiseases.ToList();
+        }
+
+        public async Task<List<PEGroup>?> GetPEGroupsAsync(int studentId)
+        {
+            var student = await _dbContext.Students.Include(s => s.PEGroups).AsNoTracking().FirstOrDefaultAsync(s => s.Id == studentId);
+            if (student == null) return null;
+
+            return student.PEGroups.ToList();
+        }
     }
 }

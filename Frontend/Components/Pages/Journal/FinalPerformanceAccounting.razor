@@ -132,11 +132,16 @@ else
                                 @if (ct.Id != 2)
                                 {
                                     <input type="number" min="0" max="10" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))"
-                                    @bind="grade!.Grade" @bind:after="async () => await UpdateGrade(grade)" />
+                                    @bind="grade!.Grade" @bind:after="async () => await UpdateGrade(grade)" class="input fullwidth" />
                                 }
                                 else
                                 {
-                                    <input type="checkbox" @bind="grade!.IsPassed" @bind:after="async () => await UpdateGrade(grade)" />
+                                    // <input type="checkbox" @bind="grade!.IsPassed" @bind:after="async () => await UpdateGrade(grade)" />
+                                    <select @bind="_gradesIsPassedValues[grade.Id]" @bind:after="async () => await UpdateGrade(grade)" class="input fullwidth">
+                                        <option value="">(нет)</option>
+                                        <option value="True">Зачтено</option>
+                                        <option value="False">Не зачтено</option>
+                                    </select>
                                 }
                             </td>
                         }
@@ -218,6 +223,8 @@ else
     [SupplyParameterFromForm]
     private CreatePerformanceAccountingColumnRequest _addColumnRequest { get; set; } = new(null, null, -1);
 
+    private Dictionary<int, string> _gradesIsPassedValues = [];
+
     protected override async Task OnInitializedAsync()
     {
         await JournalState.Initialize(JournalId, PageId);
@@ -227,7 +234,21 @@ else
         _subjects = await HttpClient.GetFromJsonAsync<List<SubjectResponse>>("api/subject");
         _certificationTypes = await HttpClient.GetFromJsonAsync<List<CertificationTypeResponse>>("api/certificationtype");
 
+        UpdateGradesIsPassedValues();
+
         _addColumnRequest.PageId = PageId;
+    }
+
+    private void UpdateGradesIsPassedValues()
+    {
+        _gradesIsPassedValues.Clear();
+        foreach (var record in _pageData!.Records)
+        {
+            foreach (var grade in record.Grades!)
+            {
+                _gradesIsPassedValues[grade.Id] = grade.IsPassed == null ? "" : grade.IsPassed.ToString();
+            }
+        }
     }
 
     private async Task FetchPageData()
@@ -259,7 +280,8 @@ else
         _cellsWithErrors.Remove(grade.Id);
         CloseServerErrorAlert();
 
-        var request = new UpdatePerformanceAccountingGradeRequest(grade.IsPassed, grade.Grade);
+        var isPassedValue = _gradesIsPassedValues[grade.Id];
+        var request = new UpdatePerformanceAccountingGradeRequest(isPassedValue == "" ? null : bool.Parse(isPassedValue), grade.Grade);
         var response = await HttpClient.PutAsJsonAsync<UpdatePerformanceAccountingGradeRequest>("api/journal/finalperformanceaccounting/grade/" + grade.Id, request);
 
         if (!response.IsSuccessStatusCode)
@@ -279,6 +301,7 @@ else
         {
             var addedRecord = await response.Content.ReadFromJsonAsync<PerformanceAccountingRecordResponse>();
             _pageData!.Records.Add(addedRecord!);
+            UpdateGradesIsPassedValues();
         }
         else
         {
@@ -291,7 +314,11 @@ else
     {
         var response = await HttpClient.DeleteAsync("api/journal/finalperformanceaccounting/record/" + recordId);
 
-        if (response.IsSuccessStatusCode) _pageData!.Records.RemoveAll(r => r.Id == recordId);
+        if (response.IsSuccessStatusCode)
+        {
+            _pageData!.Records.RemoveAll(r => r.Id == recordId);
+            UpdateGradesIsPassedValues();
+        }
         else
         {
             var errorMessage = (await response.Content.ReadAsStringAsync()).Split('\n').FirstOrDefault();
@@ -330,9 +357,8 @@ else
 
             certificationType!.PerformanceAccountingColumns!.RemoveAll(r => r.Id == id);
 
-            if (certificationType.PerformanceAccountingColumns.Count == 0) _pageData.CertificationTypes.Remove(certificationType);
-
             CloseEditColumnModal();
+            UpdateGradesIsPassedValues();
         }
         else
         {
@@ -349,6 +375,7 @@ else
         {
             await FetchPageData();
             CloseAddColumnModal();
+            UpdateGradesIsPassedValues();
         }
         else
         {

@@ -1,0 +1,205 @@
+﻿@page "/PEGroups"
+ 
+@using Contracts.PEGroups
+@using Frontend.Components.Buttons
+@using Frontend.Components.Utils
+@using Microsoft.AspNetCore.Components.QuickGrid
+
+@inject HttpClient HttpClient
+
+<PageTitle>Группы по физической культуре</PageTitle>
+
+<h1>Группы по физической культуре</h1>
+
+@if (_peGroups == null)
+{
+    <p><em>Загрузка...</em></p>
+}
+else
+{
+    <AddButton @onclick="ShowAddModal">Добавить</AddButton>
+
+    <QuickGrid Items="_peGroups" class="table">
+        <PropertyColumn Property="@(l => l.Name)" Sortable="true" Title="Название" class="align-middle" />
+        <TemplateColumn class="text-end">
+            <EditButton @onclick="() => ShowEditModal(context)" />
+            <DeleteButton @onclick="async () => await Delete(context)" />
+        </TemplateColumn>
+    </QuickGrid>
+
+    <Modal IsVisible="_isAddModalVisible" OnClose="CloseModal">
+        <div class="row">
+            <div class="col-md-12">
+                <EditForm method="post" Model="PEGroupToAdd" OnValidSubmit="Add" OnInvalidSubmit="ShowErrorAlert" FormName="add" Enhance>
+                    <DataAnnotationsValidator />
+                    <Alert Type="success" IsVisible="_isSuccessAlertVisible" OnClose="CloseSuccessAlert" />
+                    <Alert Type="error" IsVisible="_isErrorAlertVisible" OnClose="CloseErrorAlert">
+                        <ValidationSummary />
+                    </Alert>
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Название: </label>
+                        <InputText id="name" @bind-Value="PEGroupToAdd.Name" class="form-control" />
+                    </div>
+                    <AddButton type="submit">Добавить</AddButton>
+                </EditForm>
+            </div>
+        </div>
+    </Modal>
+
+    <Modal IsVisible="_isEditModalVisible" OnClose="CloseModal">
+        <div class="row">
+            <div class="col-md-12">
+                <EditForm method="put" Model="PEGroupToEdit" OnValidSubmit="Update" OnInvalidSubmit="ShowErrorAlert" FormName="edit" Enhance>
+                    <DataAnnotationsValidator />
+                    <Alert Type="success" IsVisible="_isSuccessAlertVisible" OnClose="CloseSuccessAlert" />
+                    <Alert Type="error" IsVisible="_isErrorAlertVisible" OnClose="CloseErrorAlert">
+                        <ValidationSummary />
+                    </Alert>
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Название: </label>
+                        <InputText id="name" @bind-Value="PEGroupToEdit.Name" class="form-control" />
+                    </div>
+                    <EditButton type="submit">Редактировать</EditButton>
+                </EditForm>
+            </div>
+        </div>
+    </Modal>
+
+    <AlertBottom IsVisible="_isServerErrorAlertVisible" OnClose="CloseServerErrorAlert">@_errorMessage</AlertBottom>
+}
+
+@code {
+    [SupplyParameterFromForm]
+    public CreatePEGroupRequest PEGroupToAdd { get; set; } = new("");
+
+    [SupplyParameterFromForm]
+    public UpdatePEGroupRequest PEGroupToEdit { get; set; } = new("");
+    private int _peGroupToEditId = -1;
+
+    private IQueryable<PEGroupResponse>? _peGroups;
+
+    private bool _isModalVisible = false;
+    private bool _isAddModal = true;
+
+    private bool _isAddModalVisible { get => _isModalVisible && _isAddModal; }
+    private bool _isEditModalVisible { get => _isModalVisible && !_isAddModal; }
+
+    private bool _isSuccessAlertVisible = false;
+    private bool _isErrorAlertVisible = false;
+
+    private bool _isServerErrorAlertVisible = false;
+    private string? _errorMessage = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        var peGroups = await HttpClient.GetFromJsonAsync<List<PEGroupResponse>>("api/pegroup/");
+        if (peGroups != null)
+            _peGroups = peGroups.AsQueryable();
+    }
+
+    public async Task Add()
+    {
+        var response = await HttpClient.PostAsJsonAsync<CreatePEGroupRequest>("api/pegroup", PEGroupToAdd);
+
+        if (response.IsSuccessStatusCode)
+        {
+            var added = await response.Content.ReadFromJsonAsync<PEGroupResponse>();
+            _peGroups = _peGroups!.Append(added!);
+
+            ShowSuccessAlert();
+        }
+        else
+        {
+            var errorMessage = await response.Content.ReadAsStringAsync();
+            _errorMessage = errorMessage.Split('\n').FirstOrDefault();
+            ShowServerErrorAlert();
+        }
+    }
+
+    public async Task Update()
+    {
+        var request = new UpdatePEGroupRequest(PEGroupToEdit.Name);
+        var response = await HttpClient.PutAsJsonAsync<UpdatePEGroupRequest>("api/pegroup/" + _peGroupToEditId, request);
+
+        if (response.IsSuccessStatusCode)
+        {
+            var updated = await response.Content.ReadFromJsonAsync<PEGroupResponse>();
+            var toUpdate = _peGroups!.FirstOrDefault(l => l.Id == updated!.Id);
+
+            toUpdate!.Name = updated!.Name;
+
+            ShowSuccessAlert();
+        }
+        else
+        {
+            var errorMessage = await response.Content.ReadAsStringAsync();
+            _errorMessage = errorMessage.Split('\n').FirstOrDefault();
+            ShowServerErrorAlert();
+        }
+    }
+
+    public async Task Delete(PEGroupResponse peGroup)
+    {
+        var response = await HttpClient.DeleteAsync("api/pegroup/" + peGroup.Id);
+
+        if (response.IsSuccessStatusCode)
+        {
+            _peGroups = _peGroups!.Where(l => l.Id != peGroup.Id);
+        }
+        else
+        {
+            var errorMessage = await response.Content.ReadAsStringAsync();
+            _errorMessage = errorMessage.Split('\n').FirstOrDefault();
+            ShowServerErrorAlert();
+        }
+    }
+
+    private void ShowAddModal()
+    {
+        _isAddModal = true;
+        _isModalVisible = true;
+    }
+
+    private void ShowEditModal(PEGroupResponse peGroup)
+    {
+        _peGroupToEditId = peGroup.Id;
+        PEGroupToEdit = new UpdatePEGroupRequest(peGroup.Name);
+        _isAddModal = false;
+        _isModalVisible = true;
+    }
+
+    private void CloseModal()
+    {
+        PEGroupToAdd = new("");
+        _peGroupToEditId = -1;
+        PEGroupToEdit = new("");
+        _isModalVisible = false;
+        CloseSuccessAlert();
+        CloseErrorAlert();
+        CloseServerErrorAlert();
+    }
+
+    private void CloseSuccessAlert() => _isSuccessAlertVisible = false;
+
+    private void ShowSuccessAlert()
+    {
+        CloseErrorAlert();
+        _isSuccessAlertVisible = true;
+    }
+
+    private void CloseErrorAlert() => _isErrorAlertVisible = false;
+
+    private void ShowErrorAlert()
+    {
+        CloseSuccessAlert();
+        _isErrorAlertVisible = true;
+    }
+
+    private void CloseServerErrorAlert()
+    {
+        _isServerErrorAlertVisible = false;
+        _errorMessage = "";
+    }
+
+    private void ShowServerErrorAlert() => _isServerErrorAlertVisible = true;
+}

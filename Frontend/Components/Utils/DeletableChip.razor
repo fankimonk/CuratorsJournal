@@ -1,0 +1,12 @@
+﻿<div class="btn btn-primary me-2 mb-2" style="cursor:default">
+    @ChildContent
+    <button class="btn btn-close" @attributes="Attributes" @onclick:stopPropagation />
+</div>
+
+@code {
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public Dictionary<string, object>? Attributes { get; set; }
+}

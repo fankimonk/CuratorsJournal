@@ -14,7 +14,7 @@ namespace API.Mappers.Journal.PersonalizedAccountingCards
                 record.EndDate,
                 record.Result,
                 record.Note,
-                record.ActivityTypeId,
+                record.ParticipationKind,
                 record.PersonalizedAccountingCardId
             );
         }
@@ -28,7 +28,7 @@ namespace API.Mappers.Journal.PersonalizedAccountingCards
                 EndDate = request.EndDate,
                 Result = request.Result,
                 Note = request.Note,
-                ActivityTypeId = request.ActivityTypeId
+                ParticipationKind = request.ParticipationKind
             };
         }
 
@@ -41,7 +41,7 @@ namespace API.Mappers.Journal.PersonalizedAccountingCards
                 EndDate = request.EndDate,
                 Result = request.Result,
                 Note = request.Note,
-                ActivityTypeId = request.ActivityTypeId,
+                ParticipationKind = request.ParticipationKind,
                 PersonalizedAccountingCardId = request.PersonalizedAccountingCardId
             };
         }

@@ -11,6 +11,7 @@
 
 @inject HttpClient HttpClient
 @inject JournalState JournalState
+@inject IJSRuntime JSRuntime
 
 <PageTitle>Участие куратора в работе педагогических семинаров, методического объединения</PageTitle>
 
@@ -41,16 +42,20 @@ else
                         <input type="date" @bind="record.Date" @bind:after="async () => await Update(record)" class="input" />
                     </td>
                     <td>
-                        <input @bind="record.Topic" @bind:after="async () => await Update(record)" class="input fullwidth" />
+                        <textarea rows="1" style="overflow:hidden; resize:none;" oninput="this.style.height = 'auto'; this.style.height = (this.scrollHeight) + 'px';"
+                            @bind="record.Topic" @bind:after="async () => await Update(record)" class="input fullwidth" />
                     </td>
                     <td>
-                        <input @bind="record.ParticipationForm" @bind:after="async () => await Update(record)" class="input fullwidth" />
+                        <textarea rows="1" style="overflow:hidden; resize:none;" oninput="this.style.height = 'auto'; this.style.height = (this.scrollHeight) + 'px';"
+                            @bind="record.ParticipationForm" @bind:after="async () => await Update(record)" class="input fullwidth" />
                     </td>
                     <td>
-                        <input @bind="record.SeminarLocation" @bind:after="async () => await Update(record)" class="input fullwidth" />
+                        <textarea rows="1" style="overflow:hidden; resize:none;" oninput="this.style.height = 'auto'; this.style.height = (this.scrollHeight) + 'px';"
+                            @bind="record.SeminarLocation" @bind:after="async () => await Update(record)" class="input fullwidth" />
                     </td>
                     <td>
-                        <input @bind="record.Note" @bind:after="async () => await Update(record)" class="input fullwidth" />
+                        <textarea rows="1" style="overflow:hidden; resize:none;" oninput="this.style.height = 'auto'; this.style.height = (this.scrollHeight) + 'px';"
+                            @bind="record.Note" @bind:after="async () => await Update(record)" class="input fullwidth" />
                     </td>
                     <td>
                         <DeleteButton @onclick="() => OpenDeleteModal(record.Id)" />
@@ -81,6 +86,12 @@ else
         await JournalState.Initialize(JournalId, PageId);
 
         _pageData = await HttpClient.GetFromJsonAsync<ParticipationInPedagogicalSeminarsPageResponse>("api/journal/participationinpedagogicalseminars/" + PageId.ToString());
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await Task.Delay(10);
+        await JSRuntime.InvokeVoidAsync("resizeTextAreas");
     }
 
     private async Task Add()

@@ -10,7 +10,6 @@ namespace DataAccess.Repositories.PageRepositories.PersonalizedAccountingCards
         {
             if (record == null) return null;
             if (!await CardExists(record.PersonalizedAccountingCardId)) return null;
-            if (record.ActivityTypeId != null && !await ActivityTypeExists((int)record.ActivityTypeId)) return null;
 
             var createdRecord = await _dbContext.IndividualInformation.AddAsync(record);
 
@@ -38,7 +37,6 @@ namespace DataAccess.Repositories.PageRepositories.PersonalizedAccountingCards
         public async Task<IndividualInformationRecord?> UpdateAsync(int id, IndividualInformationRecord record)
         {
             if (record == null) return null;
-            if (record.ActivityTypeId != null && !await ActivityTypeExists((int)record.ActivityTypeId)) return null;
 
             var recordToUpdate = await _dbContext.IndividualInformation.FirstOrDefaultAsync(p => p.Id == id);
             if (recordToUpdate == null) return null;
@@ -48,7 +46,7 @@ namespace DataAccess.Repositories.PageRepositories.PersonalizedAccountingCards
             recordToUpdate.EndDate = record.EndDate;
             recordToUpdate.Result = record.Result;
             recordToUpdate.Note = record.Note;
-            recordToUpdate.ActivityTypeId = record.ActivityTypeId;
+            recordToUpdate.ParticipationKind = record.ParticipationKind;
 
             await _dbContext.SaveChangesAsync();
             return recordToUpdate;
@@ -56,8 +54,5 @@ namespace DataAccess.Repositories.PageRepositories.PersonalizedAccountingCards
 
         private async Task<bool> CardExists(int id) =>
             await _dbContext.PersonalizedAccountingCards.AsNoTracking().FirstOrDefaultAsync(c => c.Id == id) != null;
-
-        private async Task<bool> ActivityTypeExists(int id) =>
-            await _dbContext.ActivityTypes.AsNoTracking().FirstOrDefaultAsync(c => c.Id == id) != null;
     }
 }

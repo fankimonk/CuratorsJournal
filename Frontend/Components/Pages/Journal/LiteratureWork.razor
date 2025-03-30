@@ -12,6 +12,7 @@
 
 @inject HttpClient HttpClient
 @inject JournalState JournalState
+@inject IJSRuntime JSRuntime
 
 <PageTitle>Работа с научно-методической и педагогической литературой</PageTitle>
 
@@ -50,7 +51,8 @@ else
                         </select>
                     </td>
                     <td>
-                        <input @bind="record.ShortAnnotation" @bind:after='async () => await Update(record)' class="input fullwidth" />
+                        <textarea rows="1" style="overflow:hidden; resize:none;" oninput="this.style.height = 'auto'; this.style.height = (this.scrollHeight) + 'px';"
+                            @bind="record.ShortAnnotation" @bind:after='async () => await Update(record)' class="input fullwidth" />
                     </td>
                     <td>
                         <DeleteButton @onclick="() => OpenDeleteModal(record.Id)"/>
@@ -84,6 +86,12 @@ else
 
         _pageData = await HttpClient.GetFromJsonAsync<LiteratureWorkPageResponse>("api/journal/literaturework/" + PageId.ToString());
         _literature = await HttpClient.GetFromJsonAsync<List<LiteratureResponse>>("api/literature/");
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await Task.Delay(10);
+        await JSRuntime.InvokeVoidAsync("resizeTextAreas");
     }
 
     private async Task Update(LiteratureWorkRecordResponse record)

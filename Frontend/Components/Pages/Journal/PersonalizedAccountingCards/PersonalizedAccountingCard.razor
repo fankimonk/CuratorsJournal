@@ -2,10 +2,15 @@
 
 @inherits PageBase
 
+@using Contracts.ChronicDiseases
 @using Contracts.Journal.PersonalizedAccountingCards
+@using Contracts.PEGroups
 @using Contracts.Students
 @using Contracts.Mappers.Journal.PersonalizedAccountingCards
+@using Contracts.Students.ChronicDiseases
+@using Contracts.Students.PEGroups
 @using Frontend.Components.Buttons
+@using Frontend.Components.Pages.Journal.PersonalizedAccountingCards.Modals
 @using Frontend.Components.Utils
 @using Frontend.Services
 
@@ -41,7 +46,7 @@ else
     <p>
         Паспортные данные <br/>
         <textarea rows="1" style="overflow:hidden; resize:none;" oninput="this.style.height = 'auto'; this.style.height = (this.scrollHeight) + 'px';"
-            @bind="_pageData.PassportData" @bind:after="Update" class="input underline fullwidth" />
+        @bind="_pageData.PassportData" @bind:after="Update" class="input underline fullwidth" />
     </p>
     <p class="flex-container">
         гражданство
@@ -50,25 +55,102 @@ else
     <p>
         Окончил УО <br/>
         <textarea rows="1" style="overflow:hidden; resize:none;" oninput="this.style.height = 'auto'; this.style.height = (this.scrollHeight) + 'px';"
-            @bind="_pageData.GraduatedEducationalInstitution" @bind:after="Update" class="input underline fullwidth" />
+        @bind="_pageData.GraduatedEducationalInstitution" @bind:after="Update" class="input underline fullwidth" />
     </p>
     <p>
         Место и адрес проживания в период обучения <br/>
         <textarea rows="1" style="overflow:hidden; resize:none;" oninput="this.style.height = 'auto'; this.style.height = (this.scrollHeight) + 'px';"
-            @bind="_pageData.ResidentialAddress" @bind:after="Update" class="input underline fullwidth" />
+        @bind="_pageData.ResidentialAddress" @bind:after="Update" class="input underline fullwidth" />
     </p>
+
+    @if (_pageData.StudentId != null)
+    {
+        <h5><b>Сведения о состоянии здоровья</b></h5>
+
+        <p>
+            <div class="me-2 mb-2">
+                Хронические заболевания
+                <ReferenceButton Uri="/ChronicDiseases" />
+            </div>
+            @if (_studentChronicDiseases == null)
+            {
+                <em>Загрузка...</em>
+            }
+            else
+            {
+                @foreach (var cd in _studentChronicDiseases)
+                {
+                    <DeletableChip @onclick='() => OpenDeleteDiseaseModal(cd.Id)'>@cd.Name</DeletableChip>
+                }
+                <AddButton @onclick='OpenAddDiseaseModal' style="margin-bottom: 8px;" />
+
+                <AddChronicDiseaseModal IsVisible="_isAddDiseaseModalVisible"
+                StudentId="(int)_pageData.StudentId"
+                AddDiseaseRequest="ChronicDiseaseToAdd"
+                CreateDiseaseReqeust="CreateDiseaseRequest"
+                ChronicDiseases="_chronicDiseases"
+                StudentChronicDiseases="_studentChronicDiseases"
+                OnClose="CloseAddDiseaseModal"
+                AddDiseaseToPage="AddDiseaseToPage"
+                AddDisease="AddDisease"
+                ShowServerErrorAlert="ShowServerErrorAlert"/>
+            }
+        </p>
+        <p>
+            <div class="me-2 mb-2">
+                Группы по физической культуре (основная специальная)
+                <ReferenceButton Uri="/PEGroups" />
+            </div>
+            @if (_studentPEGroups == null)
+            {
+                <em>Загрузка...</em>
+            }
+            else
+            {
+                @foreach (var pe in _studentPEGroups)
+                {
+                    <DeletableChip @onclick='() => OpenDeletePEGroupModal(pe.Id)'>@pe.Name</DeletableChip>
+                }
+                <AddButton @onclick='OpenAddPEGroupModal' style="margin-bottom: 8px;" />
+
+                <AddPEGroupModal IsVisible="_isAddPEGroupModalVisible"
+                StudentId="(int)_pageData.StudentId"
+                AddPEGroupRequest="PEGroupToAdd"
+                CreatePEGroupReqeust="CreatePEGroupRequest"
+                PEGroups="_peGroups"
+                StudentPEGroups="_studentPEGroups"
+                OnClose="CloseAddPEGroupModal"
+                AddPEGroupToPage="AddPEGroupToPage"
+                AddPEGroup="AddPEGroup"
+                ShowServerErrorAlert="ShowServerErrorAlert" />
+            }
+        </p>
+
+    }
 
     <div class="mb-5"></div>
 
     <div class="mb-5">
         <ParentalInformation CardId="_pageData.Id" />
     </div>
+    <div class="mb-5">
+        <IndividualInformation CardId="_pageData.Id" />
+    </div>
+    <div class="mb-5">
+        <StudentEncouragements CardId="_pageData.Id" />
+    </div>
+    <div class="mb-5">
+        <StudentDisciplinaryResponsibilities CardId="_pageData.Id" />
+    </div>
+    <div class="mb-5">
+        <IndividualWorkWithStudent CardId="_pageData.Id" />
+    </div>
+    <div class="mb-5">
+        <WorkWithParents CardId="_pageData.Id" />
+    </div>
 
-    <IndividualInformation CardId="_pageData.Id" />
-    <StudentEncouragements CardId="_pageData.Id" />
-    <StudentDisciplinaryResponsibilities CardId="_pageData.Id" />
-    <IndividualWorkWithStudent CardId="_pageData.Id" />
-    <WorkWithParents CardId="_pageData.Id" />
+    <ConfirmDeleteModal IsVisible="_isDeletePEGroupModalVisible" OnClose="CloseDeletePEGroupModal" IdToDelete="_idToDelete" OnDeleteById="DeletePEGroup" />
+    <ConfirmDeleteModal IsVisible="_isDeleteDiseaseModalVisible" OnClose="CloseDeleteDiseaseModal" IdToDelete="_idToDelete" OnDeleteById="DeleteChronicDisease" />
 
     <AlertBottom IsVisible="_isServerErrorAlertVisible" OnClose="CloseServerErrorAlert">@_errorMessage</AlertBottom>
 }
@@ -82,13 +164,37 @@ else
 
     private PersonalizedAccountingCardResponse? _pageData;
 
+    private List<ChronicDiseaseResponse>? _studentChronicDiseases;
+    private List<PEGroupResponse>? _studentPEGroups;
+
     private List<StudentResponse>? _students;
+    private List<ChronicDiseaseResponse>? _chronicDiseases;
+    private List<PEGroupResponse>? _peGroups;
+
+    private bool _isDeletePEGroupModalVisible = false;
+    private bool _isDeleteDiseaseModalVisible = false;
+
+    private bool _isAddPEGroupModalVisible = false;
+    private bool _isAddDiseaseModalVisible = false;
+
+    [SupplyParameterFromForm]
+    public AddStudentChronicDiseaseRequest ChronicDiseaseToAdd { get; set; } = new(-1, null);
+    [SupplyParameterFromForm]
+    public CreateChronicDiseaseRequest CreateDiseaseRequest { get; set; } = new("");
+
+    [SupplyParameterFromForm]
+    public AddStudentPEGroupRequest PEGroupToAdd { get; set; } = new(-1, null);
+    [SupplyParameterFromForm]
+    public CreatePEGroupRequest CreatePEGroupRequest { get; set; } = new("");
 
     protected override async Task OnInitializedAsync()
     {
         await JournalState.Initialize(JournalId, PageId);
 
         _pageData = await HttpClient.GetFromJsonAsync<PersonalizedAccountingCardResponse>("api/journal/personalizedaccountingcard/" + PageId.ToString());
+
+        await FetchStudentPEGroupsAndChronicDiseases();
+
         _students = await HttpClient.GetFromJsonAsync<List<StudentResponse>>("api/student/getbyjournal/" + JournalId.ToString());
     }
 
@@ -96,6 +202,26 @@ else
     {
         await Task.Delay(10);
         await JSRuntime.InvokeVoidAsync("resizeTextAreas");
+    }
+
+    private async Task FetchStudentPEGroupsAndChronicDiseases()
+    {
+        if (_pageData != null && _pageData.StudentId != null)
+        {
+            _studentChronicDiseases = await HttpClient.GetFromJsonAsync<List<ChronicDiseaseResponse>>("api/student/chronicdisease/" + _pageData.StudentId);
+            _studentPEGroups = await HttpClient.GetFromJsonAsync<List<PEGroupResponse>>("api/student/pegroup/" + _pageData.StudentId);
+
+            _chronicDiseases = await HttpClient.GetFromJsonAsync<List<ChronicDiseaseResponse>>("api/chronicdisease");
+            _peGroups = await HttpClient.GetFromJsonAsync<List<PEGroupResponse>>("api/pegroup");
+
+            ChronicDiseaseToAdd.StudentId = (int)_pageData.StudentId;
+            PEGroupToAdd.StudentId = (int)_pageData.StudentId;
+        }
+        else
+        {
+            _studentChronicDiseases = null;
+            _studentPEGroups = null;
+        }
     }
 
     private async Task Update()
@@ -109,5 +235,113 @@ else
             var errorMessage = (await response.Content.ReadAsStringAsync()).Split('\n').FirstOrDefault();
             ShowServerErrorAlert(errorMessage);
         }
+        else
+        {
+            await FetchStudentPEGroupsAndChronicDiseases();
+        }
+    }
+
+    private async Task DeleteChronicDisease(int id)
+    {
+        if (_pageData == null || _pageData.StudentId == null) return;
+
+        var response = await HttpClient.DeleteAsync($"api/student/chronicdisease?StudentId={_pageData.StudentId}&DiseaseId={id}");
+
+        if (response.IsSuccessStatusCode) _studentChronicDiseases!.RemoveAll(d => d.Id == id);
+        else
+        {
+            var errorMessage = (await response.Content.ReadAsStringAsync()).Split('\n').FirstOrDefault();
+            ShowServerErrorAlert(errorMessage);
+        }
+    }
+
+    private async Task DeletePEGroup(int id)
+    {
+        if (_pageData == null || _pageData.StudentId == null) return;
+
+        var response = await HttpClient.DeleteAsync($"api/student/pegroup?StudentId={_pageData.StudentId}&PEGroupId={id}");
+
+        if (response.IsSuccessStatusCode) _studentPEGroups!.RemoveAll(d => d.Id == id);
+        else
+        {
+            var errorMessage = (await response.Content.ReadAsStringAsync()).Split('\n').FirstOrDefault();
+            ShowServerErrorAlert(errorMessage);
+        }
+    }
+
+    private void AddDisease(ChronicDiseaseResponse disease)
+    {
+        if (_chronicDiseases == null) return;
+        _chronicDiseases.Add(disease);
+    }
+
+    private void AddDiseaseToPage(ChronicDiseaseResponse disease)
+    {
+        if (_studentChronicDiseases == null) return;
+        _studentChronicDiseases.Add(disease);
+    }
+
+    private void AddPEGroup(PEGroupResponse peGroup)
+    {
+        if (_peGroups == null) return;
+        _peGroups.Add(peGroup);
+    }
+
+    private void AddPEGroupToPage(PEGroupResponse peGroup)
+    {
+        if (_studentPEGroups == null) return;
+        _studentPEGroups.Add(peGroup);
+    }
+
+    private void OpenDeletePEGroupModal(int id)
+    {
+        _idToDelete = id;
+        _isDeletePEGroupModalVisible = true;
+    }
+
+    private void OpenDeleteDiseaseModal(int id)
+    {
+        _idToDelete = id;
+        _isDeleteDiseaseModalVisible = true;
+    }
+
+    private void CloseDeletePEGroupModal()
+    {
+        _isDeletePEGroupModalVisible = false;
+        _idToDelete = null;
+    }
+
+    private void CloseDeleteDiseaseModal()
+    {
+        _isDeleteDiseaseModalVisible = false;
+        _idToDelete = null;
+    }
+
+    private void OpenAddPEGroupModal()
+    {
+        PEGroupToAdd.PEGroupId = null;
+        CreatePEGroupRequest.Name = "";
+        _isAddPEGroupModalVisible = true;
+    }
+
+    private void OpenAddDiseaseModal()
+    {
+        ChronicDiseaseToAdd.ChronicDiseaseId = null;
+        CreateDiseaseRequest.Name = "";
+        _isAddDiseaseModalVisible = true;
+    }
+
+    private void CloseAddPEGroupModal()
+    {
+        _isAddPEGroupModalVisible = false;
+        ChronicDiseaseToAdd.ChronicDiseaseId = null;
+        CreatePEGroupRequest.Name = "";
+    }
+
+    private void CloseAddDiseaseModal()
+    {
+        _isAddDiseaseModalVisible = false;
+        PEGroupToAdd.PEGroupId = null;
+        CreateDiseaseRequest.Name = "";
     }
 }

@@ -1,5 +1,9 @@
 ﻿using API.Mappers;
+using Contracts.ChronicDiseases;
+using Contracts.PEGroups;
 using Contracts.Students;
+using Contracts.Students.ChronicDiseases;
+using Contracts.Students.PEGroups;
 using DataAccess.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -76,6 +80,56 @@ namespace API.Controllers
         {
             if (!await _studentsRepository.DeleteAsync(id)) return NotFound();
 
+            return NoContent();
+        }
+
+        [HttpGet("pegroup/{studentId}")]
+        public async Task<ActionResult<List<PEGroupResponse>>> GetStudentPEGroups([FromRoute] int studentId)
+        {
+            var peGroups = await _studentsRepository.GetPEGroupsAsync(studentId);
+            if (peGroups == null) return NotFound();
+
+            return peGroups.Select(pe => pe.ToResponse()).ToList();
+        }
+
+        [HttpPost("pegroup")]
+        public async Task<ActionResult<PEGroupResponse>> AddPEGroup([FromBody] AddStudentPEGroupRequest request)
+        {
+            var peGroup = await _studentsRepository.AddPEGroupAsync(request.StudentId, (int)request.PEGroupId);
+            if (peGroup == null) return BadRequest();
+
+            return peGroup.ToResponse();
+        }
+
+        [HttpDelete("pegroup")]
+        public async Task<ActionResult> DeletePEGroup([FromQuery] DeleteStudentPEGroupQuery query)
+        {
+            if (!await _studentsRepository.DeletePEGroupAsync(query.StudentId, query.PEGroupId)) return NotFound();
+            return NoContent();
+        }
+
+        [HttpGet("chronicdisease/{studentId}")]
+        public async Task<ActionResult<List<ChronicDiseaseResponse>>> GetStudentChronicDiseases([FromRoute] int studentId)
+        {
+            var diseases = await _studentsRepository.GetChronicDiseasesAsync(studentId);
+            if (diseases == null) return NotFound();
+
+            return diseases.Select(cd => cd.ToResponse()).ToList();
+        }
+
+        [HttpPost("chronicdisease")]
+        public async Task<ActionResult<ChronicDiseaseResponse>> AddChronicDisease([FromBody] AddStudentChronicDiseaseRequest request)
+        {
+            var peGroup = await _studentsRepository.AddChronicDiseaseAsync(request.StudentId, (int)request.ChronicDiseaseId);
+            if (peGroup == null) return BadRequest();
+
+            return peGroup.ToResponse();
+        }
+
+        [HttpDelete("chronicdisease")]
+        public async Task<ActionResult> DeleteChronicDisease([FromQuery] DeleteStudentChronicDiseaseQuery query)
+        {
+            if (!await _studentsRepository.DeleteChronicDiseaseAsync(query.StudentId, query.DiseaseId)) return NotFound();
             return NoContent();
         }
     }

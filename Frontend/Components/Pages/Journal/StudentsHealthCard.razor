@@ -14,6 +14,7 @@
 
 @inject HttpClient HttpClient
 @inject JournalState JournalState
+@inject IJSRuntime JSRuntime
 
 <PageTitle>Карта здоровья студентов</PageTitle>
 
@@ -78,7 +79,8 @@ else
                             @bind="record.MissedClasses" @bind:after="async () => await Update(record)" class="input fullwidth" />
                     </td>
                     <td>
-                        <input @bind="record.Note" @bind:after="async () => await Update(record)" class="input fullwidth" />
+                        <textarea rows="1" style="overflow:hidden; resize:none;" oninput="this.style.height = 'auto'; this.style.height = (this.scrollHeight) + 'px';"
+                            @bind="record.Note" @bind:after="async () => await Update(record)" class="input fullwidth" />
                     </td>
                     <td>
                         <DeleteButton @onclick="() => OpenDeleteModal(record.Id)" />
@@ -124,6 +126,12 @@ else
             _academicYears = await HttpClient.GetFromJsonAsync<List<AcademicYearResponse>>(getAcademicYearsUri);
 
         _students = await HttpClient.GetFromJsonAsync<List<StudentResponse>>("api/student/getbyjournal/" + JournalId.ToString());
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await Task.Delay(10);
+        await JSRuntime.InvokeVoidAsync("resizeTextAreas");
     }
 
     private async Task Add()

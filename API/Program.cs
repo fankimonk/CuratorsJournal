@@ -73,7 +73,6 @@ builder.Services.AddScoped<IPositionsRepository, PositionsRepository>();
 builder.Services.AddScoped<ISubjectsRepository, SubjectsRepository>();
 builder.Services.AddScoped<IChronicDiseasesRepository, ChronicDiseasesRepository>();
 builder.Services.AddScoped<IPEGroupsRepository, PEGroupsRepository>();
-builder.Services.AddScoped<IActivityTypesRepository, ActivityTypesRepository>();
 builder.Services.AddScoped<IDeaneriesRepository, DeaneriesRepository>();
 builder.Services.AddScoped<IDepartmentsRepository, DepartmentsRepository>();
 builder.Services.AddScoped<ICertificationTypesRepository, CertificationTypesRepository>();

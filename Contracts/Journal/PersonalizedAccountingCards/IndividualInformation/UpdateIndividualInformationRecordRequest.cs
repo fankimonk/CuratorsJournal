@@ -10,6 +10,6 @@
         string? Result,
         string? Note,
 
-        int? ActivityTypeId
+        string? ParticipationKind
     );
 }

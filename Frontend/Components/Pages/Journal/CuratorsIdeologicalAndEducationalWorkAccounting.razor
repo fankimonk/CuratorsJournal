@@ -12,6 +12,7 @@
 
 @inject HttpClient HttpClient
 @inject JournalState JournalState
+@inject IJSRuntime JSRuntime
 
 <PageTitle>Учет идеологической и воспитательной работы куратора учебной группы</PageTitle>
 
@@ -52,7 +53,8 @@ else
                         по <input type="date" @bind="record.EndDate" @bind:after="async () => await Update(record)" class="input" />
                     </td>
                     <td>
-                        <input @bind="record.WorkContent" @bind:after="async () => await Update(record)" class="input fullwidth" />
+                        <textarea rows="1" style="overflow:hidden; resize:none;" oninput="this.style.height = 'auto'; this.style.height = (this.scrollHeight) + 'px';"
+                            @bind="record.WorkContent" @bind:after="async () => await Update(record)" class="input fullwidth" />
                     </td>
                     <td>
                         <DeleteButton @onclick="() => OpenDeleteModal(record.Id)" />
@@ -83,6 +85,12 @@ else
         await JournalState.Initialize(JournalId, PageId);
 
         _pageData = await HttpClient.GetFromJsonAsync<IdeologicalEducationalWorkPageResponse>("api/journal/ideologicalandeducationalwork/" + PageId.ToString());
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await Task.Delay(10);
+        await JSRuntime.InvokeVoidAsync("resizeTextAreas");
     }
 
     private async Task Update(IdeologicalEducationalWorkRecordResponse record)

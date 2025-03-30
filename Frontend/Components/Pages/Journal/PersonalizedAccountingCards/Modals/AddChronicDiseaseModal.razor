@@ -1,0 +1,154 @@
+﻿@inherits ModalFormBase
+
+@using Contracts.ChronicDiseases
+@using Contracts.Students.ChronicDiseases
+@using Frontend.Components.Buttons
+@using Frontend.Components.Utils
+
+@inject HttpClient HttpClient
+
+<Modal IsVisible="IsVisible" OnClose="CloseModal">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="mb-3">
+                <input type="radio" checked="@(_selectedOption == AddOptions.Existing)" name="option"
+                @onchange="@(SetSelectedOptionToExisting)" />
+                <label>Добавить существующую</label>
+            </div>
+            <div class="mb-3">
+                <input type="radio" checked="@(_selectedOption == AddOptions.New)" name="option"
+                @onchange="@(SetSelectedOptionToNew)" />
+                <label>Добавить новую</label>
+            </div>
+            @if (_selectedOption == AddOptions.Existing)
+            {
+                <EditForm method="post" Model="AddDiseaseRequest" OnValidSubmit="Add" OnInvalidSubmit="ShowErrorAlert" FormName="add" Enhance>
+                    <DataAnnotationsValidator />
+                    <Alert Type="success" IsVisible="_isSuccessAlertVisible" OnClose="CloseSuccessAlert" />
+                    <Alert Type="error" IsVisible="_isErrorAlertVisible" OnClose="CloseErrorAlert">
+                        <ValidationSummary />
+                    </Alert>
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Хроническое заболевание: </label>
+                        <InputSelect id="existingChronicDisease"
+                        @bind-Value="AddDiseaseRequest.ChronicDiseaseId"
+                        class="form-control">
+                            <option value="">(нет)</option>
+                            @foreach (var cd in ChronicDiseases.Where(p => !StudentChronicDiseases.Any(sp => sp.Id == p.Id)))
+                            {
+                                <option @key="cd.Id" value="@cd.Id">@cd.Name</option>
+                            }
+                        </InputSelect>
+                    </div>
+                    <AddButton type="submit">Добавить</AddButton>
+                </EditForm>
+            }
+            else if (_selectedOption == AddOptions.New)
+            {
+                <EditForm method="post" Model="CreateDiseaseReqeust" OnValidSubmit="AddNew" OnInvalidSubmit="ShowErrorAlert" FormName="addnew" Enhance>
+                    <DataAnnotationsValidator />
+                    <Alert Type="success" IsVisible="_isSuccessAlertVisible" OnClose="CloseSuccessAlert" />
+                    <Alert Type="error" IsVisible="_isErrorAlertVisible" OnClose="CloseErrorAlert">
+                        <ValidationSummary />
+                    </Alert>
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Хроническое заболевание: </label>
+                        <InputText id="newDisease" @bind-Value="CreateDiseaseReqeust.Name" class="form-control" />
+                    </div>
+                    <AddButton type="submit">Добавить</AddButton>
+                </EditForm>
+            }
+        </div>
+    </div>
+</Modal>
+
+@code {
+    [Parameter]
+    public int StudentId { get; set; }
+
+    [Parameter]
+    public AddStudentChronicDiseaseRequest AddDiseaseRequest { get; set; } = new(-1, null);
+
+    [Parameter]
+    public CreateChronicDiseaseRequest CreateDiseaseReqeust { get; set; } = new("");
+
+    [Parameter]
+    public List<ChronicDiseaseResponse> ChronicDiseases { get; set; } = [];
+    [Parameter]
+    public List<ChronicDiseaseResponse> StudentChronicDiseases { get; set; } = [];
+
+    [Parameter]
+    public EventCallback<ChronicDiseaseResponse> AddDiseaseToPage { get; set; }
+    [Parameter]
+    public EventCallback<ChronicDiseaseResponse> AddDisease { get; set; }
+
+    private enum AddOptions
+    {
+        Existing = 1,
+        New = 2
+    }
+
+    private AddOptions _selectedOption = AddOptions.Existing;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        AddDiseaseRequest.StudentId = StudentId;
+    }
+
+    public async Task AddNew()
+    {
+        var response = await HttpClient.PostAsJsonAsync<CreateChronicDiseaseRequest>("api/chronicdisease", CreateDiseaseReqeust);
+
+        if (response.IsSuccessStatusCode)
+        {
+            var created = await response.Content.ReadFromJsonAsync<ChronicDiseaseResponse>();
+            await AddDisease.InvokeAsync(created);
+
+            AddDiseaseRequest.ChronicDiseaseId = created!.Id;
+            await Add();
+        }
+        else
+        {
+            var errorMessage = (await response.Content.ReadAsStringAsync()).Split('\n').FirstOrDefault();
+            await ShowServerErrorAlert.InvokeAsync(errorMessage);
+        }
+    }
+
+    public async Task Add()
+    {
+        var response = await HttpClient.PostAsJsonAsync<AddStudentChronicDiseaseRequest>("api/student/chronicdisease", AddDiseaseRequest);
+
+        if (response.IsSuccessStatusCode)
+        {
+            var added = await response.Content.ReadFromJsonAsync<ChronicDiseaseResponse>();
+            await AddDiseaseToPage.InvokeAsync(added);
+
+            ShowSuccessAlert();
+        }
+        else
+        {
+            var errorMessage = (await response.Content.ReadAsStringAsync()).Split('\n').FirstOrDefault();
+            await ShowServerErrorAlert.InvokeAsync(errorMessage);
+        }
+    }
+
+    private void PrepareToChangeSelectedOption()
+    {
+        AddDiseaseRequest.ChronicDiseaseId = null;
+        CreateDiseaseReqeust.Name = "";
+        CloseErrorAlert();
+        CloseSuccessAlert();
+    }
+
+    private void SetSelectedOptionToExisting()
+    {
+        PrepareToChangeSelectedOption();
+        _selectedOption = AddOptions.Existing;
+    }
+
+    private void SetSelectedOptionToNew()
+    {
+        PrepareToChangeSelectedOption();
+        _selectedOption = AddOptions.New;
+    }
+}

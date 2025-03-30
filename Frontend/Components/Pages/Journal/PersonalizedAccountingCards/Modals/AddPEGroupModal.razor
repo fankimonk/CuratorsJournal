@@ -1,0 +1,155 @@
+﻿@inherits ModalFormBase
+
+@using Contracts.PEGroups
+@using Contracts.Students.PEGroups
+@using Frontend.Components.Buttons
+@using Frontend.Components.Utils
+
+@inject HttpClient HttpClient
+
+<Modal IsVisible="IsVisible" OnClose="CloseModal">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="mb-3">
+                <input type="radio" checked="@(_selectedOption == AddOptions.Existing)" name="option"
+                @onchange="@(SetSelectedOptionToExisting)" />
+                <label>Добавить существующую</label>
+            </div>
+            <div class="mb-3">
+                <input type="radio" checked="@(_selectedOption == AddOptions.New)" name="option"
+                @onchange="@(SetSelectedOptionToNew)" />
+                <label>Добавить новую</label>
+            </div>
+            @if (_selectedOption == AddOptions.Existing)
+            {
+                <EditForm method="post" Model="AddPEGroupRequest" OnValidSubmit="Add" OnInvalidSubmit="ShowErrorAlert" FormName="add" Enhance>
+                    <DataAnnotationsValidator />
+                    <Alert Type="success" IsVisible="_isSuccessAlertVisible" OnClose="CloseSuccessAlert" />
+                    <Alert Type="error" IsVisible="_isErrorAlertVisible" OnClose="CloseErrorAlert">
+                        <ValidationSummary />
+                    </Alert>
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Группа по физической культуре: </label>
+                        <InputSelect id="existingPEGroup"
+                        @bind-Value="AddPEGroupRequest.PEGroupId"
+                        class="form-control">
+                            <option value="">(нет)</option>
+                            @foreach (var pe in PEGroups.Where(p => !StudentPEGroups.Any(sp => sp.Id == p.Id)))
+                            {
+                                <option @key="pe.Id" value="@pe.Id">@pe.Name</option>
+                            }
+                        </InputSelect>
+                    </div>
+                    <AddButton type="submit">Добавить</AddButton>
+                </EditForm>
+            }
+            else if (_selectedOption == AddOptions.New)
+            {
+                <EditForm method="post" Model="CreatePEGroupReqeust" OnValidSubmit="AddNew" OnInvalidSubmit="ShowErrorAlert" FormName="addnew" Enhance>
+                    <DataAnnotationsValidator />
+                    <Alert Type="success" IsVisible="_isSuccessAlertVisible" OnClose="CloseSuccessAlert" />
+                    <Alert Type="error" IsVisible="_isErrorAlertVisible" OnClose="CloseErrorAlert">
+                        <ValidationSummary />
+                    </Alert>
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Группа по физической культуре: </label>
+                        <InputText id="newPEGroup" @bind-Value="CreatePEGroupReqeust.Name" class="form-control" />
+                    </div>
+                    <AddButton type="submit">Добавить</AddButton>
+                </EditForm>
+            }
+
+        </div>
+    </div>
+</Modal>
+
+@code {
+    [Parameter]
+    public int StudentId { get; set; }
+
+    [Parameter]
+    public AddStudentPEGroupRequest AddPEGroupRequest { get; set; } = new(-1, null);
+
+    [Parameter]
+    public CreatePEGroupRequest CreatePEGroupReqeust { get; set; } = new("");
+
+    [Parameter]
+    public List<PEGroupResponse> PEGroups { get; set; } = [];
+    [Parameter]
+    public List<PEGroupResponse> StudentPEGroups { get; set; } = [];
+
+    [Parameter]
+    public EventCallback<PEGroupResponse> AddPEGroupToPage { get; set; }
+    [Parameter]
+    public EventCallback<PEGroupResponse> AddPEGroup { get; set; }
+
+    private enum AddOptions
+    {
+        Existing = 1,
+        New = 2
+    }
+
+    private AddOptions _selectedOption = AddOptions.Existing;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        AddPEGroupRequest.StudentId = StudentId;
+    }
+
+    public async Task AddNew()
+    {
+        var response = await HttpClient.PostAsJsonAsync<CreatePEGroupRequest>("api/pegroup", CreatePEGroupReqeust);
+
+        if (response.IsSuccessStatusCode)
+        {
+            var created = await response.Content.ReadFromJsonAsync<PEGroupResponse>();
+            await AddPEGroup.InvokeAsync(created);
+
+            AddPEGroupRequest.PEGroupId = created!.Id;
+            await Add();
+        }
+        else
+        {
+            var errorMessage = (await response.Content.ReadAsStringAsync()).Split('\n').FirstOrDefault();
+            await ShowServerErrorAlert.InvokeAsync(errorMessage);
+        }
+    }
+
+    public async Task Add()
+    {
+        var response = await HttpClient.PostAsJsonAsync<AddStudentPEGroupRequest>("api/student/pegroup", AddPEGroupRequest);
+
+        if (response.IsSuccessStatusCode)
+        {
+            var added = await response.Content.ReadFromJsonAsync<PEGroupResponse>();
+            await AddPEGroupToPage.InvokeAsync(added);
+
+            ShowSuccessAlert();
+        }
+        else
+        {
+            var errorMessage = (await response.Content.ReadAsStringAsync()).Split('\n').FirstOrDefault();
+            await ShowServerErrorAlert.InvokeAsync(errorMessage);
+        }
+    }
+
+    private void PrepareToChangeSelectedOption()
+    {
+        AddPEGroupRequest.PEGroupId = null;
+        CreatePEGroupReqeust.Name = "";
+        CloseErrorAlert();
+        CloseSuccessAlert();
+    }
+
+    private void SetSelectedOptionToExisting()
+    {
+        PrepareToChangeSelectedOption();
+        _selectedOption = AddOptions.Existing;
+    }
+
+    private void SetSelectedOptionToNew()
+    {
+        PrepareToChangeSelectedOption();
+        _selectedOption = AddOptions.New;
+    }
+}

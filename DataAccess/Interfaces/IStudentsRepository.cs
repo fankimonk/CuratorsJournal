@@ -10,5 +10,11 @@ namespace DataAccess.Interfaces
         Task<Student?> CreateAsync(Student student);
         Task<Student?> UpdateAsync(int id, Student student);
         Task<bool> DeleteAsync(int id);
+        Task<List<ChronicDisease>?> GetChronicDiseasesAsync(int studentId);
+        Task<List<PEGroup>?> GetPEGroupsAsync(int studentId);
+        Task<ChronicDisease?> AddChronicDiseaseAsync(int studentId, int diseaseId);
+        Task<bool> DeleteChronicDiseaseAsync(int studentId, int diseaseId);
+        Task<PEGroup?> AddPEGroupAsync(int studentId, int peGroupId);
+        Task<bool> DeletePEGroupAsync(int studentId, int peGroupId);
     }
 }

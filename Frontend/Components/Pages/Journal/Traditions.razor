@@ -12,6 +12,7 @@
 
 @inject HttpClient HttpClient
 @inject JournalState JournalState
+@inject IJSRuntime JSRuntime
 
 <PageTitle>Традиции ВУЗа, факультета, группы</PageTitle>
 
@@ -37,7 +38,8 @@ else
             {
                 <tr class="@GetRowClass(record.Id)">
                     <td>
-                        <input @bind="record.Name" @bind:after="async () => await Update(record)" class="input fullwidth" />
+                        <textarea rows="1" style="overflow:hidden; resize:none;" oninput="this.style.height = 'auto'; this.style.height = (this.scrollHeight) + 'px';"
+                            @bind="record.Name" @bind:after="async () => await Update(record)" class="input fullwidth" />
                     </td>
                     <td>
                         <input type="number" min="1" max="31" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))"
@@ -51,10 +53,12 @@ else
                         </select>
                     </td>
                     <td>
-                        <input @bind="record.ParticipationForm" @bind:after="async () => await Update(record)" class="input fullwidth" />
+                        <textarea rows="1" style="overflow:hidden; resize:none;" oninput="this.style.height = 'auto'; this.style.height = (this.scrollHeight) + 'px';"
+                            @bind="record.ParticipationForm" @bind:after="async () => await Update(record)" class="input fullwidth" />
                     </td>
                     <td>
-                        <input @bind="record.Note" @bind:after="async () => await Update(record)" class="input fullwidth" />
+                        <textarea rows="1" style="overflow:hidden; resize:none;" oninput="this.style.height = 'auto'; this.style.height = (this.scrollHeight) + 'px';"
+                            @bind="record.Note" @bind:after="async () => await Update(record)" class="input fullwidth" />
                     </td>
                     <td>
                         <DeleteButton @onclick="() => OpenDeleteModal(record.Id)" />
@@ -84,6 +88,12 @@ else
         await JournalState.Initialize(JournalId, PageId);
 
         _pageData = await HttpClient.GetFromJsonAsync<TraditionsPageResponse>("api/journal/tradition/" + PageId.ToString());
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await Task.Delay(10);
+        await JSRuntime.InvokeVoidAsync("resizeTextAreas");
     }
 
     private async Task Update(TraditionResponse record)

@@ -15,12 +15,7 @@ namespace DataAccess.Configurations
             builder.Property(i => i.ActivityName).HasColumnType("nvarchar(max)");
             builder.Property(i => i.Result).HasColumnType("nvarchar(max)");
             builder.Property(i => i.Note).HasColumnType("nvarchar(max)");
-
-            builder
-                .HasOne(i => i.ActivityType)
-                .WithMany(a => a.IndividualInformationRecords)
-                .HasForeignKey(i => i.ActivityTypeId)
-                .OnDelete(DeleteBehavior.Restrict);
+            builder.Property(i => i.ParticipationKind).HasColumnType("nvarchar(max)");
 
             builder
                 .HasOne(i => i.PersonalizedAccountingCard)

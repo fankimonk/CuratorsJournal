@@ -25,16 +25,16 @@ else
     var i = 0;
     @foreach (var active in _pageData.GroupActives)
     {
-        <p>
+        <p class="flex-container">
             @if (i > 2)
             {
-                <input @bind="active.PositionName" @bind:after="async () => await Update(active)" class="input underline" /> 
+                <input @bind="active.PositionName" @bind:after="async () => await Update(active)" class="input underline flex-input" /> 
             }
             else
             {
                 @(active.PositionName + " ")
             }
-            <select @bind="active.StudentId" @bind:after="async () => await Update(active)" class="input underline" >
+            <select @bind="active.StudentId" @bind:after="async () => await Update(active)" class="input underline flex-input" >
                 <option value="">(нет)</option>
                 @foreach (var student in _students)
                 {

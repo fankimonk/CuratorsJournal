@@ -16,6 +16,7 @@
 
 @inject HttpClient HttpClient
 @inject JournalState JournalState
+@inject IJSRuntime JSRuntime
 
 <PageTitle>Рекомендации и замечания лиц, проверяющих работу куратора</PageTitle>
 
@@ -63,10 +64,12 @@ else
                         </select>
                     </td>
                     <td>
-                        <input @bind="record.Content" @bind:after='async () => await Update(record)' class="input fullwidth" />
+                        <textarea rows="1" style="overflow:hidden; resize:none;" oninput="this.style.height = 'auto'; this.style.height = (this.scrollHeight) + 'px';"
+                            @bind="record.Content" @bind:after='async () => await Update(record)' class="input fullwidth" />
                     </td>
                     <td>
-                        <input @bind="record.Result" @bind:after='async () => await Update(record)' class="input fullwidth" />
+                        <textarea rows="1" style="overflow:hidden; resize:none;" oninput="this.style.height = 'auto'; this.style.height = (this.scrollHeight) + 'px';"
+                            @bind="record.Result" @bind:after='async () => await Update(record)' class="input fullwidth" />
                     </td>
                     <td>
                         <input type="date" @bind="record.ExecutionDate" @bind:after='async () => await Update(record)' class="input fullwidth" />
@@ -102,6 +105,12 @@ else
 
         _pageData = await HttpClient.GetFromJsonAsync<RecommendationsAndRemarksPageResponse>("api/journal/recommendationsandremarks/" + PageId.ToString());
         _workers = await HttpClient.GetFromJsonAsync<List<WorkerResponse>>("api/worker/");
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await Task.Delay(10);
+        await JSRuntime.InvokeVoidAsync("resizeTextAreas");
     }
 
     private async Task Update(RecommendationsAndRemarksRecordResponse record)

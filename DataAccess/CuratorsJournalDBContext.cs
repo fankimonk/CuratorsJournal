@@ -32,7 +32,6 @@ namespace DataAccess
         public DbSet<Subject> Subjects { get; set; }
         public DbSet<Teacher> Teachers { get; set; }
         public DbSet<Worker> Workers { get; set; }
-        public DbSet<ActivityType> ActivityTypes { get; set; }
         public DbSet<ChronicDisease> ChronicDiseases { get; set; }
         public DbSet<PEGroup> PEGroups { get; set; }
         public DbSet<StudentChronicDisease> StudentsChronicDiseases { get; set; }
@@ -97,7 +96,6 @@ namespace DataAccess
             modelBuilder.ApplyConfiguration(new SubjectsConfiguration());
             modelBuilder.ApplyConfiguration(new TeachersConfiguration());
             modelBuilder.ApplyConfiguration(new WorkersConfiguration());
-            modelBuilder.ApplyConfiguration(new ActivityTypesConfiguration());
             modelBuilder.ApplyConfiguration(new ChronicDiseasesConfiguration());
             modelBuilder.ApplyConfiguration(new PEGroupsConfiguration());
             modelBuilder.ApplyConfiguration(new StudentsChronicDiseasesConfiguration());

@@ -7,7 +7,7 @@
 
 @inject HttpClient HttpClient
 
-@if (_individualInformation == null || _activityTypes == null)
+@if (_individualInformation == null)
 {
     <p><em>Загрузка...</em></p>
 }
@@ -36,16 +36,12 @@ else
             {
                 <tr>
                     <td>
-                        <input @bind="record.ActivityName" @bind:after="async () => await Update(record)" class="input fullwidth" />
+                        <textarea rows="1" style="overflow:hidden; resize:none;" oninput="this.style.height = 'auto'; this.style.height = (this.scrollHeight) + 'px';"
+                            @bind="record.ActivityName" @bind:after="async () => await Update(record)" class="input fullwidth" />
                     </td>
                     <td>
-                        <select @bind="record.ActivityTypeId" @bind:after="async () => await Update(record)" class="input fullwidth">
-                            <option value="">(нет)</option>
-                            @foreach (var at in _activityTypes)
-                            {
-                                <option @key="at.Id" value="@at.Id">@at.Name</option>
-                            }
-                        </select>
+                        <textarea rows="1" style="overflow:hidden; resize:none;" oninput="this.style.height = 'auto'; this.style.height = (this.scrollHeight) + 'px';"
+                            @bind="record.ParticipationKind" @bind:after="async () => await Update(record)" class="input fullwidth" />
                     </td>
                     <td>
                         <input type="date" @bind="record.StartDate" @bind:after="async () => await Update(record)" class="input fullwidth" />
@@ -54,13 +50,15 @@ else
                         <input type="date" @bind="record.EndDate" @bind:after="async () => await Update(record)" class="input fullwidth" />
                     </td>
                     <td>
-                        <input @bind="record.Result" @bind:after="async () => await Update(record)" class="input fullwidth" />
+                        <textarea rows="1" style="overflow:hidden; resize:none;" oninput="this.style.height = 'auto'; this.style.height = (this.scrollHeight) + 'px';"
+                            @bind="record.Result" @bind:after="async () => await Update(record)" class="input fullwidth" />
                     </td>
                     <td>
-                        <input @bind="record.Note" @bind:after="async () => await Update(record)" class="input fullwidth" />
+                        <textarea rows="1" style="overflow:hidden; resize:none;" oninput="this.style.height = 'auto'; this.style.height = (this.scrollHeight) + 'px';"
+                            @bind="record.Note" @bind:after="async () => await Update(record)" class="input fullwidth" />
                     </td>
                     <td>
-                        <button @onclick="async () => await Delete(record)" class="btn btn-close" />
+                        <DeleteButton @onclick="async () => await Delete(record)" />
                     </td>
                 </tr>
             }
@@ -75,14 +73,10 @@ else
 
     private List<IndividualInformationRecordResponse>? _individualInformation;
 
-    private List<ActivityTypeResponse>? _activityTypes;
-
     protected override async Task OnInitializedAsync()
     {
         _individualInformation = await HttpClient.GetFromJsonAsync<List<IndividualInformationRecordResponse>>
                 ("api/journal/personalizedaccountingcard/individualinformation/" + CardId);
-
-        _activityTypes = await HttpClient.GetFromJsonAsync<List<ActivityTypeResponse>>("api/activitytype");
     }
 
     private async Task Add()

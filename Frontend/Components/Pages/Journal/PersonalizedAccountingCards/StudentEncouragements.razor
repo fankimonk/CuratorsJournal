@@ -10,13 +10,13 @@
 }
 else
 {
-    <p><b>Поощрения студента</b></p>
+    <h5><b>Поощрения студента</b></h5>
     <table class="table table-bordered">
         <thead>
             <tr>
-                <th class="text-center">Дата</th>
-                <th class="text-center">За какие достижения</th>
-                <th class="text-center">Вид поощрения</th>
+                <th class="col-1 text-center">Дата</th>
+                <th class="col-8 text-center">За какие достижения</th>
+                <th class="col-3 text-center">Вид поощрения</th>
             </tr>
         </thead>
         <tbody>
@@ -27,13 +27,15 @@ else
                         <input type="date" @bind="record.Date" @bind:after="async () => await Update(record)" class="input" />
                     </td>
                     <td>
-                        <input @bind="record.Achievement" @bind:after="async () => await Update(record)" class="input fullwidth" />
+                        <textarea rows="1" style="overflow:hidden; resize:none;" oninput="this.style.height = 'auto'; this.style.height = (this.scrollHeight) + 'px';"
+                            @bind="record.Achievement" @bind:after="async () => await Update(record)" class="input fullwidth" />
                     </td>
                     <td>
-                        <input @bind="record.EncouragementKind" @bind:after="async () => await Update(record)" class="input fullwidth" />
+                        <textarea rows="1" style="overflow:hidden; resize:none;" oninput="this.style.height = 'auto'; this.style.height = (this.scrollHeight) + 'px';"
+                            @bind="record.EncouragementKind" @bind:after="async () => await Update(record)" class="input fullwidth" />
                     </td>
                     <td>
-                        <button @onclick="async () => await Delete(record)" class="btn btn-close" />
+                        <DeleteButton @onclick="async () => await Delete(record)" />
                     </td>
                 </tr>
             }

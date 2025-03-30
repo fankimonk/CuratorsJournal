@@ -14,12 +14,12 @@ else
     <table class="table table-bordered">
         <thead>
             <tr>
-                <th class="text-center align-middle">Дата</th>
-                <th class="text-center align-middle">
+                <th class="col-1 text-center align-middle">Дата</th>
+                <th class="col-9 text-center align-middle">
                     Проведенная работа и рекомендации ППС,<br />
                     специалистов СППС
                 </th>
-                <th class="text-center align-middle">Результат</th>
+                <th class="col-2 text-center align-middle">Результат</th>
             </tr>
         </thead>
         <tbody>
@@ -30,13 +30,15 @@ else
                         <input type="date" @bind="record.Date" @bind:after="async () => await Update(record)" class="input" />
                     </td>
                     <td>
-                        <input @bind="record.WorkDoneAndRecommendations" @bind:after="async () => await Update(record)" class="input fullwidth" />
+                        <textarea rows="1" style="overflow:hidden; resize:none;" oninput="this.style.height = 'auto'; this.style.height = (this.scrollHeight) + 'px';"
+                            @bind="record.WorkDoneAndRecommendations" @bind:after="async () => await Update(record)" class="input fullwidth" />
                     </td>
                     <td>
-                        <input @bind="record.Result" @bind:after="async () => await Update(record)" class="input fullwidth" />
+                        <textarea rows="1" style="overflow:hidden; resize:none;" oninput="this.style.height = 'auto'; this.style.height = (this.scrollHeight) + 'px';"
+                            @bind="record.Result" @bind:after="async () => await Update(record)" class="input fullwidth" />
                     </td>
                     <td>
-                        <button @onclick="async () => await Delete(record)" class="btn btn-close" />
+                        <DeleteButton @onclick="async () => await Delete(record)" />
                     </td>
                 </tr>
             }
