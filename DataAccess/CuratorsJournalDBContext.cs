@@ -1,5 +1,6 @@
 ﻿using DataAccess.Configurations;
 using Domain.Entities;
+using Domain.Entities.Auth;
 using Domain.Entities.JournalContent;
 using Domain.Entities.JournalContent.DynamicsOfKeyIndicators;
 using Domain.Entities.JournalContent.FinalPerformanceAccounting;
@@ -76,6 +77,7 @@ namespace DataAccess
         public DbSet<CertificationType> CertificationTypes { get; set; }
         public DbSet<PerformanceAccountingGrade> PerformanceAccountingGrades { get; set; }
         public DbSet<PerformanceAccountingColumn> PerformanceAccountingColumns { get; set; }
+        public DbSet<RefreshToken> RefreshTokens { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -140,6 +142,7 @@ namespace DataAccess
             modelBuilder.ApplyConfiguration(new CertificationTypesConfiguration());
             modelBuilder.ApplyConfiguration(new PerformanceAccountingGradesConfiguration());
             modelBuilder.ApplyConfiguration(new PerformanceAccountingColumnsConfiguration());
+            modelBuilder.ApplyConfiguration(new RefreshTokensConfiguration());
 
             base.OnModelCreating(modelBuilder);
         }

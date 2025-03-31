@@ -7,7 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Entities\Auth\" />
     <Folder Include="Enums\Auth\" />
   </ItemGroup>
 

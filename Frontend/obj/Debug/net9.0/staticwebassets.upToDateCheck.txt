@@ -15,6 +15,7 @@ C:\Dev\Web\CuratorsJournal\Frontend\wwwroot\lib\bootstrap\dist\css\bootstrap-reb
 C:\Dev\Web\CuratorsJournal\Frontend\wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.rtl.min.css.map
 C:\Dev\Web\CuratorsJournal\Frontend\wwwroot\lib\bootstrap\dist\css\bootstrap.rtl.css
 C:\Dev\Web\CuratorsJournal\Frontend\wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css
+C:\Dev\Web\CuratorsJournal\Frontend\wwwroot\js\cookies.js
 C:\Dev\Web\CuratorsJournal\Frontend\wwwroot\lib\bootstrap\dist\css\bootstrap.min.css.map
 C:\Dev\Web\CuratorsJournal\Frontend\wwwroot\lib\bootstrap\dist\js\bootstrap.esm.min.js.map
 C:\Dev\Web\CuratorsJournal\Frontend\wwwroot\lib\bootstrap\dist\css\bootstrap.rtl.min.css
@@ -47,6 +48,7 @@ C:\Dev\Web\CuratorsJournal\Frontend\wwwroot\lib\bootstrap\dist\css\bootstrap-gri
 C:\Dev\Web\CuratorsJournal\Frontend\wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.min.js.map
 wwwroot\app.css
 wwwroot\favicon.png
+wwwroot\js\cookies.js
 wwwroot\lib\bootstrap\dist\css\bootstrap.css
 wwwroot\lib\bootstrap\dist\css\bootstrap.css.map
 wwwroot\lib\bootstrap\dist\css\bootstrap.min.css

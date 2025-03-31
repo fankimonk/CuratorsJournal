@@ -14,17 +14,39 @@ using DataAccess.Interfaces.PageRepositories.PersonalizedAccountingCards;
 using DataAccess.Repositories.PageRepositories.PersonalizedAccountingCards;
 using DataAccess.Interfaces.PageRepositories.FinalPerformanceAccounting;
 using DataAccess.Repositories.PageRepositories.FinalPerformanceAccounting;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddApiAuthentication(builder.Configuration);
+//Old
+//builder.Services.AddApiAuthentication(builder.Configuration);
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+//builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerAuth();
+
+//New
+builder.Services.AddAuthorization();
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(opt =>
+    {
+        opt.RequireHttpsMetadata = true;
+        opt.TokenValidationParameters = new TokenValidationParameters
+        {
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JwtOptions:SecretKey"])),
+            ValidIssuer = builder.Configuration["JwtOptions:Issuer"],
+            ValidAudience = builder.Configuration["JwtOptions:Audience"],
+            ClockSkew = TimeSpan.Zero
+        };
+    });
 
 builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection(nameof(JwtOptions)));
-builder.Services.Configure<AuthorizationOptions>(builder.Configuration.GetSection(nameof(AuthorizationOptions)));
+
+//Old
+//builder.Services.Configure<AuthorizationOptions>(builder.Configuration.GetSection(nameof(AuthorizationOptions)));
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<CuratorsJournalDBContext>(
@@ -80,6 +102,7 @@ builder.Services.AddScoped<IPerformanceAccountingRecordsRepository, PerformanceA
 builder.Services.AddScoped<IIdeologicalAndEducationalWorkPageAttributesRepository, IdeologicalAndEducationalWorkPageAttributesRepository>();
 builder.Services.AddScoped<IPerformanceAccountingGradesRepository, PerformanceAccountingGradesRepository>();
 builder.Services.AddScoped<IPerformanceAccountingColumnsRepository, PerformanceAccountingColumnsRepository>();
+builder.Services.AddScoped<IRefreshTokensRepository, RefreshTokensRepository>();
 
 builder.Services.AddScoped<IGroupsService, GroupsService>();
 builder.Services.AddScoped<IJournalsService, JournalsService>();
@@ -111,17 +134,19 @@ app.UseHttpsRedirection();
 
 app.UseStaticFiles();
 
-app.UseCookiePolicy(new CookiePolicyOptions
-{
-    MinimumSameSitePolicy = SameSiteMode.Strict,
-    HttpOnly = HttpOnlyPolicy.Always,
-    Secure = CookieSecurePolicy.Always
-});
+//Old
+//app.UseCookiePolicy(new CookiePolicyOptions
+//{
+//    MinimumSameSitePolicy = SameSiteMode.Strict,
+//    HttpOnly = HttpOnlyPolicy.Always,
+//    Secure = CookieSecurePolicy.Always
+//});
 
 app.UseCors();
 
-app.UseAuthentication();
-app.UseAuthorization();
+//Old
+//app.UseAuthentication();
+//app.UseAuthorization();
 
 app.MapControllers();
 

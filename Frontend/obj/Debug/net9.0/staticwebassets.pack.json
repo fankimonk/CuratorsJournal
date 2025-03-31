@@ -13,6 +13,10 @@
       "PackagePath": "staticwebassets\\favicon.png"
     },
     {
+      "Id": "C:\\Dev\\Web\\CuratorsJournal\\Frontend\\wwwroot\\js\\cookies.js",
+      "PackagePath": "staticwebassets\\js\\cookies.js"
+    },
+    {
       "Id": "C:\\Dev\\Web\\CuratorsJournal\\Frontend\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css"
     },

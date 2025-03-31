@@ -2,10 +2,15 @@
 
 @using Contracts.Journal
 @using Frontend.Components.Buttons
+@using Frontend.Services
+
+@attribute [Authorize]
 
 @inject HttpClient HttpClient
 @inject NavigationManager NavigationManager
 @inject IJSRuntime JS
+@inject ResourceService ResourceService
+@inject AppState AppState
 
 <PageTitle>Журналы</PageTitle>
 
@@ -17,6 +22,9 @@
 }
 else
 {
+    <button class="btn btn-primary" @onclick="VerifyAuth">Verify</button>
+    <button class="btn btn-primary" @onclick="Logout">Logout</button>
+
     <table class="table">
         <thead>
             <tr>
@@ -33,10 +41,10 @@ else
                         @if (journal.Curator != null) 
                         {
                             @(
-                                                            journal.Curator.LastName + ' ' +
-                                                            journal.Curator.FirstName + ' ' +
-                                                            journal.Curator.MiddleName
-                                                         )
+                                                                                journal.Curator.LastName + ' ' +
+                                                                                journal.Curator.FirstName + ' ' +
+                                                                                journal.Curator.MiddleName
+                                                                             )
                         }
                     </td>
                 </tr>
@@ -56,6 +64,18 @@ else
     private async Task OpenJournal(int journalId)
     {
         NavigationManager.NavigateTo($"/journal/{journalId}/Title");
+    }
+
+    private async Task VerifyAuth()
+    {
+        var isVerified = await ResourceService.Verify();
+        if (isVerified) Console.WriteLine("Authenticated");
+        else Console.WriteLine("Not authenticated");
+    }
+
+    private async Task Logout()
+    {
+        AppState.Logout();
     }
 
 }

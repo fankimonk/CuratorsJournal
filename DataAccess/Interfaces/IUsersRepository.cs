@@ -13,5 +13,7 @@ namespace DataAccess.Interfaces
         Task<User?> UpdateAsync(int id, User user);
         Task<bool> DeleteAsync(int id);
         Task<bool> UsernameExistsAsync(string userName);
+        Task<User?> GetByRefreshTokenId(int id);
+        Task<User?> GetByRefreshToken(string token);
     }
 }

@@ -3,19 +3,22 @@ using Application.Interfaces;
 using DataAccess.Interfaces;
 using Domain.Enums;
 using Domain.Entities;
+using Application.Entities;
 
 namespace Application.Services
 {
     public class UsersService : IUsersService
     {
         private readonly IUsersRepository _usersRepository;
+        private readonly IRefreshTokensRepository _refreshTokensRepository;
         private readonly IPasswordHasher _passwordHasher;
         private readonly IJwtProvider _jwtProvider;
 
-        public UsersService(IUsersRepository usersRepository,
+        public UsersService(IUsersRepository usersRepository, IRefreshTokensRepository refreshTokensRepository,
             IPasswordHasher passwordHasher, IJwtProvider jwtProvider)
         {
             _usersRepository = usersRepository;
+            _refreshTokensRepository = refreshTokensRepository;
             _passwordHasher = passwordHasher;
             _jwtProvider = jwtProvider;
         }
@@ -48,7 +51,32 @@ namespace Application.Services
                 return AuthorizationResult.WrongPassword;
             }
 
-            return AuthorizationResult.Succeed(_jwtProvider.GenerateToken(user));
+            var token = _jwtProvider.GenerateToken(user);
+
+            await _refreshTokensRepository.DisableTokensByUserIdAsync(user.Id);
+            await _refreshTokensRepository.AddAsync(token.RefreshToken!);
+
+            return AuthorizationResult.Succeed(token);
+        }
+
+        public async Task<AuthToken?> RefreshToken(string token)
+        {
+            if (!await _refreshTokensRepository.IsTokenValid(token)) return null;
+
+            var user = await _usersRepository.GetByRefreshToken(token);
+            if (user == null) return null;
+
+            var authToken = _jwtProvider.GenerateToken(user);
+
+            await _refreshTokensRepository.DisableToken(token);
+            await _refreshTokensRepository.AddAsync(authToken.RefreshToken!);
+
+            return authToken;
+        }
+
+        public async Task Logout(string token)
+        {
+            await _refreshTokensRepository.DisableToken(token);
         }
     }
 }

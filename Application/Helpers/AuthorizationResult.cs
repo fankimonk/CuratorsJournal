@@ -1,19 +1,21 @@
-﻿namespace Application.Helpers
+﻿using Application.Entities;
+
+namespace Application.Helpers
 {
     public class AuthorizationResult
     {
-        public string Token { get; set; } = string.Empty;
+        public AuthToken? Token { get; set; }
         public string? Error { get; set; }
 
         private AuthorizationResult() { }
 
         public static AuthorizationResult UserNotFound =>
-            new AuthorizationResult { Token = string.Empty, Error = "User not found" };
+            new AuthorizationResult { Token = null, Error = "User not found" };
 
         public static AuthorizationResult WrongPassword =>
-            new AuthorizationResult { Token = string.Empty, Error = "Wrong password" };
+            new AuthorizationResult { Token = null, Error = "Wrong password" };
 
-        public static AuthorizationResult Succeed(string token) =>
+        public static AuthorizationResult Succeed(AuthToken token) =>
             new AuthorizationResult { Token = token, Error = null };
     }
 }

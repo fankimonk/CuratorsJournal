@@ -3,6 +3,8 @@
     public record UserResponse(
         int Id,
         string UserName,
-        string Role
+        string Role,
+        string? Token,
+        DateTime? TokenExpires
     );
 }

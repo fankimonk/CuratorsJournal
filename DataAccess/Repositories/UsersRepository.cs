@@ -31,7 +31,7 @@ namespace DataAccess.Repositories
 
         public async Task<User?> GetByUsernameAsync(string username)
         {
-            return await _dbContext.Users.AsNoTracking().FirstOrDefaultAsync(u => u.UserName == username);
+            return await _dbContext.Users.Include(u => u.Role).AsNoTracking().FirstOrDefaultAsync(u => u.UserName == username);
         }
 
         public async Task<User?> GetByIdAsync(int id)
@@ -59,6 +59,16 @@ namespace DataAccess.Repositories
         {
             var user = await _dbContext.Users.AsNoTracking().FirstOrDefaultAsync(u => u.UserName == userName);
             return user != null;
+        }
+
+        public async Task<User?> GetByRefreshTokenId(int id)
+        {
+            return await _dbContext.Users.Include(u => u.RefreshTokens).Include(u => u.Role).AsNoTracking().FirstOrDefaultAsync(u => u.RefreshTokens.Any(rt => rt.Id == id));
+        }
+
+        public async Task<User?> GetByRefreshToken(string token)
+        {
+            return await _dbContext.Users.Include(u => u.RefreshTokens).Include(u => u.Role).AsNoTracking().FirstOrDefaultAsync(u => u.RefreshTokens.Any(rt => rt.Token == token));
         }
     }
 }

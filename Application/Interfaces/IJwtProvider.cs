@@ -1,9 +1,10 @@
-﻿using Domain.Entities;
+﻿using Application.Entities;
+using Domain.Entities;
 
 namespace Application.Interfaces
 {
     public interface IJwtProvider
     {
-        string GenerateToken(User user);
+        AuthToken GenerateToken(User user);
     }
 }

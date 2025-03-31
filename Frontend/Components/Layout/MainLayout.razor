@@ -1,8 +1,10 @@
-﻿@using Frontend.Services
+﻿@using Frontend.Security
+@using Frontend.Services
 
 @inherits LayoutComponentBase
 
 @inject AppState AppState
+@inject JwtAuthenticationStateProvider AuthStateProvider
 
 <div class="page">
     <div class="sidebar">
@@ -29,6 +31,6 @@
 @code {
     protected async override Task OnInitializedAsync()
     {
-        await AppState.FetchUser();
+        await AppState.InitializeUser();
     }
 }

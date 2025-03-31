@@ -1,4 +1,6 @@
-﻿namespace Domain.Entities
+﻿using Domain.Entities.Auth;
+
+namespace Domain.Entities
 {
     public class User
     {
@@ -12,5 +14,7 @@
 
         public Worker? Worker { get; set; }
         public Student? Student { get; set; }
+
+        public List<RefreshToken> RefreshTokens { get; set; } = [];
     }
 }

@@ -3,6 +3,7 @@ using Application.Interfaces;
 using DataAccess.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using API.Mappers;
+using Microsoft.AspNetCore.Authorization;
 
 namespace API.Controllers
 {

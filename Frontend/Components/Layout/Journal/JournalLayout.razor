@@ -58,7 +58,7 @@
 @code {
     protected override async Task OnInitializedAsync()
     {
-        await AppState.FetchUser();
+        await AppState.InitializeUser();
         JournalState.OnInitialize += HandleOnInitialize;
     }
 
