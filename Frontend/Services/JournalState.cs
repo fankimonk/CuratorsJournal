@@ -47,15 +47,29 @@ namespace Frontend.Services
             OnInitialize?.Invoke();
         }
 
+        public void AddPage(PageResponse page)
+        {
+            if (JournalContents == null) return;
+
+            JournalContents.PageTypes.FirstOrDefault(pt => pt.Id == page.PageType!.Id)!.Pages!.Add(page);
+            RefillPages();
+        }
+
         private async Task FetchContents()
         {
             Console.WriteLine("Fetch contents " + JournalId);
 
             JournalContents = null;
-            _pages = [];
             CurrentPageNode = null;
 
             JournalContents = await _httpClient.GetFromJsonAsync<JournalContentsResponse>("api/journal/" + JournalId.ToString() + "/contents/");
+
+            RefillPages();
+        }
+
+        private void RefillPages()
+        {
+            _pages = [];
 
             foreach (var pt in JournalContents!.PageTypes)
             {

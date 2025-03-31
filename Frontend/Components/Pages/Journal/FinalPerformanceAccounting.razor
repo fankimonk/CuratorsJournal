@@ -2,6 +2,8 @@
 
 @inherits TablePageBase
 
+@attribute [Authorize]
+
 @using Contracts.CertificationTypes
 @using Contracts.Journal
 @using Contracts.Journal.FinalPerformanceAccounting
@@ -225,7 +227,7 @@ else
 
     private Dictionary<int, string> _gradesIsPassedValues = [];
 
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnParametersSetAsync()
     {
         await JournalState.Initialize(JournalId, PageId);
 

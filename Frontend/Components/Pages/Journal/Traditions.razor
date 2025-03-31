@@ -2,6 +2,8 @@
 
 @inherits TablePageBase
 
+@attribute [Authorize]
+
 @using Contracts.Journal.Traditions
 @using Contracts.Mappers
 @using Contracts.Mappers.Journal
@@ -83,7 +85,7 @@ else
 
     public TraditionsPageResponse? _pageData;
 
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnParametersSetAsync()
     {
         await JournalState.Initialize(JournalId, PageId);
 

@@ -4,6 +4,8 @@
 @using Contracts.Journal
 @using Frontend.Services
 
+@attribute [Authorize]
+
 @inject HttpClient HttpClient
 @inject JournalState JournalState
 

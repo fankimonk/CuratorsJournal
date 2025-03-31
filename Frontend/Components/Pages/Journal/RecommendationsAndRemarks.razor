@@ -2,6 +2,8 @@
 
 @inherits TablePageBase
 
+@attribute [Authorize]
+
 @using Contracts.Journal
 @using Contracts.Journal.ContactPhones
 @using Contracts.Journal.PersonalizedAccountingCards
@@ -99,7 +101,7 @@ else
 
     private List<WorkerResponse>? _workers;
 
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnParametersSetAsync()
     {
         await JournalState.Initialize(JournalId, PageId);
 

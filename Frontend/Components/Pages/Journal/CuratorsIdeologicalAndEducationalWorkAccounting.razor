@@ -2,6 +2,8 @@
 
 @inherits TablePageBase
 
+@attribute [Authorize]
+
 @using Contracts.Journal.CuratorsIdeologicalAndEducationalWorkAccounting
 @using Contracts.Mappers
 @using Contracts.Mappers.Journal
@@ -80,7 +82,7 @@ else
 
     private IdeologicalEducationalWorkPageResponse? _pageData;
 
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnParametersSetAsync()
     {
         await JournalState.Initialize(JournalId, PageId);
 

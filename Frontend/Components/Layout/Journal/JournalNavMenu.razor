@@ -1,8 +1,11 @@
 ﻿@using Contracts.Journal
+@using Contracts.Journal.Pages
 @using Frontend.Components.Buttons
 @using Frontend.Services
 
 @inject JournalState JournalState
+@inject HttpClient HttpClient
+@inject NavigationManager NavigationManager
 
 <div class="top-row ps-3 navbar navbar-dark">
     <div class="container-fluid">
@@ -37,7 +40,7 @@
                                 }
                                 @pt.Name
                             </span>
-                            <AddButton StopPropagation="true" IsNotOutline="true" ButtonSize="ButtonSizes.Small" @onclick='() => Console.WriteLine("Add")' />
+                            <AddButton StopPropagation="true" IsNotOutline="true" ButtonSize="ButtonSizes.Small" @onclick='async () => await AddPage(pt.Id)' />
                         </NavLink>
                     }
                     @foreach (var page in pt.Pages!)
@@ -79,6 +82,17 @@
         { 7, "Актив учебной группы" },
         { 8, "Список студентов" }
     };
+
+    private async Task AddPage(int pageTypeId)
+    {
+        var response = await HttpClient.PostAsJsonAsync<AddPageRequest>("api/page", new AddPageRequest(JournalState.JournalId, pageTypeId));
+        if (response.IsSuccessStatusCode)
+        {
+            var page = await response.Content.ReadFromJsonAsync<PageResponse>();
+            JournalState.AddPage(page!);
+            NavigationManager.NavigateTo($"/journal/{JournalState.JournalContents!.JournalId}/{page!.PageType!.Name}/{page.Id}");
+        }
+    }
 
     private void ToggleExpandSubNav(int pageTypeId)
     {

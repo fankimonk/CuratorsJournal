@@ -1,6 +1,8 @@
 ﻿@page "/journal/{journalId:int}/SocioPedagogicalCharacteristics/{pageId:int}"
- 
+
 @inherits PageBase
+
+@attribute [Authorize]
 
 @using Contracts.AcademicYears
 @using Contracts.Groups
@@ -52,93 +54,93 @@ else
     <p>
         1. Всего студентов
         <input type="number" min="0" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))"
-            @bind="_pageData.TotalStudents" @bind:after="Update" class="input underline" />
+        @bind="_pageData.TotalStudents" @bind:after="Update" class="input underline" />
     </p>
     <p>Из них</p>
     <p>
         2. Девушки
         <input type="number" min="0" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))"
-            @bind="_pageData.FemalesCount" @bind:after="Update" class="input underline" />
+        @bind="_pageData.FemalesCount" @bind:after="Update" class="input underline" />
     </p>
     <p>
         3. Юноши
         <input type="number" min="0" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))"
-            @bind="_pageData.MalesCount" @bind:after="Update" class="input underline" />
+        @bind="_pageData.MalesCount" @bind:after="Update" class="input underline" />
     </p>
     <p>
         4. Члены ОО "БРСМ"
         <input type="number" min="0" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))"
-            @bind="_pageData.BRSMMembersCount" @bind:after="Update" class="input underline" />
+        @bind="_pageData.BRSMMembersCount" @bind:after="Update" class="input underline" />
     </p>
     <p>
         5. Дети-сироты, (до 18 лет)
         <input type="number" min="0" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))"
-            @bind="_pageData.OrphansUnderagesCount" @bind:after="Update" class="input underline" />
+        @bind="_pageData.OrphansUnderagesCount" @bind:after="Update" class="input underline" />
     </p>
     <p>
         6. Дети, оставшиеся без попечения родителей (до 18 лет)
         <input type="number" min="0" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))"
-            @bind="_pageData.StudentsWithoutParentalCareUnderagesCount" @bind:after="Update" class="input underline" />
+        @bind="_pageData.StudentsWithoutParentalCareUnderagesCount" @bind:after="Update" class="input underline" />
     </p>
     <p>
         7. Лица из числа детей-сирот <br />
         и детей, оставшихся без попечения родителей (18-23 года)
         <input type="number" min="0" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))"
-            @bind="_pageData.OrphansOrStudentsWithoutParentalCareAdults" @bind:after="Update" class="input underline" />
+        @bind="_pageData.OrphansOrStudentsWithoutParentalCareAdults" @bind:after="Update" class="input underline" />
     </p>
     <p>
         8. Студенты с особенностями психофизического развития
         <input type="number" min="0" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))"
-            @bind="_pageData.StudentsWithSpecialPsychophysicalDevelopmentNeeds" @bind:after="Update" class="input underline" />
+        @bind="_pageData.StudentsWithSpecialPsychophysicalDevelopmentNeeds" @bind:after="Update" class="input underline" />
     </p>
     <p>
         9. Имеющие родителей-инвалидов 1, 2 группы
         <input type="number" min="0" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))"   
-            @bind="_pageData.StudentsWithDisabledParentsOfGroups1and2" @bind:after="Update" class="input underline" />
+        @bind="_pageData.StudentsWithDisabledParentsOfGroups1and2" @bind:after="Update" class="input underline" />
     </p>
     <p>
         10. Из многодетных семей
         <input type="number" min="0" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))"
-            @bind="_pageData.StudentsFromLargeFamilies" @bind:after="Update" class="input underline" />
+        @bind="_pageData.StudentsFromLargeFamilies" @bind:after="Update" class="input underline" />
     </p>
     <p>
         11. Из неполных семей
         <input type="number" min="0" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))"
-            @bind="_pageData.StudentsFromSingleParentFamilies" @bind:after="Update" class="input underline" />
+        @bind="_pageData.StudentsFromSingleParentFamilies" @bind:after="Update" class="input underline" />
     </p>
     <p>
         12. Из регионов, пострадавших от катастрофы на Чернобыльской АЭС
         <input type="number" min="0" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))"
-            @bind="_pageData.StudentsFromRegionsAffectedByChernobylDisaster" @bind:after="Update" class="input underline" />
+        @bind="_pageData.StudentsFromRegionsAffectedByChernobylDisaster" @bind:after="Update" class="input underline" />
     </p>
     <p>
         13. Из семей, отселенных из зон радиоактивного загрязнения
         <input type="number" min="0" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))"
-            @bind="_pageData.StudentsFromFamiliesRelocatedFromAreasOfRadioactivePollution" @bind:after="Update" class="input underline" />
+        @bind="_pageData.StudentsFromFamiliesRelocatedFromAreasOfRadioactivePollution" @bind:after="Update" class="input underline" />
     </p>
     <p>
         14. Иногородних
         <input type="number" min="0" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))"
-            @bind="_pageData.NonResidentStudents" @bind:after="Update" class="input underline" />
+        @bind="_pageData.NonResidentStudents" @bind:after="Update" class="input underline" />
     </p>
     <p>
         15. Проживают с родителями
         <input type="number" min="0" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))"
-            @bind="_pageData.StudentsLivingWithParents" @bind:after="Update" class="input underline" />,
+        @bind="_pageData.StudentsLivingWithParents" @bind:after="Update" class="input underline" />,
         в общежитии
         <input type="number" min="0" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))"
-            @bind="_pageData.StudentsLivingInADormitory" @bind:after="Update" class="input underline" />, <br />
+        @bind="_pageData.StudentsLivingInADormitory" @bind:after="Update" class="input underline" />, <br />
         у родственников
         <input type="number" min="0" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))"
-            @bind="_pageData.StudentsLivingWithRelatives" @bind:after="Update" class="input underline" />,
+        @bind="_pageData.StudentsLivingWithRelatives" @bind:after="Update" class="input underline" />,
         на частных квартирах
         <input type="number" min="0" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))"
-            @bind="_pageData.StudentsLivingInPrivateApartments" @bind:after="Update" class="input underline" />
+        @bind="_pageData.StudentsLivingInPrivateApartments" @bind:after="Update" class="input underline" />
     </p>
     <p>
         16. Другие сведения <br />
         <textarea rows="1" style="overflow:hidden; resize:none;" oninput="this.style.height = 'auto'; this.style.height = (this.scrollHeight) + 'px';"
-            @bind="_pageData.OtherInformation" @bind:after="Update" class="input underline fullwidth" />
+        @bind="_pageData.OtherInformation" @bind:after="Update" class="input underline fullwidth" />
     </p>
 
     <AlertBottom IsVisible="_isServerErrorAlertVisible" OnClose="CloseServerErrorAlert">@_errorMessage</AlertBottom>
@@ -157,7 +159,7 @@ else
 
     private List<AcademicYearResponse>? _academicYears;
 
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnParametersSetAsync()
     {
         await JournalState.Initialize(JournalId, PageId);
 

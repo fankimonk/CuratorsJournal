@@ -2,6 +2,8 @@
 
 @inherits TablePageBase
 
+@attribute [Authorize]
+
 @using Contracts.Journal.InformationHoursAccounting
 @using Contracts.Mappers
 @using Contracts.Mappers.Journal
@@ -70,7 +72,7 @@ else
 
     private InformationHoursAccountingPageResponse? _pageData;
 
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnParametersSetAsync()
     {
         await JournalState.Initialize(JournalId, PageId);
 

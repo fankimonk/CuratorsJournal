@@ -72,7 +72,7 @@ namespace DataAccess.Repositories
             var createdPage = await _dbContext.Pages.AddAsync(page);
 
             await _dbContext.SaveChangesAsync();
-            return createdPage.Entity;
+            return await _dbContext.Pages.Include(p => p.PageType).AsNoTracking().FirstOrDefaultAsync(p => p.Id == createdPage.Entity.Id);
         }
 
         public async Task<bool> DeleteAsync(int id)

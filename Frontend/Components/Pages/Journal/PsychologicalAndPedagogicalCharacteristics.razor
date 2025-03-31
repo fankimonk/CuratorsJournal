@@ -2,6 +2,8 @@
  
 @inherits PageBase
 
+@attribute [Authorize]
+
 @using Contracts.Journal.PsychologicalAndPedagogicalCharacteristics
 @using Contracts.Mappers
 @using Contracts.Mappers.Journal
@@ -57,7 +59,7 @@ else
 
     private List<WorkerResponse>? _workers;
 
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnParametersSetAsync()
     {
         await JournalState.Initialize(JournalId, PageId);
 

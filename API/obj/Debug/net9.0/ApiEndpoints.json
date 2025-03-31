@@ -3500,6 +3500,48 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "API.Controllers.PagesController",
+    "Method": "AddPage",
+    "RelativePath": "api/page",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "Contracts.Journal.Pages.AddPageRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "Contracts.Journal.Pages.PageResponse",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "API.Controllers.PagesController",
+    "Method": "DeletePage",
+    "RelativePath": "api/page/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "API.Controllers.PEGroupsController",
     "Method": "GetAll",
     "RelativePath": "api/pegroup",

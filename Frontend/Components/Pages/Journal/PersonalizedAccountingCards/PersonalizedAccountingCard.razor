@@ -187,7 +187,7 @@ else
     [SupplyParameterFromForm]
     public CreatePEGroupRequest CreatePEGroupRequest { get; set; } = new("");
 
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnParametersSetAsync()
     {
         await JournalState.Initialize(JournalId, PageId);
 
