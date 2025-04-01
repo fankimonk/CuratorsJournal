@@ -1,9 +1,10 @@
 ﻿using Contracts.Journal.Pages;
 using Contracts.Journal;
+using Microsoft.AspNetCore.Components;
 
 namespace Frontend.Services
 {
-    public class JournalState(HttpClient httpClient)
+    public class JournalState(HttpClient httpClient, NavigationManager navigationManager)
     {
         public int JournalId { get; private set; }
 
@@ -18,6 +19,7 @@ namespace Frontend.Services
         public Action? OnInitialize;
 
         private readonly HttpClient _httpClient = httpClient;
+        private readonly NavigationManager _navigationManager = navigationManager;
 
         private LinkedList<PageResponse> _pages = [];
 
@@ -53,6 +55,32 @@ namespace Frontend.Services
 
             JournalContents.PageTypes.FirstOrDefault(pt => pt.Id == page.PageType!.Id)!.Pages!.Add(page);
             RefillPages();
+        }
+
+        public void DeleteCurrentPage()
+        {
+            if (JournalContents == null) return;
+            if (CurrentPageNode == null) return;
+
+            var pageUri = $"/journal/{JournalContents.JournalId}/";
+            PageResponse? page = null;
+            if (CurrentPageNode.Previous != null)
+            {
+                page = _pages.FirstOrDefault(p => p.Id == CurrentPageNode.Previous.Value.Id);
+            }
+            else if (CurrentPageNode.Next != null)
+            {
+                page = _pages.FirstOrDefault(p => p.Id == CurrentPageNode.Next.Value.Id);
+            }
+            if (page == null) return;
+
+            var pageType = JournalContents.PageTypes.FirstOrDefault(pt => pt.Id == CurrentPageNode.Value.PageType!.Id);
+            if (pageType == null) return;
+
+            pageType.Pages!.RemoveAll(p => p.Id == CurrentPageId);
+            RefillPages();
+
+            _navigationManager.NavigateTo(pageUri + page.PageType!.Name + "/" + page.Id);
         }
 
         private async Task FetchContents()

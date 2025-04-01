@@ -8,6 +8,7 @@
 @inject JournalState JournalState
 @inject AppState AppState
 @inject NavigationManager NavigationManager
+@inject HttpClient HttpClient
 
 <div class="page">
     <div class="sidebar">
@@ -19,7 +20,11 @@
             @if (JournalState.CurrentPageNode != null)
             {
                 <div class="col-2">
-                    @switch (JournalState.CurrentPageNode.Value.PageType!.Id)
+                    @if (JournalState.CurrentPageNode.Value.PageType!.MaxPages != 1)
+                    {
+                        <DeleteButton @onclick="DeletePage">Удалить страницу</DeleteButton>
+                    }
+                    @* @switch (JournalState.CurrentPageNode.Value.PageType!.Id)
                     {
                         case 3:
                             <ReferenceButton Uri="/HolidayTypes">Категории праздников</ReferenceButton>
@@ -33,7 +38,7 @@
                         case 10:
                             <ReferenceButton>Учебные годы</ReferenceButton>
                             break;
-                    }
+                    } *@
                 </div>
 
                 <div class="col-0">
@@ -88,6 +93,15 @@
         if (prevPageNode == null) return ".";
 
         return $"/journal/{JournalState.JournalId}/{prevPageNode!.Value.PageType!.Name}/{prevPageNode.Value.Id}";
+    }
+
+    private async Task DeletePage()
+    {
+        var response = await HttpClient.DeleteAsync("api/page/" + JournalState.CurrentPageId);
+        if (response.IsSuccessStatusCode)
+        {
+            JournalState.DeleteCurrentPage();
+        }
     }
 
     public void Dispose()
