@@ -9,6 +9,7 @@
 @using Contracts.Journal.SocioPedagogicalCharacteristics
 @using Contracts.Mappers
 @using Contracts.Mappers.Journal
+@using Frontend.Components.Buttons
 @using Frontend.Components.Utils
 @using Frontend.Services
 
@@ -37,7 +38,7 @@ else
             @if (_academicYears != null)
             {
                 @(" в ")
-                <select @bind="_pageData.Attributes.AcademicYearId" @bind:after="UpdateAttributes" class="input underline text-center">
+                <select @bind="_pageData.Attributes.AcademicYearId" @bind:after="UpdateAttributes" class="input underline text-center ms-2">
                     <option value="">(нет)</option>
                     @foreach (var academicYear in _academicYears)
                     {
@@ -46,6 +47,7 @@ else
                         </option>
                     }
                 </select>
+                <ReferenceButton ButtonSize="ButtonSizes.Small" Uri="/AcademicYears" AdditionalClasses="me-2" />
                 @(" уч. году ")
             }
         </h3>

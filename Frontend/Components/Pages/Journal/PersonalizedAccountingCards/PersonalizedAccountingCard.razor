@@ -3,6 +3,7 @@
 @inherits PageBase
 
 @using Contracts.ChronicDiseases
+@using Contracts.Groups
 @using Contracts.Journal.PersonalizedAccountingCards
 @using Contracts.PEGroups
 @using Contracts.Students
@@ -37,7 +38,7 @@ else
                 <option @key="student.Id" value="@student.Id">@student.LastName @student.FirstName @student.MiddleName</option>
             }
         </select>
-        <ReferenceButton ButtonSize="ButtonSizes.Small" />
+        <ReferenceButton Uri="@GetStudentsRefPageUri()" ButtonSize="ButtonSizes.Small" />
     </p>
     <p class="flex-container">
         Дата рождения 
@@ -70,7 +71,7 @@ else
         <p>
             <div class="me-2 mb-2">
                 Хронические заболевания
-                <ReferenceButton Uri="/ChronicDiseases" />
+                <ReferenceButton ButtonSize="ButtonSizes.Small" Uri="/ChronicDiseases" />
             </div>
             @if (_studentChronicDiseases == null)
             {
@@ -99,7 +100,7 @@ else
         <p>
             <div class="me-2 mb-2">
                 Группы по физической культуре (основная специальная)
-                <ReferenceButton Uri="/PEGroups" />
+                <ReferenceButton ButtonSize="ButtonSizes.Small" Uri="/PEGroups" />
             </div>
             @if (_studentPEGroups == null)
             {
@@ -196,6 +197,9 @@ else
         await FetchStudentPEGroupsAndChronicDiseases();
 
         _students = await HttpClient.GetFromJsonAsync<List<StudentResponse>>("api/student/getbyjournal/" + JournalId.ToString());
+
+        var groupResponse = await HttpClient.GetFromJsonAsync<GroupResponse>("api/group/getbyjournal/" + JournalId);
+        if (groupResponse != null) _groupId = groupResponse.Id;
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)

@@ -24,8 +24,11 @@ else
     <QuickGrid Items="_positions" class="table">
         <PropertyColumn Property="@(l => l.Name)" Sortable="true" Title="Название" class="align-middle" />
         <TemplateColumn class="text-end">
-            <EditButton @onclick="() => ShowEditModal(context)" />
-            <DeleteButton @onclick="async () => await Delete(context)" />
+            @if (!context.IsDefaultPosition)
+            {
+                <EditButton @onclick="() => ShowEditModal(context)" />
+                <DeleteButton @onclick="async () => await Delete(context)" />
+            }
         </TemplateColumn>
     </QuickGrid>
 

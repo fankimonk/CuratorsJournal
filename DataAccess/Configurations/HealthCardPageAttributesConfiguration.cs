@@ -20,7 +20,7 @@ namespace DataAccess.Configurations
                 .HasOne(h => h.AcademicYear)
                 .WithMany(a => a.HealthCardPageAttributes)
                 .HasForeignKey(h => h.AcademicYearId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.SetNull);
         }
     }
 }

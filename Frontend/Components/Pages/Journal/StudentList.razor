@@ -4,6 +4,7 @@
 
 @attribute [Authorize]
 
+@using Contracts.Groups
 @using Contracts.Journal
 @using Contracts.Journal.PersonalizedAccountingCards
 @using Contracts.Journal.StudentList
@@ -32,7 +33,7 @@ else
                 <th class="col-1 text-center align-middle">№</th>
                 <th class="col-7 text-center align-middle">
                     Фамилия, имя отчество (полностью)
-                    <ReferenceButton ButtonSize="ButtonSizes.Small"/>
+                    <ReferenceButton Uri="@GetStudentsRefPageUri()" ButtonSize="ButtonSizes.Small" />
                 </th>
                 <th class="col-2 text-center align-middle">
                     Контактный<br/>
@@ -124,6 +125,9 @@ else
         _students = await HttpClient.GetFromJsonAsync<List<StudentResponse>>("api/student/getbyjournal/" + JournalId.ToString());
         _cardIds = await HttpClient.GetFromJsonAsync<List<PersonalizedAccountingCardIdResponse>>
             ("api/journal/personalizedaccountingcard/getidsbyjournal/" + JournalId.ToString());
+
+        var groupResponse = await HttpClient.GetFromJsonAsync<GroupResponse>("api/group/getbyjournal/" + JournalId);
+        if (groupResponse != null) _groupId = groupResponse.Id;
     }
 
     private async Task Update(StudentListRecordResponse record)

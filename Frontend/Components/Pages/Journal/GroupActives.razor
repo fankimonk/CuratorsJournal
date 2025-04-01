@@ -4,6 +4,7 @@
 
 @attribute [Authorize]
 
+@using Contracts.Groups
 @using Contracts.Journal.GroupActives
 @using Contracts.Students
 @using Contracts.Mappers.Journal
@@ -24,6 +25,8 @@
 }
 else
 {
+    <ReferenceButton Uri="@GetStudentsRefPageUri()" AdditionalClasses="mb-3">Студенты</ReferenceButton>
+
     var i = 0;
     @foreach (var active in _pageData.GroupActives)
     {
@@ -77,6 +80,9 @@ else
 
         _pageData = await HttpClient.GetFromJsonAsync<GroupActivesPageResponse>("api/journal/groupactive/" + PageId.ToString());
         _students = await HttpClient.GetFromJsonAsync<List<StudentResponse>>("api/student/getbyjournal/" + JournalId.ToString());
+
+        var groupResponse = await HttpClient.GetFromJsonAsync<GroupResponse>("api/group/getbyjournal/" + JournalId);
+        if (groupResponse != null) _groupId = groupResponse.Id;
     }
 
     private async Task Update(GroupActiveResponse active)

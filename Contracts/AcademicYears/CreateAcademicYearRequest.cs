@@ -1,14 +1,13 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Contracts.AcademicYears
 {
     public class CreateAcademicYearRequest(
-        int startYear, int endYear)
+        int? startYear)
     {
         [Required]
-        public int StartYear { get; set; } = startYear;
-
-        [Required]
-        public int EndYear { get; set; } = endYear;
+        [NotNull]
+        public int? StartYear { get; set; } = startYear;
     }
 }

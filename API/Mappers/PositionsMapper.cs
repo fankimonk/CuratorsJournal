@@ -8,7 +8,7 @@ namespace API.Mappers
         public static PositionResponse ToResponse(this Position position)
         {
             return new PositionResponse(
-                position.Id, position.Name
+                position.Id, position.Name, position.IsDefaultPosition
             );
         }
 

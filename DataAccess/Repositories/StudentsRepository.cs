@@ -72,9 +72,13 @@ namespace DataAccess.Repositories
             return true;
         }
 
-        public async Task<List<Student>> GetAllAsync()
+        public async Task<List<Student>> GetAllAsync(int? groupId)
         {
-            return await _dbContext.Students.AsNoTracking().ToListAsync();
+            var students = _dbContext.Students.AsNoTracking();
+            if (groupId != null)
+                students = students.Where(s => s.GroupId == groupId);
+
+            return await students.ToListAsync();                
         }
 
         public async Task<List<Student>?> GetByGroupIdAsync(int id)

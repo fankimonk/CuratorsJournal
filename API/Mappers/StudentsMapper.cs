@@ -26,7 +26,7 @@ namespace API.Mappers
                 MiddleName = request.MiddleName,
                 LastName = request.LastName,
                 PhoneNumber = request.PhoneNumber,
-                GroupId = request.GroupId,
+                GroupId = (int)request.GroupId,
                 UserId = request.UserId
             };
         }

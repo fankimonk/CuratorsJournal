@@ -6308,6 +6308,16 @@
         "tags": [
           "Students"
         ],
+        "parameters": [
+          {
+            "name": "GroupId",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -7807,16 +7817,11 @@
       },
       "CreateAcademicYearRequest": {
         "required": [
-          "endYear",
           "startYear"
         ],
         "type": "object",
         "properties": {
           "startYear": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "endYear": {
             "type": "integer",
             "format": "int32"
           }
@@ -11041,6 +11046,9 @@
             "type": "string",
             "nullable": true
           },
+          "isDefaultPosition": {
+            "type": "boolean"
+          },
           "workers": {
             "type": "array",
             "items": {
@@ -11061,6 +11069,9 @@
           "name": {
             "type": "string",
             "nullable": true
+          },
+          "isDefaultPosition": {
+            "type": "boolean"
           }
         },
         "additionalProperties": false

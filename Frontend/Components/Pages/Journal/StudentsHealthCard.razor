@@ -25,7 +25,7 @@
     @if (_academicYears != null)
     {
         @(" В ")
-        <select @bind="_pageData!.Attributes.AcademicYearId" @bind:after="UpdateAttributes" class="text-center input">
+        <select @bind="_pageData!.Attributes.AcademicYearId" @bind:after="UpdateAttributes" class="text-center input ms-2">
             <option value="">(нет)</option>
             @foreach (var academicYear in _academicYears)
             {
@@ -34,6 +34,7 @@
                 </option>
             }
         </select>
+        <ReferenceButton ButtonSize="ButtonSizes.Small" AdditionalClasses="me-2" Uri="/AcademicYears" />
         @(" учебном году")
     }
 </h3>
@@ -50,7 +51,7 @@ else
                 <th class="col-1 text-center align-middle">№</th>
                 <th class="col-5 text-center align-middle">
                     Фамилия, имя, отчество (полностью)
-                    <ReferenceButton ButtonSize="ButtonSizes.Small" />
+                    <ReferenceButton Uri="@GetStudentsRefPageUri()" ButtonSize="ButtonSizes.Small" />
                 </th>
                 <th class="col-3 text-center align-middle">Пропущено учебных занятий<br />по болезни</th>
                 <th class="col-3 text-center align-middle">Примечание</th>
@@ -62,7 +63,7 @@ else
                 <tr class="@GetRowClass(record.Id)">
                     <td>
                         <input type="number" min="1" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))"
-                            @bind="record.Number" @bind:after="async () => await Update(record)" class="input fullwidth" />
+                        @bind="record.Number" @bind:after="async () => await Update(record)" class="input fullwidth" />
                     </td>
                     <td>
                         <select @bind="record.StudentId" @bind:after="async () => await Update(record)" class="input fullwidth">
@@ -78,11 +79,11 @@ else
                     </td>
                     <td>
                         <input type="number" min="0" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))"
-                            @bind="record.MissedClasses" @bind:after="async () => await Update(record)" class="input fullwidth" />
+                        @bind="record.MissedClasses" @bind:after="async () => await Update(record)" class="input fullwidth" />
                     </td>
                     <td>
                         <textarea rows="1" style="overflow:hidden; resize:none;" oninput="this.style.height = 'auto'; this.style.height = (this.scrollHeight) + 'px';"
-                            @bind="record.Note" @bind:after="async () => await Update(record)" class="input fullwidth" />
+                        @bind="record.Note" @bind:after="async () => await Update(record)" class="input fullwidth" />
                     </td>
                     <td>
                         <DeleteButton @onclick="() => OpenDeleteModal(record.Id)" />
@@ -123,7 +124,10 @@ else
 
         var getAcademicYearsUri = "api/academicyear/getsinceyear/";
         if (_group != null)
+        {
             _academicYears = await HttpClient.GetFromJsonAsync<List<AcademicYearResponse>>(getAcademicYearsUri + _group.AdmissionYear.ToString());
+            _groupId = _group.Id;
+        }
         else
             _academicYears = await HttpClient.GetFromJsonAsync<List<AcademicYearResponse>>(getAcademicYearsUri);
 

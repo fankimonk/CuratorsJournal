@@ -21,9 +21,9 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<StudentResponse>>> GetAll()
+        public async Task<ActionResult<List<StudentResponse>>> GetAll([FromQuery] StudentsQuery query)
         {
-            var students = await _studentsRepository.GetAllAsync();
+            var students = await _studentsRepository.GetAllAsync(query.GroupId);
 
             var response = students.Select(s => s.ToResponse()).ToList();
             return Ok(response);

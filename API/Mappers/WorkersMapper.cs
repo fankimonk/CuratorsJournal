@@ -13,7 +13,7 @@ namespace API.Mappers
                 worker.FirstName,
                 worker.MiddleName,
                 worker.LastName,
-                worker.Position == null ? new PositionResponse(worker.PositionId, null) : worker.Position.ToResponse(),
+                worker.Position == null ? new PositionResponse(worker.PositionId, null, false) : worker.Position.ToResponse(),
                 worker.UserId
             );
         }

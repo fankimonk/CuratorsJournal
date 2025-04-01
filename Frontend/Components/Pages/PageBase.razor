@@ -1,9 +1,14 @@
 ﻿@code {
+    protected int? _groupId = null;
+    protected string _studentsRefPageUri = "/Students";
+
     protected int? _idToDelete = null;
     protected bool _isDeleteModalVisible = false;
 
     protected bool _isServerErrorAlertVisible = false;
     protected string? _errorMessage = "";
+
+    protected string GetStudentsRefPageUri() => _groupId == null ? _studentsRefPageUri : _studentsRefPageUri + $"/?GroupId={_groupId}";
 
     protected void CloseDeleteModal()
     {

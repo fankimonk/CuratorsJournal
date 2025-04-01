@@ -10,6 +10,7 @@ namespace DataAccess.Repositories
         {
             if (position == null) return null;
 
+            position.IsDefaultPosition = false;
             var created = await _dbContext.Positions.AddAsync(position);
 
             await _dbContext.SaveChangesAsync();

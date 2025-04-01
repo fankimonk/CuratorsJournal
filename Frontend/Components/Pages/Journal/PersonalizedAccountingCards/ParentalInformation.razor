@@ -1,6 +1,9 @@
-﻿@using Contracts.Journal.PersonalizedAccountingCards.ParentalInformation
+﻿@inherits TablePageBase
+
+@using Contracts.Journal.PersonalizedAccountingCards.ParentalInformation
 @using Contracts.Mappers.Journal.PersonalizedAccountingCards
 @using Frontend.Components.Buttons
+@using Frontend.Components.Utils
 
 @inject HttpClient HttpClient
 
@@ -29,30 +32,30 @@ else
         <tbody>
             @foreach (var record in _parentalInformation)
             {
-                <tr>
+                <tr class="@GetRowClass(record.Id)">
                     <td>
                         <textarea rows="1" style="overflow:hidden; resize:none;" oninput="this.style.height = 'auto'; this.style.height = (this.scrollHeight) + 'px';"
-                            @bind="record.LastName" @bind:after="async () => await Update(record)" class="input fullwidth" />
+                        @bind="record.LastName" @bind:after="async () => await Update(record)" class="input fullwidth" />
                     </td>
                     <td>
                         <textarea rows="1" style="overflow:hidden; resize:none;" oninput="this.style.height = 'auto'; this.style.height = (this.scrollHeight) + 'px';"
-                            @bind="record.FirstName" @bind:after="async () => await Update(record)" class="input fullwidth" />
+                        @bind="record.FirstName" @bind:after="async () => await Update(record)" class="input fullwidth" />
                     </td>
                     <td>
                         <textarea rows="1" style="overflow:hidden; resize:none;" oninput="this.style.height = 'auto'; this.style.height = (this.scrollHeight) + 'px';"
-                            @bind="record.MiddleName" @bind:after="async () => await Update(record)" class="input fullwidth" />
+                        @bind="record.MiddleName" @bind:after="async () => await Update(record)" class="input fullwidth" />
                     </td>
                     <td>
                         <textarea rows="1" style="overflow:hidden; resize:none;" oninput="this.style.height = 'auto'; this.style.height = (this.scrollHeight) + 'px';"
-                            @bind="record.PlaceOfResidence" @bind:after="async () => await Update(record)" class="input fullwidth" />
+                        @bind="record.PlaceOfResidence" @bind:after="async () => await Update(record)" class="input fullwidth" />
                     </td>
                     <td>
                         <textarea rows="1" style="overflow:hidden; resize:none;" oninput="this.style.height = 'auto'; this.style.height = (this.scrollHeight) + 'px';"
-                            @bind="record.PlaceOfWork" @bind:after="async () => await Update(record)" class="input fullwidth" />
+                        @bind="record.PlaceOfWork" @bind:after="async () => await Update(record)" class="input fullwidth" />
                     </td>
                     <td>
                         <textarea rows="1" style="overflow:hidden; resize:none;" oninput="this.style.height = 'auto'; this.style.height = (this.scrollHeight) + 'px';"
-                            @bind="record.Position" @bind:after="async () => await Update(record)" class="input fullwidth" />
+                        @bind="record.Position" @bind:after="async () => await Update(record)" class="input fullwidth" />
                     </td>
                     <td>
                         <input type="tel" maxlength="19" @bind="record.HomePhoneNumber" @bind:after="async () => await Update(record)" class="input fullwidth" />
@@ -65,16 +68,20 @@ else
                     </td>
                     <td>
                         <textarea rows="1" style="overflow:hidden; resize:none;" oninput="this.style.height = 'auto'; this.style.height = (this.scrollHeight) + 'px';"
-                            @bind="record.OtherInformation" @bind:after="async () => await Update(record)" class="input fullwidth" />
+                        @bind="record.OtherInformation" @bind:after="async () => await Update(record)" class="input fullwidth" />
                     </td>
                     <td>
-                        <DeleteButton @onclick="async () => await Delete(record)" />
+                        <DeleteButton @onclick="() => OpenDeleteModal(record.Id)" />
                     </td>
                 </tr>
             }
         </tbody>
     </table>
     <AddButton @onclick="Add">Добавить строку</AddButton>
+
+    <ConfirmDeleteModal IsVisible="_isDeleteModalVisible" OnClose="CloseDeleteModal" IdToDelete="_idToDelete" OnDeleteById="Delete" />
+
+    <AlertBottom IsVisible="_isServerErrorAlertVisible" OnClose="CloseServerErrorAlert">@_errorMessage</AlertBottom>
 }
 
 @code {
@@ -99,25 +106,39 @@ else
             var addedRecord = await response.Content.ReadFromJsonAsync<ParentalInformationRecordResponse>();
             _parentalInformation!.Add(addedRecord!);
         }
+        else
+        {
+            var errorMessage = (await response.Content.ReadAsStringAsync()).Split('\n').FirstOrDefault();
+            ShowServerErrorAlert(errorMessage);
+        }
     }
 
     private async Task Update(ParentalInformationRecordResponse record)
     {
+        _rowsWithErrors.Remove(record.Id);
+        CloseServerErrorAlert();
+
         var request = record.ToRequest();
         var response = await HttpClient.PutAsJsonAsync<UpdateParentalInformationRecordRequest>
             ("api/journal/personalizedaccountingcard/parentalinformation/" + record.Id, request);
 
         if (!response.IsSuccessStatusCode)
         {
-            // var updatedRecord = await response.Content.ReadFromJsonAsync<EducationalProcessScheduleRecordResponse>();
-            // record = updatedRecord!;
+            _rowsWithErrors.Add(record.Id);
+            var errorMessage = (await response.Content.ReadAsStringAsync()).Split('\n').FirstOrDefault();
+            ShowServerErrorAlert(errorMessage);
         }
     }
 
-    private async Task Delete(ParentalInformationRecordResponse record)
+    private async Task Delete(int recordId)
     {
-        var response = await HttpClient.DeleteAsync("api/journal/personalizedaccountingcard/parentalinformation/" + record.Id);
+        var response = await HttpClient.DeleteAsync("api/journal/personalizedaccountingcard/parentalinformation/" + recordId);
 
-        if (response.IsSuccessStatusCode) _parentalInformation!.Remove(record);
+        if (response.IsSuccessStatusCode) _parentalInformation!.RemoveAll(r => r.Id == recordId);
+        else
+        {
+            var errorMessage = (await response.Content.ReadAsStringAsync()).Split('\n').FirstOrDefault();
+            ShowServerErrorAlert(errorMessage);
+        }
     }
 }

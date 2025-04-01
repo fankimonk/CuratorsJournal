@@ -1,0 +1,151 @@
+﻿@page "/AcademicYears"
+
+@using Contracts.AcademicYears
+@using Frontend.Components.Buttons
+@using Frontend.Components.Utils
+@using Microsoft.AspNetCore.Components.QuickGrid
+
+@attribute [Authorize]
+
+@inject HttpClient HttpClient
+
+<PageTitle>Учебные годы</PageTitle>
+
+<h1>Учебные годы</h1>
+
+@if (_academicYears == null)
+{
+    <p><em>Загрузка...</em></p>
+}
+else
+{
+    <AddButton @onclick="ShowAddModal">Добавить</AddButton>
+
+    <QuickGrid Items="_academicYears" class="table">
+        <PropertyColumn Property="@(l => l.StartYear)" Sortable="true" Title="Начало" class="align-middle" />
+        <PropertyColumn Property="@(l => l.EndYear)" Sortable="true" Title="Окончание" class="align-middle" />
+        <TemplateColumn class="text-end">
+            <DeleteButton @onclick="async () => await Delete(context)" />
+        </TemplateColumn>
+    </QuickGrid>
+
+    <Modal IsVisible="_isAddModalVisible" OnClose="CloseModal">
+        <div class="row">
+            <div class="col-md-12">
+                <EditForm method="post" Model="AcademicYearToAdd" OnValidSubmit="Add" OnInvalidSubmit="ShowErrorAlert" FormName="add" Enhance>
+                    <DataAnnotationsValidator />
+                    <Alert Type="success" IsVisible="_isSuccessAlertVisible" OnClose="CloseSuccessAlert" />
+                    <Alert Type="error" IsVisible="_isErrorAlertVisible" OnClose="CloseErrorAlert">
+                        <ValidationSummary />
+                    </Alert>
+                    <div class="mb-3">
+                        <label for="startYear" class="form-label">Начальный год: </label>
+                        <InputNumber id="startYear" @bind-Value="AcademicYearToAdd.StartYear" class="form-control" />
+                    </div>
+                    <AddButton type="submit">Добавить</AddButton>
+                </EditForm>
+            </div>
+        </div>
+    </Modal>
+
+    <AlertBottom IsVisible="_isServerErrorAlertVisible" OnClose="CloseServerErrorAlert">@_errorMessage</AlertBottom>
+}
+
+@code {
+    [SupplyParameterFromForm]
+    public CreateAcademicYearRequest AcademicYearToAdd { get; set; } = new(null);
+
+    private IQueryable<AcademicYearResponse>? _academicYears;
+
+    private bool _isModalVisible = false;
+    private bool _isAddModal = true;
+
+    private bool _isAddModalVisible { get => _isModalVisible && _isAddModal; }
+
+    private bool _isSuccessAlertVisible = false;
+    private bool _isErrorAlertVisible = false;
+
+    private bool _isServerErrorAlertVisible = false;
+    private string? _errorMessage = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        var academicYears = await HttpClient.GetFromJsonAsync<List<AcademicYearResponse>>("api/academicyear/");
+        if (academicYears != null)
+            _academicYears = academicYears.AsQueryable();
+    }
+
+    public async Task Add()
+    {
+        var response = await HttpClient.PostAsJsonAsync<CreateAcademicYearRequest>("api/academicyear/", AcademicYearToAdd);
+
+        if (response.IsSuccessStatusCode)
+        {
+            var added = await response.Content.ReadFromJsonAsync<AcademicYearResponse>();
+            _academicYears = _academicYears!.Append(added!);
+
+            ShowSuccessAlert();
+        }
+        else
+        {
+            var errorMessage = await response.Content.ReadAsStringAsync();
+            _errorMessage = errorMessage.Split('\n').FirstOrDefault();
+            ShowServerErrorAlert();
+        }
+    }
+
+    public async Task Delete(AcademicYearResponse academicyear)
+    {
+        var response = await HttpClient.DeleteAsync("api/academicyear/" + academicyear.Id);
+
+        if (response.IsSuccessStatusCode)
+        {
+            _academicYears = _academicYears!.Where(l => l.Id != academicyear.Id);
+        }
+        else
+        {
+            var errorMessage = await response.Content.ReadAsStringAsync();
+            _errorMessage = errorMessage.Split('\n').FirstOrDefault();
+            ShowServerErrorAlert();
+        }
+    }
+
+    private void ShowAddModal()
+    {
+        _isAddModal = true;
+        _isModalVisible = true;
+    }
+
+    private void CloseModal()
+    {
+        AcademicYearToAdd = new(null);
+        _isModalVisible = false;
+        CloseSuccessAlert();
+        CloseErrorAlert();
+        CloseServerErrorAlert();
+    }
+
+    private void CloseSuccessAlert() => _isSuccessAlertVisible = false;
+
+    private void ShowSuccessAlert()
+    {
+        CloseErrorAlert();
+        _isSuccessAlertVisible = true;
+    }
+
+    private void CloseErrorAlert() => _isErrorAlertVisible = false;
+
+    private void ShowErrorAlert()
+    {
+        CloseSuccessAlert();
+        _isErrorAlertVisible = true;
+    }
+
+    private void CloseServerErrorAlert()
+    {
+        _isServerErrorAlertVisible = false;
+        _errorMessage = "";
+    }
+
+    private void ShowServerErrorAlert() => _isServerErrorAlertVisible = true;
+}

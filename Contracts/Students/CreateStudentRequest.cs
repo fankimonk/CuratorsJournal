@@ -1,9 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Contracts.Students
 {
     public class CreateStudentRequest(
-        string firstName, string middleName, string lastName, string? phoneNumber, int groupId, int? userId)
+        string firstName, string middleName, string lastName, string? phoneNumber, int? groupId, int? userId)
     {
         [Required]
         public string FirstName { get; set; } = firstName;
@@ -18,7 +19,8 @@ namespace Contracts.Students
         public string? PhoneNumber { get; set; } = phoneNumber;
 
         [Required]
-        public int GroupId { get; set; } = groupId;
+        [NotNull]
+        public int? GroupId { get; set; } = groupId;
 
         public int? UserId { get; set; } = userId;
     }

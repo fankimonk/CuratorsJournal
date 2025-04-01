@@ -1,1 +1,279 @@
-﻿
+﻿@page "/Students"
+
+@using Contracts.Groups
+@using Contracts.Students
+@using Frontend.Components.Buttons
+@using Frontend.Components.Utils
+@using Microsoft.AspNetCore.Components.QuickGrid
+
+@attribute [Authorize]
+
+@inject HttpClient HttpClient
+
+<PageTitle>Студенты</PageTitle>
+
+<h1>Студенты</h1>
+
+@if (_students == null || _groups == null)
+{
+    <p><em>Загрузка...</em></p>
+}
+else
+{
+    <AddButton @onclick="ShowAddModal">Добавить</AddButton>
+
+    <QuickGrid Items="_students" class="table">
+        <PropertyColumn Property="@(l => l.LastName)" Sortable="true" Title="Фамилия" class="align-middle" />
+        <PropertyColumn Property="@(l => l.FirstName)" Sortable="true" Title="Имя" class="align-middle" />
+        <PropertyColumn Property="@(l => l.MiddleName)" Sortable="true" Title="Отчество" class="align-middle" />
+        <PropertyColumn Property="@(l => l.PhoneNumber)" Sortable="true" Title="Номер телефона" class="align-middle" />
+        <PropertyColumn Property="@(l => _groups.FirstOrDefault(g => g.Id == l.GroupId)!.Number)" Sortable="true" Title="Группа" class="align-middle" />
+        <TemplateColumn class="text-end">
+            <EditButton @onclick="() => ShowEditModal(context)" />
+            <DeleteButton @onclick="async () => await Delete(context)" />
+        </TemplateColumn>
+    </QuickGrid>
+
+    <Modal IsVisible="_isAddModalVisible" OnClose="CloseModal">
+        <div class="row">
+            <div class="col-md-12">
+                <EditForm method="post" Model="StudentToAdd" OnValidSubmit="Add" OnInvalidSubmit="ShowErrorAlert" FormName="add" Enhance>
+                    <DataAnnotationsValidator />
+                    <Alert Type="success" IsVisible="_isSuccessAlertVisible" OnClose="CloseSuccessAlert" />
+                    <Alert Type="error" IsVisible="_isErrorAlertVisible" OnClose="CloseErrorAlert">
+                        <ValidationSummary />
+                    </Alert>
+                    <div class="mb-3">
+                        <label for="lastName" class="form-label">Фамилия: </label>
+                        <InputText id="lastName" @bind-Value="StudentToAdd.LastName" class="form-control" />
+                    </div>
+                    <div class="mb-3">
+                        <label for="firstName" class="form-label">Имя: </label>
+                        <InputText id="firstName" @bind-Value="StudentToAdd.FirstName" class="form-control" />
+                    </div>
+                    <div class="mb-3">
+                        <label for="middleName" class="form-label">Отчество: </label>
+                        <InputText id="middleName" @bind-Value="StudentToAdd.MiddleName" class="form-control" />
+                    </div>
+                    <div class="mb-3">
+                        <label for="phoneNumber" class="form-label">Номер телефона: </label>
+                        <InputText id="phoneNumber" @bind-Value="StudentToAdd.PhoneNumber" class="form-control" />
+                    </div>
+                    <div class="mb-3">
+                        <label for="groupId" class="form-label">Группа: </label>
+                        <InputSelect id="groupId" @bind-Value="StudentToAdd.GroupId" class="form-control">
+                            <option value="">(нет)</option>
+                            @foreach (var group in _groups)
+                            {
+                                <option @key="group.Id" value="@group.Id">@group.Number</option>
+                            }
+                        </InputSelect>
+                    </div>
+                    <AddButton type="submit">Добавить</AddButton>
+                </EditForm>
+            </div>
+        </div>
+    </Modal>
+
+    <Modal IsVisible="_isEditModalVisible" OnClose="CloseModal">
+        <div class="row">
+            <div class="col-md-12">
+                <EditForm method="put" Model="StudentToEdit" OnValidSubmit="Update" OnInvalidSubmit="ShowErrorAlert" FormName="edit" Enhance>
+                    <DataAnnotationsValidator />
+                    <Alert Type="success" IsVisible="_isSuccessAlertVisible" OnClose="CloseSuccessAlert" />
+                    <Alert Type="error" IsVisible="_isErrorAlertVisible" OnClose="CloseErrorAlert">
+                        <ValidationSummary />
+                    </Alert>
+                    <div class="mb-3">
+                        <label for="lastName" class="form-label">Фамилия: </label>
+                        <InputText id="lastName" @bind-Value="StudentToEdit.LastName" class="form-control" />
+                    </div>
+                    <div class="mb-3">
+                        <label for="firstName" class="form-label">Имя: </label>
+                        <InputText id="firstName" @bind-Value="StudentToEdit.FirstName" class="form-control" />
+                    </div>
+                    <div class="mb-3">
+                        <label for="middleName" class="form-label">Отчество: </label>
+                        <InputText id="middleName" @bind-Value="StudentToEdit.MiddleName" class="form-control" />
+                    </div>
+                    <div class="mb-3">
+                        <label for="phoneNumber" class="form-label">Номер телефона: </label>
+                        <InputText id="phoneNumber" @bind-Value="StudentToEdit.PhoneNumber" class="form-control" />
+                    </div>
+                    <div class="mb-3">
+                        <label for="groupId" class="form-label">Группа: </label>
+                        <InputSelect id="groupId" @bind-Value="StudentToEdit.GroupId" class="form-control">
+                            @foreach (var group in _groups)
+                            {
+                                <option @key="group.Id" value="@group.Id">@group.Number</option>
+                            }
+                        </InputSelect>
+                    </div>
+                    <EditButton type="submit">Редактировать</EditButton>
+                </EditForm>
+            </div>
+        </div>
+    </Modal>
+
+    <AlertBottom IsVisible="_isServerErrorAlertVisible" OnClose="CloseServerErrorAlert">@_errorMessage</AlertBottom>
+}
+
+@code {
+    [SupplyParameterFromQuery]
+    public int? GroupId { get; set; }
+
+    [SupplyParameterFromForm]
+    public CreateStudentRequest StudentToAdd { get; set; } = new("", "", "", null, null, null);
+
+    [SupplyParameterFromForm]
+    public UpdateStudentRequest StudentToEdit { get; set; } = new("", "", "", null, -1, null);
+    private int _studentToEditId = -1;
+
+    private IQueryable<StudentResponse>? _students;
+
+    private List<GroupResponse>? _groups;
+
+    private bool _isModalVisible = false;
+    private bool _isAddModal = true;
+
+    private bool _isAddModalVisible { get => _isModalVisible && _isAddModal; }
+    private bool _isEditModalVisible { get => _isModalVisible && !_isAddModal; }
+
+    private bool _isSuccessAlertVisible = false;
+    private bool _isErrorAlertVisible = false;
+
+    private bool _isServerErrorAlertVisible = false;
+    private string? _errorMessage = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        var getStudentsUri = "api/student/";
+        if (GroupId != null) getStudentsUri += $"?GroupId={GroupId}";
+
+        var students = await HttpClient.GetFromJsonAsync<List<StudentResponse>>(getStudentsUri);
+        if (students != null)
+            _students = students.AsQueryable();
+
+        _groups = await HttpClient.GetFromJsonAsync<List<GroupResponse>>("api/group");
+
+        StudentToAdd.GroupId = GroupId;
+    }
+
+    protected void FilterStudents()
+    {
+        if (_students == null) return;
+        _students = GroupId != null ? _students.Where(s => s.GroupId == GroupId) : _students;
+    }
+
+    public async Task Add()
+    {
+        var response = await HttpClient.PostAsJsonAsync<CreateStudentRequest>("api/student", StudentToAdd);
+
+        if (response.IsSuccessStatusCode)
+        {
+            var added = await response.Content.ReadFromJsonAsync<StudentResponse>();
+            _students = _students!.Append(added!);
+
+            ShowSuccessAlert();
+            FilterStudents();
+        }
+        else
+        {
+            var errorMessage = await response.Content.ReadAsStringAsync();
+            _errorMessage = errorMessage.Split('\n').FirstOrDefault();
+            ShowServerErrorAlert();
+        }
+    }
+
+    public async Task Update()
+    {
+        var response = await HttpClient.PutAsJsonAsync<UpdateStudentRequest>("api/student/" + _studentToEditId, StudentToEdit);
+
+        if (response.IsSuccessStatusCode)
+        {
+            var updated = await response.Content.ReadFromJsonAsync<StudentResponse>();
+            var toUpdate = _students!.FirstOrDefault(l => l.Id == updated!.Id);
+
+            toUpdate!.FirstName = updated!.FirstName;
+            toUpdate!.MiddleName = updated!.MiddleName;
+            toUpdate!.LastName = updated!.LastName;
+            toUpdate!.PhoneNumber = updated!.PhoneNumber;
+            toUpdate!.GroupId = updated!.GroupId;
+            toUpdate!.UserId = updated!.UserId;
+
+            ShowSuccessAlert();
+            FilterStudents();
+        }
+        else
+        {
+            var errorMessage = await response.Content.ReadAsStringAsync();
+            _errorMessage = errorMessage.Split('\n').FirstOrDefault();
+            ShowServerErrorAlert();
+        }
+    }
+
+    public async Task Delete(StudentResponse student)
+    {
+        var response = await HttpClient.DeleteAsync("api/student/" + student.Id);
+
+        if (response.IsSuccessStatusCode)
+        {
+            _students = _students!.Where(l => l.Id != student.Id);
+        }
+        else
+        {
+            var errorMessage = await response.Content.ReadAsStringAsync();
+            _errorMessage = errorMessage.Split('\n').FirstOrDefault();
+            ShowServerErrorAlert();
+        }
+    }
+
+    private void ShowAddModal()
+    {
+        _isAddModal = true;
+        _isModalVisible = true;
+    }
+
+    private void ShowEditModal(StudentResponse student)
+    {
+        _studentToEditId = student.Id;
+        StudentToEdit = new UpdateStudentRequest(student.FirstName, student.MiddleName, student.LastName, student.PhoneNumber, student.GroupId, student.UserId);
+        _isAddModal = false;
+        _isModalVisible = true;
+    }
+
+    private void CloseModal()
+    {
+        StudentToAdd = new("", "", "", null, GroupId, null);
+        _studentToEditId = -1;
+        StudentToEdit = new("", "", "", null, -1, null);
+        _isModalVisible = false;
+        CloseSuccessAlert();
+        CloseErrorAlert();
+        CloseServerErrorAlert();
+    }
+
+    private void CloseSuccessAlert() => _isSuccessAlertVisible = false;
+
+    private void ShowSuccessAlert()
+    {
+        CloseErrorAlert();
+        _isSuccessAlertVisible = true;
+    }
+
+    private void CloseErrorAlert() => _isErrorAlertVisible = false;
+
+    private void ShowErrorAlert()
+    {
+        CloseSuccessAlert();
+        _isErrorAlertVisible = true;
+    }
+
+    private void CloseServerErrorAlert()
+    {
+        _isServerErrorAlertVisible = false;
+        _errorMessage = "";
+    }
+
+    private void ShowServerErrorAlert() => _isServerErrorAlertVisible = true;
+}

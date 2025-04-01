@@ -5,6 +5,7 @@
 @attribute [Authorize]
 
 @using Contracts.CertificationTypes
+@using Contracts.Groups
 @using Contracts.Journal
 @using Contracts.Journal.FinalPerformanceAccounting
 @using Contracts.Students
@@ -86,7 +87,7 @@ else
                 <th rowspan="3" class="col-1 text-center align-middle">№</th>
                 <th rowspan="3" class="col-2 text-center align-middle">
                     Ф. И. О. студента
-                    <ReferenceButton Uri="/Students" ButtonSize="ButtonSizes.Small" />
+                    <ReferenceButton Uri="@GetStudentsRefPageUri()" ButtonSize="ButtonSizes.Small" />
                 </th>
                 <th colspan="@GetColumnCount()" class="col-9 text-center align-middle">Название дисциплины</th>
             </tr>
@@ -239,6 +240,9 @@ else
         UpdateGradesIsPassedValues();
 
         _addColumnRequest.PageId = PageId;
+
+        var groupResponse = await HttpClient.GetFromJsonAsync<GroupResponse>("api/group/getbyjournal/" + JournalId);
+        if (groupResponse != null) _groupId = groupResponse.Id;
     }
 
     private void UpdateGradesIsPassedValues()
