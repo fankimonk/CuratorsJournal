@@ -1,0 +1,240 @@
+﻿@page "/Specialties"
+
+@using Contracts.Departments
+@using Contracts.Specialties
+@using Frontend.Components.Buttons
+@using Frontend.Components.Utils
+@using Microsoft.AspNetCore.Components.QuickGrid
+
+@attribute [Authorize]
+
+@inject HttpClient HttpClient
+
+<PageTitle>Специальности</PageTitle>
+
+<h1>Специальности</h1>
+
+@if (_specialties == null || _departments == null)
+{
+    <p><em>Загрузка...</em></p>
+}
+else
+{
+    <AddButton @onclick="ShowAddModal">Добавить</AddButton>
+
+    <QuickGrid Items="_specialties" class="table">
+        <PropertyColumn Property="@(l => l.Name)" Sortable="true" Title="Название" class="align-middle" />
+        <PropertyColumn Property="@(l => l.AbbreviatedName)" Sortable="true" Title="Аббревиатура" class="align-middle" />
+        <PropertyColumn Property="@(l => _departments.FirstOrDefault(d => d.Id == l.DepartmentId)!.Name)" Sortable="true" Title="Кафедра" class="align-middle" />
+        <TemplateColumn class="text-end">
+            <EditButton @onclick="() => ShowEditModal(context)" />
+            <DeleteButton @onclick="async () => await Delete(context)" />
+        </TemplateColumn>
+    </QuickGrid>
+
+    <Modal IsVisible="_isAddModalVisible" OnClose="CloseModal">
+        <div class="row">
+            <div class="col-md-12">
+                <EditForm method="post" Model="SpecialtyToAdd" OnValidSubmit="Add" OnInvalidSubmit="ShowErrorAlert" FormName="add" Enhance>
+                    <DataAnnotationsValidator />
+                    <Alert Type="success" IsVisible="_isSuccessAlertVisible" OnClose="CloseSuccessAlert" />
+                    <Alert Type="error" IsVisible="_isErrorAlertVisible" OnClose="CloseErrorAlert">
+                        <ValidationSummary />
+                    </Alert>
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Название: </label>
+                        <InputText id="name" @bind-Value="SpecialtyToAdd.Name" class="form-control" />
+                    </div>
+                    <div class="mb-3">
+                        <label for="abbreviatedName" class="form-label">Аббревиатура: </label>
+                        <InputText id="abbreviatedName" @bind-Value="SpecialtyToAdd.AbbreviatedName" class="form-control" />
+                    </div>
+                    <div class="mb-3">
+                        <label for="department" class="form-label">Кафедра: </label>
+                        <InputSelect id="department" @bind-Value="SpecialtyToAdd.DepartmentId" class="form-control">
+                            <option value="">(нет)</option>
+                            @foreach (var department in _departments)
+                            {
+                                <option @key="department.Id" value="@department.Id">@department.Name</option>
+                            }
+                        </InputSelect>
+                    </div>
+                    <AddButton type="submit">Добавить</AddButton>
+                </EditForm>
+            </div>
+        </div>
+    </Modal>
+
+    <Modal IsVisible="_isEditModalVisible" OnClose="CloseModal">
+        <div class="row">
+            <div class="col-md-12">
+                <EditForm method="put" Model="SpecialtyToEdit" OnValidSubmit="Update" OnInvalidSubmit="ShowErrorAlert" FormName="edit" Enhance>
+                    <DataAnnotationsValidator />
+                    <Alert Type="success" IsVisible="_isSuccessAlertVisible" OnClose="CloseSuccessAlert" />
+                    <Alert Type="error" IsVisible="_isErrorAlertVisible" OnClose="CloseErrorAlert">
+                        <ValidationSummary />
+                    </Alert>
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Название: </label>
+                        <InputText id="name" @bind-Value="SpecialtyToEdit.Name" class="form-control" />
+                    </div>
+                    <div class="mb-3">
+                        <label for="abbreviatedName" class="form-label">Аббревиатура: </label>
+                        <InputText id="abbreviatedName" @bind-Value="SpecialtyToEdit.AbbreviatedName" class="form-control" />
+                    </div>
+                    <div class="mb-3">
+                        <label for="department" class="form-label">Кафедра: </label>
+                        <InputSelect id="department" @bind-Value="SpecialtyToEdit.DepartmentId" class="form-control">
+                            @foreach (var department in _departments)
+                            {
+                                <option @key="department.Id" value="@department.Id">@department.Name</option>
+                            }
+                        </InputSelect>
+                    </div>
+                    <EditButton type="submit">Редактировать</EditButton>
+                </EditForm>
+            </div>
+        </div>
+    </Modal>
+
+    <AlertBottom IsVisible="_isServerErrorAlertVisible" OnClose="CloseServerErrorAlert">@_errorMessage</AlertBottom>
+}
+
+@code {
+    [SupplyParameterFromForm]
+    public CreateSpecialtyRequest SpecialtyToAdd { get; set; } = new("", "", null);
+
+    [SupplyParameterFromForm]
+    public UpdateSpecialtyRequest SpecialtyToEdit { get; set; } = new("", "", -1);
+    private int _specialtyToEditId = -1;
+
+    private IQueryable<SpecialtyResponse>? _specialties;
+
+    private List<DepartmentResponse>? _departments;
+
+    private bool _isModalVisible = false;
+    private bool _isAddModal = true;
+
+    private bool _isAddModalVisible { get => _isModalVisible && _isAddModal; }
+    private bool _isEditModalVisible { get => _isModalVisible && !_isAddModal; }
+
+    private bool _isSuccessAlertVisible = false;
+    private bool _isErrorAlertVisible = false;
+
+    private bool _isServerErrorAlertVisible = false;
+    private string? _errorMessage = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        var literature = await HttpClient.GetFromJsonAsync<List<SpecialtyResponse>>("api/specialty/");
+        if (literature != null)
+            _specialties = literature.AsQueryable();
+
+        _departments = await HttpClient.GetFromJsonAsync<List<DepartmentResponse>>("api/department");
+    }
+
+    public async Task Add()
+    {
+        var response = await HttpClient.PostAsJsonAsync<CreateSpecialtyRequest>("api/specialty", SpecialtyToAdd);
+
+        if (response.IsSuccessStatusCode)
+        {
+            var added = await response.Content.ReadFromJsonAsync<SpecialtyResponse>();
+            _specialties = _specialties!.Append(added!);
+
+            ShowSuccessAlert();
+        }
+        else
+        {
+            var errorMessage = await response.Content.ReadAsStringAsync();
+            _errorMessage = errorMessage.Split('\n').FirstOrDefault();
+            ShowServerErrorAlert();
+        }
+    }
+
+    public async Task Update()
+    {
+        var response = await HttpClient.PutAsJsonAsync<UpdateSpecialtyRequest>("api/specialty/" + _specialtyToEditId, SpecialtyToEdit);
+
+        if (response.IsSuccessStatusCode)
+        {
+            var updated = await response.Content.ReadFromJsonAsync<SpecialtyResponse>();
+            var toUpdate = _specialties!.FirstOrDefault(l => l.Id == updated!.Id);
+
+            toUpdate!.Name = updated!.Name;
+
+            ShowSuccessAlert();
+        }
+        else
+        {
+            var errorMessage = await response.Content.ReadAsStringAsync();
+            _errorMessage = errorMessage.Split('\n').FirstOrDefault();
+            ShowServerErrorAlert();
+        }
+    }
+
+    public async Task Delete(SpecialtyResponse position)
+    {
+        var response = await HttpClient.DeleteAsync("api/specialty/" + position.Id);
+
+        if (response.IsSuccessStatusCode)
+        {
+            _specialties = _specialties!.Where(l => l.Id != position.Id);
+        }
+        else
+        {
+            var errorMessage = await response.Content.ReadAsStringAsync();
+            _errorMessage = errorMessage.Split('\n').FirstOrDefault();
+            ShowServerErrorAlert();
+        }
+    }
+
+    private void ShowAddModal()
+    {
+        _isAddModal = true;
+        _isModalVisible = true;
+    }
+
+    private void ShowEditModal(SpecialtyResponse specialty)
+    {
+        _specialtyToEditId = specialty.Id;
+        SpecialtyToEdit = new UpdateSpecialtyRequest(specialty.Name, specialty.AbbreviatedName, specialty.DepartmentId);
+        _isAddModal = false;
+        _isModalVisible = true;
+    }
+
+    private void CloseModal()
+    {
+        SpecialtyToAdd = new("", "", null);
+        _specialtyToEditId = -1;
+        SpecialtyToEdit = new("", "", -1);
+        _isModalVisible = false;
+        CloseSuccessAlert();
+        CloseErrorAlert();
+        CloseServerErrorAlert();
+    }
+
+    private void CloseSuccessAlert() => _isSuccessAlertVisible = false;
+
+    private void ShowSuccessAlert()
+    {
+        CloseErrorAlert();
+        _isSuccessAlertVisible = true;
+    }
+
+    private void CloseErrorAlert() => _isErrorAlertVisible = false;
+
+    private void ShowErrorAlert()
+    {
+        CloseSuccessAlert();
+        _isErrorAlertVisible = true;
+    }
+
+    private void CloseServerErrorAlert()
+    {
+        _isServerErrorAlertVisible = false;
+        _errorMessage = "";
+    }
+
+    private void ShowServerErrorAlert() => _isServerErrorAlertVisible = true;
+}

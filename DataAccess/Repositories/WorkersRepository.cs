@@ -6,9 +6,11 @@ namespace DataAccess.Repositories
 {
     public class WorkersRepository(CuratorsJournalDBContext dBContext) : RepositoryBase(dBContext), IWorkersRepository
     {
-        public async Task<List<Worker>> GetAllAsync()
+        public async Task<List<Worker>> GetAllAsync(int? positionId)
         {
-            return await _dbContext.Workers.Include(w => w.Position).AsNoTracking().ToListAsync();
+            var workers = _dbContext.Workers.Include(w => w.Position).AsNoTracking();
+            if (positionId != null) workers = workers.Where(w => w.PositionId == positionId);
+            return await workers.ToListAsync();
         }
 
         public async Task<Worker?> GetById(int id)

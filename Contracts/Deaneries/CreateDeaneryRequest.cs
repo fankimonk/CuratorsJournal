@@ -1,15 +1,19 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Contracts.Deaneries
 {
     public class CreateDeaneryRequest(
-        int facultyId, int deanId, int deputyDeanId)
+        int? facultyId, int? deanId, int? deputyDeanId)
     {
         [Required]
-        public int FacultyId { get; set; } = facultyId;
+        [NotNull]
+        public int? FacultyId { get; set; } = facultyId;
         [Required]
-        public int DeanId { get; set; } = deanId;
+        [NotNull]
+        public int? DeanId { get; set; } = deanId;
         [Required]
-        public int DeputyDeanId { get; set; } = deputyDeanId;
+        [NotNull]
+        public int? DeputyDeanId { get; set; } = deputyDeanId;
     }
 }

@@ -25,7 +25,8 @@ namespace DataAccess.Repositories
 
             if (group.Number.Length != 8) return null;
             if (!await SpecialtyExists(group.SpecialtyId)) return null;
-
+            if (group.CuratorId != null && !await TeacherExists((int)group.CuratorId)) return null;
+            
             var createdGroup = await _dbContext.Groups.AddAsync(group);
 
             await _dbContext.SaveChangesAsync();
@@ -41,7 +42,7 @@ namespace DataAccess.Repositories
             if (!await SpecialtyExists(group.SpecialtyId)) return null;
             if (group.CuratorId != null)
             {
-                if (!await CuratorExists((int)group.CuratorId)) return null;
+                if (!await TeacherExists((int)group.CuratorId)) return null;
                 if (group.CuratorId != groupToUpdate.CuratorId) await AddCuratorsAppointmentHistoryRecord(groupToUpdate.Id, (int)group.CuratorId);
             }
 
@@ -61,7 +62,7 @@ namespace DataAccess.Repositories
 
             if (curatorId != null)
             {
-                if (!await CuratorExists((int)curatorId)) return null;
+                if (!await TeacherExists((int)curatorId)) return null;
                 if (curatorId != groupToUpdate.CuratorId) await AddCuratorsAppointmentHistoryRecord(groupToUpdate.Id, (int)curatorId);
             }
 
@@ -84,8 +85,8 @@ namespace DataAccess.Repositories
             return true;
         }
 
-        private async Task<bool> CuratorExists(int id) =>
-            await _dbContext.Curators.AsNoTracking().FirstOrDefaultAsync(c => c.Id == id) != null;
+        private async Task<bool> TeacherExists(int id) =>
+            await _dbContext.Teachers.AsNoTracking().FirstOrDefaultAsync(c => c.Id == id) != null;
 
         private async Task<bool> SpecialtyExists(int id) =>
             await _dbContext.Specialties.AsNoTracking().FirstOrDefaultAsync(c => c.Id == id) != null;

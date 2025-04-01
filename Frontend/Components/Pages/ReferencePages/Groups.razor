@@ -1,0 +1,277 @@
+﻿@page "/Groups"
+
+@using Contracts.Groups
+@using Contracts.Specialties
+@using Contracts.Teachers
+@using Frontend.Components.Buttons
+@using Frontend.Components.Utils
+@using Microsoft.AspNetCore.Components.QuickGrid
+
+@attribute [Authorize]
+
+@inject HttpClient HttpClient
+
+<PageTitle>Группы</PageTitle>
+
+<h1>Группы</h1>
+
+@if (_groups == null || _teachers == null || _specialties == null)
+{
+    <p><em>Загрузка...</em></p>
+}
+else
+{
+    <AddButton @onclick="ShowAddModal">Добавить</AddButton>
+
+    <QuickGrid Items="_groups" class="table">
+        <PropertyColumn Property="@(l => l.Number)" Sortable="true" Title="Номер" class="align-middle" />
+        <PropertyColumn Property="@(l => l.AdmissionYear)" Sortable="true" Title="Год поступления" class="align-middle" />
+        <PropertyColumn Property="@(l => _specialties.FirstOrDefault(s => s.Id == l.SpecialtyId)!.Name)" Title="Специальность" class="align-middle" />
+        <PropertyColumn Property="@(l => l.CuratorId == null ? "-" : GetCuratorsFIOById((int)l.CuratorId))" Title="Куратор" class="align-middle" />
+        <TemplateColumn class="text-end">
+            <EditButton @onclick="() => ShowEditModal(context)" />
+            <DeleteButton @onclick="async () => await Delete(context)" />
+        </TemplateColumn>
+    </QuickGrid>
+
+    <Modal IsVisible="_isAddModalVisible" OnClose="CloseModal">
+        <div class="row">
+            <div class="col-md-12">
+                <EditForm method="post" Model="GroupToAdd" OnValidSubmit="Add" OnInvalidSubmit="ShowErrorAlert" FormName="add" Enhance>
+                    <DataAnnotationsValidator />
+                    <Alert Type="success" IsVisible="_isSuccessAlertVisible" OnClose="CloseSuccessAlert" />
+                    <Alert Type="error" IsVisible="_isErrorAlertVisible" OnClose="CloseErrorAlert">
+                        <ValidationSummary />
+                    </Alert>
+                    <div class="mb-3">
+                        <label for="number" class="form-label">Номер: </label>
+                        <InputText id="number" @bind-Value="GroupToAdd.Number" class="form-control" />
+                    </div>
+                    <div class="mb-3">
+                        <label for="admissionYear" class="form-label">Год поступления: </label>
+                        <InputNumber id="admissionYear" @bind-Value="GroupToAdd.AdmissionYear" class="form-control" />
+                    </div>
+                    <div class="mb-3">
+                        <label for="specialty" class="form-label">Специальность: </label>
+                        <InputSelect id="specialty" @bind-Value="GroupToAdd.SpecialtyId" class="form-control">
+                            <option value="">(нет)</option>
+                            @foreach (var s in _specialties)
+                            {
+                                <option @key="s.Id" value="@s.Id">@s.Name</option>
+                            }
+                        </InputSelect>
+                    </div>
+                    <div class="mb-3">
+                        <label for="curator" class="form-label">Куратор: </label>
+                        <InputSelect id="curator" @bind-Value="GroupToAdd.CuratorId" class="form-control">
+                            <option value="">(нет)</option>
+                            @foreach (var c in _teachers)
+                            {
+                                <option @key="c.Id" value="@c.Id">@GetCuratorsFIOById(c.Id)</option>
+                            }
+                        </InputSelect>
+                    </div>
+                    <AddButton type="submit">Добавить</AddButton>
+                </EditForm>
+            </div>
+        </div>
+    </Modal>
+
+    <Modal IsVisible="_isEditModalVisible" OnClose="CloseModal">
+        <div class="row">
+            <div class="col-md-12">
+                <EditForm method="put" Model="GroupToEdit" OnValidSubmit="Update" OnInvalidSubmit="ShowErrorAlert" FormName="edit" Enhance>
+                    <DataAnnotationsValidator />
+                    <Alert Type="success" IsVisible="_isSuccessAlertVisible" OnClose="CloseSuccessAlert" />
+                    <Alert Type="error" IsVisible="_isErrorAlertVisible" OnClose="CloseErrorAlert">
+                        <ValidationSummary />
+                    </Alert>
+                    <div class="mb-3">
+                        <label for="number" class="form-label">Номер: </label>
+                        <InputText id="number" @bind-Value="GroupToEdit.Number" class="form-control" />
+                    </div>
+                    <div class="mb-3">
+                        <label for="admissionYear" class="form-label">Год поступления: </label>
+                        <InputNumber id="admissionYear" @bind-Value="GroupToEdit.AdmissionYear" class="form-control" />
+                    </div>
+                    <div class="mb-3">
+                        <label for="specialty" class="form-label">Специальность: </label>
+                        <InputSelect id="specialty" @bind-Value="GroupToEdit.SpecialtyId" class="form-control">
+                            @foreach (var s in _specialties)
+                            {
+                                <option @key="s.Id" value="@s.Id">@s.Name</option>
+                            }
+                        </InputSelect>
+                    </div>
+                    <div class="mb-3">
+                        <label for="curator" class="form-label">Куратор: </label>
+                        <InputSelect id="curator" @bind-Value="GroupToEdit.CuratorId" class="form-control">
+                            <option value="">(нет)</option>
+                            @foreach (var c in _teachers)
+                            {
+                                <option @key="c.Id" value="@c.Id">@GetCuratorsFIOById(c.Id)</option>
+                            }
+                        </InputSelect>
+                    </div>
+                    <EditButton type="submit">Редактировать</EditButton>
+                </EditForm>
+            </div>
+        </div>
+    </Modal>
+
+    <AlertBottom IsVisible="_isServerErrorAlertVisible" OnClose="CloseServerErrorAlert">@_errorMessage</AlertBottom>
+}
+
+@code {
+    [SupplyParameterFromForm]
+    public CreateGroupRequest GroupToAdd { get; set; } = new("", null, null, null);
+
+    [SupplyParameterFromForm]
+    public UpdateGroupRequest GroupToEdit { get; set; } = new("", -1, -1, null);
+    private int _groupToEditId = -1;
+
+    private IQueryable<GroupResponse>? _groups;
+
+    private List<TeacherResponse>? _teachers;
+    private List<SpecialtyResponse>? _specialties;
+
+    private bool _isModalVisible = false;
+    private bool _isAddModal = true;
+
+    private bool _isAddModalVisible { get => _isModalVisible && _isAddModal; }
+    private bool _isEditModalVisible { get => _isModalVisible && !_isAddModal; }
+
+    private bool _isSuccessAlertVisible = false;
+    private bool _isErrorAlertVisible = false;
+
+    private bool _isServerErrorAlertVisible = false;
+    private string? _errorMessage = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        var literature = await HttpClient.GetFromJsonAsync<List<GroupResponse>>("api/group/");
+        if (literature != null)
+            _groups = literature.AsQueryable();
+
+        _teachers = await HttpClient.GetFromJsonAsync<List<TeacherResponse>>("api/teacher");
+        _specialties = await HttpClient.GetFromJsonAsync<List<SpecialtyResponse>>("api/specialty");
+    }
+
+    private string GetCuratorsFIOById(int id)
+    {
+        if (_teachers == null) return "";
+
+        var teacher = _teachers.FirstOrDefault(t => t.Id == id);
+        if (teacher == null) return "";
+
+        return teacher.LastName + " " + teacher.FirstName + " " + teacher.MiddleName;
+    }
+
+    public async Task Add()
+    {
+        var response = await HttpClient.PostAsJsonAsync<CreateGroupRequest>("api/group", GroupToAdd);
+
+        if (response.IsSuccessStatusCode)
+        {
+            var added = await response.Content.ReadFromJsonAsync<GroupResponse>();
+            _groups = _groups!.Append(added!);
+
+            ShowSuccessAlert();
+        }
+        else
+        {
+            var errorMessage = await response.Content.ReadAsStringAsync();
+            _errorMessage = errorMessage.Split('\n').FirstOrDefault();
+            ShowServerErrorAlert();
+        }
+    }
+
+    public async Task Update()
+    {
+        var response = await HttpClient.PutAsJsonAsync<UpdateGroupRequest>("api/group/" + _groupToEditId, GroupToEdit);
+
+        if (response.IsSuccessStatusCode)
+        {
+            var updated = await response.Content.ReadFromJsonAsync<GroupResponse>();
+            var literatureToUpdate = _groups!.FirstOrDefault(l => l.Id == updated!.Id);
+
+            literatureToUpdate!.Number = updated!.Number;
+            literatureToUpdate!.AdmissionYear = updated!.AdmissionYear;
+            literatureToUpdate!.SpecialtyId = updated!.SpecialtyId;
+            literatureToUpdate!.CuratorId = updated!.CuratorId;
+
+            ShowSuccessAlert();
+        }
+        else
+        {
+            var errorMessage = await response.Content.ReadAsStringAsync();
+            _errorMessage = errorMessage.Split('\n').FirstOrDefault();
+            ShowServerErrorAlert();
+        }
+    }
+
+    public async Task Delete(GroupResponse literature)
+    {
+        var response = await HttpClient.DeleteAsync("api/group/" + literature.Id);
+
+        if (response.IsSuccessStatusCode)
+        {
+            _groups = _groups!.Where(l => l.Id != literature.Id);
+        }
+        else
+        {
+            var errorMessage = await response.Content.ReadAsStringAsync();
+            _errorMessage = errorMessage.Split('\n').FirstOrDefault();
+            ShowServerErrorAlert();
+        }
+    }
+
+    private void ShowAddModal()
+    {
+        _isAddModal = true;
+        _isModalVisible = true;
+    }
+
+    private void ShowEditModal(GroupResponse group)
+    {
+        _groupToEditId = group.Id;
+        GroupToEdit = new UpdateGroupRequest(group.Number, group.AdmissionYear, group.SpecialtyId, group.CuratorId);
+        _isAddModal = false;
+        _isModalVisible = true;
+    }
+
+    private void CloseModal()
+    {
+        GroupToAdd = new("", null, null, null);
+        _groupToEditId = -1;
+        GroupToEdit = new("", -1, -1, null);
+        _isModalVisible = false;
+        CloseSuccessAlert();
+        CloseErrorAlert();
+        CloseServerErrorAlert();
+    }
+
+    private void CloseSuccessAlert() => _isSuccessAlertVisible = false;
+
+    private void ShowSuccessAlert()
+    {
+        CloseErrorAlert();
+        _isSuccessAlertVisible = true;
+    }
+
+    private void CloseErrorAlert() => _isErrorAlertVisible = false;
+
+    private void ShowErrorAlert()
+    {
+        CloseSuccessAlert();
+        _isErrorAlertVisible = true;
+    }
+
+    private void CloseServerErrorAlert() 
+    {
+        _isServerErrorAlertVisible = false;
+        _errorMessage = "";
+    }
+
+    private void ShowServerErrorAlert() => _isServerErrorAlertVisible = true;
+}

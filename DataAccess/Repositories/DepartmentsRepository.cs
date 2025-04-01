@@ -9,7 +9,7 @@ namespace DataAccess.Repositories
         public async Task<Department?> CreateAsync(Department department)
         {
             if (department == null) return null;
-            if (!await HeadExists(department.HeadId)) return null;
+            if (!await WorkerExists(department.HeadId)) return null;
             if (!await DeaneryExists(department.DeaneryId)) return null;
 
             var created = await _dbContext.Departments.AddAsync(department);
@@ -36,7 +36,7 @@ namespace DataAccess.Repositories
         public async Task<Department?> UpdateAsync(int id, Department department)
         {
             if (department == null) return null;
-            if (!await HeadExists(department.HeadId)) return null;
+            if (!await WorkerExists(department.HeadId)) return null;
             if (!await DeaneryExists(department.DeaneryId)) return null;
 
             var departmentToUpdate = await _dbContext.Departments.FirstOrDefaultAsync(p => p.Id == id);
@@ -51,8 +51,8 @@ namespace DataAccess.Repositories
             return departmentToUpdate;
         }
 
-        private async Task<bool> HeadExists(int id) =>
-            await _dbContext.HeadsOfDepartments.AsNoTracking().FirstOrDefaultAsync(f => f.Id == id) != null;
+        private async Task<bool> WorkerExists(int id) =>
+            await _dbContext.Workers.AsNoTracking().FirstOrDefaultAsync(f => f.Id == id) != null;
 
         private async Task<bool> DeaneryExists(int id) =>
             await _dbContext.Deaneries.AsNoTracking().FirstOrDefaultAsync(f => f.Id == id) != null;

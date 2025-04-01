@@ -1,5 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.CookiePolicy;
 using DataAccess;
 using DataAccess.Interfaces;
 using DataAccess.Repositories;
@@ -57,7 +56,6 @@ builder.Services.AddDbContext<CuratorsJournalDBContext>(
 
 builder.Services.AddScoped<IGroupsRepository, GroupsRepository>();
 builder.Services.AddScoped<IJournalsRepository, JournalsRepository>();
-builder.Services.AddScoped<ICuratorsRepository, CuratorsRepository>();
 builder.Services.AddScoped<ISpecialtiesRepository, SpecialtiesRepository>();
 builder.Services.AddScoped<IContactPhonesRepository, ContactPhonesRepository>();
 builder.Services.AddScoped<IHolidaysRepository, HolidaysRepository>();
@@ -103,6 +101,7 @@ builder.Services.AddScoped<IIdeologicalAndEducationalWorkPageAttributesRepositor
 builder.Services.AddScoped<IPerformanceAccountingGradesRepository, PerformanceAccountingGradesRepository>();
 builder.Services.AddScoped<IPerformanceAccountingColumnsRepository, PerformanceAccountingColumnsRepository>();
 builder.Services.AddScoped<IRefreshTokensRepository, RefreshTokensRepository>();
+builder.Services.AddScoped<ITeachersRepository, TeachersRepository>();
 
 builder.Services.AddScoped<IGroupsService, GroupsService>();
 builder.Services.AddScoped<IJournalsService, JournalsService>();

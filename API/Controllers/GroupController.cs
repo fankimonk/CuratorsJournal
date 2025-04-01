@@ -34,7 +34,7 @@ namespace API.Controllers
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            var group = await _groupsService.CreateGroup(request.Number, request.SpecialtyId, request.AdmissionYear);
+            var group = await _groupsService.CreateGroup(request.Number, (int)request.SpecialtyId, (int)request.AdmissionYear, request.CuratorId);
             if (group == null) return BadRequest(nameof(group));
 
             var groupResponse = group.ToResponse();

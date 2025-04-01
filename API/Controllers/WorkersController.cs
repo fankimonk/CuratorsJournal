@@ -18,9 +18,9 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<WorkerResponse>>> GetAll()
+        public async Task<ActionResult<List<WorkerResponse>>> GetAll([FromQuery] WorkersQuery query)
         {
-            var workers = await _workersRepository.GetAllAsync();
+            var workers = await _workersRepository.GetAllAsync(query.PositionId);
 
             var response = workers.Select(w => w.ToResponse());
             return Ok(response);

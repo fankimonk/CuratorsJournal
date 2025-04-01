@@ -18,8 +18,8 @@ namespace API.Mappers
             {
                 Name = request.Name,
                 AbbreviatedName = request.AbbreviatedName,
-                HeadId = request.HeadId,
-                DeaneryId = request.DeaneryId
+                HeadId = (int)request.HeadId,
+                DeaneryId = (int)request.DeaneryId
             };
         }
 

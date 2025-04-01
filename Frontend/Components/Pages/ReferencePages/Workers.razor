@@ -1,5 +1,5 @@
 ﻿@page "/workers"
- 
+
 @using Contracts.Positions
 @using Contracts.Workers
 @using Frontend.Components.Buttons
@@ -138,9 +138,11 @@ else
     {
         var workers = await HttpClient.GetFromJsonAsync<List<WorkerResponse>>("api/worker/");
         if (workers != null)
-            _workers = workers.AsQueryable();
+            _workers = workers.Where(w => w.Position.Id != 4).AsQueryable();
 
         _positions = await HttpClient.GetFromJsonAsync<List<PositionResponse>>("api/position/");
+        if (_positions != null)
+            _positions = _positions.Where(p => p.Id != 4).ToList();
     }
 
     public async Task Add()

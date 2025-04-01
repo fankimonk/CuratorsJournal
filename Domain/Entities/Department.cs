@@ -8,7 +8,7 @@
         public string AbbreviatedName { get; set; } = string.Empty;
 
         public int HeadId { get; set; }
-        public HeadOfDepartment? HeadOfDepartment { get; set; }
+        public Worker? HeadOfDepartment { get; set; }
 
         public int DeaneryId { get; set; }
         public Deanery? Deanery { get; set; }

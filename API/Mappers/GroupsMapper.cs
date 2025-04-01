@@ -17,8 +17,8 @@ namespace API.Mappers
             return new Group
             {
                 Number = request.Number,
-                AdmissionYear = request.AdmissionYear,
-                SpecialtyId = request.SpecialtyId,
+                AdmissionYear = (int)request.AdmissionYear,
+                SpecialtyId = (int)request.SpecialtyId,
                 CuratorId = request.CuratorId
             };
         }

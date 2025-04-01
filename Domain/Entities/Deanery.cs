@@ -8,10 +8,10 @@
         public Faculty? Faculty { get; set; }
 
         public int DeanId { get; set; }
-        public Dean? Dean { get; set; }
+        public Worker? Dean { get; set; }
 
         public int DeputyDeanId { get; set; }
-        public DeputyDean? DeputyDean { get; set; }
+        public Worker? DeputyDean { get; set; }
 
         public List<Department> Departments { get; set; } = [];
     }

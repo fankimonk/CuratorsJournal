@@ -1,12 +1,13 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Contracts.Groups
 {
     public class CreateGroupRequest
     (
         string number,
-        int admissionYear,
-        int specialtyId,
+        int? admissionYear,
+        int? specialtyId,
         int? curatorId
     )
     {
@@ -16,10 +17,13 @@ namespace Contracts.Groups
         public string Number { get; set; } = number;
 
         [Required]
-        public int AdmissionYear { get; set; } = admissionYear;
+        [Range(0, int.MaxValue)]
+        [NotNull]
+        public int? AdmissionYear { get; set; } = admissionYear;
 
         [Required]
-        public int SpecialtyId { get; set; } = specialtyId;
+        [NotNull]
+        public int? SpecialtyId { get; set; } = specialtyId;
 
         public int? CuratorId { get; set; } = curatorId;
     }

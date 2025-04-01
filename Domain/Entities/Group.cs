@@ -12,7 +12,7 @@
         public Specialty? Specialty { get; set; }
 
         public int? CuratorId { get; set; }
-        public Curator? Curator { get; set; }
+        public Teacher? Curator { get; set; }
 
         public List<Student> Students { get; set; } = [];
         public List<CuratorsAppointmentHistoryRecord> CuratorsAppointmentHistory { get; set; } = [];

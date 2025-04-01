@@ -1,0 +1,273 @@
+﻿@page "/Departments"
+
+@using Contracts.Deaneries
+@using Contracts.Departments
+@using Contracts.Workers
+@using Frontend.Components.Buttons
+@using Frontend.Components.Utils
+@using Microsoft.AspNetCore.Components.QuickGrid
+
+@attribute [Authorize]
+
+@inject HttpClient HttpClient
+
+<PageTitle>Кафедры</PageTitle>
+
+<h1>Кафедры</h1>
+
+@if (_departments == null || _headsOfDepartments == null || _deaneries == null)
+{
+    <p><em>Загрузка...</em></p>
+}
+else
+{
+    <AddButton @onclick="ShowAddModal">Добавить</AddButton>
+
+    <QuickGrid Items="_departments" class="table">
+        <PropertyColumn Property="@(l => l.Name)" Sortable="true" Title="Название" class="align-middle" />
+        <PropertyColumn Property="@(l => l.AbbreviatedName)" Sortable="true" Title="Аббревиатура" class="align-middle" />
+        <PropertyColumn Property="@(l => GetHeadFIOById(l.HeadId))" Sortable="true" Title="Зав. кафедры" class="align-middle" />
+        <PropertyColumn Property="@(l => "Деканат " + _deaneries.FirstOrDefault(d => d.Id == l.DeaneryId)!.Faculty!.AbbreviatedName)" Sortable="true" Title="Зав. кафедры" class="align-middle" />
+        <TemplateColumn class="text-end">
+            <EditButton @onclick="() => ShowEditModal(context)" />
+            <DeleteButton @onclick="async () => await Delete(context)" />
+        </TemplateColumn>
+    </QuickGrid>
+
+    <Modal IsVisible="_isAddModalVisible" OnClose="CloseModal">
+        <div class="row">
+            <div class="col-md-12">
+                <EditForm method="post" Model="DepartmentToAdd" OnValidSubmit="Add" OnInvalidSubmit="ShowErrorAlert" FormName="add" Enhance>
+                    <DataAnnotationsValidator />
+                    <Alert Type="success" IsVisible="_isSuccessAlertVisible" OnClose="CloseSuccessAlert" />
+                    <Alert Type="error" IsVisible="_isErrorAlertVisible" OnClose="CloseErrorAlert">
+                        <ValidationSummary />
+                    </Alert>
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Название: </label>
+                        <InputText id="name" @bind-Value="DepartmentToAdd.Name" class="form-control" />
+                    </div>
+                    <div class="mb-3">
+                        <label for="abbreviatedName" class="form-label">Аббревиатура: </label>
+                        <InputText id="abbreviatedName" @bind-Value="DepartmentToAdd.AbbreviatedName" class="form-control" />
+                    </div>
+                    <div class="mb-3">
+                        <label for="head" class="form-label">Зав. кафедры: </label>
+                        <InputSelect id="head" @bind-Value="DepartmentToAdd.HeadId" class="form-control">
+                            <option value="">(нет)</option>
+                            @foreach (var head in _headsOfDepartments)
+                            {
+                                <option @key="head.Id" value="@head.Id">@GetHeadFIOById(head.Id)</option>
+                            }
+                        </InputSelect>
+                    </div>
+                    <div class="mb-3">
+                        <label for="deanery" class="form-label">Деканат: </label>
+                        <InputSelect id="deanery" @bind-Value="DepartmentToAdd.DeaneryId" class="form-control">
+                            <option value="">(нет)</option>
+                            @foreach (var deanery in _deaneries)
+                            {
+                                <option @key="deanery.Id" value="@deanery.Id">@("Деканат " + _deaneries.FirstOrDefault(d => d.Id == deanery.Id)!.Faculty!.AbbreviatedName)</option>
+                            }
+                        </InputSelect>
+                    </div>
+                    <AddButton type="submit">Добавить</AddButton>
+                </EditForm>
+            </div>
+        </div>
+    </Modal>
+
+    <Modal IsVisible="_isEditModalVisible" OnClose="CloseModal">
+        <div class="row">
+            <div class="col-md-12">
+                <EditForm method="put" Model="DepartmentToEdit" OnValidSubmit="Update" OnInvalidSubmit="ShowErrorAlert" FormName="edit" Enhance>
+                    <DataAnnotationsValidator />
+                    <Alert Type="success" IsVisible="_isSuccessAlertVisible" OnClose="CloseSuccessAlert" />
+                    <Alert Type="error" IsVisible="_isErrorAlertVisible" OnClose="CloseErrorAlert">
+                        <ValidationSummary />
+                    </Alert>
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Название: </label>
+                        <InputText id="name" @bind-Value="DepartmentToEdit.Name" class="form-control" />
+                    </div>
+                    <div class="mb-3">
+                        <label for="abbreviatedName" class="form-label">Аббревиатура: </label>
+                        <InputText id="abbreviatedName" @bind-Value="DepartmentToEdit.AbbreviatedName" class="form-control" />
+                    </div>
+                    <div class="mb-3">
+                        <label for="head" class="form-label">Зав. кафедры: </label>
+                        <InputSelect id="head" @bind-Value="DepartmentToEdit.HeadId" class="form-control">
+                            @foreach (var head in _headsOfDepartments)
+                            {
+                                <option @key="head.Id" value="@head.Id">@GetHeadFIOById(head.Id)</option>
+                            }
+                        </InputSelect>
+                    </div>
+                    <div class="mb-3">
+                        <label for="deanery" class="form-label">Деканат: </label>
+                        <InputSelect id="deanery" @bind-Value="DepartmentToEdit.DeaneryId" class="form-control">
+                            @foreach (var deanery in _deaneries)
+                            {
+                                <option @key="deanery.Id" value="@deanery.Id">@("Деканат " + _deaneries.FirstOrDefault(d => d.Id == deanery.Id)!.Faculty!.AbbreviatedName)</option>
+                            }
+                        </InputSelect>
+                    </div>
+                    <EditButton type="submit">Редактировать</EditButton>
+                </EditForm>
+            </div>
+        </div>
+    </Modal>
+
+    <AlertBottom IsVisible="_isServerErrorAlertVisible" OnClose="CloseServerErrorAlert">@_errorMessage</AlertBottom>
+}
+
+@code {
+    [SupplyParameterFromForm]
+    public CreateDepartmentRequest DepartmentToAdd { get; set; } = new("", "", null, null);
+
+    [SupplyParameterFromForm]
+    public UpdateDepartmentRequest DepartmentToEdit { get; set; } = new("", "", -1, -1);
+    private int _departmentToEditId = -1;
+
+    private IQueryable<DepartmentResponse>? _departments;
+
+    private List<WorkerResponse>? _headsOfDepartments;
+    private List<DeaneryResponse>? _deaneries;
+
+    private bool _isModalVisible = false;
+    private bool _isAddModal = true;
+
+    private bool _isAddModalVisible { get => _isModalVisible && _isAddModal; }
+    private bool _isEditModalVisible { get => _isModalVisible && !_isAddModal; }
+
+    private bool _isSuccessAlertVisible = false;
+    private bool _isErrorAlertVisible = false;
+
+    private bool _isServerErrorAlertVisible = false;
+    private string? _errorMessage = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        var literature = await HttpClient.GetFromJsonAsync<List<DepartmentResponse>>("api/department");
+        if (literature != null)
+            _departments = literature.AsQueryable();
+
+        _headsOfDepartments = await HttpClient.GetFromJsonAsync<List<WorkerResponse>>($"api/worker/?PositionId={3}");
+        _deaneries = await HttpClient.GetFromJsonAsync<List<DeaneryResponse>>("api/deanery");
+    }
+
+    private string GetHeadFIOById(int id)
+    {
+        if (_headsOfDepartments == null) return "";
+
+        var head = _headsOfDepartments.FirstOrDefault(h => h.Id == id);
+        if (head == null) return "";
+
+        return head.LastName + " " + head.FirstName + " " + head.MiddleName;
+    }
+
+    public async Task Add()
+    {
+        var response = await HttpClient.PostAsJsonAsync<CreateDepartmentRequest>("api/department", DepartmentToAdd);
+
+        if (response.IsSuccessStatusCode)
+        {
+            var added = await response.Content.ReadFromJsonAsync<DepartmentResponse>();
+            _departments = _departments!.Append(added!);
+
+            ShowSuccessAlert();
+        }
+        else
+        {
+            var errorMessage = await response.Content.ReadAsStringAsync();
+            _errorMessage = errorMessage.Split('\n').FirstOrDefault();
+            ShowServerErrorAlert();
+        }
+    }
+
+    public async Task Update()
+    {
+        var response = await HttpClient.PutAsJsonAsync<UpdateDepartmentRequest>("api/department/" + _departmentToEditId, DepartmentToEdit);
+
+        if (response.IsSuccessStatusCode)
+        {
+            var updated = await response.Content.ReadFromJsonAsync<DepartmentResponse>();
+            var toUpdate = _departments!.FirstOrDefault(l => l.Id == updated!.Id);
+
+            toUpdate!.Name = updated!.Name;
+
+            ShowSuccessAlert();
+        }
+        else
+        {
+            var errorMessage = await response.Content.ReadAsStringAsync();
+            _errorMessage = errorMessage.Split('\n').FirstOrDefault();
+            ShowServerErrorAlert();
+        }
+    }
+
+    public async Task Delete(DepartmentResponse position)
+    {
+        var response = await HttpClient.DeleteAsync("api/department/" + position.Id);
+
+        if (response.IsSuccessStatusCode)
+        {
+            _departments = _departments!.Where(l => l.Id != position.Id);
+        }
+        else
+        {
+            var errorMessage = await response.Content.ReadAsStringAsync();
+            _errorMessage = errorMessage.Split('\n').FirstOrDefault();
+            ShowServerErrorAlert();
+        }
+    }
+
+    private void ShowAddModal()
+    {
+        _isAddModal = true;
+        _isModalVisible = true;
+    }
+
+    private void ShowEditModal(DepartmentResponse department)
+    {
+        _departmentToEditId = department.Id;
+        DepartmentToEdit = new UpdateDepartmentRequest(department.Name, department.AbbreviatedName, department.HeadId, department.DeaneryId);
+        _isAddModal = false;
+        _isModalVisible = true;
+    }
+
+    private void CloseModal()
+    {
+        DepartmentToAdd = new("", "", null, null);
+        _departmentToEditId = -1;
+        DepartmentToEdit = new("", "", -1, -1);
+        _isModalVisible = false;
+        CloseSuccessAlert();
+        CloseErrorAlert();
+        CloseServerErrorAlert();
+    }
+
+    private void CloseSuccessAlert() => _isSuccessAlertVisible = false;
+
+    private void ShowSuccessAlert()
+    {
+        CloseErrorAlert();
+        _isSuccessAlertVisible = true;
+    }
+
+    private void CloseErrorAlert() => _isErrorAlertVisible = false;
+
+    private void ShowErrorAlert()
+    {
+        CloseSuccessAlert();
+        _isErrorAlertVisible = true;
+    }
+
+    private void CloseServerErrorAlert()
+    {
+        _isServerErrorAlertVisible = false;
+        _errorMessage = "";
+    }
+
+    private void ShowServerErrorAlert() => _isServerErrorAlertVisible = true;
+}

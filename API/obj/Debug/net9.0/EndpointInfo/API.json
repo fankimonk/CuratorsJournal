@@ -6989,6 +6989,170 @@
         }
       }
     },
+    "/api/teacher": {
+      "get": {
+        "tags": [
+          "Teachers"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TeacherResponse"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TeacherResponse"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TeacherResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Teachers"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateTeacherRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateTeacherRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateTeacherRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/TeacherResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TeacherResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TeacherResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/teacher/{id}": {
+      "put": {
+        "tags": [
+          "Teachers"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateTeacherRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateTeacherRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateTeacherRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/TeacherResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TeacherResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TeacherResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Teachers"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/journal/tradition/{pageId}": {
       "get": {
         "tags": [
@@ -7173,6 +7337,16 @@
       "get": {
         "tags": [
           "Workers"
+        ],
+        "parameters": [
+          {
+            "name": "PositionId",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
         ],
         "responses": {
           "200": {
@@ -8035,6 +8209,8 @@
             "type": "string"
           },
           "admissionYear": {
+            "maximum": 2147483647,
+            "minimum": 0,
             "type": "integer",
             "format": "int32"
           },
@@ -8634,6 +8810,34 @@
         },
         "additionalProperties": false
       },
+      "CreateTeacherRequest": {
+        "required": [
+          "departmentId",
+          "firstName",
+          "lastName",
+          "middleName"
+        ],
+        "type": "object",
+        "properties": {
+          "firstName": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "middleName": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "lastName": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "departmentId": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
       "CreateTraditionRequest": {
         "required": [
           "pageId"
@@ -8732,37 +8936,6 @@
         },
         "additionalProperties": false
       },
-      "Curator": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "teacherId": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "teacher": {
-            "$ref": "#/components/schemas/Teacher"
-          },
-          "groups": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Group"
-            },
-            "nullable": true
-          },
-          "curatorsAppointmentHistory": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/CuratorsAppointmentHistoryRecord"
-            },
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
       "CuratorResponse": {
         "type": "object",
         "properties": {
@@ -8801,7 +8974,7 @@
             "format": "int32"
           },
           "curator": {
-            "$ref": "#/components/schemas/Curator"
+            "$ref": "#/components/schemas/Teacher"
           },
           "groupId": {
             "type": "integer",
@@ -8903,26 +9076,6 @@
         },
         "additionalProperties": false
       },
-      "Dean": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "workerId": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "worker": {
-            "$ref": "#/components/schemas/Worker"
-          },
-          "deanery": {
-            "$ref": "#/components/schemas/Deanery"
-          }
-        },
-        "additionalProperties": false
-      },
       "Deanery": {
         "type": "object",
         "properties": {
@@ -8942,14 +9095,14 @@
             "format": "int32"
           },
           "dean": {
-            "$ref": "#/components/schemas/Dean"
+            "$ref": "#/components/schemas/Worker"
           },
           "deputyDeanId": {
             "type": "integer",
             "format": "int32"
           },
           "deputyDean": {
-            "$ref": "#/components/schemas/DeputyDean"
+            "$ref": "#/components/schemas/Worker"
           },
           "departments": {
             "type": "array",
@@ -8979,6 +9132,9 @@
           "deputyDeanId": {
             "type": "integer",
             "format": "int32"
+          },
+          "faculty": {
+            "$ref": "#/components/schemas/FacultyResponse"
           }
         },
         "additionalProperties": false
@@ -9003,7 +9159,7 @@
             "format": "int32"
           },
           "headOfDepartment": {
-            "$ref": "#/components/schemas/HeadOfDepartment"
+            "$ref": "#/components/schemas/Worker"
           },
           "deaneryId": {
             "type": "integer",
@@ -9051,26 +9207,6 @@
           "deaneryId": {
             "type": "integer",
             "format": "int32"
-          }
-        },
-        "additionalProperties": false
-      },
-      "DeputyDean": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "workerId": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "worker": {
-            "$ref": "#/components/schemas/Worker"
-          },
-          "deanery": {
-            "$ref": "#/components/schemas/Deanery"
           }
         },
         "additionalProperties": false
@@ -9404,7 +9540,7 @@
             "nullable": true
           },
           "curator": {
-            "$ref": "#/components/schemas/Curator"
+            "$ref": "#/components/schemas/Teacher"
           },
           "students": {
             "type": "array",
@@ -9511,26 +9647,6 @@
             "type": "integer",
             "format": "int32",
             "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "HeadOfDepartment": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "workerId": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "worker": {
-            "$ref": "#/components/schemas/Worker"
-          },
-          "department": {
-            "$ref": "#/components/schemas/Department"
           }
         },
         "additionalProperties": false
@@ -11299,23 +11415,6 @@
         },
         "additionalProperties": false
       },
-      "SocialDepartmentWorker": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "workerId": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "worker": {
-            "$ref": "#/components/schemas/Worker"
-          }
-        },
-        "additionalProperties": false
-      },
       "SocioPedagogicalCharacteristics": {
         "type": "object",
         "properties": {
@@ -12036,8 +12135,45 @@
           "department": {
             "$ref": "#/components/schemas/Department"
           },
-          "curator": {
-            "$ref": "#/components/schemas/Curator"
+          "groups": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Group"
+            },
+            "nullable": true
+          },
+          "curatorsAppointmentHistory": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CuratorsAppointmentHistoryRecord"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "TeacherResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "firstName": {
+            "type": "string",
+            "nullable": true
+          },
+          "middleName": {
+            "type": "string",
+            "nullable": true
+          },
+          "lastName": {
+            "type": "string",
+            "nullable": true
+          },
+          "departmentId": {
+            "type": "integer",
+            "format": "int32"
           }
         },
         "additionalProperties": false
@@ -13096,6 +13232,34 @@
         },
         "additionalProperties": false
       },
+      "UpdateTeacherRequest": {
+        "required": [
+          "departmentId",
+          "firstName",
+          "lastName",
+          "middleName"
+        ],
+        "type": "object",
+        "properties": {
+          "firstName": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "middleName": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "lastName": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "departmentId": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
       "UpdateTraditionRequest": {
         "type": "object",
         "properties": {
@@ -13305,20 +13469,17 @@
           "user": {
             "$ref": "#/components/schemas/User"
           },
-          "socialDepartmentWorker": {
-            "$ref": "#/components/schemas/SocialDepartmentWorker"
-          },
-          "headOfDepartment": {
-            "$ref": "#/components/schemas/HeadOfDepartment"
-          },
-          "dean": {
-            "$ref": "#/components/schemas/Dean"
-          },
-          "deputyDean": {
-            "$ref": "#/components/schemas/DeputyDean"
-          },
           "teacher": {
             "$ref": "#/components/schemas/Teacher"
+          },
+          "deaneryAsDean": {
+            "$ref": "#/components/schemas/Deanery"
+          },
+          "deaneryAsDeputyDean": {
+            "$ref": "#/components/schemas/Deanery"
+          },
+          "department": {
+            "$ref": "#/components/schemas/Department"
           },
           "psychologicalAndPedagogicalCharacteristics": {
             "type": "array",

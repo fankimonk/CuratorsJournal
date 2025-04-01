@@ -10,7 +10,7 @@ namespace DataAccess.Repositories
         {
             if (record == null) return null;
 
-            if (!await CuratorExists(record.CuratorId)) return null;
+            if (!await TeacherExists(record.CuratorId)) return null;
             if (!await GroupExists(record.GroupId)) return null;
 
             var createdRecord = await _dbContext.CuratorsAppointmentHistory.AddAsync(record);
@@ -25,8 +25,8 @@ namespace DataAccess.Repositories
             throw new NotImplementedException();
         }
 
-        private async Task<bool> CuratorExists(int id) =>
-            await _dbContext.Curators.AsNoTracking().FirstOrDefaultAsync(c => c.Id == id) != null;
+        private async Task<bool> TeacherExists(int id) =>
+            await _dbContext.Teachers.AsNoTracking().FirstOrDefaultAsync(c => c.Id == id) != null;
 
         private async Task<bool> GroupExists(int id) =>
             await _dbContext.Groups.AsNoTracking().FirstOrDefaultAsync(c => c.Id == id) != null;

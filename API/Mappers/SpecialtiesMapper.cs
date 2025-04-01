@@ -18,7 +18,7 @@ namespace API.Mappers
             {
                 Name = request.Name,
                 AbbreviatedName = request.AbbreviatedName,
-                DepartmentId = request.DepartmentId
+                DepartmentId = (int)request.DepartmentId
             };
         }
 

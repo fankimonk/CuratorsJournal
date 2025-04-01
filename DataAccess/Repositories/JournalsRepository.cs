@@ -9,14 +9,14 @@ namespace DataAccess.Repositories
         public async Task<List<Journal>> GetAllAsync()
         {
             return await _dbContext.Journals.AsNoTracking()
-                .Include(j => j.Group).ThenInclude(g => g!.Curator).ThenInclude(c => c!.Teacher).ThenInclude(t => t!.Worker)
+                .Include(j => j.Group).ThenInclude(c => c!.Curator).ThenInclude(t => t!.Worker)
                 .ToListAsync();
         }
 
         public async Task<Journal?> GetById(int journalId)
         {
             return await _dbContext.Journals.AsNoTracking()
-                .Include(j => j.Group).ThenInclude(g => g!.Curator).ThenInclude(c => c!.Teacher).ThenInclude(t => t!.Worker)
+                .Include(j => j.Group).ThenInclude(g => g!.Curator).ThenInclude(t => t!.Worker)
                 .Include(j => j.Group).ThenInclude(g => g!.Specialty).ThenInclude(s => s!.Department).ThenInclude(d => d!.Deanery).ThenInclude(d => d!.Faculty)
                 .FirstOrDefaultAsync(j => j.Id == journalId);
         }

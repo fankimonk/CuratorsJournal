@@ -19,14 +19,14 @@ namespace DataAccess.Configurations
 
             builder
                 .HasOne(d => d.Dean)
-                .WithOne(d => d.Deanery)
+                .WithOne(d => d.DeaneryAsDean)
                 .HasForeignKey<Deanery>(d => d.DeanId)
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Restrict);
 
             builder
                 .HasOne(d => d.DeputyDean)
-                .WithOne(dd => dd.Deanery)
+                .WithOne(dd => dd.DeaneryAsDeputyDean)
                 .HasForeignKey<Deanery>(d => d.DeputyDeanId)
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Restrict);

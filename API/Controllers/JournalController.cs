@@ -40,9 +40,9 @@ namespace API.Controllers
                     curatorResponse = new CuratorResponse
                     (
                         curator.Id,
-                        curator.Teacher!.Worker!.FirstName,
-                        curator.Teacher.Worker.MiddleName,
-                        curator.Teacher.Worker.LastName
+                        curator!.Worker!.FirstName,
+                        curator.Worker.MiddleName,
+                        curator.Worker.LastName
                     );
                 }
 
@@ -102,9 +102,9 @@ namespace API.Controllers
                 curatorResponse = new CuratorResponse
                 (
                     curator.Id,
-                    curator.Teacher!.Worker!.FirstName,
-                    curator.Teacher.Worker.MiddleName,
-                    curator.Teacher.Worker.LastName
+                    curator!.Worker!.FirstName,
+                    curator.Worker.MiddleName,
+                    curator.Worker.LastName
                 );
             }
 

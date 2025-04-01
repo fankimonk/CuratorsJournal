@@ -1,0 +1,252 @@
+﻿@page "/Teachers"
+
+@using Contracts.Departments
+@using Contracts.Teachers
+@using Frontend.Components.Buttons
+@using Frontend.Components.Utils
+@using Microsoft.AspNetCore.Components.QuickGrid
+
+@attribute [Authorize]
+
+@inject HttpClient HttpClient
+
+<PageTitle>Преподаватели</PageTitle>
+
+<h1>Преподаватели</h1>
+
+@if (_teachers == null || _departments == null)
+{
+    <p><em>Загрузка...</em></p>
+}
+else
+{
+    <AddButton @onclick="ShowAddModal">Добавить</AddButton>
+
+    <QuickGrid Items="_teachers" class="table">
+        <PropertyColumn Property="@(l => l.LastName)" Sortable="true" Title="Фамилия" class="align-middle" />
+        <PropertyColumn Property="@(l => l.FirstName)" Sortable="true" Title="Имя" class="align-middle" />
+        <PropertyColumn Property="@(l => l.MiddleName)" Sortable="true" Title="Отчество" class="align-middle" />
+        <PropertyColumn Property="@(l => _departments.FirstOrDefault(d => d.Id == l.DepartmentId)!.Name)" Sortable="true" Title="Кафедра" class="align-middle" />
+        <TemplateColumn class="text-end">
+            <EditButton @onclick="() => ShowEditModal(context)" />
+            <DeleteButton @onclick="async () => await Delete(context)" />
+        </TemplateColumn>
+    </QuickGrid>
+
+    <Modal IsVisible="_isAddModalVisible" OnClose="CloseModal">
+        <div class="row">
+            <div class="col-md-12">
+                <EditForm method="post" Model="TeacherToAdd" OnValidSubmit="Add" OnInvalidSubmit="ShowErrorAlert" FormName="add" Enhance>
+                    <DataAnnotationsValidator />
+                    <Alert Type="success" IsVisible="_isSuccessAlertVisible" OnClose="CloseSuccessAlert" />
+                    <Alert Type="error" IsVisible="_isErrorAlertVisible" OnClose="CloseErrorAlert">
+                        <ValidationSummary />
+                    </Alert>
+                    <div class="mb-3">
+                        <label for="lastName" class="form-label">Фамилия: </label>
+                        <InputText id="lastName" @bind-Value="TeacherToAdd.LastName" class="form-control" />
+                    </div>
+                    <div class="mb-3">
+                        <label for="firstName" class="form-label">Имя: </label>
+                        <InputText id="firstName" @bind-Value="TeacherToAdd.FirstName" class="form-control" />
+                    </div>
+                    <div class="mb-3">
+                        <label for="middleName" class="form-label">Отчество: </label>
+                        <InputText id="middleName" @bind-Value="TeacherToAdd.MiddleName" class="form-control" />
+                    </div>
+                    <div class="mb-3">
+                        <label for="department" class="form-label">Кафедра: </label>
+                        <InputSelect id="department" @bind-Value="TeacherToAdd.DepartmentId" class="form-control">
+                            <option value="">(нет)</option>
+                            @foreach (var d in _departments)
+                            {
+                                <option @key="d.Id" value="@d.Id">@d.Name</option>
+                            }
+                        </InputSelect>
+                    </div>
+                    <AddButton type="submit">Добавить</AddButton>
+                </EditForm>
+            </div>
+        </div>
+    </Modal>
+
+    <Modal IsVisible="_isEditModalVisible" OnClose="CloseModal">
+        <div class="row">
+            <div class="col-md-12">
+                <EditForm method="put" Model="TeacherToEdit" OnValidSubmit="Update" OnInvalidSubmit="ShowErrorAlert" FormName="edit" Enhance>
+                    <DataAnnotationsValidator />
+                    <Alert Type="success" IsVisible="_isSuccessAlertVisible" OnClose="CloseSuccessAlert" />
+                    <Alert Type="error" IsVisible="_isErrorAlertVisible" OnClose="CloseErrorAlert">
+                        <ValidationSummary />
+                    </Alert>
+                    <div class="mb-3">
+                        <label for="lastName" class="form-label">Фамилия: </label>
+                        <InputText id="lastName" @bind-Value="TeacherToEdit.LastName" class="form-control" />
+                    </div>
+                    <div class="mb-3">
+                        <label for="firstName" class="form-label">Имя: </label>
+                        <InputText id="firstName" @bind-Value="TeacherToEdit.FirstName" class="form-control" />
+                    </div>
+                    <div class="mb-3">
+                        <label for="middleName" class="form-label">Отчество: </label>
+                        <InputText id="middleName" @bind-Value="TeacherToEdit.MiddleName" class="form-control" />
+                    </div>
+                    <div class="mb-3">
+                        <label for="department" class="form-label">Кафедра: </label>
+                        <InputSelect id="department" @bind-Value="TeacherToEdit.DepartmentId" class="form-control">
+                            @foreach (var d in _departments)
+                            {
+                                <option @key="d.Id" value="@d.Id">@d.Name</option>
+                            }
+                        </InputSelect>
+                    </div>
+                    <EditButton type="submit">Редактировать</EditButton>
+                </EditForm>
+            </div>
+        </div>
+    </Modal>
+
+    <AlertBottom IsVisible="_isServerErrorAlertVisible" OnClose="CloseServerErrorAlert">@_errorMessage</AlertBottom>
+}
+
+@code {
+    [SupplyParameterFromForm]
+    public CreateTeacherRequest TeacherToAdd { get; set; } = new("", "", "", null);
+
+    [SupplyParameterFromForm]
+    public UpdateTeacherRequest TeacherToEdit { get; set; } = new("", "", "", -1);
+    private int _teacherToEditId = -1;
+
+    private IQueryable<TeacherResponse>? _teachers;
+
+    private List<DepartmentResponse>? _departments;
+
+    private bool _isModalVisible = false;
+    private bool _isAddModal = true;
+
+    private bool _isAddModalVisible { get => _isModalVisible && _isAddModal; }
+    private bool _isEditModalVisible { get => _isModalVisible && !_isAddModal; }
+
+    private bool _isSuccessAlertVisible = false;
+    private bool _isErrorAlertVisible = false;
+
+    private bool _isServerErrorAlertVisible = false;
+    private string? _errorMessage = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        var literature = await HttpClient.GetFromJsonAsync<List<TeacherResponse>>("api/teacher/");
+        if (literature != null)
+            _teachers = literature.AsQueryable();
+
+        _departments = await HttpClient.GetFromJsonAsync<List<DepartmentResponse>>("api/department");
+    }
+
+    public async Task Add()
+    {
+        var response = await HttpClient.PostAsJsonAsync<CreateTeacherRequest>("api/teacher", TeacherToAdd);
+
+        if (response.IsSuccessStatusCode)
+        {
+            var added = await response.Content.ReadFromJsonAsync<TeacherResponse>();
+            _teachers = _teachers!.Append(added!);
+
+            ShowSuccessAlert();
+        }
+        else
+        {
+            var errorMessage = await response.Content.ReadAsStringAsync();
+            _errorMessage = errorMessage.Split('\n').FirstOrDefault();
+            ShowServerErrorAlert();
+        }
+    }
+
+    public async Task Update()
+    {
+        var response = await HttpClient.PutAsJsonAsync<UpdateTeacherRequest>("api/teacher/" + _teacherToEditId, TeacherToEdit);
+
+        if (response.IsSuccessStatusCode)
+        {
+            var updated = await response.Content.ReadFromJsonAsync<TeacherResponse>();
+            var literatureToUpdate = _teachers!.FirstOrDefault(l => l.Id == updated!.Id);
+
+            literatureToUpdate!.FirstName = updated!.FirstName;
+            literatureToUpdate!.MiddleName = updated!.MiddleName;
+            literatureToUpdate!.LastName = updated!.LastName;
+            literatureToUpdate!.DepartmentId = updated!.DepartmentId;
+
+            ShowSuccessAlert();
+        }
+        else
+        {
+            var errorMessage = await response.Content.ReadAsStringAsync();
+            _errorMessage = errorMessage.Split('\n').FirstOrDefault();
+            ShowServerErrorAlert();
+        }
+    }
+
+    public async Task Delete(TeacherResponse teacher)
+    {
+        var response = await HttpClient.DeleteAsync("api/teacher/" + teacher.Id);
+
+        if (response.IsSuccessStatusCode)
+        {
+            _teachers = _teachers!.Where(l => l.Id != teacher.Id);
+        }
+        else
+        {
+            var errorMessage = await response.Content.ReadAsStringAsync();
+            _errorMessage = errorMessage.Split('\n').FirstOrDefault();
+            ShowServerErrorAlert();
+        }
+    }
+
+    private void ShowAddModal()
+    {
+        _isAddModal = true;
+        _isModalVisible = true;
+    }
+
+    private void ShowEditModal(TeacherResponse teacher)
+    {
+        _teacherToEditId = teacher.Id;
+        TeacherToEdit = new UpdateTeacherRequest(teacher.FirstName, teacher.MiddleName, teacher.LastName, teacher.DepartmentId);
+        _isAddModal = false;
+        _isModalVisible = true;
+    }
+
+    private void CloseModal()
+    {
+        TeacherToAdd = new("", "", "", null);
+        _teacherToEditId = -1;
+        TeacherToEdit = new("", "", "", -1);
+        _isModalVisible = false;
+        CloseSuccessAlert();
+        CloseErrorAlert();
+        CloseServerErrorAlert();
+    }
+
+    private void CloseSuccessAlert() => _isSuccessAlertVisible = false;
+
+    private void ShowSuccessAlert()
+    {
+        CloseErrorAlert();
+        _isSuccessAlertVisible = true;
+    }
+
+    private void CloseErrorAlert() => _isErrorAlertVisible = false;
+
+    private void ShowErrorAlert()
+    {
+        CloseSuccessAlert();
+        _isErrorAlertVisible = true;
+    }
+
+    private void CloseServerErrorAlert()
+    {
+        _isServerErrorAlertVisible = false;
+        _errorMessage = "";
+    }
+
+    private void ShowServerErrorAlert() => _isServerErrorAlertVisible = true;
+}

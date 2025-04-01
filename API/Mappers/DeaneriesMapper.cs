@@ -1,4 +1,5 @@
 ﻿using Contracts.Deaneries;
+using Contracts.Faculties;
 using Domain.Entities;
 
 namespace API.Mappers
@@ -8,7 +9,8 @@ namespace API.Mappers
         public static DeaneryResponse ToResponse(this Deanery position)
         {
             return new DeaneryResponse(
-                position.Id, position.FacultyId, position.DeanId, position.DeputyDeanId
+                position.Id, position.FacultyId, position.DeanId, position.DeputyDeanId,
+                position.Faculty == null ? null : new FacultyResponse(position.Faculty.Id, position.Faculty.Name, position.Faculty.AbbreviatedName)
             );
         }
 
@@ -16,9 +18,9 @@ namespace API.Mappers
         {
             return new Deanery
             {
-                FacultyId = request.FacultyId,
-                DeanId = request.DeanId,
-                DeputyDeanId = request.DeputyDeanId
+                FacultyId = (int)request.FacultyId,
+                DeanId = (int)request.DeanId,
+                DeputyDeanId = (int)request.DeputyDeanId
             };
         }
 

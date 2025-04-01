@@ -16,11 +16,12 @@ namespace Domain.Entities
         public int? UserId { get; set; }
         public User? User { get; set; }
 
-        public SocialDepartmentWorker? SocialDepartmentWorker { get; set; }
-        public HeadOfDepartment? HeadOfDepartment { get; set; }
-        public Dean? Dean { get; set; }
-        public DeputyDean? DeputyDean { get; set; }
         public Teacher? Teacher { get; set; }
+
+        public Deanery? DeaneryAsDean { get; set; }
+        public Deanery? DeaneryAsDeputyDean { get; set; }
+
+        public Department? Department { get; set; }
 
         public List<PsychologicalAndPedagogicalCharacteristics> PsychologicalAndPedagogicalCharacteristics { get; set; } = [];
         public List<RecomendationsAndRemarksRecord> RecomendationsAndRemarks { get; set; } = [];
