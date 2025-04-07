@@ -218,6 +218,187 @@
         }
       }
     },
+    "/api/journal": {
+      "get": {
+        "tags": [
+          "AJournal"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/JournalResponse"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/JournalResponse"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/JournalResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/journal/downloadword/{journalId}": {
+      "get": {
+        "tags": [
+          "AJournal"
+        ],
+        "parameters": [
+          {
+            "name": "journalId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/journal/{journalId}/pages": {
+      "get": {
+        "tags": [
+          "AJournal"
+        ],
+        "parameters": [
+          {
+            "name": "journalId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/JournalPagesResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JournalPagesResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JournalPagesResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/journal/{journalId}/contents": {
+      "get": {
+        "tags": [
+          "AJournal"
+        ],
+        "parameters": [
+          {
+            "name": "journalId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/JournalContentsResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JournalContentsResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JournalContentsResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/journal/{journalId}/titlepage": {
+      "get": {
+        "tags": [
+          "AJournal"
+        ],
+        "parameters": [
+          {
+            "name": "journalId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/TitlePageResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TitlePageResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TitlePageResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/auth/register": {
       "post": {
         "tags": [
@@ -3583,164 +3764,6 @@
         }
       }
     },
-    "/api/journal": {
-      "get": {
-        "tags": [
-          "Journal"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/JournalResponse"
-                  }
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/JournalResponse"
-                  }
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/JournalResponse"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/journal/{journalId}/pages": {
-      "get": {
-        "tags": [
-          "Journal"
-        ],
-        "parameters": [
-          {
-            "name": "journalId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/JournalPagesResponse"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JournalPagesResponse"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JournalPagesResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/journal/{journalId}/contents": {
-      "get": {
-        "tags": [
-          "Journal"
-        ],
-        "parameters": [
-          {
-            "name": "journalId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/JournalContentsResponse"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JournalContentsResponse"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JournalContentsResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/journal/{journalId}/titlepage": {
-      "get": {
-        "tags": [
-          "Journal"
-        ],
-        "parameters": [
-          {
-            "name": "journalId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/TitlePageResponse"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TitlePageResponse"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TitlePageResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/api/literature": {
       "get": {
         "tags": [
@@ -4793,6 +4816,101 @@
                   "type": "array",
                   "items": {
                     "$ref": "#/components/schemas/PersonalizedAccountingCardIdResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/journal/personalizedaccountingcard/getbystudent/{studentId}": {
+      "get": {
+        "tags": [
+          "PersonalizedAccountingCards"
+        ],
+        "parameters": [
+          {
+            "name": "studentId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "integer",
+                  "format": "int32"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "integer",
+                  "format": "int32"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "integer",
+                  "format": "int32"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/journal/personalizedaccountingcard/getstudentswithcards/{journalId}": {
+      "get": {
+        "tags": [
+          "PersonalizedAccountingCards"
+        ],
+        "parameters": [
+          {
+            "name": "journalId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "integer",
+                    "format": "int32"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "integer",
+                    "format": "int32"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "integer",
+                    "format": "int32"
                   }
                 }
               }

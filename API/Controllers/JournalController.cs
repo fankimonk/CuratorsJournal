@@ -14,13 +14,15 @@ namespace API.Controllers
         private readonly IJournalsService _journalsService;
         private readonly IJournalsRepository _journalsRepository;
         private readonly IPagesRepository _pagesRepository;
+        private readonly IWordService _wordService;
 
         public JournalController(IJournalsService journalsService, IJournalsRepository journalsRepository, 
-            IPagesRepository pagesRepository)
+            IPagesRepository pagesRepository, IWordService wordService)
         {
             _journalsService = journalsService;
             _journalsRepository = journalsRepository;
             _pagesRepository = pagesRepository;
+            _wordService = wordService;
         }
 
         [HttpGet]
@@ -50,6 +52,15 @@ namespace API.Controllers
             }).ToList();
 
             return Ok(journalResponses);
+        }
+
+        [HttpGet("downloadword/{journalId}")]
+        public async Task<IActionResult> DownloadWord([FromRoute] int journalId)
+        {
+            var fileData = await _wordService.GenerateWord(journalId);
+            if (fileData == null) return BadRequest();
+
+            return File(fileData.MemoryStream, fileData.ContentType, fileData.FileName);
         }
 
         [HttpGet("{journalId}/pages")]

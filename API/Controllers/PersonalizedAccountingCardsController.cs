@@ -45,5 +45,20 @@ namespace API.Controllers
             var response = cards.Select(c => new PersonalizedAccountingCardIdResponse(c.Id));
             return Ok(response);
         }
+
+        [HttpGet("getbystudent/{studentId}")]
+        public async Task<ActionResult<int>> GetCardIdByStudentId([FromRoute] int studentId)
+        {
+            var id = await _entityRepository.GetCardIdByStudentIdAsync(studentId);
+            if (id == null) return NotFound();
+            return Ok((int)id);
+        }
+
+        [HttpGet("getstudentswithcards/{journalId}")]
+        public async Task<ActionResult<List<int>>> GetStudentIdsThatHaveCards([FromRoute] int journalId)
+        {
+            var ids = await _entityRepository.GetStudentIdsThatHaveCard(journalId);
+            return Ok(ids);
+        }
     }
 }

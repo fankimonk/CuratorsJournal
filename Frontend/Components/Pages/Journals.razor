@@ -8,7 +8,7 @@
 
 @inject HttpClient HttpClient
 @inject NavigationManager NavigationManager
-@inject IJSRuntime JS
+@inject IJSRuntime JSRuntime
 @inject ResourceService ResourceService
 @inject AppState AppState
 
@@ -35,14 +35,10 @@ else
                 <tr @onclick='async () => await OpenJournal(journal.Id)' style="cursor: pointer;">
                     <td>@journal.GroupNumber</td>
                     <td>
-                        @if (journal.Curator != null) 
-                        {
-                            @(
-                                                                                journal.Curator.LastName + ' ' +
-                                                                                journal.Curator.FirstName + ' ' +
-                                                                                journal.Curator.MiddleName
-                                                                             )
-                        }
+                        @GetCuratorsFIO(journal)
+                    </td>
+                    <td>
+                        <DownloadButton @onclick="async () => await DownloadWord(journal)" StopPropagation="true" />
                     </td>
                 </tr>
             }
@@ -61,5 +57,19 @@ else
     private async Task OpenJournal(int journalId)
     {
         NavigationManager.NavigateTo($"/journal/{journalId}/Title");
+    }
+
+    private string GetCuratorsFIO(JournalResponse journal)
+    {
+        if (journal.Curator == null) return "-";
+
+        return journal.Curator.LastName + ' ' +
+               journal.Curator.FirstName + ' ' +
+               journal.Curator.MiddleName;
+    }
+
+    private async Task DownloadWord(JournalResponse journal)
+    {
+        await JSRuntime.InvokeVoidAsync("downloadWord", journal.Id, journal.GroupNumber);
     }
 }

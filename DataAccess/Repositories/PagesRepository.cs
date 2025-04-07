@@ -113,8 +113,29 @@ namespace DataAccess.Repositories
             if (!await JournalExists(journalId)) return null;
             if (!await PageTypeExists((int)pageType)) return null;
 
-            return await _dbContext.Pages.AsNoTracking()
-                .Where(p => p.JournalId == journalId && p.PageTypeId == (int)pageType)
+            var pages = _dbContext.Pages.AsNoTracking();
+            switch(pageType)
+            {
+                case PageTypes.ContactPhones:
+                    pages = pages.Include(p => p.ContactPhoneNumbers);
+                    break;
+
+                //case PageTypes.Holidays:
+                //    pages = pages.Include(p => p.Holidays);
+                //    break;
+
+                case PageTypes.SocioPedagogicalCharacteristics:
+                    pages = pages.Include(p => p.SocioPedagogicalCharacteristics)
+                        .Include(p => p.SocioPedagogicalCharacteristicsPageAttributes)
+                        .ThenInclude(s => s!.AcademicYear);
+                    break;
+
+                case PageTypes.EducationalProcessSchedule:
+                    pages = pages.Include(p => p.EducationalProcessSchedule);
+                    break;
+            }
+
+            return await pages.Where(p => p.JournalId == journalId && p.PageTypeId == (int)pageType)
                 .ToListAsync();
         }
 

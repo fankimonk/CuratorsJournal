@@ -27,6 +27,8 @@
 }
 else
 {
+    <ReloadButton @onclick="SynchronizeStudents" AdditionalClasses="mb-3">Синхронизировать студентов</ReloadButton>
+
     <table class="table table-bordered">
         <thead>
             <tr>
@@ -44,6 +46,9 @@ else
                     персонифицированного<br/>
                     учета
                 </th>
+                <th>
+                    <ReloadButton @onclick="ReloadAllRecordsCardReferences" />
+                </th>
             </tr>
         </thead>
         <tbody>
@@ -52,7 +57,7 @@ else
                 <tr class="@GetRowClass(record.Id)">
                     <td>
                         <input type="number" min="1" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))"
-                            @bind="record.Number" @bind:after='async () => await Update(record)' class="input fullwidth" />
+                        @bind="record.Number" @bind:after='async () => await Update(record)' class="input fullwidth" />
                     </td>
                     <td>
                         <select @bind="record.StudentId" @bind:after="async () => await Update(record)" class="input fullwidth">
@@ -79,7 +84,11 @@ else
                         </p>
                     </td>
                     <td>
-                        <select @bind="record.PersonalizedAccountingCardId" @bind:after="async () => await Update(record)" class="input fullwidth">
+                        <p>
+                            @if (record.PersonalizedAccountingCardId == null) { @("-") }
+                            else { @(record.PersonalizedAccountingCardId.ToString()) }
+                        </p>
+                        @* <select @bind="record.PersonalizedAccountingCardId" @bind:after="async () => await Update(record)" class="input fullwidth">
                             <option value="">(нет)</option>
                             @foreach (var card in _cardIds)
                             {
@@ -88,7 +97,7 @@ else
                                     <option @key="card.Id" value="@card.Id">@card.Id</option>
                                 }
                             }
-                        </select>
+                        </select> *@
                     </td>
                     <td>
                         <DeleteButton @onclick="() => OpenDeleteModal(record.Id)" />
@@ -130,15 +139,80 @@ else
         if (groupResponse != null) _groupId = groupResponse.Id;
     }
 
+    private async Task SynchronizeStudents()
+    {
+        if (_pageData == null || _students == null) return;
+
+        var studentsWithoutRecords = _students.Where(s => !_pageData.StudentList.Any(r => r.StudentId == s.Id));
+        foreach (var s in studentsWithoutRecords)
+        {
+            var record = await Add();
+            if (record != null)
+            {
+                record.StudentId = s.Id;
+                await Update(record);
+            }
+        }
+    }
+
+    private async Task ReloadAllRecordsCardReferences()
+    {
+        if (_pageData == null) return;
+        foreach (var record in _pageData.StudentList)
+        {
+            await ReloadRecordCardReference(record.Id);
+        }
+    }
+
+    private async Task ReloadRecordCardReference(int recordId)
+    {
+        if (_pageData == null) return;
+
+        var record = _pageData.StudentList.FirstOrDefault(r => r.Id == recordId);
+        if (record == null) return;
+
+        if (record.StudentId == null)
+        {
+            record.PersonalizedAccountingCardId = null;
+            await Update(record);
+            return;
+        }
+
+        var response = await HttpClient.GetAsync("api/journal/personalizedaccountingcard/getbystudent/" + record.StudentId);
+        if (response.IsSuccessStatusCode)
+        {
+            var id = await response.Content.ReadFromJsonAsync<int>();
+            record.PersonalizedAccountingCardId = id;
+
+            await Update(record);
+        }
+        else
+        {
+            record.PersonalizedAccountingCardId = null;
+            await Update(record);
+        }
+    }
+
     private async Task Update(StudentListRecordResponse record)
     {
         _rowsWithErrors.Remove(record.Id);
         CloseServerErrorAlert();
 
+        if (record.StudentId == null) record.PersonalizedAccountingCardId = null;
+        if (record.StudentId != null && record.PersonalizedAccountingCardId == null)
+        {
+            var cardIdResponse = await HttpClient.GetAsync("api/journal/personalizedaccountingcard/getbystudent/" + record.StudentId);
+            if (cardIdResponse.IsSuccessStatusCode) record.PersonalizedAccountingCardId = await cardIdResponse.Content.ReadFromJsonAsync<int>();
+        }
+
         var request = record.ToRequest();
         var response = await HttpClient.PutAsJsonAsync<UpdateStudentListRecordRequest>("api/journal/studentlist/" + record.Id, request);
 
-        if (!response.IsSuccessStatusCode)
+        if (response.IsSuccessStatusCode)
+        {
+
+        }
+        else
         {
             _rowsWithErrors.Add(record.Id);
             var errorMessage = (await response.Content.ReadAsStringAsync()).Split('\n').FirstOrDefault();
@@ -146,7 +220,7 @@ else
         }
     }
 
-    private async Task Add()
+    private async Task<StudentListRecordResponse?> Add()
     {
         var request = new CreateStudentListRecordRequest(null, null, null, PageId);
         var response = await HttpClient.PostAsJsonAsync<CreateStudentListRecordRequest>("api/journal/studentlist", request);
@@ -155,11 +229,13 @@ else
         {
             var addedRecord = await response.Content.ReadFromJsonAsync<StudentListRecordResponse>();
             _pageData!.StudentList.Add(addedRecord!);
+            return addedRecord;
         }
         else
         {
             var errorMessage = (await response.Content.ReadAsStringAsync()).Split('\n').FirstOrDefault();
             ShowServerErrorAlert(errorMessage);
+            return null;
         }
     }
 

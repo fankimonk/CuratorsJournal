@@ -801,7 +801,7 @@
     ]
   },
   {
-    "ContainingType": "API.Controllers.JournalController",
+    "ContainingType": "API.Controllers.AJournalController",
     "Method": "GetAll",
     "RelativePath": "api/journal",
     "HttpMethod": "GET",
@@ -821,7 +821,7 @@
     ]
   },
   {
-    "ContainingType": "API.Controllers.JournalController",
+    "ContainingType": "API.Controllers.AJournalController",
     "Method": "GetContents",
     "RelativePath": "api/journal/{journalId}/contents",
     "HttpMethod": "GET",
@@ -847,7 +847,7 @@
     ]
   },
   {
-    "ContainingType": "API.Controllers.JournalController",
+    "ContainingType": "API.Controllers.AJournalController",
     "Method": "GetPages",
     "RelativePath": "api/journal/{journalId}/pages",
     "HttpMethod": "GET",
@@ -873,7 +873,7 @@
     ]
   },
   {
-    "ContainingType": "API.Controllers.JournalController",
+    "ContainingType": "API.Controllers.AJournalController",
     "Method": "GetTitlePage",
     "RelativePath": "api/journal/{journalId}/titlepage",
     "HttpMethod": "GET",
@@ -991,6 +991,22 @@
     "Parameters": [
       {
         "Name": "phoneId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "API.Controllers.AJournalController",
+    "Method": "DownloadWord",
+    "RelativePath": "api/journal/downloadword/{journalId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "journalId",
         "Type": "System.Int32",
         "IsRequired": true
       }
@@ -2346,6 +2362,32 @@
   },
   {
     "ContainingType": "API.Controllers.PersonalizedAccountingCardsController",
+    "Method": "GetCardIdByStudentId",
+    "RelativePath": "api/journal/personalizedaccountingcard/getbystudent/{studentId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "studentId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Int32",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "API.Controllers.PersonalizedAccountingCardsController",
     "Method": "GetIdsByJournal",
     "RelativePath": "api/journal/personalizedaccountingcard/getidsbyjournal/{journalId}",
     "HttpMethod": "GET",
@@ -2361,6 +2403,32 @@
     "ReturnTypes": [
       {
         "Type": "System.Collections.Generic.List\u00601[[Contracts.Journal.PersonalizedAccountingCards.PersonalizedAccountingCardIdResponse, Contracts, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "API.Controllers.PersonalizedAccountingCardsController",
+    "Method": "GetStudentIdsThatHaveCards",
+    "RelativePath": "api/journal/personalizedaccountingcard/getstudentswithcards/{journalId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "journalId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.List\u00601[[System.Int32, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
         "MediaTypes": [
           "text/plain",
           "application/json",

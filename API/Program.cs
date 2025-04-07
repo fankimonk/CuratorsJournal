@@ -16,6 +16,7 @@ using DataAccess.Repositories.PageRepositories.FinalPerformanceAccounting;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Application.Services.Word;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -106,6 +107,7 @@ builder.Services.AddScoped<ITeachersRepository, TeachersRepository>();
 builder.Services.AddScoped<IGroupsService, GroupsService>();
 builder.Services.AddScoped<IJournalsService, JournalsService>();
 builder.Services.AddScoped<IUsersService, UsersService>();
+builder.Services.AddScoped<IWordService, WordService>();
 
 builder.Services.AddScoped<IJwtProvider, JwtProvider>();
 builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();

@@ -36,12 +36,20 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xCdXR0b25zXERlbGV0ZUJ1dHRvbi5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Dev/Web/CuratorsJournal/Frontend/Components/Buttons/DownloadButton.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xCdXR0b25zXERvd25sb2FkQnV0dG9uLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Dev/Web/CuratorsJournal/Frontend/Components/Buttons/EditButton.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xCdXR0b25zXEVkaXRCdXR0b24ucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Dev/Web/CuratorsJournal/Frontend/Components/Buttons/ReferenceButton.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xCdXR0b25zXFJlZmVyZW5jZUJ1dHRvbi5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Dev/Web/CuratorsJournal/Frontend/Components/Buttons/ReloadButton.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xCdXR0b25zXFJlbG9hZEJ1dHRvbi5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Dev/Web/CuratorsJournal/Frontend/Components/Inputs/GrowingTextArea.razor]

@@ -1,0 +1,389 @@
+﻿using Application.Interfaces;
+using DocumentFormat.OpenXml.Wordprocessing;
+using Domain.Entities;
+
+namespace Application.Services.Word
+{
+    public class TitlePageGenerator
+    {
+        private readonly IJournalsService _journalsService;
+
+        private readonly Body _documentBody;
+
+        private int _journalId;
+        private Journal? _journal;
+
+        public TitlePageGenerator(int journalId, Body body, IJournalsService journalsService)
+        {
+            _journalId = journalId;
+            _documentBody = body;
+            _journalsService = journalsService;
+        }
+
+        public async Task Generate()
+        {
+            _journal = await InitializeJournalData(_journalId);
+            if (_journal == null) throw new ArgumentException(nameof(_journalId));
+
+            WordUtils.AppendBreaks(4, _documentBody);
+            AppendEducationalInstitutionName();
+            WordUtils.AppendBreaks(2, _documentBody);
+            AppendTitleName();
+            WordUtils.AppendBreaks(1, _documentBody);
+            AppendGroupNumber();
+            AppendAdmissionYear();
+            AppendCurator();
+            AppendDepartment();
+            AppendFaculty();
+            WordUtils.AppendPageBreak(_documentBody);
+        }
+
+        private async Task<Journal?> InitializeJournalData(int journalId)
+        {
+            var titlePageData = await _journalsService.GetJournalsTitlePageData(journalId);
+            if (titlePageData == null) return null;
+
+            return titlePageData.Item2;
+
+            //var group = _journal.Group;
+            //var department = group!.Specialty!.Department;
+
+            //var curator = group.Curator;
+        }
+
+        private void AppendEducationalInstitutionName()
+        {
+            var underlineLineParagraphProperties = new ParagraphProperties(
+                new Justification { Val = JustificationValues.Center },
+                new SpacingBetweenLines { After = "0" }
+            );
+
+            var underlineLineRunProperties = new RunProperties(
+                new RunFonts()
+                {
+                    Ascii = "Times New Roman",
+                    HighAnsi = "Times New Roman",
+                    EastAsia = "Times New Roman",
+                    ComplexScript = "Times New Roman"
+                },
+                new Underline() { Val = UnderlineValues.Single },
+                new FontSize() { Val = "28" }
+            );
+
+            var underlineLineRun = new Run(
+                underlineLineRunProperties,
+                new TabChar(), new TabChar(), new TabChar(), new TabChar(), new TabChar(), new TabChar(),
+                new Text("БНТУ"),
+                new TabChar(), new TabChar(), new TabChar(), new TabChar(), new TabChar(), new TabChar()
+            );
+
+            var underlineLine = new Paragraph(
+                underlineLineParagraphProperties,
+                underlineLineRun
+            );
+
+            var labelParagraphProperties = new ParagraphProperties(
+                new Justification { Val = JustificationValues.Center },
+                new SpacingBetweenLines { Before = "0" }
+            );
+
+            var labelRunProperties = new RunProperties(
+                new RunFonts()
+                {
+                    Ascii = "Times New Roman",
+                    HighAnsi = "Times New Roman",
+                    EastAsia = "Times New Roman",
+                    ComplexScript = "Times New Roman"
+                },
+                new FontSize() { Val = "22" }
+            );
+
+            var labelParagraph = new Paragraph(
+                labelParagraphProperties,
+                new Run(
+                    labelRunProperties,
+                    new Text("наименование учреждения образования"))
+            );
+
+            _documentBody.Append(underlineLine);
+            _documentBody.Append(labelParagraph);
+        }
+
+        private void AppendTitleName()
+        {
+            var runProperties1 = new RunProperties(
+                new RunFonts()
+                {
+                    Ascii = "Times New Roman",
+                    HighAnsi = "Times New Roman",
+                    EastAsia = "Times New Roman",
+                    ComplexScript = "Times New Roman"
+                },
+                new FontSize() { Val = "48" },
+                new Bold()
+            );
+
+            var runProperties2 = new RunProperties(
+                new RunFonts()
+                {
+                    Ascii = "Times New Roman",
+                    HighAnsi = "Times New Roman",
+                    EastAsia = "Times New Roman",
+                    ComplexScript = "Times New Roman"
+                },
+                new FontSize() { Val = "48" },
+                new Bold()
+            );
+
+            var titleName = new Paragraph(
+                new ParagraphProperties(
+                    new Justification { Val = JustificationValues.Center }),
+                new Run(
+                    runProperties1,
+                    new Text("ЖУРНАЛ"),
+                    new Break()),
+                new Run(
+                    runProperties2,
+                    new Text("КУРАТОРА УЧЕБНОЙ ГРУППЫ"))
+            );
+
+            _documentBody.Append(titleName);
+        }
+
+        private void AppendGroupNumber()
+        {
+            if (_journal == null || _journal.Group == null) throw new ArgumentException(nameof(_journal));
+
+            var paragraphProperties = new ParagraphProperties(
+                new Justification { Val = JustificationValues.Both }
+            );
+
+            var labelRunProperties = new RunProperties(
+                new RunFonts()
+                {
+                    Ascii = "Times New Roman",
+                    HighAnsi = "Times New Roman",
+                    EastAsia = "Times New Roman",
+                    ComplexScript = "Times New Roman"
+                },
+                new FontSize() { Val = "28" }
+            );
+
+            var labelRun = new Run(labelRunProperties,
+                new Text("ГРУППА №"));
+
+            var valueRunProperties = new RunProperties(
+                new RunFonts()
+                {
+                    Ascii = "Times New Roman",
+                    HighAnsi = "Times New Roman",
+                    EastAsia = "Times New Roman",
+                    ComplexScript = "Times New Roman"
+                },
+                new Underline() { Val = UnderlineValues.Single },
+                new FontSize() { Val = "28" }
+            );
+
+            var valueRun = new Run(valueRunProperties,
+                new TabChar(), 
+                new Text(_journal.Group.Number.ToString()),
+                new TabChar(), new TabChar(), new TabChar(), new TabChar(), new TabChar(),
+                new TabChar(), new TabChar(), new TabChar(), new TabChar());
+
+            var paragraph = new Paragraph(paragraphProperties,
+                labelRun, valueRun);
+
+            _documentBody.Append(paragraph);
+        }
+
+        private void AppendAdmissionYear()
+        {
+            if (_journal == null || _journal.Group == null) throw new ArgumentException(nameof(_journal));
+
+            var paragraphProperties = new ParagraphProperties(
+                new Justification { Val = JustificationValues.Both }
+            );
+
+            var labelRunProperties = new RunProperties(
+                new RunFonts()
+                {
+                    Ascii = "Times New Roman",
+                    HighAnsi = "Times New Roman",
+                    EastAsia = "Times New Roman",
+                    ComplexScript = "Times New Roman"
+                },
+                new FontSize() { Val = "28" }
+            );
+
+            var labelRun = new Run(labelRunProperties,
+                new Text("ГОД ПОСТУПЛЕНИЯ"));
+
+            var valueRunProperties = new RunProperties(
+                new RunFonts()
+                {
+                    Ascii = "Times New Roman",
+                    HighAnsi = "Times New Roman",
+                    EastAsia = "Times New Roman",
+                    ComplexScript = "Times New Roman"
+                },
+                new Underline() { Val = UnderlineValues.Single },
+                new FontSize() { Val = "28" }
+            );
+
+            var valueRun = new Run(valueRunProperties,
+                new TabChar(), new TabChar(),
+                new Text(_journal.Group.AdmissionYear.ToString()),
+                new TabChar(), new TabChar(), new TabChar(), new TabChar(),
+                new TabChar(), new TabChar(), new TabChar(), new TabChar());
+
+            var paragraph = new Paragraph(paragraphProperties,
+                labelRun, valueRun);
+
+            _documentBody.Append(paragraph);
+        }
+
+        private void AppendCurator()
+        {
+            if (_journal == null || _journal.Group == null) throw new ArgumentException(nameof(_journal));
+
+            var paragraphProperties = new ParagraphProperties(
+                new Justification { Val = JustificationValues.Both }
+            );
+
+            var labelRunProperties = new RunProperties(
+                new RunFonts()
+                {
+                    Ascii = "Times New Roman",
+                    HighAnsi = "Times New Roman",
+                    EastAsia = "Times New Roman",
+                    ComplexScript = "Times New Roman"
+                },
+                new FontSize() { Val = "28" }
+            );
+
+            var labelRun = new Run(labelRunProperties,
+                new Text("КУРАТОР"));
+
+            var valueRunProperties = new RunProperties(
+                new RunFonts()
+                {
+                    Ascii = "Times New Roman",
+                    HighAnsi = "Times New Roman",
+                    EastAsia = "Times New Roman",
+                    ComplexScript = "Times New Roman"
+                },
+                new Underline() { Val = UnderlineValues.Single },
+                new FontSize() { Val = "28" }
+            );
+
+            string curatorFIO = "";
+            if (_journal.Group.Curator != null && _journal.Group.Curator.Worker != null)
+            {
+                var worker = _journal.Group.Curator.Worker;
+                curatorFIO = worker.LastName + " " + worker.FirstName + " " + worker.MiddleName;
+            }
+
+            var valueRun = new Run(valueRunProperties,
+                new TabChar(),
+                new Text(curatorFIO),
+                new TabChar());
+
+             var paragraph = new Paragraph(paragraphProperties,
+                labelRun, valueRun);
+
+            _documentBody.Append(paragraph);
+        }
+
+        private void AppendDepartment()
+        {
+            if (_journal == null || _journal.Group == null || _journal.Group.Specialty == null
+                || _journal.Group.Specialty.Department == null) throw new ArgumentException(nameof(_journal));
+
+            var paragraphProperties = new ParagraphProperties(
+                new Justification { Val = JustificationValues.Both }
+            );
+
+            var labelRunProperties = new RunProperties(
+                new RunFonts()
+                {
+                    Ascii = "Times New Roman",
+                    HighAnsi = "Times New Roman",
+                    EastAsia = "Times New Roman",
+                    ComplexScript = "Times New Roman"
+                },
+                new FontSize() { Val = "28" }
+            );
+
+            var labelRun = new Run(labelRunProperties,
+                new Text("КАФЕДРА"));
+
+            var valueRunProperties = new RunProperties(
+                new RunFonts()
+                {
+                    Ascii = "Times New Roman",
+                    HighAnsi = "Times New Roman",
+                    EastAsia = "Times New Roman",
+                    ComplexScript = "Times New Roman"
+                },
+                new Underline() { Val = UnderlineValues.Single },
+                new FontSize() { Val = "28" }
+            );
+
+            var valueRun = new Run(valueRunProperties,
+                new TabChar(),
+                new Text(_journal.Group.Specialty.Department.AbbreviatedName),
+                new TabChar());
+
+            var paragraph = new Paragraph(paragraphProperties,
+                labelRun, valueRun);
+
+            _documentBody.Append(paragraph);
+        }
+
+        private void AppendFaculty()
+        {
+            if (_journal == null || _journal.Group == null || _journal.Group.Specialty == null
+                || _journal.Group.Specialty.Department == null || _journal.Group.Specialty.Department.Deanery == null
+                || _journal.Group.Specialty.Department.Deanery.Faculty == null) throw new ArgumentException(nameof(_journal));
+
+            var paragraphProperties = new ParagraphProperties(
+                new Justification { Val = JustificationValues.Both }
+            );
+
+            var labelRunProperties = new RunProperties(
+                new RunFonts()
+                {
+                    Ascii = "Times New Roman",
+                    HighAnsi = "Times New Roman",
+                    EastAsia = "Times New Roman",
+                    ComplexScript = "Times New Roman"
+                },
+                new FontSize() { Val = "28" }
+            );
+
+            var labelRun = new Run(labelRunProperties,
+                new Text("ФАКУЛЬТЕТ"));
+
+            var valueRunProperties = new RunProperties(
+                new RunFonts()
+                {
+                    Ascii = "Times New Roman",
+                    HighAnsi = "Times New Roman",
+                    EastAsia = "Times New Roman",
+                    ComplexScript = "Times New Roman"
+                },
+                new Underline() { Val = UnderlineValues.Single },
+                new FontSize() { Val = "28" }
+            );
+
+            var valueRun = new Run(valueRunProperties,
+                new TabChar(),
+                new Text(_journal.Group.Specialty.Department.Deanery.Faculty.Name));
+
+            var paragraph = new Paragraph(paragraphProperties,
+                labelRun, valueRun);
+
+            _documentBody.Append(paragraph);
+        }
+    }
+}

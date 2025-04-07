@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "HGzQA/LBnX1BtyHI7RQnZvNjs115aifMtlqCNMyC8QI=",
+  "Hash": "RW5w+RcLzQ/zO1YNIfx30GT6Qq4uLCBSuWOdEtbIQp8=",
   "Source": "Frontend",
   "BasePath": "_content/Frontend",
   "Mode": "Default",
@@ -477,6 +477,27 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "C:\\Dev\\Web\\CuratorsJournal\\Frontend\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.min.css"
+    },
+    {
+      "Identity": "C:\\Dev\\Web\\CuratorsJournal\\Frontend\\obj\\Debug\\net9.0\\compressed\\dgyc46k7no-7y9v1y3ex0.gz",
+      "SourceId": "Frontend",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Dev\\Web\\CuratorsJournal\\Frontend\\obj\\Debug\\net9.0\\compressed\\",
+      "BasePath": "_content/Frontend",
+      "RelativePath": "js/files#[.{fingerprint=7y9v1y3ex0}]?.js.gz",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Alternative",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "C:\\Dev\\Web\\CuratorsJournal\\Frontend\\wwwroot\\js\\files.js",
+      "AssetTraitName": "Content-Encoding",
+      "AssetTraitValue": "gzip",
+      "Fingerprint": "h8tf4cvypa",
+      "Integrity": "Pxp2JgpJaJ66RRZRyF1dGuuxOUkyfSngOYPtKvRkrcI=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "C:\\Dev\\Web\\CuratorsJournal\\Frontend\\wwwroot\\js\\files.js"
     },
     {
       "Identity": "C:\\Dev\\Web\\CuratorsJournal\\Frontend\\obj\\Debug\\net9.0\\compressed\\fjeus4rjcu-nvvlpmu67g.gz",
@@ -1212,6 +1233,27 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\js\\cookies.js"
+    },
+    {
+      "Identity": "C:\\Dev\\Web\\CuratorsJournal\\Frontend\\wwwroot\\js\\files.js",
+      "SourceId": "Frontend",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Dev\\Web\\CuratorsJournal\\Frontend\\wwwroot\\",
+      "BasePath": "_content/Frontend",
+      "RelativePath": "js/files#[.{fingerprint}]?.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "7y9v1y3ex0",
+      "Integrity": "H12fhroUPLJGuf/myId/Ix4rxVf7Yu8teLSZ+Vxpjz0=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\js\\files.js"
     },
     {
       "Identity": "C:\\Dev\\Web\\CuratorsJournal\\Frontend\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.css",
@@ -2955,7 +2997,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 14 Mar 2025 10:45:14 GMT"
+          "Value": "Sun, 06 Apr 2025 12:39:41 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -3024,7 +3066,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 14 Mar 2025 10:45:14 GMT"
+          "Value": "Sun, 06 Apr 2025 12:39:41 GMT"
         },
         {
           "Name": "Link",
@@ -3069,7 +3111,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 14 Mar 2025 10:45:14 GMT"
+          "Value": "Sun, 06 Apr 2025 12:39:41 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -3124,7 +3166,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Mon, 10 Mar 2025 09:24:21 GMT"
+          "Value": "Sun, 06 Apr 2025 12:39:41 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -3185,7 +3227,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Mon, 10 Mar 2025 09:24:21 GMT"
+          "Value": "Sun, 06 Apr 2025 12:39:41 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -3230,7 +3272,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Mon, 10 Mar 2025 09:24:21 GMT"
+          "Value": "Sun, 06 Apr 2025 12:39:41 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -3285,7 +3327,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Mon, 10 Mar 2025 09:24:21 GMT"
+          "Value": "Sun, 06 Apr 2025 12:39:41 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -3338,7 +3380,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Mon, 10 Mar 2025 09:24:21 GMT"
+          "Value": "Sun, 06 Apr 2025 12:39:41 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -3375,7 +3417,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Mon, 10 Mar 2025 09:24:21 GMT"
+          "Value": "Sun, 06 Apr 2025 12:39:41 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -3422,7 +3464,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 14 Mar 2025 10:45:14 GMT"
+          "Value": "Sun, 06 Apr 2025 12:39:41 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -3483,7 +3525,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 14 Mar 2025 10:45:14 GMT"
+          "Value": "Sun, 06 Apr 2025 12:39:41 GMT"
         },
         {
           "Name": "Link",
@@ -3520,7 +3562,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 14 Mar 2025 10:45:14 GMT"
+          "Value": "Sun, 06 Apr 2025 12:39:41 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -3837,6 +3879,304 @@
         {
           "Name": "integrity",
           "Value": "sha256-rigtZUxxQDgA/5jFfRZ9b0g0MvStLx5HqCBrWNnAZGI="
+        }
+      ]
+    },
+    {
+      "Route": "js/files.7y9v1y3ex0.js",
+      "AssetFile": "C:\\Dev\\Web\\CuratorsJournal\\Frontend\\obj\\Debug\\net9.0\\compressed\\dgyc46k7no-7y9v1y3ex0.gz",
+      "Selectors": [
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip",
+          "Quality": "0.002857142857"
+        }
+      ],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "349"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"Pxp2JgpJaJ66RRZRyF1dGuuxOUkyfSngOYPtKvRkrcI=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 05 Apr 2025 15:08:58 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "W/\"H12fhroUPLJGuf/myId/Ix4rxVf7Yu8teLSZ+Vxpjz0=\""
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "7y9v1y3ex0"
+        },
+        {
+          "Name": "label",
+          "Value": "js/files.js"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-H12fhroUPLJGuf/myId/Ix4rxVf7Yu8teLSZ+Vxpjz0="
+        }
+      ]
+    },
+    {
+      "Route": "js/files.7y9v1y3ex0.js",
+      "AssetFile": "C:\\Dev\\Web\\CuratorsJournal\\Frontend\\wwwroot\\js\\files.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "600"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"H12fhroUPLJGuf/myId/Ix4rxVf7Yu8teLSZ+Vxpjz0=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 05 Apr 2025 15:08:58 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "7y9v1y3ex0"
+        },
+        {
+          "Name": "label",
+          "Value": "js/files.js"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-H12fhroUPLJGuf/myId/Ix4rxVf7Yu8teLSZ+Vxpjz0="
+        }
+      ]
+    },
+    {
+      "Route": "js/files.7y9v1y3ex0.js.gz",
+      "AssetFile": "C:\\Dev\\Web\\CuratorsJournal\\Frontend\\obj\\Debug\\net9.0\\compressed\\dgyc46k7no-7y9v1y3ex0.gz",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "349"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"Pxp2JgpJaJ66RRZRyF1dGuuxOUkyfSngOYPtKvRkrcI=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 05 Apr 2025 15:08:58 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "7y9v1y3ex0"
+        },
+        {
+          "Name": "label",
+          "Value": "js/files.js.gz"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-Pxp2JgpJaJ66RRZRyF1dGuuxOUkyfSngOYPtKvRkrcI="
+        }
+      ]
+    },
+    {
+      "Route": "js/files.js",
+      "AssetFile": "C:\\Dev\\Web\\CuratorsJournal\\Frontend\\obj\\Debug\\net9.0\\compressed\\dgyc46k7no-7y9v1y3ex0.gz",
+      "Selectors": [
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip",
+          "Quality": "0.002857142857"
+        }
+      ],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "349"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"Pxp2JgpJaJ66RRZRyF1dGuuxOUkyfSngOYPtKvRkrcI=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 05 Apr 2025 15:08:58 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "W/\"H12fhroUPLJGuf/myId/Ix4rxVf7Yu8teLSZ+Vxpjz0=\""
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-H12fhroUPLJGuf/myId/Ix4rxVf7Yu8teLSZ+Vxpjz0="
+        }
+      ]
+    },
+    {
+      "Route": "js/files.js",
+      "AssetFile": "C:\\Dev\\Web\\CuratorsJournal\\Frontend\\wwwroot\\js\\files.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "600"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"H12fhroUPLJGuf/myId/Ix4rxVf7Yu8teLSZ+Vxpjz0=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 05 Apr 2025 15:08:58 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-H12fhroUPLJGuf/myId/Ix4rxVf7Yu8teLSZ+Vxpjz0="
+        }
+      ]
+    },
+    {
+      "Route": "js/files.js.gz",
+      "AssetFile": "C:\\Dev\\Web\\CuratorsJournal\\Frontend\\obj\\Debug\\net9.0\\compressed\\dgyc46k7no-7y9v1y3ex0.gz",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "349"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"Pxp2JgpJaJ66RRZRyF1dGuuxOUkyfSngOYPtKvRkrcI=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 05 Apr 2025 15:08:58 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-Pxp2JgpJaJ66RRZRyF1dGuuxOUkyfSngOYPtKvRkrcI="
         }
       ]
     },

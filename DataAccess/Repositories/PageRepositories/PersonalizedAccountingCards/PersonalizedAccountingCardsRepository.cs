@@ -68,5 +68,20 @@ namespace DataAccess.Repositories.PageRepositories.PersonalizedAccountingCards
 
         private async Task<bool> StudentExists(int id) =>
             await _dbContext.Students.AsNoTracking().FirstOrDefaultAsync(c => c.Id == id) != null;
+
+        public async Task<int?> GetCardIdByStudentIdAsync(int studentId)
+        {
+            var card = await _dbContext.PersonalizedAccountingCards.AsNoTracking().FirstOrDefaultAsync(c => c.StudentId == studentId);
+            if (card == null) return null;
+            return card.Id;
+        }
+
+        public async Task<List<int>> GetStudentIdsThatHaveCard(int journalId)
+        {
+            return await _dbContext.PersonalizedAccountingCards
+                .Include(c => c.Page).AsNoTracking()
+                .Where(c => c.Page!.JournalId == journalId && c.StudentId != null)
+                .Select(c => (int)c.StudentId).ToListAsync();
+        }
     }
 }
