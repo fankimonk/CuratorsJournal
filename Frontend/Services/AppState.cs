@@ -5,11 +5,9 @@ using System.Security.Claims;
 
 namespace Frontend.Services
 {
-    public class AppState(HttpClient httpClient, JwtAuthenticationStateProvider authStateProvider, AccessTokenService accessTokenService, AuthService authService)
+    public class AppState(JwtAuthenticationStateProvider authStateProvider, AccessTokenService accessTokenService, AuthService authService)
     {
         public UserResponse? User { get; private set; }
-
-        private readonly HttpClient _httpClient = httpClient;
 
         private readonly JwtAuthenticationStateProvider _authStateProvider = authStateProvider;
         private readonly AccessTokenService _accessTokenService = accessTokenService;

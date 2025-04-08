@@ -50,7 +50,7 @@ else
 
     private List<StudentEncouragementResponse>? _studentEncouragements;
 
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnParametersSetAsync()
     {
         _studentEncouragements = await HttpClient.GetFromJsonAsync<List<StudentEncouragementResponse>>
                 ("api/journal/personalizedaccountingcard/studentencouragement/" + CardId);

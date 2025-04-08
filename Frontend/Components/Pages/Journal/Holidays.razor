@@ -34,7 +34,7 @@ else
             </div>
             <div class="row">
                 <div class="col d-flex align-items-center justify-content-center">
-                    <select @bind="_typeToAddId" class="input underline mb-3 fullwidth">
+                    <select @bind="_typeToAddId" class="form-control mb-3">
                         @foreach (var ht in _pageData.HolidayTypes.Where(ht => ht.Holidays.Count == 0))
                         {
                             <option @key="ht.Id" value="@ht.Id">@ht.Name</option>

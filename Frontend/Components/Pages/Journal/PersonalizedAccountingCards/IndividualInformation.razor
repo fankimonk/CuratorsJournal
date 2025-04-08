@@ -73,7 +73,7 @@ else
 
     private List<IndividualInformationRecordResponse>? _individualInformation;
 
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnParametersSetAsync()
     {
         _individualInformation = await HttpClient.GetFromJsonAsync<List<IndividualInformationRecordResponse>>
                 ("api/journal/personalizedaccountingcard/individualinformation/" + CardId);

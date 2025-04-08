@@ -801,7 +801,7 @@
     ]
   },
   {
-    "ContainingType": "API.Controllers.AJournalController",
+    "ContainingType": "API.Controllers.JournalController",
     "Method": "GetAll",
     "RelativePath": "api/journal",
     "HttpMethod": "GET",
@@ -821,7 +821,7 @@
     ]
   },
   {
-    "ContainingType": "API.Controllers.AJournalController",
+    "ContainingType": "API.Controllers.JournalController",
     "Method": "GetContents",
     "RelativePath": "api/journal/{journalId}/contents",
     "HttpMethod": "GET",
@@ -847,7 +847,7 @@
     ]
   },
   {
-    "ContainingType": "API.Controllers.AJournalController",
+    "ContainingType": "API.Controllers.JournalController",
     "Method": "GetPages",
     "RelativePath": "api/journal/{journalId}/pages",
     "HttpMethod": "GET",
@@ -873,7 +873,7 @@
     ]
   },
   {
-    "ContainingType": "API.Controllers.AJournalController",
+    "ContainingType": "API.Controllers.JournalController",
     "Method": "GetTitlePage",
     "RelativePath": "api/journal/{journalId}/titlepage",
     "HttpMethod": "GET",
@@ -998,7 +998,7 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "API.Controllers.AJournalController",
+    "ContainingType": "API.Controllers.JournalController",
     "Method": "DownloadWord",
     "RelativePath": "api/journal/downloadword/{journalId}",
     "HttpMethod": "GET",

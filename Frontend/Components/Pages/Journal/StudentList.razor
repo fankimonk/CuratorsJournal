@@ -88,16 +88,6 @@ else
                             @if (record.PersonalizedAccountingCardId == null) { @("-") }
                             else { @(record.PersonalizedAccountingCardId.ToString()) }
                         </p>
-                        @* <select @bind="record.PersonalizedAccountingCardId" @bind:after="async () => await Update(record)" class="input fullwidth">
-                            <option value="">(нет)</option>
-                            @foreach (var card in _cardIds)
-                            {
-                                @if (record.PersonalizedAccountingCardId == card.Id || !_pageData.StudentList.Any(a => a.PersonalizedAccountingCardId == card.Id))
-                                {
-                                    <option @key="card.Id" value="@card.Id">@card.Id</option>
-                                }
-                            }
-                        </select> *@
                     </td>
                     <td>
                         <DeleteButton @onclick="() => OpenDeleteModal(record.Id)" />

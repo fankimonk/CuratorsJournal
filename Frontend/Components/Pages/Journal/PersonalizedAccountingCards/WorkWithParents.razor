@@ -55,7 +55,7 @@ else
 
     private List<WorkWithParentsRecordResponse>? _individualWork;
 
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnParametersSetAsync()
     {
         _individualWork = await HttpClient.GetFromJsonAsync<List<WorkWithParentsRecordResponse>>
                 ("api/journal/personalizedaccountingcard/workwithparents/" + CardId);

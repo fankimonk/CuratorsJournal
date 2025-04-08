@@ -120,10 +120,6 @@ namespace DataAccess.Repositories
                     pages = pages.Include(p => p.ContactPhoneNumbers);
                     break;
 
-                //case PageTypes.Holidays:
-                //    pages = pages.Include(p => p.Holidays);
-                //    break;
-
                 case PageTypes.SocioPedagogicalCharacteristics:
                     pages = pages.Include(p => p.SocioPedagogicalCharacteristics)
                         .Include(p => p.SocioPedagogicalCharacteristicsPageAttributes)
@@ -132,6 +128,41 @@ namespace DataAccess.Repositories
 
                 case PageTypes.EducationalProcessSchedule:
                     pages = pages.Include(p => p.EducationalProcessSchedule);
+                    break;
+
+                case PageTypes.GroupActives:
+                    pages = pages.Include(p => p.GroupActives)
+                        .ThenInclude(a => a.Student);
+                    break;
+
+                case PageTypes.StudentList:
+                    pages = pages.Include(p => p.StudentList)
+                        .ThenInclude(l => l.Student);
+                    break;
+
+                case PageTypes.PersonalizedAccountingCard:
+                    pages = pages.Include(p => p.PersonalizedAccountingCard)
+                        .ThenInclude(c => c!.Student).ThenInclude(s => s!.PEGroups);
+                    pages = pages.Include(p => p.PersonalizedAccountingCard)
+                        .ThenInclude(c => c!.Student).ThenInclude(s => s!.ChronicDiseases);
+                    pages = pages.Include(p => p.PersonalizedAccountingCard)
+                        .ThenInclude(c => c!.ParentalInformation);
+                    pages = pages.Include(p => p.PersonalizedAccountingCard)
+                        .ThenInclude(c => c!.IndividualInformation);
+                    pages = pages.Include(p => p.PersonalizedAccountingCard)
+                        .ThenInclude(c => c!.StudentEcouragements);
+                    pages = pages.Include(p => p.PersonalizedAccountingCard)
+                        .ThenInclude(c => c!.StudentDisciplinaryResponsibilities);
+                    pages = pages.Include(p => p.PersonalizedAccountingCard)
+                        .ThenInclude(c => c!.IndividualWorkWithStudent);
+                    pages = pages.Include(p => p.PersonalizedAccountingCard)
+                        .ThenInclude(c => c!.WorkWithParents);
+                    break;
+
+                case PageTypes.PsychologicalAndPedagogicalCharacteristics:
+                    pages = pages.Include(p => p.PsychologicalAndPedagogicalCharacteristics)
+                        .ThenInclude(c => c!.Worker)
+                        .ThenInclude(w => w!.Position);
                     break;
             }
 

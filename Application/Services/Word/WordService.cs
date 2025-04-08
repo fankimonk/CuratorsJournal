@@ -1,7 +1,7 @@
 ﻿using Application.Entities;
 using Application.Interfaces;
+using Application.Services.Word.PesonalizedAccountingCard;
 using DataAccess.Interfaces;
-using DataAccess.Interfaces.PageRepositories;
 using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
@@ -9,7 +9,7 @@ using DocumentFormat.OpenXml.Wordprocessing;
 namespace Application.Services.Word
 {
     public class WordService(IJournalsService journalsService, IPagesRepository pagesRepository,
-        IHolidaysRepository holidaysRepository, IGroupsRepository groupsRepository) : IWordService
+        IHolidaysRepository holidaysRepository, IGroupsRepository groupsRepository, IStudentsRepository studentsRepository) : IWordService
     {
         private readonly IJournalsService _journalsService = journalsService;
         private readonly IPagesRepository _pagesRepository = pagesRepository;
@@ -47,6 +47,22 @@ namespace Application.Services.Word
 
                 var educationalProcessSchedulePageGenerator = new EducationalProcessSchedulePageGenerator(journalId, body, _pagesRepository);
                 try { await educationalProcessSchedulePageGenerator.Generate(); }
+                catch { return null; }
+
+                var groupActivesPageGenerator = new GroupActivesPageGenerator(journalId, body, _pagesRepository);
+                try { await groupActivesPageGenerator.Generate(); }
+                catch { return null; }
+
+                var studentListPageGenerator = new StudentListPageGenerator(journalId, body, _pagesRepository);
+                try { await studentListPageGenerator.Generate(); }
+                catch { return null; }
+
+                var personalizedAccountingCardPageGenerator = new PersonalizedAccountingCardPageGenerator(journalId, body, _pagesRepository);
+                try { await personalizedAccountingCardPageGenerator.Generate(); }
+                catch { return null; }
+
+                var psychologicalAndPedagogicalCharacteristicsPageGenerator = new PsychologicalAndPedagogicalCharacteristicsPageGenerator(journalId, body, _pagesRepository);
+                try { await psychologicalAndPedagogicalCharacteristicsPageGenerator.Generate(); }
                 catch { return null; }
 
                 mainPart.Document.Append(body);

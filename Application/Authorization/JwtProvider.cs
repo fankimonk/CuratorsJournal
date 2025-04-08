@@ -56,15 +56,6 @@ namespace Application.Authorization
                 Audience = _options.Audience
             };
 
-            //Old
-            //var token = new JwtSecurityToken(
-            //    claims: claims,
-            //    signingCredentials: signingCredentials,
-            //    expires: DateTime.UtcNow.AddHours(_options.ExpiresHours));
-
-            //var tokenValue = new JwtSecurityTokenHandler().WriteToken(token);
-            //return tokenValue;
-
             return new JsonWebTokenHandler().CreateToken(tokenDescriptor);
         }
     }
