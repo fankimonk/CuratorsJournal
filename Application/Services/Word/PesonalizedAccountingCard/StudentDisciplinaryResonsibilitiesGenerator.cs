@@ -1,4 +1,5 @@
-﻿using DocumentFormat.OpenXml;
+﻿using Application.Utils;
+using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Wordprocessing;
 using Domain.Entities.JournalContent.PersonalizedAccountingCardContent;
 

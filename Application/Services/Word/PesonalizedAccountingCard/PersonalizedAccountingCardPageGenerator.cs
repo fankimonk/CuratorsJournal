@@ -1,4 +1,5 @@
-﻿using DataAccess.Interfaces;
+﻿using Application.Utils;
+using DataAccess.Interfaces;
 using DocumentFormat.OpenXml.Wordprocessing;
 using Domain.Entities;
 using Domain.Entities.JournalContent.PersonalizedAccountingCardContent;

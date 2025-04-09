@@ -1,6 +1,7 @@
 ﻿using Application.Entities;
 using Application.Interfaces;
 using Application.Services.Word.PesonalizedAccountingCard;
+using Application.Utils;
 using DataAccess.Interfaces;
 using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
@@ -20,7 +21,7 @@ namespace Application.Services.Word
 
         public async Task<FileData?> GenerateWord(int journalId)
         {
-            string filePath = "example.docx";
+            string filePath = "journal.docx";
 
             using (WordprocessingDocument wordDocument = WordprocessingDocument.Create(filePath, WordprocessingDocumentType.Document))
             {
@@ -47,6 +48,12 @@ namespace Application.Services.Word
 
                 var educationalProcessSchedulePageGenerator = new EducationalProcessSchedulePageGenerator(journalId, body, _pagesRepository);
                 try { await educationalProcessSchedulePageGenerator.Generate(); }
+                catch { return null; }
+
+                WordUtils.AppendBreaks(3, body);
+
+                var dynamicsOfKeyIndicatorsPageGenerator = new DynamicsOfKeyIndicatorsPageGenerator(journalId, body, _pagesRepository);
+                try { await dynamicsOfKeyIndicatorsPageGenerator.Generate(); }
                 catch { return null; }
 
                 var groupActivesPageGenerator = new GroupActivesPageGenerator(journalId, body, _pagesRepository);
@@ -79,7 +86,11 @@ namespace Application.Services.Word
             memory.Position = 0;
 
             var contentType = "application/octet-stream";
-            return new FileData(memory, contentType, filePath);
+            var fileData = new FileData(memory, contentType, filePath);
+
+            File.Delete(filePath);
+
+            return fileData;
         }
     }
 }

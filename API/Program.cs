@@ -20,15 +20,10 @@ using Application.Services.Word;
 
 var builder = WebApplication.CreateBuilder(args);
 
-//Old
-//builder.Services.AddApiAuthentication(builder.Configuration);
-
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-//builder.Services.AddSwaggerGen();
 builder.Services.AddSwaggerAuth();
 
-//New
 builder.Services.AddAuthorization();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(opt =>
@@ -44,9 +39,6 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     });
 
 builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection(nameof(JwtOptions)));
-
-//Old
-//builder.Services.Configure<AuthorizationOptions>(builder.Configuration.GetSection(nameof(AuthorizationOptions)));
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<CuratorsJournalDBContext>(
@@ -135,19 +127,7 @@ app.UseHttpsRedirection();
 
 app.UseStaticFiles();
 
-//Old
-//app.UseCookiePolicy(new CookiePolicyOptions
-//{
-//    MinimumSameSitePolicy = SameSiteMode.Strict,
-//    HttpOnly = HttpOnlyPolicy.Always,
-//    Secure = CookieSecurePolicy.Always
-//});
-
 app.UseCors();
-
-//Old
-//app.UseAuthentication();
-//app.UseAuthorization();
 
 app.MapControllers();
 

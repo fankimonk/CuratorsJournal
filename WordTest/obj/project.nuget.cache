@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "dgSpecHash": "aSkgyCl/PV4=",
+  "success": true,
+  "projectFilePath": "C:\\Dev\\Web\\CuratorsJournal\\WordTest\\WordTest.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\kiril\\.nuget\\packages\\documentformat.openxml\\3.3.0\\documentformat.openxml.3.3.0.nupkg.sha512",
+    "C:\\Users\\kiril\\.nuget\\packages\\documentformat.openxml.framework\\3.3.0\\documentformat.openxml.framework.3.3.0.nupkg.sha512",
+    "C:\\Users\\kiril\\.nuget\\packages\\system.io.packaging\\8.0.1\\system.io.packaging.8.0.1.nupkg.sha512"
+  ],
+  "logs": []
+}

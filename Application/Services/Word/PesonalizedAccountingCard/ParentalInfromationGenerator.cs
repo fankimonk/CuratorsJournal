@@ -1,4 +1,5 @@
-﻿using DocumentFormat.OpenXml.Wordprocessing;
+﻿using Application.Utils;
+using DocumentFormat.OpenXml.Wordprocessing;
 using Domain.Entities.JournalContent.PersonalizedAccountingCardContent;
 
 namespace Application.Services.Word.PesonalizedAccountingCard

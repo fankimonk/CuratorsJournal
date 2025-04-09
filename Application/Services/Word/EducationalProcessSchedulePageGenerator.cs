@@ -1,4 +1,5 @@
-﻿using DataAccess.Interfaces;
+﻿using Application.Utils;
+using DataAccess.Interfaces;
 using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Wordprocessing;
 using Domain.Entities.JournalContent;
@@ -30,8 +31,6 @@ namespace Application.Services.Word
                 AppendTitle();
 
                 AppendTable(page.EducationalProcessSchedule);
-
-                WordUtils.AppendPageBreak(_documentBody);
             }
         }
 

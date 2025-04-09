@@ -130,6 +130,13 @@ namespace DataAccess.Repositories
                     pages = pages.Include(p => p.EducationalProcessSchedule);
                     break;
 
+                case PageTypes.DynamicsOfKeyIndicators:
+                    pages = pages.Include(p => p.DynamicsOfKeyIndicators)
+                        .ThenInclude(d => d.KeyIndicatorsByCourse);
+                    pages = pages.Include(p => p.DynamicsOfKeyIndicators)
+                        .ThenInclude(d => d.KeyIndicator);
+                    break;
+
                 case PageTypes.GroupActives:
                     pages = pages.Include(p => p.GroupActives)
                         .ThenInclude(a => a.Student);
