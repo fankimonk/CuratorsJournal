@@ -4,6 +4,7 @@
         int Id,
         string UserName,
         string Role,
+        int? WorkerId,
         string? Token,
         DateTime? TokenExpires
     );

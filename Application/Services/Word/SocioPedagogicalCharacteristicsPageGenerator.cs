@@ -64,25 +64,29 @@ namespace Application.Services.Word
                     new TabChar())
             );
 
+            var startYearPrefixRun = new Run(WordUtils.GetRunProperties(bold: true),
+                new Text("в 20"));
+            var startYearRun = new Run(WordUtils.GetRunProperties(underline: true, bold: true));
+
+            var endYearPrefixRun = new Run(WordUtils.GetRunProperties(bold: true),
+                new Text("/ 20"));
+            var endYearRun = new Run(WordUtils.GetRunProperties(underline: true, bold: true));
+
             if (academicYear != null)
             {
                 var startYear = academicYear.StartYear.ToString();
-                var endYear = academicYear.EndYear.ToString();
+                startYearRun.Append(new Text(startYear.Substring(startYear.Length - 2, 2)));
 
-                title.Append(new Run(WordUtils.GetRunProperties(bold: true),
-                    new Text("в " + startYear.Substring(0, startYear.Length - 2))));
-                title.Append(new Run(WordUtils.GetRunProperties(underline: true, bold: true),
-                    new Text(startYear.Substring(startYear.Length - 2))));
-                title.Append(new Run(WordUtils.GetRunProperties(bold: true),
-                    new Text("/ " + endYear.Substring(0, endYear.Length - 2))));
-                title.Append(new Run(WordUtils.GetRunProperties(underline: true, bold: true),
-                    new Text(endYear.Substring(endYear.Length - 2))));
+                var endYear = academicYear.EndYear.ToString();
+                endYearRun.Append(new Text(endYear.Substring(endYear.Length - 2, 2)));
             }
             else
             {
-                title.Append(new Run(WordUtils.GetRunProperties(underline: true, bold: true),
-                    new TabChar(), new TabChar()));
+                startYearRun.Append(new TabChar());
+                endYearRun.Append(new TabChar());
             }
+
+            title.Append(startYearPrefixRun, startYearRun, endYearPrefixRun, endYearRun);
 
             title.Append(new Run(WordUtils.GetRunProperties(bold: true),
                 new Text("уч. году")));

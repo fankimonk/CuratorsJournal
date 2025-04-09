@@ -35,7 +35,7 @@ namespace Application.Services.Word
 
                 AppendContent(page.PsychologicalAndPedagogicalCharacteristics);
 
-                WordUtils.AppendPageBreak(_documentBody);
+                if (page != pages.Last()) WordUtils.AppendPageBreak(_documentBody);
             }
         }
 

@@ -12,8 +12,8 @@ namespace Domain.Entities
         public int RoleId { get; set; }
         public Role? Role { get; set; }
 
+        public int? WorkerId { get; set; }
         public Worker? Worker { get; set; }
-        public Student? Student { get; set; }
 
         public List<RefreshToken> RefreshTokens { get; set; } = [];
     }

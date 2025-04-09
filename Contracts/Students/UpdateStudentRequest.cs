@@ -3,7 +3,7 @@
 namespace Contracts.Students
 {
     public class UpdateStudentRequest(
-        string firstName, string middleName, string lastName, string? phoneNumber, int groupId, int? userId)
+        string firstName, string middleName, string lastName, string? phoneNumber, int groupId)
     {
         [Required]
         public string FirstName { get; set; } = firstName;
@@ -19,7 +19,5 @@ namespace Contracts.Students
 
         [Required]
         public int GroupId { get; set; } = groupId;
-
-        public int? UserId { get; set; } = userId;
     }
 }

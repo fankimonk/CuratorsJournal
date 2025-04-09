@@ -22,7 +22,6 @@ namespace DataAccess.Repositories
         {
             if (worker == null) return null;
             if (!await PositionExists(worker.PositionId)) return null;
-            if (worker.UserId != null && !await UserExists((int)worker.UserId)) return null;
 
             var created = await _dbContext.Workers.AddAsync(worker);
 
@@ -44,7 +43,6 @@ namespace DataAccess.Repositories
         {
             if (worker == null) return null;
             if (!await PositionExists(worker.PositionId)) return null;
-            if (worker.UserId != null && !await UserExists((int)worker.UserId)) return null;
 
             var workerToUpdate = await _dbContext.Workers.FirstOrDefaultAsync(p => p.Id == id);
             if (workerToUpdate == null) return null;
@@ -53,7 +51,6 @@ namespace DataAccess.Repositories
             workerToUpdate.MiddleName = worker.MiddleName;
             workerToUpdate.LastName = worker.LastName;
             workerToUpdate.PositionId = worker.PositionId;
-            workerToUpdate.UserId = worker.UserId;
 
             await _dbContext.SaveChangesAsync();
             return workerToUpdate;
@@ -61,8 +58,5 @@ namespace DataAccess.Repositories
 
         private async Task<bool> PositionExists(int id) =>
             await _dbContext.Positions.AsNoTracking().FirstOrDefaultAsync(p => p.Id == id) != null;
-
-        private async Task<bool> UserExists(int id) =>
-            await _dbContext.Users.AsNoTracking().FirstOrDefaultAsync(p => p.Id == id) != null;
     }
 }

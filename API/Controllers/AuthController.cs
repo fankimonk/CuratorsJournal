@@ -1,9 +1,8 @@
-﻿using DataAccess.Interfaces;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using API.Contracts.User;
 using Microsoft.AspNetCore.Authorization;
-using Application.Authorization;
 using Application.Interfaces;
+using Contracts.User;
 
 namespace API.Controllers
 {
@@ -11,12 +10,10 @@ namespace API.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-        private readonly IUsersRepository _usersRepository;
         private readonly IUsersService _usersService;
 
-        public AuthController(IUsersRepository usersRepo, IUsersService usersService) 
+        public AuthController(IUsersService usersService) 
         {
-            _usersRepository = usersRepo;
             _usersService = usersService;
         }
 
@@ -25,11 +22,11 @@ namespace API.Controllers
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            var registrationResult = await _usersService.Register(request.UserName, request.Password);
+            var registrationResult = await _usersService.Register(request.UserName, request.Password, request.WorkerId);
             if (registrationResult.Error != null || registrationResult.User == null) return BadRequest(registrationResult.Error);
 
             var user = registrationResult.User;
-            return Ok(new UserResponse(user.Id, user.UserName, user.Role!.Name, null, null));
+            return Ok(new UserResponse(user.Id, user.UserName, user.Role!.Name, user.WorkerId, null, null));
         }
 
         [HttpPost("login")]
@@ -41,11 +38,6 @@ namespace API.Controllers
 
             if (result.Error != null || result.Token == null) return BadRequest(result.Error);
 
-            //Old
-            //HttpContext.Response.Cookies.Append("tasty-cookies", result.Token);
-
-            //Response.Cookies.Append("refreshtoken", result.Token.RefreshToken!.Token);
-
             var response = new AuthResponse(result.Token.AccessToken, result.Token.RefreshToken!.Token);
 
             return Ok(response);
@@ -55,12 +47,7 @@ namespace API.Controllers
         [HttpGet("verify")]
         public async Task<IActionResult> VerifyAuth()
         {
-            //Old
-            //var userId = HttpContext.User.Claims.FirstOrDefault(c => c.Type == CustomClaims.UserId);
-            //var user = await _usersRepository.GetByIdAsync(int.Parse(userId!.Value));
-            //return Ok(new UserResponse(user!.Id, user!.UserName, user.Role!.Name));
-
-            return Ok("Authorized");
+            return Ok();
         }
 
         [HttpPost("logout")]
@@ -86,8 +73,6 @@ namespace API.Controllers
 
             var token = await _usersService.RefreshToken(refreshToken);
             if (token == null) return BadRequest();
-
-            //Response.Cookies.Append("refreshtoken", token.RefreshToken!.Token);
 
             return Ok(new AuthResponse(token.AccessToken, token.RefreshToken!.Token));
         }

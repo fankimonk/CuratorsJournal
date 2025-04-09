@@ -8114,6 +8114,8 @@
         "type": "object",
         "properties": {
           "startYear": {
+            "maximum": 98,
+            "minimum": 0,
             "type": "integer",
             "format": "int32"
           }
@@ -8901,11 +8903,6 @@
           "groupId": {
             "type": "integer",
             "format": "int32"
-          },
-          "userId": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
           }
         },
         "additionalProperties": false
@@ -9045,11 +9042,6 @@
           "positionId": {
             "type": "integer",
             "format": "int32"
-          },
-          "userId": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
           }
         },
         "additionalProperties": false
@@ -11501,6 +11493,11 @@
           "password": {
             "type": "string",
             "nullable": true
+          },
+          "workerId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -11876,14 +11873,6 @@
           "group": {
             "$ref": "#/components/schemas/Group"
           },
-          "userId": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
-          "user": {
-            "$ref": "#/components/schemas/User"
-          },
           "groupActive": {
             "$ref": "#/components/schemas/GroupActive"
           },
@@ -12144,11 +12133,6 @@
           "groupId": {
             "type": "integer",
             "format": "int32"
-          },
-          "userId": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
           }
         },
         "additionalProperties": false
@@ -13304,11 +13288,6 @@
           "groupId": {
             "type": "integer",
             "format": "int32"
-          },
-          "userId": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
           }
         },
         "additionalProperties": false
@@ -13449,11 +13428,6 @@
           "positionId": {
             "type": "integer",
             "format": "int32"
-          },
-          "userId": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
           }
         },
         "additionalProperties": false
@@ -13480,11 +13454,13 @@
           "role": {
             "$ref": "#/components/schemas/Role"
           },
+          "workerId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
           "worker": {
             "$ref": "#/components/schemas/Worker"
-          },
-          "student": {
-            "$ref": "#/components/schemas/Student"
           },
           "refreshTokens": {
             "type": "array",
@@ -13579,11 +13555,6 @@
           "position": {
             "$ref": "#/components/schemas/Position"
           },
-          "userId": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
           "user": {
             "$ref": "#/components/schemas/User"
           },
@@ -13637,11 +13608,6 @@
           },
           "position": {
             "$ref": "#/components/schemas/PositionResponse"
-          },
-          "userId": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
           }
         },
         "additionalProperties": false

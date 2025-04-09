@@ -57,7 +57,7 @@ namespace Application.Services.Word.PesonalizedAccountingCard
                 var workWithParentsGenerator = new WorkWithParentsGenerator(page.PersonalizedAccountingCard.WorkWithParents, _documentBody);
                 workWithParentsGenerator.Generate();
 
-                WordUtils.AppendPageBreak(_documentBody);
+                if (page != pages.Last()) WordUtils.AppendPageBreak(_documentBody);
             }
         }
 

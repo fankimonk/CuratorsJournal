@@ -68,9 +68,19 @@ namespace Application.Services.Word
                 try { await personalizedAccountingCardPageGenerator.Generate(); }
                 catch { return null; }
 
+                WordUtils.AppendSectionBreak(WordUtils.PageOrientationTypes.Portrait, body);
+
+                var studentHealthCardPageGenerator = new StudentHealthCardPageGenerator(journalId, body, _pagesRepository);
+                try { await studentHealthCardPageGenerator.Generate(); }
+                catch { return null; }
+
+                WordUtils.AppendSectionBreak(WordUtils.PageOrientationTypes.Landscape, body);
+
                 var psychologicalAndPedagogicalCharacteristicsPageGenerator = new PsychologicalAndPedagogicalCharacteristicsPageGenerator(journalId, body, _pagesRepository);
                 try { await psychologicalAndPedagogicalCharacteristicsPageGenerator.Generate(); }
                 catch { return null; }
+
+                WordUtils.AppendSectionBreak(WordUtils.PageOrientationTypes.Portrait, body);
 
                 mainPart.Document.Append(body);
                 mainPart.Document.Save();

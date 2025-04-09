@@ -123,10 +123,10 @@ else
     public int? GroupId { get; set; }
 
     [SupplyParameterFromForm]
-    public CreateStudentRequest StudentToAdd { get; set; } = new("", "", "", null, null, null);
+    public CreateStudentRequest StudentToAdd { get; set; } = new("", "", "", null, null);
 
     [SupplyParameterFromForm]
-    public UpdateStudentRequest StudentToEdit { get; set; } = new("", "", "", null, -1, null);
+    public UpdateStudentRequest StudentToEdit { get; set; } = new("", "", "", null, -1);
     private int _studentToEditId = -1;
 
     private IQueryable<StudentResponse>? _students;
@@ -199,7 +199,6 @@ else
             toUpdate!.LastName = updated!.LastName;
             toUpdate!.PhoneNumber = updated!.PhoneNumber;
             toUpdate!.GroupId = updated!.GroupId;
-            toUpdate!.UserId = updated!.UserId;
 
             ShowSuccessAlert();
             FilterStudents();
@@ -237,16 +236,16 @@ else
     private void ShowEditModal(StudentResponse student)
     {
         _studentToEditId = student.Id;
-        StudentToEdit = new UpdateStudentRequest(student.FirstName, student.MiddleName, student.LastName, student.PhoneNumber, student.GroupId, student.UserId);
+        StudentToEdit = new UpdateStudentRequest(student.FirstName, student.MiddleName, student.LastName, student.PhoneNumber, student.GroupId);
         _isAddModal = false;
         _isModalVisible = true;
     }
 
     private void CloseModal()
     {
-        StudentToAdd = new("", "", "", null, GroupId, null);
+        StudentToAdd = new("", "", "", null, GroupId);
         _studentToEditId = -1;
-        StudentToEdit = new("", "", "", null, -1, null);
+        StudentToEdit = new("", "", "", null, -1);
         _isModalVisible = false;
         CloseSuccessAlert();
         CloseErrorAlert();

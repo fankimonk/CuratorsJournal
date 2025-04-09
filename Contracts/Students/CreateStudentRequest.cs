@@ -4,7 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 namespace Contracts.Students
 {
     public class CreateStudentRequest(
-        string firstName, string middleName, string lastName, string? phoneNumber, int? groupId, int? userId)
+        string firstName, string middleName, string lastName, string? phoneNumber, int? groupId)
     {
         [Required]
         public string FirstName { get; set; } = firstName;
@@ -21,7 +21,5 @@ namespace Contracts.Students
         [Required]
         [NotNull]
         public int? GroupId { get; set; } = groupId;
-
-        public int? UserId { get; set; } = userId;
     }
 }

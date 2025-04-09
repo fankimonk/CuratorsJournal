@@ -3,7 +3,7 @@
 namespace Contracts.Workers
 {
     public class WorkerResponse(
-        int id, string firstName, string middleName, string lastName, PositionResponse position, int? userId)
+        int id, string firstName, string middleName, string lastName, PositionResponse position)
     {
         public int Id { get; set; } = id;
 
@@ -12,7 +12,5 @@ namespace Contracts.Workers
         public string LastName { get; set; } = lastName;
 
         public PositionResponse Position { get; set; } = position;
-
-        public int? UserId { get; set; } = userId;
     }
 }

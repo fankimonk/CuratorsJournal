@@ -17,9 +17,6 @@ namespace Domain.Entities
         public int GroupId { get; set; }
         public Group? Group { get; set; }
 
-        public int? UserId { get; set; }
-        public User? User { get; set; }
-
         public GroupActive? GroupActive { get; set; }
         public PersonalizedAccountingCard? PersonalizedAccountingCard { get; set; }
         public StudentListRecord? StudentListRecord { get; set; }

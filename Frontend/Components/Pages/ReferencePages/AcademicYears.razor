@@ -40,7 +40,10 @@ else
                     </Alert>
                     <div class="mb-3">
                         <label for="startYear" class="form-label">Начальный год: </label>
-                        <InputNumber id="startYear" @bind-Value="AcademicYearToAdd.StartYear" class="form-control" />
+                        <div class="d-flex align-items-center">
+                            <label for="startYear" class="form-label me-2" style="margin-bottom: 0;">20</label>
+                            <InputNumber id="startYear" @bind-Value="AcademicYearToAdd.StartYear" class="form-control" />
+                        </div>
                     </div>
                     <AddButton type="submit">Добавить</AddButton>
                 </EditForm>

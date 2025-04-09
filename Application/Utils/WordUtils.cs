@@ -4,6 +4,36 @@ namespace Application.Utils
 {
     public static class WordUtils
     {
+        private static SectionProperties s_PortraitSectionProperties = new SectionProperties(
+            new PageSize() { Width = 11906, Height = 16838, Orient = PageOrientationValues.Portrait });
+
+        private static SectionProperties s_LandscapeSectionProperties = new SectionProperties(
+            new PageSize() { Width = 16838, Height = 11906, Orient = PageOrientationValues.Landscape });
+
+        public enum PageOrientationTypes
+        {
+            Portrait = 1,
+            Landscape = 2
+        }
+
+        public static void AppendSectionBreak(PageOrientationTypes pageOrientationType, Body body)
+        {
+            SectionProperties sectionProperties = new();
+
+            switch (pageOrientationType)
+            {
+                case PageOrientationTypes.Portrait:
+                    sectionProperties = new(s_PortraitSectionProperties.CloneNode(true) as SectionProperties);
+                    break;
+
+                case PageOrientationTypes.Landscape:
+                    sectionProperties = new(s_LandscapeSectionProperties.CloneNode(true) as SectionProperties);
+                    break;
+            }
+
+            body.Append(new Paragraph(new ParagraphProperties(sectionProperties)));
+        }
+
         public static void AppendPageBreak(Body body)
         {
             body.Append(new Paragraph(

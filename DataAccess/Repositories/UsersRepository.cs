@@ -9,6 +9,10 @@ namespace DataAccess.Repositories
     {
         public async Task<User?> CreateAsync(User user)
         {
+            if (user == null) return null;
+            if (!await RoleExists(user.RoleId)) return null;
+            if (user.WorkerId != null && !await WorkerExists((int)user.WorkerId)) return null;
+
             var createdUser = await _dbContext.Users.AddAsync(user);
             if (createdUser == null) return null;
             await _dbContext.SaveChangesAsync();
@@ -52,7 +56,20 @@ namespace DataAccess.Repositories
 
         public async Task<User?> UpdateAsync(int id, User user)
         {
-            throw new NotImplementedException();
+            if (user == null) return null;
+            if (!await RoleExists(user.RoleId)) return null;
+            if (user.WorkerId != null && !await WorkerExists((int)user.WorkerId)) return null;
+
+            var userToUpdate = await _dbContext.Users.FirstOrDefaultAsync(p => p.Id == id);
+            if (userToUpdate == null) return null;
+
+            userToUpdate.UserName = user.UserName;
+            userToUpdate.PasswordHash = user.PasswordHash;
+            userToUpdate.RoleId = user.RoleId;
+            userToUpdate.WorkerId = user.WorkerId;
+
+            await _dbContext.SaveChangesAsync();
+            return userToUpdate;
         }
 
         public async Task<bool> UsernameExistsAsync(string userName)
@@ -70,5 +87,11 @@ namespace DataAccess.Repositories
         {
             return await _dbContext.Users.Include(u => u.RefreshTokens).Include(u => u.Role).AsNoTracking().FirstOrDefaultAsync(u => u.RefreshTokens.Any(rt => rt.Token == token));
         }
+
+        private async Task<bool> WorkerExists(int id) =>
+            await _dbContext.Workers.AsNoTracking().FirstOrDefaultAsync(j => j.Id == id) != null;
+
+        private async Task<bool> RoleExists(int id) =>
+            await _dbContext.Roles.AsNoTracking().FirstOrDefaultAsync(j => j.Id == id) != null;
     }
 }

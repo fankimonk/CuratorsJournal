@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace API.Contracts.User
+namespace Contracts.User
 {
     public record LoginUserRequest(
         [Required]

@@ -112,10 +112,10 @@ else
 
 @code {
     [SupplyParameterFromForm]
-    public CreateWorkerRequest WorkerToAdd { get; set; } = new("", "", "", null, null);
+    public CreateWorkerRequest WorkerToAdd { get; set; } = new("", "", "", null);
 
     [SupplyParameterFromForm]
-    public UpdateWorkerRequest WorkerToEdit { get; set; } = new("", "", "", null, null);
+    public UpdateWorkerRequest WorkerToEdit { get; set; } = new("", "", "", null);
     private int _workerToEditId = -1;
 
     private IQueryable<WorkerResponse>? _workers;
@@ -178,7 +178,6 @@ else
             toUpdate.LastName = updated.LastName;
             toUpdate.Position.Id = updated.Position.Id;
             toUpdate.Position.Name = updated.Position.Name;
-            toUpdate.UserId = updated.UserId;
 
             ShowSuccessAlert();
         }
@@ -215,16 +214,16 @@ else
     private void ShowEditModal(WorkerResponse worker)
     {
         _workerToEditId = worker.Id;
-        WorkerToEdit = new UpdateWorkerRequest(worker.FirstName, worker.MiddleName, worker.LastName, worker.Position.Id, worker.UserId);
+        WorkerToEdit = new UpdateWorkerRequest(worker.FirstName, worker.MiddleName, worker.LastName, worker.Position.Id);
         _isAddModal = false;
         _isModalVisible = true;
     }
 
     private void CloseModal()
     {
-        WorkerToAdd = new("", "", "", null, null);
+        WorkerToAdd = new("", "", "", null);
         _workerToEditId = -1;
-        WorkerToEdit = new("", "", "", null, null);
+        WorkerToEdit = new("", "", "", null);
         _isModalVisible = false;
         CloseSuccessAlert();
         CloseErrorAlert();

@@ -14,8 +14,8 @@ namespace API.Mappers
         {
             return new AcademicYear
             {
-                StartYear = (int)request.StartYear,
-                EndYear = (int)request.StartYear + 1
+                StartYear = 2000 + (int)request.StartYear,
+                EndYear = 2001 + (int)request.StartYear
             };
         }
 

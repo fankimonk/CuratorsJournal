@@ -13,8 +13,7 @@ namespace API.Mappers
                 student.MiddleName,
                 student.LastName,
                 student.PhoneNumber,
-                student.GroupId,
-                student.UserId
+                student.GroupId
             );
         }
 
@@ -26,8 +25,7 @@ namespace API.Mappers
                 MiddleName = request.MiddleName,
                 LastName = request.LastName,
                 PhoneNumber = request.PhoneNumber,
-                GroupId = (int)request.GroupId,
-                UserId = request.UserId
+                GroupId = (int)request.GroupId
             };
         }
 
@@ -39,8 +37,7 @@ namespace API.Mappers
                 MiddleName = request.MiddleName,
                 LastName = request.LastName,
                 PhoneNumber = request.PhoneNumber,
-                GroupId = request.GroupId,
-                UserId = request.UserId
+                GroupId = request.GroupId
             };
         }
     }

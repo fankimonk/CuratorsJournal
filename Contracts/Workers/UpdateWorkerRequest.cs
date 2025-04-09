@@ -4,7 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 namespace Contracts.Workers
 {
     public class UpdateWorkerRequest(
-        string firstName, string middleName, string lastName, int? positionId, int? userId)
+        string firstName, string middleName, string lastName, int? positionId)
     {
         [Required]
         public string FirstName { get; set; } = firstName;
@@ -18,7 +18,5 @@ namespace Contracts.Workers
         [Required]
         [NotNull]
         public int? PositionId { get; set; } = positionId;
-
-        public int? UserId { get; set; } = userId;
     }
 }

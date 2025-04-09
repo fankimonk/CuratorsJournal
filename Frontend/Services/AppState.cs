@@ -20,16 +20,23 @@ namespace Frontend.Services
             if (user.Identity.IsAuthenticated)
             {
                 var expiresStr = user.Claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Exp)?.Value;
+                var workerIdStr = user.Claims.FirstOrDefault(c => c.Type == "workerId")?.Value;
 
                 User = new UserResponse(
                     int.Parse(user.Claims.FirstOrDefault(c => c.Type == "userId")?.Value),
                     user.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value,
                     user.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value,
+                    int.TryParse(workerIdStr, out var workerId) ? workerId : null,
                     await _accessTokenService.Get(),
                     long.TryParse(expiresStr, out var expiresIn) ? DateTimeOffset.FromUnixTimeSeconds(expiresIn).UtcDateTime : null
                 );
 
-                Console.WriteLine($"User:\nId: {User.Id}\nUsername: {User.UserName}\nRole: {User.Role}\nToken: {User.Token}\nTokenExpires: {User.TokenExpires.ToString()}");
+                Console.WriteLine($"User:\nId: {User.Id}\n" +
+                    $"Username: {User.UserName}\n" +
+                    $"Role: {User.Role}\n" +
+                    $"WorkerId: {User.WorkerId}\n" +
+                    $"Token: {User.Token}\n" +
+                    $"TokenExpires: {User.TokenExpires}");
             }
         }
 

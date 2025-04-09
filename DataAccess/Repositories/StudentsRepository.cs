@@ -32,7 +32,6 @@ namespace DataAccess.Repositories
         {
             if (student == null) return null;
             if (!await GroupExists(student.GroupId)) return null;
-            if (student.UserId != null && !await UserExists((int)student.UserId)) return null;
 
             var created = await _dbContext.Students.AddAsync(student);
 
@@ -98,7 +97,6 @@ namespace DataAccess.Repositories
         {
             if (student == null) return null;
             if (!await GroupExists(student.GroupId)) return null;
-            if (student.UserId != null && !await UserExists((int)student.UserId)) return null;
 
             var studentToUpdate = await _dbContext.Students.FirstOrDefaultAsync(p => p.Id == id);
             if (studentToUpdate == null) return null;
@@ -108,7 +106,6 @@ namespace DataAccess.Repositories
             studentToUpdate.LastName = student.LastName;
             studentToUpdate.PhoneNumber = student.PhoneNumber;
             studentToUpdate.GroupId = student.GroupId;
-            studentToUpdate.UserId = student.UserId;
 
             await _dbContext.SaveChangesAsync();
             return studentToUpdate;
@@ -119,9 +116,6 @@ namespace DataAccess.Repositories
 
         private async Task<bool> JournalExists(int id) =>
             await _dbContext.Journals.AsNoTracking().FirstOrDefaultAsync(j => j.Id == id) != null;
-
-        private async Task<bool> UserExists(int id) =>
-            await _dbContext.Users.AsNoTracking().FirstOrDefaultAsync(j => j.Id == id) != null;
 
         private async Task<bool> StudentExists(int id) =>
             await _dbContext.Students.AsNoTracking().FirstOrDefaultAsync(j => j.Id == id) != null;

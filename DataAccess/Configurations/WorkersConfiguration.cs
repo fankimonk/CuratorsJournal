@@ -19,12 +19,6 @@ namespace DataAccess.Configurations
                 .WithMany(p => p.Workers)
                 .HasForeignKey(w => w.PositionId)
                 .IsRequired();
-
-            builder
-                .HasOne(w => w.User)
-                .WithOne(u => u.Worker)
-                .HasForeignKey<Worker>(w => w.UserId)
-                .OnDelete(DeleteBehavior.SetNull);
         }
     }
 }

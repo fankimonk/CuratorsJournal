@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace API.Contracts.User
+namespace Contracts.User
 {
     public record RegisterUserRequest(
 
@@ -11,7 +11,9 @@ namespace API.Contracts.User
 
         [Required]
         [MinLength(8, ErrorMessage = "Password must have at least 8 characters")]
-        string Password
+        string Password,
+
+        int? WorkerId
 
         );
 }

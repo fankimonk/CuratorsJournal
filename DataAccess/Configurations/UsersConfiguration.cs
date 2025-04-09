@@ -14,6 +14,11 @@ namespace DataAccess.Configurations
                 .HasOne(u => u.Role)
                 .WithMany(r => r.Users)
                 .HasForeignKey(u => u.RoleId);
+
+            builder
+                .HasOne(u => u.Worker)
+                .WithOne(w => w.User)
+                .HasForeignKey<User>(u => u.WorkerId);
         }
     }
 }

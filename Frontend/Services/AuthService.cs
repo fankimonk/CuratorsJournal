@@ -1,4 +1,5 @@
 ﻿using API.Contracts.User;
+using Contracts.User;
 using Microsoft.AspNetCore.Components;
 
 namespace Frontend.Services

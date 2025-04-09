@@ -128,7 +128,7 @@
     "Parameters": [
       {
         "Name": "request",
-        "Type": "API.Contracts.User.LoginUserRequest",
+        "Type": "Contracts.User.LoginUserRequest",
         "IsRequired": true
       }
     ],
@@ -184,7 +184,7 @@
     "Parameters": [
       {
         "Name": "request",
-        "Type": "API.Contracts.User.RegisterUserRequest",
+        "Type": "Contracts.User.RegisterUserRequest",
         "IsRequired": true
       }
     ],

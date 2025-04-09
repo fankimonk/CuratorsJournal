@@ -44,7 +44,8 @@ namespace Application.Authorization
             Claim[] claims = [
                 new(CustomClaims.UserId, user.Id.ToString()),
                 new(ClaimTypes.Name, user.UserName),
-                new(ClaimTypes.Role, user.Role!.Name)
+                new(ClaimTypes.Role, user.Role!.Name),
+                new(CustomClaims.WorkerId, user.WorkerId == null ? "" : ((int)user.WorkerId).ToString())
             ];
 
             var tokenDescriptor = new SecurityTokenDescriptor

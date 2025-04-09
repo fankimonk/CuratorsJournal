@@ -166,6 +166,13 @@ namespace DataAccess.Repositories
                         .ThenInclude(c => c!.WorkWithParents);
                     break;
 
+                case PageTypes.StudentsHealthCard:
+                    pages = pages.Include(p => p.StudentsHealthCards)
+                        .ThenInclude(c => c.Student)
+                        .Include(p => p.HealthCardPageAttributes)
+                        .ThenInclude(a => a!.AcademicYear);
+                    break;
+
                 case PageTypes.PsychologicalAndPedagogicalCharacteristics:
                     pages = pages.Include(p => p.PsychologicalAndPedagogicalCharacteristics)
                         .ThenInclude(c => c!.Worker)

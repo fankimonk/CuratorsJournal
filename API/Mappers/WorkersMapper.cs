@@ -13,8 +13,7 @@ namespace API.Mappers
                 worker.FirstName,
                 worker.MiddleName,
                 worker.LastName,
-                worker.Position == null ? new PositionResponse(worker.PositionId, null, false) : worker.Position.ToResponse(),
-                worker.UserId
+                worker.Position == null ? new PositionResponse(worker.PositionId, null, false) : worker.Position.ToResponse()
             );
         }
 
@@ -25,8 +24,7 @@ namespace API.Mappers
                 FirstName = request.FirstName,
                 MiddleName = request.MiddleName,
                 LastName = request.LastName,
-                PositionId = (int)request.PositionId,
-                UserId = request.UserId
+                PositionId = (int)request.PositionId
             };
         }
 
@@ -37,8 +35,7 @@ namespace API.Mappers
                 FirstName = request.FirstName,
                 MiddleName = request.MiddleName,
                 LastName = request.LastName,
-                PositionId = (int)request.PositionId,
-                UserId = request.UserId
+                PositionId = (int)request.PositionId
             };
         }
     }

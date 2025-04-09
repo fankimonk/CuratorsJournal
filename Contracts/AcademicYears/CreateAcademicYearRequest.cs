@@ -8,6 +8,7 @@ namespace Contracts.AcademicYears
     {
         [Required]
         [NotNull]
+        [Range(0, 98)]
         public int? StartYear { get; set; } = startYear;
     }
 }

@@ -37,12 +37,6 @@ namespace DataAccess.Configurations
                     l => l.HasOne<PEGroup>().WithMany().HasForeignKey(speg => speg.PEGroupId),
                     r => r.HasOne<Student>().WithMany().HasForeignKey(speg => speg.StudentId)
                 );
-
-            builder
-                .HasOne(s => s.User)
-                .WithOne(u => u.Student)
-                .HasForeignKey<Student>(s => s.UserId)
-                .OnDelete(DeleteBehavior.SetNull);
         }
     }
 }
