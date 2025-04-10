@@ -3,6 +3,7 @@ using API.Contracts.User;
 using Microsoft.AspNetCore.Authorization;
 using Application.Interfaces;
 using Contracts.User;
+using Application.Authorization;
 
 namespace API.Controllers
 {
@@ -47,6 +48,8 @@ namespace API.Controllers
         [HttpGet("verify")]
         public async Task<IActionResult> VerifyAuth()
         {
+            var userId = HttpContext.User.Claims.FirstOrDefault(c => c.Type == CustomClaims.UserId);
+            Console.WriteLine("UserId: " + userId?.Value);
             return Ok();
         }
 

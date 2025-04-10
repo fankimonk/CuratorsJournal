@@ -3,6 +3,7 @@ using Application.Interfaces;
 using Application.Services.Word.PesonalizedAccountingCard;
 using Application.Utils;
 using DataAccess.Interfaces;
+using DataAccess.Interfaces.PageRepositories.FinalPerformanceAccounting;
 using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
@@ -10,7 +11,8 @@ using DocumentFormat.OpenXml.Wordprocessing;
 namespace Application.Services.Word
 {
     public class WordService(IJournalsService journalsService, IPagesRepository pagesRepository,
-        IHolidaysRepository holidaysRepository, IGroupsRepository groupsRepository) : IWordService
+        IHolidaysRepository holidaysRepository, IGroupsRepository groupsRepository,
+        IPerformanceAccountingColumnsRepository performanceAccountingColumnsRepository) : IWordService
     {
         private readonly IJournalsService _journalsService = journalsService;
         private readonly IPagesRepository _pagesRepository = pagesRepository;
@@ -18,6 +20,8 @@ namespace Application.Services.Word
         private readonly IHolidaysRepository _holidaysRepository = holidaysRepository;
 
         private readonly IGroupsRepository _groupsRepository = groupsRepository;
+
+        private readonly IPerformanceAccountingColumnsRepository _performanceAccountingColumnsRepository = performanceAccountingColumnsRepository;
 
         public async Task<FileData?> GenerateWord(int journalId)
         {
@@ -72,6 +76,10 @@ namespace Application.Services.Word
 
                 var studentHealthCardPageGenerator = new StudentHealthCardPageGenerator(journalId, body, _pagesRepository);
                 try { await studentHealthCardPageGenerator.Generate(); }
+                catch { return null; }
+
+                var finalPerformaceAccountingPageGenerator = new FinalPerformanceAccountingPageGenerator(journalId, body, _pagesRepository, _performanceAccountingColumnsRepository);
+                try { await finalPerformaceAccountingPageGenerator.Generate(); }
                 catch { return null; }
 
                 var ideologicalAndEducationalWorkAccountingPageGenerator = new IdeologicalAndEducationalWorkAccountingPageGenerator(journalId, body, _pagesRepository);

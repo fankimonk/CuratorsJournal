@@ -173,6 +173,11 @@ namespace DataAccess.Repositories
                         .ThenInclude(a => a!.AcademicYear);
                     break;
 
+                case PageTypes.FinalPerformanceAccounting:
+                    pages = pages.Include(p => p.FinalPerformanceAccounting)
+                        .ThenInclude(r => r.Student);
+                    break;
+
                 case PageTypes.CuratorsIdeologicalAndEducationalWorkAccounting:
                     pages = pages.Include(p => p.CuratorsIdeologicalAndEducationalWorkAccounting)
                         .Include(p => p.CuratorsIdeologicalAndEducationalWorkPageAttributes);
