@@ -1,7 +1,6 @@
 ﻿using Application.Helpers;
 using Application.Interfaces;
 using DataAccess.Interfaces;
-using Domain.Enums;
 using Domain.Entities;
 using Application.Entities;
 
@@ -23,13 +22,13 @@ namespace Application.Services
             _jwtProvider = jwtProvider;
         }
 
-        public async Task<RegistrationResult> Register(string userName, string password, int? workerId)
+        public async Task<RegistrationResult> Register(string userName, string password, int roleId, int? workerId)
         {
             var hashedPassword = _passwordHasher.Generate(password);
 
             if (await _usersRepository.UsernameExistsAsync(userName)) return RegistrationResult.UsernameTaken;
 
-            var user = new User { UserName = userName, PasswordHash = hashedPassword, RoleId = (int)Roles.Admin, WorkerId = workerId };
+            var user = new User { UserName = userName, PasswordHash = hashedPassword, RoleId = roleId, WorkerId = workerId };
 
             var createdUser = await _usersRepository.CreateAsync(user);
             if (createdUser == null) return RegistrationResult.FailedToCreate;

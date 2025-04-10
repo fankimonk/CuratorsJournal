@@ -8,7 +8,6 @@
         HeadOfDepartment = 4,
         Curator = 5,
         SocialDepartmentWorker = 6,
-        Teacher = 7,
-        Student = 8
+        Teacher = 7
     }
 }

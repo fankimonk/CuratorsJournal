@@ -173,10 +173,37 @@ namespace DataAccess.Repositories
                         .ThenInclude(a => a!.AcademicYear);
                     break;
 
+                case PageTypes.CuratorsIdeologicalAndEducationalWorkAccounting:
+                    pages = pages.Include(p => p.CuratorsIdeologicalAndEducationalWorkAccounting)
+                        .Include(p => p.CuratorsIdeologicalAndEducationalWorkPageAttributes);
+                    break;
+
+                case PageTypes.InformationHoursAccounting:
+                    pages = pages.Include(p => p.InformationHoursAccounting);
+                    break;
+
+                case PageTypes.CuratorsParticipationInPedagogicalSeminars:
+                    pages = pages.Include(p => p.CuratorsParticipationInPedagogicalSeminars);
+                    break;
+
+                case PageTypes.LiteratureWork:
+                    pages = pages.Include(p => p.LiteratureWork)
+                        .ThenInclude(l => l.Literature);
+                    break;
+
                 case PageTypes.PsychologicalAndPedagogicalCharacteristics:
                     pages = pages.Include(p => p.PsychologicalAndPedagogicalCharacteristics)
                         .ThenInclude(c => c!.Worker)
                         .ThenInclude(w => w!.Position);
+                    break;
+
+                case PageTypes.RecomendationsAndRemarks:
+                    pages = pages.Include(p => p.RecomendationsAndRemarks)
+                        .ThenInclude(r => r.Reviewer);
+                    break;
+
+                case PageTypes.Traditions:
+                    pages = pages.Include(p => p.Traditions);
                     break;
             }
 

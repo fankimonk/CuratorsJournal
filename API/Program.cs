@@ -95,6 +95,7 @@ builder.Services.AddScoped<IPerformanceAccountingGradesRepository, PerformanceAc
 builder.Services.AddScoped<IPerformanceAccountingColumnsRepository, PerformanceAccountingColumnsRepository>();
 builder.Services.AddScoped<IRefreshTokensRepository, RefreshTokensRepository>();
 builder.Services.AddScoped<ITeachersRepository, TeachersRepository>();
+builder.Services.AddScoped<IRolesRepository, RolesRepository>();
 
 builder.Services.AddScoped<IGroupsService, GroupsService>();
 builder.Services.AddScoped<IJournalsService, JournalsService>();

@@ -22,11 +22,11 @@ namespace API.Controllers
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            var registrationResult = await _usersService.Register(request.UserName, request.Password, request.WorkerId);
+            var registrationResult = await _usersService.Register(request.Username, request.Password, (int)request.RoleId, request.WorkerId);
             if (registrationResult.Error != null || registrationResult.User == null) return BadRequest(registrationResult.Error);
 
             var user = registrationResult.User;
-            return Ok(new UserResponse(user.Id, user.UserName, user.Role!.Name, user.WorkerId, null, null));
+            return Ok(new UserResponse(user.Id, user.UserName, new RoleResponse(user.Role!.Id, user.Role.Name), user.WorkerId, null, null));
         }
 
         [HttpPost("login")]

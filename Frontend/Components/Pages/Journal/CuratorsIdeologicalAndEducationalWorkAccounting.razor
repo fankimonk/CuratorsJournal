@@ -35,8 +35,10 @@ else
                 <option @key="item.Key" value="@item.Key">@MonthsUtils.InMonthsNames[item.Key]</option>
             }
         </select>
-        <input type="number" min="0" max="10000" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))"
-        @bind="_pageData.Attributes.Year" @bind:after="UpdateAttributes" class="input underline text-center" placeholder="год" />
+        20
+        <input type="number" min="0" max="98" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))"
+        @bind="_pageData.Attributes.Year" @bind:after="UpdateAttributes" class="input underline text-center" />
+        г.
     </h3>
     <table class="table table-bordered">
         <thead>

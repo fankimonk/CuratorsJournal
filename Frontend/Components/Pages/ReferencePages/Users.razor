@@ -1,0 +1,193 @@
+﻿@page "/Users"
+
+@using API.Contracts.User
+@using Contracts.User
+@using Contracts.Workers
+@using Frontend.Components.Buttons
+@using Frontend.Components.Utils
+@using Microsoft.AspNetCore.Components.QuickGrid
+
+@attribute [Authorize]
+
+@inject HttpClient HttpClient
+
+<PageTitle>Аккаунты</PageTitle>
+
+<h1>Аккаунты</h1>
+
+@if (_users == null || _roles == null || _workers == null)
+{
+    <p><em>Загрузка...</em></p>
+}
+else
+{
+    <AddButton @onclick="ShowAddModal">Добавить</AddButton>
+
+    <QuickGrid Items="_users" class="table">
+        <PropertyColumn Property="@(l => l.UserName)" Sortable="true" Title="Имя пользователя" class="align-middle" />
+        <PropertyColumn Property="@(l => l.Role.Name)" Sortable="true" Title="Роль" class="align-middle" />
+        <PropertyColumn Property="@(l => GetWorkerFIO(l.WorkerId))" Sortable="true" Title="Сотрудник" class="align-middle" />
+        <TemplateColumn class="text-end">
+            <DeleteButton @onclick="async () => await Delete(context)" />
+        </TemplateColumn>
+    </QuickGrid>
+
+    <Modal IsVisible="_isAddModalVisible" OnClose="CloseModal">
+        <div class="row">
+            <div class="col-md-12">
+                <EditForm method="post" Model="RegisterUserRequest" OnValidSubmit="Add" OnInvalidSubmit="ShowErrorAlert" FormName="add" Enhance>
+                    <DataAnnotationsValidator />
+                    <Alert Type="success" IsVisible="_isSuccessAlertVisible" OnClose="CloseSuccessAlert" />
+                    <Alert Type="error" IsVisible="_isErrorAlertVisible" OnClose="CloseErrorAlert">
+                        <ValidationSummary />
+                    </Alert>
+                    <div class="mb-3">
+                        <label for="username" class="form-label">Имя пользователя: </label>
+                        <InputText id="username" @bind-Value="RegisterUserRequest.Username" class="form-control" />
+                    </div>
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Пароль: </label>
+                        <InputText id="password" @bind-Value="RegisterUserRequest.Password" class="form-control" />
+                    </div>
+                    <div class="mb-3">
+                        <label for="role" class="form-label">Роль: </label>
+                        <InputSelect id="role" @bind-Value="RegisterUserRequest.RoleId" class="form-control">
+                            <option value="">(нет)</option>
+                            @foreach (var role in _roles)
+                            {
+                                <option @key="role.Id" value="@role.Id">@role.Name</option>
+                            }
+                        </InputSelect>
+                    </div>
+                    <div class="mb-3">
+                        <label for="worker" class="form-label">Сотрудник: </label>
+                        <InputSelect id="worker" @bind-Value="RegisterUserRequest.WorkerId" class="form-control">
+                            <option value="">(нет)</option>
+                            @foreach (var worker in _workers)
+                            {
+                                <option @key="worker.Id" value="@worker.Id">@GetWorkerFIO(worker.Id)</option>
+                            }
+                        </InputSelect>
+                    </div>
+                    <AddButton type="submit">Добавить</AddButton>
+                </EditForm>
+            </div>
+        </div>
+    </Modal>
+
+    <AlertBottom IsVisible="_isServerErrorAlertVisible" OnClose="CloseServerErrorAlert">@_errorMessage</AlertBottom>
+}
+
+@code {
+    [SupplyParameterFromForm]
+    public RegisterUserRequest RegisterUserRequest { get; set; } = new("", "", null, null);
+
+    private IQueryable<UserResponse>? _users;
+
+    private List<RoleResponse>? _roles;
+    private List<WorkerResponse>? _workers;
+
+    private bool _isModalVisible = false;
+    private bool _isAddModal = true;
+
+    private bool _isAddModalVisible { get => _isModalVisible && _isAddModal; }
+    private bool _isEditModalVisible { get => _isModalVisible && !_isAddModal; }
+
+    private bool _isSuccessAlertVisible = false;
+    private bool _isErrorAlertVisible = false;
+
+    private bool _isServerErrorAlertVisible = false;
+    private string? _errorMessage = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        var users = await HttpClient.GetFromJsonAsync<List<UserResponse>>("api/user");
+        if (users != null)
+            _users = users.AsQueryable();
+
+        _roles = await HttpClient.GetFromJsonAsync<List<RoleResponse>>("api/role");
+        _workers = await HttpClient.GetFromJsonAsync<List<WorkerResponse>>("api/worker");
+    }
+
+    private string GetWorkerFIO(int? workerId)
+    {
+        if (workerId == null || _workers == null) return "-";
+        var worker = _workers.FirstOrDefault(w => w.Id == workerId);
+        if (worker == null) return "-";
+        return worker.LastName + " " + worker.FirstName + " " + worker.MiddleName;
+    }
+
+    public async Task Add()
+    {
+        var response = await HttpClient.PostAsJsonAsync<RegisterUserRequest>("api/auth/register", RegisterUserRequest);
+
+        if (response.IsSuccessStatusCode)
+        {
+            var added = await response.Content.ReadFromJsonAsync<UserResponse>();
+            _users = _users!.Append(added!);
+
+            ShowSuccessAlert();
+        }
+        else
+        {
+            var errorMessage = await response.Content.ReadAsStringAsync();
+            _errorMessage = errorMessage.Split('\n').FirstOrDefault();
+            ShowServerErrorAlert();
+        }
+    }
+
+    public async Task Delete(UserResponse user)
+    {
+        var response = await HttpClient.DeleteAsync("api/user/" + user.Id);
+
+        if (response.IsSuccessStatusCode)
+        {
+            _users = _users!.Where(l => l.Id != user.Id);
+        }
+        else
+        {
+            var errorMessage = await response.Content.ReadAsStringAsync();
+            _errorMessage = errorMessage.Split('\n').FirstOrDefault();
+            ShowServerErrorAlert();
+        }
+    }
+
+    private void ShowAddModal()
+    {
+        _isAddModal = true;
+        _isModalVisible = true;
+    }
+
+    private void CloseModal()
+    {
+        RegisterUserRequest = new("", "", null, null);
+        _isModalVisible = false;
+        CloseSuccessAlert();
+        CloseErrorAlert();
+        CloseServerErrorAlert();
+    }
+
+    private void CloseSuccessAlert() => _isSuccessAlertVisible = false;
+
+    private void ShowSuccessAlert()
+    {
+        CloseErrorAlert();
+        _isSuccessAlertVisible = true;
+    }
+
+    private void CloseErrorAlert() => _isErrorAlertVisible = false;
+
+    private void ShowErrorAlert()
+    {
+        CloseSuccessAlert();
+        _isErrorAlertVisible = true;
+    }
+
+    private void CloseServerErrorAlert()
+    {
+        _isServerErrorAlertVisible = false;
+        _errorMessage = "";
+    }
+
+    private void ShowServerErrorAlert() => _isServerErrorAlertVisible = true;
+}

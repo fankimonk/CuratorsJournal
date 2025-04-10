@@ -35,7 +35,7 @@ namespace Application.Services.Word
 
                 AppendTable(page.StudentsHealthCards);
 
-                if (page != pages.Last()) WordUtils.AppendPageBreak(_documentBody);
+                WordUtils.AppendPageBreak(_documentBody);
             }
         }
 
@@ -95,11 +95,16 @@ namespace Application.Services.Word
 
             table.AppendChild(tblProperties);
 
+            int numberColumnWidth = 225 * 3;
+            int studentColumnWidth = 2275 * 3;
+            int classesMissedColumnWidth = 1250 * 3;
+            int noteColumnWidth = 1250 * 3;
+
             TableGrid tableGrid = new TableGrid(
-                new GridColumn() { Width = "225" },
-                new GridColumn() { Width = "2275" },
-                new GridColumn() { Width = "1250" },
-                new GridColumn() { Width = "1250" }
+                new GridColumn() { Width = numberColumnWidth.ToString() },
+                new GridColumn() { Width = studentColumnWidth.ToString() },
+                new GridColumn() { Width = classesMissedColumnWidth.ToString() },
+                new GridColumn() { Width = noteColumnWidth.ToString() }
             );
             table.AppendChild(tableGrid);
 
@@ -108,12 +113,12 @@ namespace Application.Services.Word
             TableCell numberHeadCell = new TableCell(new Paragraph(new Run(WordUtils.GetRunProperties(bold: true),
                     new Text("№"))));
             numberHeadCell.Append(new TableCellProperties(
-                new TableCellWidth { Type = TableWidthUnitValues.Pct, Width = "225" }));
+                new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = numberColumnWidth.ToString() }));
 
             TableCell studentHeadCell = new TableCell(new Paragraph(new Run(WordUtils.GetRunProperties(bold: true),
                 new Text("Фамилия, имя, отчество (полностью)"))));
             studentHeadCell.Append(new TableCellProperties(
-                new TableCellWidth { Type = TableWidthUnitValues.Pct, Width = "2275" }));
+                new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = studentColumnWidth.ToString() }));
 
             TableCell classesMissedHeadCell = new TableCell(new Paragraph(
                 new Run(WordUtils.GetRunProperties(bold: true),
@@ -122,12 +127,12 @@ namespace Application.Services.Word
                 new Run(WordUtils.GetRunProperties(bold: true),
                     new Text("по болезни"))));
             classesMissedHeadCell.Append(new TableCellProperties(
-                new TableCellWidth { Type = TableWidthUnitValues.Pct, Width = "1250" }));
+                new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = classesMissedColumnWidth.ToString() }));
 
             TableCell noteHeadCell = new TableCell(new Paragraph(new Run(WordUtils.GetRunProperties(bold: true),
                     new Text("Примечание"))));
             noteHeadCell.Append(new TableCellProperties(
-                new TableCellWidth { Type = TableWidthUnitValues.Pct, Width = "1250" }));
+                new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = noteColumnWidth.ToString() }));
 
             headRow.Append(numberHeadCell, studentHeadCell, classesMissedHeadCell, noteHeadCell);
             table.Append(headRow);
@@ -139,22 +144,22 @@ namespace Application.Services.Word
                 TableCell numberCell = new TableCell(new Paragraph(new Run(WordUtils.GetRunProperties(fontSize: "24"),
                     new Text(record.Number == null ? "" : ((int)record.Number).ToString()))));
                 numberCell.Append(new TableCellProperties(
-                    new TableCellWidth { Type = TableWidthUnitValues.Pct, Width = "225" }));
+                    new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = numberColumnWidth.ToString() }));
 
                 TableCell studentCell = new TableCell(new Paragraph(new Run(WordUtils.GetRunProperties(fontSize: "24"),
                     new Text(record.Student == null ? "" : (GetStudentFIO(record.Student))))));
                 studentCell.Append(new TableCellProperties(
-                    new TableCellWidth { Type = TableWidthUnitValues.Pct, Width = "2275" }));
+                    new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = studentColumnWidth.ToString() }));
 
                 TableCell classesMissedCell = new TableCell(new Paragraph(new Run(WordUtils.GetRunProperties(fontSize: "24"),
                     new Text(record.MissedClasses == null ? "" : ((int)record.MissedClasses).ToString()))));
                 classesMissedCell.Append(new TableCellProperties(
-                    new TableCellWidth { Type = TableWidthUnitValues.Pct, Width = "1250" }));
+                    new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = classesMissedColumnWidth.ToString() }));
 
                 TableCell noteCell = new TableCell(new Paragraph(new Run(WordUtils.GetRunProperties(fontSize: "24"),
                     new Text(record.Note == null ? "" : record.Note))));
-                classesMissedCell.Append(new TableCellProperties(
-                    new TableCellWidth { Type = TableWidthUnitValues.Pct, Width = "1250" }));
+                noteCell.Append(new TableCellProperties(
+                    new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = noteColumnWidth.ToString() }));
 
                 row.Append(numberCell, studentCell, classesMissedCell, noteCell);
                 table.Append(row);

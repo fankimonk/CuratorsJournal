@@ -10,7 +10,7 @@ using DocumentFormat.OpenXml.Wordprocessing;
 namespace Application.Services.Word
 {
     public class WordService(IJournalsService journalsService, IPagesRepository pagesRepository,
-        IHolidaysRepository holidaysRepository, IGroupsRepository groupsRepository, IStudentsRepository studentsRepository) : IWordService
+        IHolidaysRepository holidaysRepository, IGroupsRepository groupsRepository) : IWordService
     {
         private readonly IJournalsService _journalsService = journalsService;
         private readonly IPagesRepository _pagesRepository = pagesRepository;
@@ -74,6 +74,22 @@ namespace Application.Services.Word
                 try { await studentHealthCardPageGenerator.Generate(); }
                 catch { return null; }
 
+                var ideologicalAndEducationalWorkAccountingPageGenerator = new IdeologicalAndEducationalWorkAccountingPageGenerator(journalId, body, _pagesRepository);
+                try { await ideologicalAndEducationalWorkAccountingPageGenerator.Generate(); }
+                catch { return null; }
+
+                var informationHoursAccountingPageGenerator = new InformationHoursAccountingPageGenerator(journalId, body, _pagesRepository);
+                try { await informationHoursAccountingPageGenerator.Generate(); }
+                catch { return null; }
+
+                var curatorsParticipationPageGenerator = new CuratorsParticipationPageGenerator(journalId, body, _pagesRepository);
+                try { await curatorsParticipationPageGenerator.Generate(); }
+                catch { return null; }
+
+                var literatureWorkPageGenerator = new LiteratureWorkPageGenerator(journalId, body, _pagesRepository);
+                try { await literatureWorkPageGenerator.Generate(); }
+                catch { return null; }
+
                 WordUtils.AppendSectionBreak(WordUtils.PageOrientationTypes.Landscape, body);
 
                 var psychologicalAndPedagogicalCharacteristicsPageGenerator = new PsychologicalAndPedagogicalCharacteristicsPageGenerator(journalId, body, _pagesRepository);
@@ -81,6 +97,16 @@ namespace Application.Services.Word
                 catch { return null; }
 
                 WordUtils.AppendSectionBreak(WordUtils.PageOrientationTypes.Portrait, body);
+
+                var recommendationsAndRemarksPageGenerator = new RecommendationsAndRemarksPageGenerator(journalId, body, _pagesRepository);
+                try { await recommendationsAndRemarksPageGenerator.Generate(); }
+                catch { return null; }
+
+                var traditionPageGenerator = new TraditionsPageGenerator(journalId, body, _pagesRepository);
+                try { await traditionPageGenerator.Generate(); }
+                catch { return null; }
+
+                WordUtils.AppendSectionBreak(WordUtils.PageOrientationTypes.Landscape, body);
 
                 mainPart.Document.Append(body);
                 mainPart.Document.Save();

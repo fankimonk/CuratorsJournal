@@ -70,6 +70,8 @@ namespace API.Controllers
         public async Task<ActionResult<IdeologicalAndEducationalWorkAttributesResponse>> UpdateAttributes([FromRoute] int attributesId,
             [FromBody] UpdateIdeologicalAndEducationalWorkAttributesRequest request)
         {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+
             var attributes = await _attributesRepository.UpdateAttributes(attributesId, request.Month, request.Year);
             if (attributes == null) return BadRequest();
 

@@ -3796,6 +3796,26 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "API.Controllers.RolesController",
+    "Method": "GetAll",
+    "RelativePath": "api/role",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.List\u00601[[Contracts.User.RoleResponse, Contracts, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
     "ContainingType": "API.Controllers.SpecialtiesController",
     "Method": "GetAll",
     "RelativePath": "api/specialty",
@@ -4374,11 +4394,37 @@
   {
     "ContainingType": "API.Controllers.UsersController",
     "Method": "GetAll",
-    "RelativePath": "api/users",
+    "RelativePath": "api/user",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
     "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.List\u00601[[API.Contracts.User.UserResponse, Contracts, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "API.Controllers.UsersController",
+    "Method": "Delete",
+    "RelativePath": "api/user/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
     "ReturnTypes": []
   },
   {

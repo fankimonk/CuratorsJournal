@@ -1,9 +1,11 @@
-﻿namespace API.Contracts.User
+﻿using Contracts.User;
+
+namespace API.Contracts.User
 {
     public record UserResponse(
         int Id,
         string UserName,
-        string Role,
+        RoleResponse Role,
         int? WorkerId,
         string? Token,
         DateTime? TokenExpires

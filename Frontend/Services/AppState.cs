@@ -1,4 +1,5 @@
 ﻿using API.Contracts.User;
+using Contracts.User;
 using Frontend.Security;
 using Microsoft.IdentityModel.JsonWebTokens;
 using System.Security.Claims;
@@ -25,7 +26,7 @@ namespace Frontend.Services
                 User = new UserResponse(
                     int.Parse(user.Claims.FirstOrDefault(c => c.Type == "userId")?.Value),
                     user.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value,
-                    user.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value,
+                    new RoleResponse(-1, user.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value),
                     int.TryParse(workerIdStr, out var workerId) ? workerId : null,
                     await _accessTokenService.Get(),
                     long.TryParse(expiresStr, out var expiresIn) ? DateTimeOffset.FromUnixTimeSeconds(expiresIn).UtcDateTime : null
@@ -33,7 +34,7 @@ namespace Frontend.Services
 
                 Console.WriteLine($"User:\nId: {User.Id}\n" +
                     $"Username: {User.UserName}\n" +
-                    $"Role: {User.Role}\n" +
+                    $"Role: {User.Role.Name}\n" +
                     $"WorkerId: {User.WorkerId}\n" +
                     $"Token: {User.Token}\n" +
                     $"TokenExpires: {User.TokenExpires}");
