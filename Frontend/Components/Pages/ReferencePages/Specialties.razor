@@ -4,32 +4,41 @@
 @using Contracts.Specialties
 @using Frontend.Components.Buttons
 @using Frontend.Components.Utils
+@using Frontend.Services
 @using Microsoft.AspNetCore.Components.QuickGrid
 
 @attribute [Authorize]
 
 @inject HttpClient HttpClient
+@inject APIService APIService
+@inject AppState AppState
 
 <PageTitle>Специальности</PageTitle>
 
 <h1>Специальности</h1>
 
-@if (_specialties == null || _departments == null)
+@if (_specialties == null || _departments == null || AppState.User == null)
 {
     <p><em>Загрузка...</em></p>
 }
 else
 {
-    <AddButton @onclick="ShowAddModal">Добавить</AddButton>
+    @if (_canCRUD)
+    {
+        <AddButton @onclick="ShowAddModal">Добавить</AddButton>
+    }
 
     <QuickGrid Items="_specialties" class="table">
         <PropertyColumn Property="@(l => l.Name)" Sortable="true" Title="Название" class="align-middle" />
         <PropertyColumn Property="@(l => l.AbbreviatedName)" Sortable="true" Title="Аббревиатура" class="align-middle" />
         <PropertyColumn Property="@(l => _departments.FirstOrDefault(d => d.Id == l.DepartmentId)!.Name)" Sortable="true" Title="Кафедра" class="align-middle" />
-        <TemplateColumn class="text-end">
-            <EditButton @onclick="() => ShowEditModal(context)" />
-            <DeleteButton @onclick="async () => await Delete(context)" />
-        </TemplateColumn>
+        @if (_canCRUD)
+        {
+            <TemplateColumn class="text-end">
+                <EditButton @onclick="() => ShowEditModal(context)" />
+                <DeleteButton @onclick="async () => await Delete(context)" />
+            </TemplateColumn>
+        }
     </QuickGrid>
 
     <Modal IsVisible="_isAddModalVisible" OnClose="CloseModal">
@@ -124,13 +133,18 @@ else
     private bool _isServerErrorAlertVisible = false;
     private string? _errorMessage = "";
 
+    private bool _canCRUD => AppState.User != null && (AppState.User.Role.Name == "Admin" || AppState.User.Role.Name == "Dean"
+        || AppState.User.Role.Name == "DeputyDean" || AppState.User.Role.Name == "HeadOfDepartment");
+
     protected override async Task OnInitializedAsync()
     {
-        var literature = await HttpClient.GetFromJsonAsync<List<SpecialtyResponse>>("api/specialty/");
-        if (literature != null)
-            _specialties = literature.AsQueryable();
+        AppState.OnUserInitialized += StateHasChanged;
 
-        _departments = await HttpClient.GetFromJsonAsync<List<DepartmentResponse>>("api/department");
+        var specialties = await APIService.GetFromJsonAsync<List<SpecialtyResponse>>("api/specialty/");
+        if (specialties != null)
+            _specialties = specialties.AsQueryable();
+
+        _departments = await APIService.GetFromJsonAsync<List<DepartmentResponse>>("api/department");
     }
 
     public async Task Add()

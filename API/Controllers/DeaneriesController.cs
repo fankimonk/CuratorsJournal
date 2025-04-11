@@ -1,6 +1,8 @@
 ﻿using API.Mappers;
+using Application.Authorization;
 using Contracts.Deaneries;
 using DataAccess.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -17,11 +19,15 @@ namespace API.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult<List<DeaneryResponse>>> GetAll()
         {
-            var positions = await _deaneriesRepository.GetAllAsync();
+            var userId = int.Parse(HttpContext.User.Claims.FirstOrDefault(c => c.Type == CustomClaims.UserId)!.Value);
 
-            var response = positions.Select(l => l.ToResponse()).ToList();
+            var deaneries = await _deaneriesRepository.GetAllAsync(userId);
+            if (deaneries == null) return BadRequest();
+
+            var response = deaneries.Select(l => l.ToResponse()).ToList();
             return Ok(response);
         }
 

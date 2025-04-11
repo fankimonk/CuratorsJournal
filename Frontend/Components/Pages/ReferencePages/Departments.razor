@@ -5,33 +5,42 @@
 @using Contracts.Workers
 @using Frontend.Components.Buttons
 @using Frontend.Components.Utils
+@using Frontend.Services
 @using Microsoft.AspNetCore.Components.QuickGrid
 
 @attribute [Authorize]
 
 @inject HttpClient HttpClient
+@inject APIService APIService
+@inject AppState AppState
 
 <PageTitle>Кафедры</PageTitle>
 
 <h1>Кафедры</h1>
 
-@if (_departments == null || _headsOfDepartments == null || _deaneries == null)
+@if (_departments == null || _headsOfDepartments == null || _deaneries == null || AppState.User == null)
 {
     <p><em>Загрузка...</em></p>
 }
 else
 {
-    <AddButton @onclick="ShowAddModal">Добавить</AddButton>
+    @if (_canCRUD)
+    {
+        <AddButton @onclick="ShowAddModal">Добавить</AddButton>
+    }
 
     <QuickGrid Items="_departments" class="table">
         <PropertyColumn Property="@(l => l.Name)" Sortable="true" Title="Название" class="align-middle" />
         <PropertyColumn Property="@(l => l.AbbreviatedName)" Sortable="true" Title="Аббревиатура" class="align-middle" />
         <PropertyColumn Property="@(l => GetHeadFIOById(l.HeadId))" Sortable="true" Title="Зав. кафедры" class="align-middle" />
         <PropertyColumn Property="@(l => "Деканат " + _deaneries.FirstOrDefault(d => d.Id == l.DeaneryId)!.Faculty!.AbbreviatedName)" Sortable="true" Title="Деканат" class="align-middle" />
-        <TemplateColumn class="text-end">
-            <EditButton @onclick="() => ShowEditModal(context)" />
-            <DeleteButton @onclick="async () => await Delete(context)" />
-        </TemplateColumn>
+        @if (_canCRUD)
+        {
+            <TemplateColumn class="text-end">
+                <EditButton @onclick="() => ShowEditModal(context)" />
+                <DeleteButton @onclick="async () => await Delete(context)" />
+            </TemplateColumn>
+        }
     </QuickGrid>
 
     <Modal IsVisible="_isAddModalVisible" OnClose="CloseModal">
@@ -146,14 +155,18 @@ else
     private bool _isServerErrorAlertVisible = false;
     private string? _errorMessage = "";
 
+    private bool _canCRUD => AppState.User != null && (AppState.User.Role.Name == "Admin" || AppState.User.Role.Name == "Dean" || AppState.User.Role.Name == "DeputyDean");
+
     protected override async Task OnInitializedAsync()
     {
-        var literature = await HttpClient.GetFromJsonAsync<List<DepartmentResponse>>("api/department");
-        if (literature != null)
-            _departments = literature.AsQueryable();
+        AppState.OnUserInitialized += StateHasChanged;
+
+        var departments = await APIService.GetFromJsonAsync<List<DepartmentResponse>>("api/department");
+        if (departments != null)
+            _departments = departments.AsQueryable();
 
         _headsOfDepartments = await HttpClient.GetFromJsonAsync<List<WorkerResponse>>($"api/worker/?PositionId={3}");
-        _deaneries = await HttpClient.GetFromJsonAsync<List<DeaneryResponse>>("api/deanery");
+        _deaneries = await APIService.GetFromJsonAsync<List<DeaneryResponse>>("api/deanery");
     }
 
     private string GetHeadFIOById(int id)

@@ -5,32 +5,41 @@
 @using Contracts.Workers
 @using Frontend.Components.Buttons
 @using Frontend.Components.Utils
+@using Frontend.Services
 @using Microsoft.AspNetCore.Components.QuickGrid
 
 @attribute [Authorize]
 
 @inject HttpClient HttpClient
+@inject APIService APIService
+@inject AppState AppState
 
 <PageTitle>Деканаты</PageTitle>
 
 <h1>Деканаты</h1>
 
-@if (_deaneries == null || _faculties == null || _deans == null || _deputyDeans == null)
+@if (_deaneries == null || _faculties == null || _deans == null || _deputyDeans == null || AppState.User == null)
 {
     <p><em>Загрузка...</em></p>
 }
 else
 {
-    <AddButton @onclick="ShowAddModal">Добавить</AddButton>
+    @if (_canCRUD)
+    {
+        <AddButton @onclick="ShowAddModal">Добавить</AddButton>
+    }
 
     <QuickGrid Items="_deaneries" class="table">
         <PropertyColumn Property="@(l => _faculties.FirstOrDefault(f => f.Id == l.FacultyId)!.Name)" Sortable="true" Title="Факультет" class="align-middle" />
         <PropertyColumn Property="@(l => GetDeanFIOById(l.DeanId))" Title="Декан" class="align-middle" />
         <PropertyColumn Property="@(l => GetDeputyDeanFIOById(l.DeputyDeanId))" Title="Зам. декана" class="align-middle" />
-        <TemplateColumn class="text-end">
-            <EditButton @onclick="() => ShowEditModal(context)" />
-            <DeleteButton @onclick="async () => await Delete(context)" />
-        </TemplateColumn>
+        @if (_canCRUD)
+        {
+            <TemplateColumn class="text-end">
+                <EditButton @onclick="() => ShowEditModal(context)" />
+                <DeleteButton @onclick="async () => await Delete(context)" />
+            </TemplateColumn>
+        }
     </QuickGrid>
 
     <Modal IsVisible="_isAddModalVisible" OnClose="CloseModal">
@@ -149,14 +158,18 @@ else
     private bool _isServerErrorAlertVisible = false;
     private string? _errorMessage = "";
 
+    private bool _canCRUD => AppState.IsAdmin;
+
     protected override async Task OnInitializedAsync()
     {
-        var deaneries = await HttpClient.GetFromJsonAsync<List<DeaneryResponse>>("api/deanery");
+        AppState.OnUserInitialized += StateHasChanged;
+
+        var deaneries = await APIService.GetFromJsonAsync<List<DeaneryResponse>>("api/deanery");
         if (deaneries != null)
             _deaneries = deaneries.AsQueryable();
 
         _faculties = await HttpClient.GetFromJsonAsync<List<FacultyResponse>>("api/faculty");
-        _deans = await HttpClient.GetFromJsonAsync<List<WorkerResponse>>($"api/worker/?PositionId={1}");
+        _deans = (await HttpClient.GetFromJsonAsync<List<WorkerResponse>>($"api/worker/?PositionId={1}"));
         _deputyDeans = await HttpClient.GetFromJsonAsync<List<WorkerResponse>>($"api/worker/?PositionId={2}");
     }
 

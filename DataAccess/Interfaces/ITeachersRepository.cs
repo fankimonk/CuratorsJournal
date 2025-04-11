@@ -4,7 +4,7 @@ namespace DataAccess.Interfaces
 {
     public interface ITeachersRepository
     {
-        Task<List<Teacher>> GetAllAsync();
+        Task<List<Teacher>?> GetAllAsync(int userId);
         Task<Teacher?> GetByIdAsync(int id);
         Task<Teacher?> CreateAsync(Teacher teacher);
         Task<Teacher?> UpdateAsync(int id, Teacher teacher);

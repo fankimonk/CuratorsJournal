@@ -1,32 +1,40 @@
 ﻿@page "/PEGroups"
- 
+
 @using Contracts.PEGroups
 @using Frontend.Components.Buttons
 @using Frontend.Components.Utils
+@using Frontend.Services
 @using Microsoft.AspNetCore.Components.QuickGrid
 
 @attribute [Authorize]
 
 @inject HttpClient HttpClient
+@inject AppState AppState
 
 <PageTitle>Группы по физической культуре</PageTitle>
 
 <h1>Группы по физической культуре</h1>
 
-@if (_peGroups == null)
+@if (_peGroups == null || AppState.User == null)
 {
     <p><em>Загрузка...</em></p>
 }
 else
 {
-    <AddButton @onclick="ShowAddModal">Добавить</AddButton>
+    @if (_canCRUD)
+    {
+        <AddButton @onclick="ShowAddModal">Добавить</AddButton>
+    }
 
     <QuickGrid Items="_peGroups" class="table">
         <PropertyColumn Property="@(l => l.Name)" Sortable="true" Title="Название" class="align-middle" />
-        <TemplateColumn class="text-end">
-            <EditButton @onclick="() => ShowEditModal(context)" />
-            <DeleteButton @onclick="async () => await Delete(context)" />
-        </TemplateColumn>
+        @if (_canCRUD)
+        {
+            <TemplateColumn class="text-end">
+                <EditButton @onclick="() => ShowEditModal(context)" />
+                <DeleteButton @onclick="async () => await Delete(context)" />
+            </TemplateColumn>
+        }
     </QuickGrid>
 
     <Modal IsVisible="_isAddModalVisible" OnClose="CloseModal">
@@ -92,8 +100,12 @@ else
     private bool _isServerErrorAlertVisible = false;
     private string? _errorMessage = "";
 
+    private bool _canCRUD => AppState.User != null && AppState.RolesThatAreAllowedToCreateEntities.Contains(AppState.User.Role.Name);
+
     protected override async Task OnInitializedAsync()
     {
+        AppState.OnUserInitialized += StateHasChanged;
+
         var peGroups = await HttpClient.GetFromJsonAsync<List<PEGroupResponse>>("api/pegroup/");
         if (peGroups != null)
             _peGroups = peGroups.AsQueryable();

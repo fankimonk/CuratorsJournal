@@ -3,30 +3,38 @@
 @using Contracts.AcademicYears
 @using Frontend.Components.Buttons
 @using Frontend.Components.Utils
+@using Frontend.Services
 @using Microsoft.AspNetCore.Components.QuickGrid
 
 @attribute [Authorize]
 
 @inject HttpClient HttpClient
+@inject AppState AppState
 
 <PageTitle>Учебные годы</PageTitle>
 
 <h1>Учебные годы</h1>
 
-@if (_academicYears == null)
+@if (_academicYears == null || AppState.User == null)
 {
     <p><em>Загрузка...</em></p>
 }
 else
 {
-    <AddButton @onclick="ShowAddModal">Добавить</AddButton>
+    @if (_canCRUD)
+    {
+        <AddButton @onclick="ShowAddModal">Добавить</AddButton>
+    }
 
     <QuickGrid Items="_academicYears" class="table">
         <PropertyColumn Property="@(l => l.StartYear)" Sortable="true" Title="Начало" class="align-middle" />
         <PropertyColumn Property="@(l => l.EndYear)" Sortable="true" Title="Окончание" class="align-middle" />
-        <TemplateColumn class="text-end">
-            <DeleteButton @onclick="async () => await Delete(context)" />
-        </TemplateColumn>
+        @if (_canCRUD)
+        {
+            <TemplateColumn class="text-end">
+                <DeleteButton @onclick="async () => await Delete(context)" />
+            </TemplateColumn>
+        }
     </QuickGrid>
 
     <Modal IsVisible="_isAddModalVisible" OnClose="CloseModal">
@@ -71,8 +79,12 @@ else
     private bool _isServerErrorAlertVisible = false;
     private string? _errorMessage = "";
 
+    private bool _canCRUD => AppState.IsAdmin;
+
     protected override async Task OnInitializedAsync()
     {
+        AppState.OnUserInitialized += StateHasChanged;
+
         var academicYears = await HttpClient.GetFromJsonAsync<List<AcademicYearResponse>>("api/academicyear/");
         if (academicYears != null)
             _academicYears = academicYears.AsQueryable();

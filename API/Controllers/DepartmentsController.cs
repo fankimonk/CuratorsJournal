@@ -1,6 +1,8 @@
 ﻿using API.Mappers;
+using Application.Authorization;
 using Contracts.Departments;
 using DataAccess.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -17,11 +19,15 @@ namespace API.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult<List<DepartmentResponse>>> GetAll()
         {
-            var positions = await _departmentsRepository.GetAllAsync();
+            var userId = int.Parse(HttpContext.User.Claims.FirstOrDefault(c => c.Type == CustomClaims.UserId)!.Value);
 
-            var response = positions.Select(l => l.ToResponse()).ToList();
+            var departments = await _departmentsRepository.GetAllAsync(userId);
+            if (departments == null) return BadRequest();
+
+            var response = departments.Select(l => l.ToResponse()).ToList();
             return Ok(response);
         }
 

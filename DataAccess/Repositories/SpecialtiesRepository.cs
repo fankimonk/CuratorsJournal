@@ -6,14 +6,29 @@ namespace DataAccess.Repositories
 {
     public class SpecialtiesRepository(CuratorsJournalDBContext dbContext) : RepositoryBase(dbContext), ISpecialtiesRepository
     {
-        public async Task<List<Specialty>> GetAllAsync()
+        public async Task<List<Specialty>?> GetAllAsync(int userId)
         {
-            return await _dbContext.Specialties.AsNoTracking().ToListAsync();
-        }
+            var user = await _dbContext.Users.AsNoTracking().FirstOrDefaultAsync(u => u.Id == userId);
+            if (user == null) return null;
 
-        public async Task<Specialty?> GetByIdAsync(int id)
-        {
-            return await _dbContext.Specialties.AsNoTracking().FirstOrDefaultAsync(s => s.Id == id);
+            var specialties = _dbContext.Specialties.AsNoTracking();
+
+            if (user.RoleId == 1 || user.RoleId == 5) return await specialties.ToListAsync();
+            if (user.RoleId == 2 || user.RoleId == 3 || user.RoleId == 4)
+            {
+                specialties = specialties.Include(s => s!.Department).ThenInclude(d => d!.Deanery);
+                if (user.RoleId == 2) return await specialties.Where(j => j.Department!.Deanery!.DeanId == user.WorkerId).ToListAsync();
+                else if (user.RoleId == 3) return await specialties.Where(j => j.Department!.Deanery!.DeputyDeanId == user.WorkerId).ToListAsync();
+                else return await specialties.Where(j => j.Department!.HeadId == user.WorkerId).ToListAsync();
+            }
+            if (user.RoleId == 6)
+            {
+                var teacher = await _dbContext.Teachers.Include(t => t.Department).AsNoTracking().FirstOrDefaultAsync(t => t.WorkerId == user.WorkerId);
+                if (teacher == null) return null;
+                return await specialties.Where(j => j.DepartmentId == teacher.DepartmentId).ToListAsync();
+            }
+
+            return null;
         }
 
         public async Task<Specialty?> CreateAsync(Specialty specialty)

@@ -3,33 +3,41 @@
 @using Contracts.Positions
 @using Frontend.Components.Buttons
 @using Frontend.Components.Utils
+@using Frontend.Services
 @using Microsoft.AspNetCore.Components.QuickGrid
 
 @attribute [Authorize]
 
 @inject HttpClient HttpClient
+@inject AppState AppState
 
 <PageTitle>Должности</PageTitle>
 
 <h1>Должности</h1>
 
-@if (_positions == null)
+@if (_positions == null || AppState.User == null)
 {
     <p><em>Загрузка...</em></p>
 }
 else
 {
-    <AddButton @onclick="ShowAddModal">Добавить</AddButton>
+    @if (_canCRUD)
+    {
+        <AddButton @onclick="ShowAddModal">Добавить</AddButton>
+    }
 
     <QuickGrid Items="_positions" class="table">
         <PropertyColumn Property="@(l => l.Name)" Sortable="true" Title="Название" class="align-middle" />
-        <TemplateColumn class="text-end">
-            @if (!context.IsDefaultPosition)
-            {
-                <EditButton @onclick="() => ShowEditModal(context)" />
-                <DeleteButton @onclick="async () => await Delete(context)" />
-            }
-        </TemplateColumn>
+        @if (_canCRUD)
+        {
+            <TemplateColumn class="text-end">
+                @if (!context.IsDefaultPosition)
+                {
+                    <EditButton @onclick="() => ShowEditModal(context)" />
+                    <DeleteButton @onclick="async () => await Delete(context)" />
+                }
+            </TemplateColumn>
+        }
     </QuickGrid>
 
     <Modal IsVisible="_isAddModalVisible" OnClose="CloseModal">
@@ -95,8 +103,12 @@ else
     private bool _isServerErrorAlertVisible = false;
     private string? _errorMessage = "";
 
+    private bool _canCRUD => AppState.IsAdmin;
+
     protected override async Task OnInitializedAsync()
     {
+        AppState.OnUserInitialized += StateHasChanged;
+
         var literature = await HttpClient.GetFromJsonAsync<List<PositionResponse>>("api/position/");
         if (literature != null)
             _positions = literature.AsQueryable();

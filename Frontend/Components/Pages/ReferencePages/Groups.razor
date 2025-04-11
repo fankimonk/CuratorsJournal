@@ -12,28 +12,35 @@
 
 @inject HttpClient HttpClient
 @inject APIService APIService
+@inject AppState AppState
 
 <PageTitle>Группы</PageTitle>
 
 <h1>Группы</h1>
 
-@if (_groups == null || _teachers == null || _specialties == null)
+@if (_groups == null || _teachers == null || _specialties == null || AppState.User == null)
 {
     <p><em>Загрузка...</em></p>
 }
 else
 {
-    <AddButton @onclick="ShowAddModal">Добавить</AddButton>
+    @if (_canCRUD)
+    {
+        <AddButton @onclick="ShowAddModal">Добавить</AddButton>
+    }
 
     <QuickGrid Items="_groups" class="table">
         <PropertyColumn Property="@(l => l.Number)" Sortable="true" Title="Номер" class="align-middle" />
         <PropertyColumn Property="@(l => l.AdmissionYear)" Sortable="true" Title="Год поступления" class="align-middle" />
         <PropertyColumn Property="@(l => _specialties.FirstOrDefault(s => s.Id == l.SpecialtyId)!.Name)" Title="Специальность" class="align-middle" />
         <PropertyColumn Property="@(l => l.CuratorId == null ? "-" : GetCuratorsFIOById((int)l.CuratorId))" Title="Куратор" class="align-middle" />
-        <TemplateColumn class="text-end">
-            <EditButton @onclick="() => ShowEditModal(context)" />
-            <DeleteButton @onclick="async () => await Delete(context)" />
-        </TemplateColumn>
+        @if (_canCRUD)
+        {
+            <TemplateColumn class="text-end">
+                <EditButton @onclick="() => ShowEditModal(context)" />
+                <DeleteButton @onclick="async () => await Delete(context)" />
+            </TemplateColumn>
+        }
     </QuickGrid>
 
     <Modal IsVisible="_isAddModalVisible" OnClose="CloseModal">
@@ -149,14 +156,19 @@ else
     private bool _isServerErrorAlertVisible = false;
     private string? _errorMessage = "";
 
+    private bool _canCRUD => AppState.User != null && (AppState.User.Role.Name == "Admin" || AppState.User.Role.Name == "Dean"
+        || AppState.User.Role.Name == "DeputyDean" || AppState.User.Role.Name == "HeadOfDepartment");
+
     protected override async Task OnInitializedAsync()
     {
-        var literature = await APIService.GetFromJsonAsync<List<GroupResponse>>("api/group/");
-        if (literature != null)
-            _groups = literature.AsQueryable();
+        AppState.OnUserInitialized += StateHasChanged;
 
-        _teachers = await HttpClient.GetFromJsonAsync<List<TeacherResponse>>("api/teacher");
-        _specialties = await HttpClient.GetFromJsonAsync<List<SpecialtyResponse>>("api/specialty");
+        var groups = await APIService.GetFromJsonAsync<List<GroupResponse>>("api/group/");
+        if (groups != null)
+            _groups = groups.AsQueryable();
+
+        _teachers = await APIService.GetFromJsonAsync<List<TeacherResponse>>("api/teacher");
+        _specialties = await APIService.GetFromJsonAsync<List<SpecialtyResponse>>("api/specialty");
     }
 
     private string GetCuratorsFIOById(int id)

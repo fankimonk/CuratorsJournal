@@ -29,9 +29,28 @@ namespace DataAccess.Repositories
             return true;
         }
 
-        public async Task<List<Deanery>> GetAllAsync()
+        public async Task<List<Deanery>?> GetAllAsync(int userId)
         {
-            return await _dbContext.Deaneries.Include(d => d.Faculty).AsNoTracking().ToListAsync();
+            var user = await _dbContext.Users.AsNoTracking().FirstOrDefaultAsync(u => u.Id == userId);
+            if (user == null) return null;
+
+            var deaneries = _dbContext.Deaneries.Include(d => d.Faculty).AsNoTracking();
+
+            if (user.RoleId == 1 || user.RoleId == 5) return await deaneries.ToListAsync();
+            if (user.RoleId == 2 || user.RoleId == 3 || user.RoleId == 4)
+            {
+                if (user.RoleId == 2) return await deaneries.Where(j => j.DeanId == user.WorkerId).ToListAsync();
+                else if (user.RoleId == 3) return await deaneries.Where(j => j.DeputyDeanId == user.WorkerId).ToListAsync();
+                else return await deaneries.Include(d => d.Departments).Where(j => j.Departments.Any(d => d.HeadId == user.WorkerId)).ToListAsync();
+            }
+            if (user.RoleId == 6)
+            {
+                var teacher = await _dbContext.Teachers.Include(t => t.Department).AsNoTracking().FirstOrDefaultAsync(t => t.WorkerId == user.WorkerId);
+                if (teacher == null) return null;
+                return await deaneries.Where(j => j.Id == teacher.Department!.DeaneryId).ToListAsync();
+            }
+
+            return null;
         }
 
         public async Task<Deanery?> UpdateAsync(int id, Deanery deanery)

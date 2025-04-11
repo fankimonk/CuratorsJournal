@@ -14,6 +14,8 @@ namespace Frontend.Services
 
         public List<string> RolesThatAreAllowedToCreateEntities = ["Admin", "Dean", "DeputyDean", "HeadOfDepartment", "Teacher"];
 
+        public bool IsAdmin => User != null && User.Role.Name == "Admin";
+
         private readonly JwtAuthenticationStateProvider _authStateProvider = authStateProvider;
         private readonly AccessTokenService _accessTokenService = accessTokenService;
         private readonly AuthService _authService = authService;

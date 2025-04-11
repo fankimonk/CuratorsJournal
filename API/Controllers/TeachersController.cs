@@ -1,8 +1,8 @@
-﻿using API.Mappers;
+﻿using Application.Authorization;
 using Contracts.Teachers;
-using Contracts.Workers;
 using DataAccess.Interfaces;
 using Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -21,9 +21,13 @@ namespace API.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult<List<TeacherResponse>>> GetAll()
         {
-            var teachers = await _teachersRepository.GetAllAsync();
+            var userId = int.Parse(HttpContext.User.Claims.FirstOrDefault(c => c.Type == CustomClaims.UserId)!.Value);
+
+            var teachers = await _teachersRepository.GetAllAsync(userId);
+            if (teachers == null) return BadRequest();
 
             var response = teachers.Select(w => new TeacherResponse(w.Id, w.Worker!.FirstName, w.Worker.MiddleName, w.Worker.LastName, w.DepartmentId));
             return Ok(response);

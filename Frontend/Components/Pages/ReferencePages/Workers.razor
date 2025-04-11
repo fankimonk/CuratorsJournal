@@ -4,33 +4,41 @@
 @using Contracts.Workers
 @using Frontend.Components.Buttons
 @using Frontend.Components.Utils
+@using Frontend.Services
 @using Microsoft.AspNetCore.Components.QuickGrid
 
 @attribute [Authorize]
 
 @inject HttpClient HttpClient
+@inject AppState AppState
 
 <PageTitle>Сотрудники</PageTitle>
 
 <h1>Сотрудники</h1>
 
-@if (_workers == null || _positions == null)
+@if (_workers == null || _positions == null || AppState.User == null)
 {
     <p><em>Загрузка...</em></p>
 }
 else
 {
-    <AddButton @onclick="ShowAddModal">Добавить</AddButton>
+    @if (_canCRUD)
+    {
+        <AddButton @onclick="ShowAddModal">Добавить</AddButton>
+    }
 
     <QuickGrid Items="_workers" class="table">
         <PropertyColumn Property="@(l => l.FirstName)" Sortable="true" Title="Имя" class="align-middle" />
         <PropertyColumn Property="@(l => l.MiddleName)" Sortable="true" Title="Отчество" class="align-middle" />
         <PropertyColumn Property="@(l => l.LastName)" Sortable="true" Title="Фамилия" class="align-middle" />
         <PropertyColumn Property="@(l => _positions.First(p => p.Id == l.Position.Id).Name)" Sortable="true" Title="Должность" class="align-middle" />
-        <TemplateColumn class="text-end">
-            <EditButton @onclick="() => ShowEditModal(context)" />
-            <DeleteButton @onclick="async () => await Delete(context)" />
-        </TemplateColumn>
+        @if (_canCRUD)
+        {
+            <TemplateColumn class="text-end">
+                <EditButton @onclick="() => ShowEditModal(context)" />
+                <DeleteButton @onclick="async () => await Delete(context)" />
+            </TemplateColumn>
+        }
     </QuickGrid>
 
     <Modal IsVisible="_isAddModalVisible" OnClose="CloseModal">
@@ -134,8 +142,12 @@ else
     private bool _isServerErrorAlertVisible = false;
     private string? _errorMessage = "";
 
+    private bool _canCRUD => AppState.IsAdmin;
+
     protected override async Task OnInitializedAsync()
     {
+        AppState.OnUserInitialized += StateHasChanged;
+
         var workers = await HttpClient.GetFromJsonAsync<List<WorkerResponse>>("api/worker/");
         if (workers != null)
             _workers = workers.Where(w => w.Position.Id != 4).AsQueryable();

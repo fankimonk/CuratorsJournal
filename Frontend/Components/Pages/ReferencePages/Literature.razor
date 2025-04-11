@@ -1,34 +1,42 @@
 ﻿@page "/Literature"
- 
+
 @using Contracts.Literature
 @using Frontend.Components.Buttons
 @using Frontend.Components.Utils
+@using Frontend.Services
 @using Microsoft.AspNetCore.Components.QuickGrid
 
 @attribute [Authorize]
 
 @inject HttpClient HttpClient
+@inject AppState AppState
 
 <PageTitle>Список литературы</PageTitle>
 
 <h1>Список литературы</h1>
 
-@if (_literature == null)
+@if (_literature == null || AppState.User == null)
 {
     <p><em>Загрузка...</em></p>
 }
 else
 {
-    <AddButton @onclick="ShowAddModal">Добавить</AddButton>
+    @if (_canCRUD)
+    {
+        <AddButton @onclick="ShowAddModal">Добавить</AddButton>
+    }
 
     <QuickGrid Items="_literature" class="table">
         <PropertyColumn Property="@(l => l.Author)" Sortable="true" Title="Автор" class="align-middle" />
         <PropertyColumn Property="@(l => l.Name)" Sortable="true" Title="Название" class="align-middle" />
         <PropertyColumn Property="@(l => l.BibliographicData)" Title="Библиографические данные" class="align-middle" />
-        <TemplateColumn class="text-end">
-            <EditButton @onclick="() => ShowEditModal(context)" />
-            <DeleteButton @onclick="async () => await Delete(context)" />
-        </TemplateColumn>
+        @if (_canCRUD)
+        {
+            <TemplateColumn class="text-end">
+                <EditButton @onclick="() => ShowEditModal(context)" />
+                <DeleteButton @onclick="async () => await Delete(context)" />
+            </TemplateColumn>
+        }
     </QuickGrid>
 
     <Modal IsVisible="_isAddModalVisible" OnClose="CloseModal">
@@ -110,8 +118,12 @@ else
     private bool _isServerErrorAlertVisible = false;
     private string? _errorMessage = "";
 
+    private bool _canCRUD => AppState.User != null && AppState.RolesThatAreAllowedToCreateEntities.Contains(AppState.User.Role.Name);
+
     protected override async Task OnInitializedAsync()
     {
+        AppState.OnUserInitialized += StateHasChanged;
+
         var literature = await HttpClient.GetFromJsonAsync<List<LiteratureResponse>>("api/literature/");
         if (literature != null)
             _literature = literature.AsQueryable();
