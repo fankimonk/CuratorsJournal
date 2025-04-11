@@ -175,7 +175,9 @@ namespace DataAccess.Repositories
 
                 case PageTypes.FinalPerformanceAccounting:
                     pages = pages.Include(p => p.FinalPerformanceAccounting)
-                        .ThenInclude(r => r.Student);
+                        .ThenInclude(r => r.Student)
+                        .Include(p => p.FinalPerformanceAccounting)
+                        .ThenInclude(r => r.PerformanceAccountingGrades);
                     break;
 
                 case PageTypes.CuratorsIdeologicalAndEducationalWorkAccounting:

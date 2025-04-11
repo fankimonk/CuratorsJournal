@@ -187,45 +187,52 @@ namespace Application.Services.Word
 
             table.AppendChild(headerRow3);
 
-            //foreach (var record in records)
-            //{
-            //    TableRow row = new TableRow();
+            foreach (var record in records)
+            {
+                TableRow row = new TableRow();
 
-            //    TableCell keyIndicatorNameCell = new TableCell(new Paragraph(new Run(WordUtils.GetRunProperties(),
-            //        new Text(IndicatorsNames[record.KeyIndicatorId]))));
-            //    keyIndicatorNameCell.Append(new TableCellProperties(
-            //        new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = numberColumnWidth.ToString() }));
+                TableCell numberCell = new TableCell(new Paragraph(new Run(WordUtils.GetRunProperties(),
+                    new Text(record.Number.ToString() ?? ""))));
+                numberCell.Append(new TableCellProperties(
+                    new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = numberColumnWidth.ToString() }));
+                row.Append(numberCell);
 
-            //    row.Append(keyIndicatorNameCell);
+                TableCell studentCell = new TableCell(new Paragraph(new Run(WordUtils.GetRunProperties(),
+                    new Text(record.Student == null ? "" : GetStudentFIO(record.Student)))));
+                studentCell.Append(new TableCellProperties(
+                    new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = studentColumnWidth.ToString() }));
+                row.Append(studentCell);
 
-            //    foreach (var i in record.KeyIndicatorsByCourse)
-            //    {
-            //        string indicatorStr = "";
-            //        if (record.KeyIndicatorId != 5)
-            //            indicatorStr = i.Value == null ? "" : ((int)i.Value).ToString();
-            //        else
-            //            indicatorStr = i.Value == null ? "" : ((double)i.Value).ToString();
+                foreach (var ct in certificationTypes)
+                {
+                    foreach (var column in ct.PerformanceAccountingColumns)
+                    {
+                        var grade = record.PerformanceAccountingGrades.FirstOrDefault(g => g.PerformanceAccountingColumnId == column.Id);
 
-            //        var indicatorByCourseCell = new TableCell(
-            //                new TableCellProperties(
-            //                    new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = (studentColumnWidth / _courses.Count).ToString() }
-            //                ),
-            //                new Paragraph(new Run(WordUtils.GetRunProperties(), new Text(indicatorStr)))
-            //            );
+                        string gradeText = "";
+                        gradeText += grade == null ? "" : ct.Id != 2 ? grade.Grade == null ? "" : grade.Grade.ToString() : 
+                            grade.IsPassed == null ? "" : (bool)grade.IsPassed ? "з." : "н.з.";
 
-            //        row.Append(indicatorByCourseCell);
-            //    }
+                        var gradeCell = new TableCell(
+                            new TableCellProperties(
+                                new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = gradeColumnWidth.ToString() }
+                            ),
+                            new Paragraph(new Run(WordUtils.GetRunProperties(), new Text(gradeText)))
+                        );
 
-            //    TableCell noteValueCell = new TableCell(new Paragraph(new Run(WordUtils.GetRunProperties(),
-            //        new Text(record.Note == null ? "" : record.Note))));
-            //    noteValueCell.Append(new TableCellProperties(
-            //        new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = subjectColumnWidth.ToString() }));
+                        row.Append(gradeCell);
+                    }
+                }
 
-            //    row.Append(noteValueCell);
-            //    table.Append(row);
-            //}
+                table.Append(row);
+            }
 
             _documentBody.Append(table);
+        }
+
+        private string GetStudentFIO(Student student)
+        {
+            return student.LastName + " " + student.FirstName + " " + student.MiddleName;
         }
 
         private int GetColumnCount() => _certificationTypes.SelectMany(ct => ct.PerformanceAccountingColumns!).Count();
