@@ -1,4 +1,8 @@
-﻿<div class="top-row ps-3 navbar navbar-dark">
+﻿@using Frontend.Services
+
+@inject AppState AppState
+
+<div class="top-row ps-3 navbar navbar-dark">
     <div class="container-fluid">
         <a class="navbar-brand" href="">Frontend</a>
     </div>
@@ -9,105 +13,116 @@
 <div class="nav-scrollable" onclick="document.querySelector('.navbar-toggler').click()">
     <nav class="nav flex-column">
         <div class="nav-item px-3">
-            <NavLink class="nav-link d-flex justify-content-between" style="position:relative; cursor:pointer;" @onclick="ToggleReferencePagesExpanded">
+            <NavLink class="nav-link" href="/" Match="NavLinkMatch.All">
                 <span class="text-nowrap">
-                    @if (_areReferencePagesExpanded)
-                    {
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-up-fill" viewBox="0 0 16 16">
-                            <path d="m7.247 4.86-4.796 5.481c-.566.647-.106 1.659.753 1.659h9.592a1 1 0 0 0 .753-1.659l-4.796-5.48a1 1 0 0 0-1.506 0z"></path>
-                        </svg>
-                    }
-                    else
-                    {
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-down-fill" viewBox="0 0 16 16">
-                            <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"></path>
-                        </svg>
-                    }
-                    Страницы-справочники
+                    Журналы
                 </span>
             </NavLink>
-            @if (_areReferencePagesExpanded)
+            @if (AppState.User != null)
             {
-                <NavLink class="nav-link ms-4" href="/Users" Match="NavLinkMatch.All">
+                <NavLink class="nav-link d-flex justify-content-between" style="position:relative; cursor:pointer;" @onclick="ToggleReferencePagesExpanded">
                     <span class="text-nowrap">
-                        Аккаунты
+                        @if (_areReferencePagesExpanded)
+                        {
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-up-fill" viewBox="0 0 16 16">
+                                <path d="m7.247 4.86-4.796 5.481c-.566.647-.106 1.659.753 1.659h9.592a1 1 0 0 0 .753-1.659l-4.796-5.48a1 1 0 0 0-1.506 0z"></path>
+                            </svg>
+                        }
+                        else
+                        {
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-down-fill" viewBox="0 0 16 16">
+                                <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"></path>
+                            </svg>
+                        }
+                        Страницы-справочники
                     </span>
                 </NavLink>
-                <NavLink class="nav-link ms-4" href="/Literature" Match="NavLinkMatch.All">
-                    <span class="text-nowrap">
-                        Список литературы
-                    </span>                    
-                </NavLink>
-                <NavLink class="nav-link ms-4" href="/AcademicYears" Match="NavLinkMatch.All">
-                    <span class="text-nowrap">
-                        Учебные годы
-                    </span>
-                </NavLink>
-                <NavLink class="nav-link ms-4" href="/Subjects" Match="NavLinkMatch.All">
-                    <span class="text-nowrap">
-                        Предметы
-                    </span>  
-                </NavLink>
-                <NavLink class="nav-link ms-4" href="/Positions" Match="NavLinkMatch.All">
-                    <span class="text-nowrap">
-                        Должности
-                    </span>
-                </NavLink>
-                <NavLink class="nav-link ms-4" href="/HolidayTypes" Match="NavLinkMatch.All">
-                    <span class="text-nowrap">
-                        Категории праздников
-                    </span>
-                </NavLink>
-                <NavLink class="nav-link ms-4" href="/ChronicDiseases" Match="NavLinkMatch.All">
-                    <span class="text-nowrap">
-                        Хронические заболевания
-                    </span>
-                </NavLink>
-                <NavLink class="nav-link ms-4" href="/PEGroups" Match="NavLinkMatch.All">
-                    <span class="text-nowrap">
-                        Группы по физической культуре
-                    </span>
-                </NavLink>
-                <NavLink class="nav-link ms-4" href="/Workers" Match="NavLinkMatch.All">
-                    <span class="text-nowrap">
-                        Сотрудники
-                    </span>
-                </NavLink>
-                <NavLink class="nav-link ms-4" href="/Students" Match="NavLinkMatch.All">
-                    <span class="text-nowrap">
-                        Студенты
-                    </span>
-                </NavLink>
-                <NavLink class="nav-link ms-4" href="/Faculties" Match="NavLinkMatch.All">
-                    <span class="text-nowrap">
-                        Факультеты
-                    </span>
-                </NavLink>
-                <NavLink class="nav-link ms-4" href="/Deaneries" Match="NavLinkMatch.All">
-                    <span class="text-nowrap">
-                        Деканаты
-                    </span>
-                </NavLink>
-                <NavLink class="nav-link ms-4" href="/Departments" Match="NavLinkMatch.All">
-                    <span class="text-nowrap">
-                        Кафедры
-                    </span>
-                </NavLink>
-                <NavLink class="nav-link ms-4" href="/Groups" Match="NavLinkMatch.All">
-                    <span class="text-nowrap">
-                        Группы
-                    </span>
-                </NavLink>
-                <NavLink class="nav-link ms-4" href="/Specialties" Match="NavLinkMatch.All">
-                    <span class="text-nowrap">
-                        Специальности
-                    </span>
-                </NavLink>
-                <NavLink class="nav-link ms-4" href="/Teachers" Match="NavLinkMatch.All">
-                    <span class="text-nowrap">
-                        Преподаватели
-                    </span>
-                </NavLink>
+                @if (_areReferencePagesExpanded)
+                {
+                    @if (AppState.User.Role.Name == "Admin")
+                    {
+                        <NavLink class="nav-link ms-4" href="/Users" Match="NavLinkMatch.All">
+                            <span class="text-nowrap">
+                                Аккаунты
+                            </span>
+                        </NavLink>
+                    }
+                    <NavLink class="nav-link ms-4" href="/Groups" Match="NavLinkMatch.All">
+                        <span class="text-nowrap">
+                            Группы
+                        </span>
+                    </NavLink>
+                    <NavLink class="nav-link ms-4" href="/Students" Match="NavLinkMatch.All">
+                        <span class="text-nowrap">
+                            Студенты
+                        </span>
+                    </NavLink>
+                    <NavLink class="nav-link ms-4" href="/Subjects" Match="NavLinkMatch.All">
+                        <span class="text-nowrap">
+                            Предметы
+                        </span>
+                    </NavLink>
+                    <NavLink class="nav-link ms-4" href="/Teachers" Match="NavLinkMatch.All">
+                        <span class="text-nowrap">
+                            Преподаватели
+                        </span>
+                    </NavLink>
+                    <NavLink class="nav-link ms-4" href="/Literature" Match="NavLinkMatch.All">
+                        <span class="text-nowrap">
+                            Список литературы
+                        </span>
+                    </NavLink>
+                    <NavLink class="nav-link ms-4" href="/HolidayTypes" Match="NavLinkMatch.All">
+                        <span class="text-nowrap">
+                            Категории праздников
+                        </span>
+                    </NavLink>
+                    <NavLink class="nav-link ms-4" href="/ChronicDiseases" Match="NavLinkMatch.All">
+                        <span class="text-nowrap">
+                            Хронические заболевания
+                        </span>
+                    </NavLink>
+                    <NavLink class="nav-link ms-4" href="/PEGroups" Match="NavLinkMatch.All">
+                        <span class="text-nowrap">
+                            Группы по физической культуре
+                        </span>
+                    </NavLink>
+                    <NavLink class="nav-link ms-4" href="/AcademicYears" Match="NavLinkMatch.All">
+                        <span class="text-nowrap">
+                            Учебные годы
+                        </span>
+                    </NavLink>
+                    <NavLink class="nav-link ms-4" href="/Faculties" Match="NavLinkMatch.All">
+                        <span class="text-nowrap">
+                            Факультеты
+                        </span>
+                    </NavLink>
+                    <NavLink class="nav-link ms-4" href="/Deaneries" Match="NavLinkMatch.All">
+                        <span class="text-nowrap">
+                            Деканаты
+                        </span>
+                    </NavLink>
+                    <NavLink class="nav-link ms-4" href="/Departments" Match="NavLinkMatch.All">
+                        <span class="text-nowrap">
+                            Кафедры
+                        </span>
+                    </NavLink>
+                    <NavLink class="nav-link ms-4" href="/Specialties" Match="NavLinkMatch.All">
+                        <span class="text-nowrap">
+                            Специальности
+                        </span>
+                    </NavLink>
+                    <NavLink class="nav-link ms-4" href="/Workers" Match="NavLinkMatch.All">
+                        <span class="text-nowrap">
+                            Сотрудники
+                        </span>
+                    </NavLink>
+                    <NavLink class="nav-link ms-4" href="/Positions" Match="NavLinkMatch.All">
+                        <span class="text-nowrap">
+                            Должности
+                        </span>
+                    </NavLink>
+                }
             }
         </div>
     </nav>
@@ -117,4 +132,9 @@
     private bool _areReferencePagesExpanded = false;
 
     private void ToggleReferencePagesExpanded() => _areReferencePagesExpanded = !_areReferencePagesExpanded;
+
+    protected override async Task OnInitializedAsync()
+    {
+        AppState.OnUserInitialized += StateHasChanged;
+    }
 }

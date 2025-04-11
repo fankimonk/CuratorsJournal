@@ -1,10 +1,12 @@
 ﻿using API.Mappers;
+using Application.Authorization;
 using Contracts.ChronicDiseases;
 using Contracts.PEGroups;
 using Contracts.Students;
 using Contracts.Students.ChronicDiseases;
 using Contracts.Students.PEGroups;
 using DataAccess.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -21,9 +23,13 @@ namespace API.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult<List<StudentResponse>>> GetAll([FromQuery] StudentsQuery query)
         {
-            var students = await _studentsRepository.GetAllAsync(query.GroupId);
+            var userId = int.Parse(HttpContext.User.Claims.FirstOrDefault(c => c.Type == CustomClaims.UserId)!.Value);
+
+            var students = await _studentsRepository.GetAllAsync(userId, query.GroupId);
+            if (students == null) return BadRequest();
 
             var response = students.Select(s => s.ToResponse()).ToList();
             return Ok(response);

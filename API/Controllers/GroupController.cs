@@ -4,6 +4,7 @@ using DataAccess.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using API.Mappers;
 using Microsoft.AspNetCore.Authorization;
+using Application.Authorization;
 
 namespace API.Controllers
 {
@@ -21,12 +22,16 @@ namespace API.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult<List<GroupResponse>>> GetAll()
         {
-            var groups = await _groupsRepository.GetAllAsync();
+            var userId = int.Parse(HttpContext.User.Claims.FirstOrDefault(c => c.Type == CustomClaims.UserId)!.Value);
 
-            var response = groups.Select(g => g.ToResponse());
-            return Ok(groups);
+            var groups = await _groupsRepository.GetAllAsync(userId);
+            if (groups == null) return BadRequest();
+
+            var response = groups.Select(g => new GroupResponse(g.Id, g.Number, g.AdmissionYear, g.SpecialtyId, g.CuratorId)).ToList();
+            return Ok(response);
         }
 
         [HttpPost]

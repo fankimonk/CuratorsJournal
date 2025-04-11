@@ -4,6 +4,9 @@ using Application.Interfaces;
 using DataAccess.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Contracts.Curator;
+using Microsoft.AspNetCore.Authorization;
+using Application.Authorization;
+using Domain.Entities;
 
 namespace API.Controllers
 {
@@ -26,9 +29,13 @@ namespace API.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult<List<JournalResponse>>> GetAll()
         {
-            var journals = await _journalsRepository.GetAllAsync();
+            var userId = int.Parse(HttpContext.User.Claims.FirstOrDefault(c => c.Type == CustomClaims.UserId)!.Value);
+
+            var journals = await _journalsRepository.GetAllAsync(userId);
+            if (journals == null) return BadRequest();
 
             var journalResponses = journals.Select(j =>
             {

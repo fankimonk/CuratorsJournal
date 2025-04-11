@@ -6,11 +6,34 @@ namespace DataAccess.Repositories
 {
     public class JournalsRepository(CuratorsJournalDBContext dbContext) : RepositoryBase(dbContext), IJournalsRepository
     {
-        public async Task<List<Journal>> GetAllAsync()
+        public async Task<List<Journal>?> GetAllAsync(int userId)
         {
-            return await _dbContext.Journals.AsNoTracking()
-                .Include(j => j.Group).ThenInclude(c => c!.Curator).ThenInclude(t => t!.Worker)
-                .ToListAsync();
+            var user = await _dbContext.Users.AsNoTracking().FirstOrDefaultAsync(u => u.Id == userId);
+            if (user == null) return null;
+
+            var journals = _dbContext.Journals.Include(j => j.Group)
+                .ThenInclude(c => c!.Curator).ThenInclude(t => t!.Worker).AsNoTracking();
+
+            if (user.RoleId == 1 || user.RoleId == 5) return await journals.ToListAsync();
+            if (user.RoleId == 2 || user.RoleId == 3 || user.RoleId == 4)
+            {
+                journals = journals
+                        .Include(j => j.Group)
+                        .ThenInclude(g => g!.Specialty)
+                        .ThenInclude(s => s!.Department)
+                        .ThenInclude(d => d!.Deanery);
+                if (user.RoleId == 2) return await journals.Where(j => j.Group!.Specialty!.Department!.Deanery!.DeanId == user.WorkerId).ToListAsync();
+                else if (user.RoleId == 3) return await journals.Where(j => j.Group!.Specialty!.Department!.Deanery!.DeputyDeanId == user.WorkerId).ToListAsync();
+                else return await journals.Where(j => j.Group!.Specialty!.Department!.HeadId == user.WorkerId).ToListAsync();
+            }
+            if (user.RoleId == 6)
+            {
+                var teacher = await _dbContext.Teachers.AsNoTracking().FirstOrDefaultAsync(t => t.WorkerId == user.WorkerId);
+                if (teacher == null) return null;
+                return await journals.Where(j => j.Group!.CuratorId == teacher.Id).ToListAsync();
+            }
+
+            return null;
         }
 
         public async Task<Journal?> GetById(int journalId)

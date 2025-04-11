@@ -1,14 +1,18 @@
 ﻿@page "/Students"
 
+@inherits PageBase
+
 @using Contracts.Groups
 @using Contracts.Students
 @using Frontend.Components.Buttons
 @using Frontend.Components.Utils
+@using Frontend.Services
 @using Microsoft.AspNetCore.Components.QuickGrid
 
 @attribute [Authorize]
 
 @inject HttpClient HttpClient
+@inject APIService APIService
 
 <PageTitle>Студенты</PageTitle>
 
@@ -147,16 +151,20 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        var getStudentsUri = "api/student/";
-        if (GroupId != null) getStudentsUri += $"?GroupId={GroupId}";
-
-        var students = await HttpClient.GetFromJsonAsync<List<StudentResponse>>(getStudentsUri);
+        var students = await APIService.GetFromJsonAsync<List<StudentResponse>>(GetStudentsUri());
         if (students != null)
             _students = students.AsQueryable();
 
-        _groups = await HttpClient.GetFromJsonAsync<List<GroupResponse>>("api/group");
+        _groups = await APIService.GetFromJsonAsync<List<GroupResponse>>("api/group");
 
-        StudentToAdd.GroupId = GroupId;
+        StudentToAdd.GroupId = _groups!.Any(g => g.Id == GroupId) ? GroupId : null;
+    }
+
+    private string GetStudentsUri()
+    {
+        var studentsUri = "api/student/";
+        if (GroupId != null) studentsUri += $"?GroupId={GroupId}";
+        return studentsUri;
     }
 
     protected void FilterStudents()
@@ -243,7 +251,7 @@ else
 
     private void CloseModal()
     {
-        StudentToAdd = new("", "", "", null, GroupId);
+        StudentToAdd = new("", "", "", null, _groups!.Any(g => g.Id == GroupId) ? GroupId : null);
         _studentToEditId = -1;
         StudentToEdit = new("", "", "", null, -1);
         _isModalVisible = false;

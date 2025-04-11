@@ -4,8 +4,7 @@ namespace DataAccess.Interfaces
 {
     public interface IGroupsRepository
     {
-        Task<List<Group>> GetAllAsync();
-        Task<Group?> GetByIdAsync(int id);
+        Task<List<Group>?> GetAllAsync(int userId);
         Task<Group?> GetByJournalId(int id);
         Task<Group?> CreateAsync(Group group);
         Task<Group?> UpdateAsync(int id, Group group);

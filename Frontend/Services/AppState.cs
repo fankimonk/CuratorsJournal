@@ -10,6 +10,10 @@ namespace Frontend.Services
     {
         public UserResponse? User { get; private set; }
 
+        public Action? OnUserInitialized;
+
+        public List<string> RolesThatAreAllowedToCreateEntities = ["Admin", "Dean", "DeputyDean", "HeadOfDepartment", "Teacher"];
+
         private readonly JwtAuthenticationStateProvider _authStateProvider = authStateProvider;
         private readonly AccessTokenService _accessTokenService = accessTokenService;
         private readonly AuthService _authService = authService;
@@ -38,6 +42,8 @@ namespace Frontend.Services
                     $"WorkerId: {User.WorkerId}\n" +
                     $"Token: {User.Token}\n" +
                     $"TokenExpires: {User.TokenExpires}");
+
+                OnUserInitialized?.Invoke();
             }
         }
 

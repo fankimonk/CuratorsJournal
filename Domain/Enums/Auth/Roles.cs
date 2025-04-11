@@ -6,8 +6,7 @@
         Dean = 2,
         DeputyDean = 3,
         HeadOfDepartment = 4,
-        Curator = 5,
-        SocialDepartmentWorker = 6,
-        Teacher = 7
+        SocialDepartmentWorker = 5,
+        Teacher = 6
     }
 }

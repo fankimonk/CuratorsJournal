@@ -27,7 +27,7 @@ else
         <PropertyColumn Property="@(l => l.Name)" Sortable="true" Title="Название" class="align-middle" />
         <PropertyColumn Property="@(l => l.AbbreviatedName)" Sortable="true" Title="Аббревиатура" class="align-middle" />
         <PropertyColumn Property="@(l => GetHeadFIOById(l.HeadId))" Sortable="true" Title="Зав. кафедры" class="align-middle" />
-        <PropertyColumn Property="@(l => "Деканат " + _deaneries.FirstOrDefault(d => d.Id == l.DeaneryId)!.Faculty!.AbbreviatedName)" Sortable="true" Title="Зав. кафедры" class="align-middle" />
+        <PropertyColumn Property="@(l => "Деканат " + _deaneries.FirstOrDefault(d => d.Id == l.DeaneryId)!.Faculty!.AbbreviatedName)" Sortable="true" Title="Деканат" class="align-middle" />
         <TemplateColumn class="text-end">
             <EditButton @onclick="() => ShowEditModal(context)" />
             <DeleteButton @onclick="async () => await Delete(context)" />

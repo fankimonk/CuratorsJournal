@@ -52,7 +52,7 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        _journals = await HttpClient.GetFromJsonAsync<List<JournalResponse>>("api/journal");
+        _journals = await APIService.GetFromJsonAsync<List<JournalResponse>>("api/journal");
 
         await APIService.GetAsync("api/auth/verify");
     }

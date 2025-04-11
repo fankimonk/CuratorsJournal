@@ -5,11 +5,13 @@
 @using Contracts.Teachers
 @using Frontend.Components.Buttons
 @using Frontend.Components.Utils
+@using Frontend.Services
 @using Microsoft.AspNetCore.Components.QuickGrid
 
 @attribute [Authorize]
 
 @inject HttpClient HttpClient
+@inject APIService APIService
 
 <PageTitle>Группы</PageTitle>
 
@@ -149,7 +151,7 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        var literature = await HttpClient.GetFromJsonAsync<List<GroupResponse>>("api/group/");
+        var literature = await APIService.GetFromJsonAsync<List<GroupResponse>>("api/group/");
         if (literature != null)
             _groups = literature.AsQueryable();
 

@@ -4,7 +4,7 @@ namespace DataAccess.Interfaces
 {
     public interface IStudentsRepository
     {
-        Task<List<Student>> GetAllAsync(int? groupId);
+        Task<List<Student>?> GetAllAsync(int userId, int? groupId);
         Task<List<Student>?> GetByGroupIdAsync(int id);
         Task<List<Student>?> GetByJournalIdAsync(int id);
         Task<Student?> CreateAsync(Student student);

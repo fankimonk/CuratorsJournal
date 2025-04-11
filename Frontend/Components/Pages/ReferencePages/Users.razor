@@ -1,26 +1,34 @@
 ﻿@page "/Users"
 
+@inherits PageBase
+
 @using API.Contracts.User
 @using Contracts.User
 @using Contracts.Workers
 @using Frontend.Components.Buttons
 @using Frontend.Components.Utils
+@using Frontend.Services
 @using Microsoft.AspNetCore.Components.QuickGrid
 
-@attribute [Authorize]
+@attribute [Authorize(Roles = "Admin")]
 
 @inject HttpClient HttpClient
+@inject AppState AppState
 
 <PageTitle>Аккаунты</PageTitle>
 
 <h1>Аккаунты</h1>
 
-@if (_users == null || _roles == null || _workers == null)
+@if (_users == null || _roles == null || _workers == null || AppState.User == null)
 {
     <p><em>Загрузка...</em></p>
 }
 else
 {
+    {
+        if (AppState.User.Role.Name != "Admin") NavigateToAccessDeniedPage();    
+    }
+
     <AddButton @onclick="ShowAddModal">Добавить</AddButton>
 
     <QuickGrid Items="_users" class="table">
@@ -101,6 +109,8 @@ else
 
     protected override async Task OnInitializedAsync()
     {
+        AppState.OnUserInitialized += StateHasChanged;
+
         var users = await HttpClient.GetFromJsonAsync<List<UserResponse>>("api/user");
         if (users != null)
             _users = users.AsQueryable();

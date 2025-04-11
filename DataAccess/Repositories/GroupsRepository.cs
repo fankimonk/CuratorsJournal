@@ -9,14 +9,29 @@ namespace DataAccess.Repositories
     {
         private readonly ICuratorsAppointmentHistoryRepository _curatorsAppointmentHistoryRepository = curatorsAppointmentHistoryRepository;
 
-        public async Task<List<Group>> GetAllAsync()
+        public async Task<List<Group>?> GetAllAsync(int userId)
         {
-            return await _dbContext.Groups.AsNoTracking().ToListAsync();
-        }
+            var user = await _dbContext.Users.AsNoTracking().FirstOrDefaultAsync(u => u.Id == userId);
+            if (user == null) return null;
 
-        public async Task<Group?> GetByIdAsync(int id)
-        {
-            return await _dbContext.Groups.AsNoTracking().FirstOrDefaultAsync(g => g.Id == id);
+            var groups = _dbContext.Groups.AsNoTracking();
+
+            if (user.RoleId == 1 || user.RoleId == 5) return await groups.ToListAsync();
+            if (user.RoleId == 2 || user.RoleId == 3 || user.RoleId == 4)
+            {
+                groups = groups.Include(g => g.Specialty).ThenInclude(s => s!.Department).ThenInclude(d => d!.Deanery);
+                if (user.RoleId == 2) return await groups.Where(j => j.Specialty!.Department!.Deanery!.DeanId == user.WorkerId).ToListAsync();
+                else if (user.RoleId == 3) return await groups.Where(j => j.Specialty!.Department!.Deanery!.DeputyDeanId == user.WorkerId).ToListAsync();
+                else return await groups.Where(j => j.Specialty!.Department!.HeadId == user.WorkerId).ToListAsync();
+            }
+            if (user.RoleId == 6)
+            {
+                var teacher = await _dbContext.Teachers.AsNoTracking().FirstOrDefaultAsync(t => t.WorkerId == user.WorkerId);
+                if (teacher == null) return null;
+                return await groups.Where(j => j.CuratorId == teacher.Id).ToListAsync();
+            }
+
+            return null;
         }
 
         public async Task<Group?> CreateAsync(Group group)
