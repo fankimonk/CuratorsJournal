@@ -55,6 +55,9 @@ namespace Application.Services.Word
 
             table.AppendChild(tblProperties);
 
+            ParagraphProperties paragraphProperties = new ParagraphProperties(new Justification { Val = JustificationValues.Center },
+                new SpacingBetweenLines { Before = "0", After = "0" });
+
             TableGrid tableGrid = new TableGrid(
                 new GridColumn() { Width = "1000" },
                 new GridColumn() { Width = "5600" },
@@ -64,20 +67,22 @@ namespace Application.Services.Word
 
             TableRow headRow = new TableRow();
 
-            TableCell dateHeadCell = new TableCell(new Paragraph(new Run(WordUtils.GetRunProperties(bold: true),
+            TableCell dateHeadCell = new TableCell(new Paragraph(paragraphProperties.CloneNode(true),
+                new Run(WordUtils.GetRunProperties(bold: true),
                     new Text("Дата"))));
             dateHeadCell.Append(new TableCellProperties(
                 new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = "1000" }));
 
-            TableCell workContentHeadCell = new TableCell(new Paragraph(
+            TableCell workContentHeadCell = new TableCell(new Paragraph(paragraphProperties.CloneNode(true),
                 new Run(WordUtils.GetRunProperties(bold: true),
                     new Text("Содержание работы"))
             ));
             workContentHeadCell.Append(new TableCellProperties(
                 new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = "5600" }));
 
-            TableCell noteHeadCell = new TableCell(new Paragraph(new Run(WordUtils.GetRunProperties(bold: true),
-                new Text("Примечание"))));
+            TableCell noteHeadCell = new TableCell(new Paragraph(paragraphProperties.CloneNode(true),
+                new Run(WordUtils.GetRunProperties(bold: true),
+                    new Text("Примечание"))));
             noteHeadCell.Append(new TableCellProperties(
                 new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = "3400" }));
 
@@ -88,18 +93,21 @@ namespace Application.Services.Word
             {
                 TableRow row = new TableRow();
 
-                TableCell dateCell = new TableCell(new Paragraph(new Run(WordUtils.GetRunProperties(fontSize: "24"),
-                    new Text(record.Date == null ? "" : ((DateOnly)record.Date).ToString()))));
+                TableCell dateCell = new TableCell(new Paragraph(paragraphProperties.CloneNode(true),
+                    new Run(WordUtils.GetRunProperties(fontSize: "24"),
+                        new Text(record.Date == null ? "" : ((DateOnly)record.Date).ToString()))));
                 dateCell.Append(new TableCellProperties(
                     new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = "1000" }));
 
-                TableCell workContentCell = new TableCell(new Paragraph(new Run(WordUtils.GetRunProperties(fontSize: "24"),
-                    new Text(record.WorkContent == null ? "" : record.WorkContent))));
+                TableCell workContentCell = new TableCell(new Paragraph(paragraphProperties.CloneNode(true), 
+                    new Run(WordUtils.GetRunProperties(fontSize: "24"),
+                        new Text(record.WorkContent == null ? "" : record.WorkContent))));
                 workContentCell.Append(new TableCellProperties(
                     new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = "5600" }));
 
-                TableCell noteCell = new TableCell(new Paragraph(new Run(WordUtils.GetRunProperties(fontSize: "24"),
-                    new Text(record.Note == null ? "" : record.Note))));
+                TableCell noteCell = new TableCell(new Paragraph(paragraphProperties.CloneNode(true), 
+                    new Run(WordUtils.GetRunProperties(fontSize: "24"),
+                        new Text(record.Note == null ? "" : record.Note))));
                 noteCell.Append(new TableCellProperties(
                     new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = "3400" }));
 

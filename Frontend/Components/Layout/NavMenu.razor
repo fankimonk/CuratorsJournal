@@ -20,6 +20,14 @@
             </NavLink>
             @if (AppState.User != null)
             {
+                @if (AppState.User.Role.Name == "Admin")
+                {
+                    <NavLink class="nav-link ms-4" href="/Users" Match="NavLinkMatch.All">
+                        <span class="text-nowrap">
+                            Аккаунты
+                        </span>
+                    </NavLink>
+                }
                 <NavLink class="nav-link d-flex justify-content-between" style="position:relative; cursor:pointer;" @onclick="ToggleReferencePagesExpanded">
                     <span class="text-nowrap">
                         @if (_areReferencePagesExpanded)
@@ -39,14 +47,6 @@
                 </NavLink>
                 @if (_areReferencePagesExpanded)
                 {
-                    @if (AppState.User.Role.Name == "Admin")
-                    {
-                        <NavLink class="nav-link ms-4" href="/Users" Match="NavLinkMatch.All">
-                            <span class="text-nowrap">
-                                Аккаунты
-                            </span>
-                        </NavLink>
-                    }
                     <NavLink class="nav-link ms-4" href="/Groups" Match="NavLinkMatch.All">
                         <span class="text-nowrap">
                             Группы

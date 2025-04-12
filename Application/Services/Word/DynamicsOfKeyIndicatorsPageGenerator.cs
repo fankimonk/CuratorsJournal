@@ -77,32 +77,55 @@ namespace Application.Services.Word
             );
             table.AppendChild(tableProperties);
 
+            TableCellProperties cellProperties = new TableCellProperties(
+                new TableCellVerticalAlignment { Val = TableVerticalAlignmentValues.Top }
+            );
+
+            TableCellMargin cellMargin = new TableCellMargin(
+                new TopMargin { Width = "100", Type = TableWidthUnitValues.Dxa },
+                new BottomMargin { Width = "100", Type = TableWidthUnitValues.Dxa },
+                new LeftMargin { Width = "100", Type = TableWidthUnitValues.Dxa },
+                new RightMargin { Width = "100", Type = TableWidthUnitValues.Dxa }
+            );
+
+            cellProperties.Append(cellMargin);
+
+            ParagraphProperties paragraphProperties = new ParagraphProperties(new Justification { Val = JustificationValues.Center },
+                new SpacingBetweenLines { Before = "0", After = "0" });
+
             var headerRow1 = new TableRow();
 
+            var keyIndicatorsHeadCellProperties = cellProperties.CloneNode(true);
+            keyIndicatorsHeadCellProperties.Append(new VerticalMerge { Val = MergedCellValues.Restart },
+                new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = keyIndicatorsColumnWidth.ToString() });
+
             var keyIndicatorsCell = new TableCell(
-                new TableCellProperties(
-                    new VerticalMerge { Val = MergedCellValues.Restart },
-                    new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = keyIndicatorsColumnWidth.ToString() }
-                ),
-                new Paragraph(new Run(WordUtils.GetRunProperties(bold: true), new Text("Основные показатели")))
+                keyIndicatorsHeadCellProperties,
+                new Paragraph(
+                    paragraphProperties.CloneNode(true),
+                    new Run(WordUtils.GetRunProperties(bold: true), new Text("Основные показатели")))
             );
             headerRow1.AppendChild(keyIndicatorsCell);
 
+            var courseHeadCellProperties = cellProperties.CloneNode(true);
+            courseHeadCellProperties.Append(new GridSpan { Val = _courses.Count },
+                new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = coursesColumnWidth.ToString() });
+
             var courseCell = new TableCell(
-                new TableCellProperties(
-                    new GridSpan { Val = _courses.Count },
-                    new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = coursesColumnWidth.ToString() }
-                ),
-                new Paragraph(new Run(WordUtils.GetRunProperties(bold: true), new Text("Курс")))
+                courseHeadCellProperties,
+                new Paragraph(paragraphProperties.CloneNode(true),
+                    new Run(WordUtils.GetRunProperties(bold: true), new Text("Курс")))
             );
             headerRow1.AppendChild(courseCell);
 
+            var noteHeadCellProperties = cellProperties.CloneNode(true);
+            noteHeadCellProperties.Append(new VerticalMerge { Val = MergedCellValues.Restart },
+                new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = noteColumnWidth.ToString() });
+
             var noteCell = new TableCell(
-                new TableCellProperties(
-                    new VerticalMerge { Val = MergedCellValues.Restart },
-                    new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = noteColumnWidth.ToString() }
-                ),
-                new Paragraph(new Run(WordUtils.GetRunProperties(bold: true), new Text("Примечание")))
+                noteHeadCellProperties,
+                new Paragraph(paragraphProperties.CloneNode(true),
+                    new Run(WordUtils.GetRunProperties(bold: true), new Text("Примечание")))
             );
             headerRow1.AppendChild(noteCell);
 
@@ -119,13 +142,15 @@ namespace Application.Services.Word
             );
             headerRow2.AppendChild(keyIndicatorsEmptyCell);
 
+            var courseValueHeadCellProperties = cellProperties.CloneNode(true);
+            courseValueHeadCellProperties.Append(new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = (coursesColumnWidth / _courses.Count).ToString() });
+
             foreach (var course in _courses)
             {
                 var courseHeaderCell = new TableCell(
-                    new TableCellProperties(
-                        new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = (coursesColumnWidth / _courses.Count).ToString() }
-                    ),
-                    new Paragraph(new Run(WordUtils.GetRunProperties(bold: true), new Text(course.ToString())))
+                    courseValueHeadCellProperties.CloneNode(true),
+                    new Paragraph(paragraphProperties.CloneNode(true),
+                        new Run(WordUtils.GetRunProperties(bold: true), new Text(course.ToString())))
                 );
                 headerRow2.AppendChild(courseHeaderCell);
             }
@@ -145,10 +170,11 @@ namespace Application.Services.Word
             {
                 TableRow row = new TableRow();
 
-                TableCell keyIndicatorNameCell = new TableCell(new Paragraph(new Run(WordUtils.GetRunProperties(),
-                    new Text(IndicatorsNames[record.KeyIndicatorId]))));
-                keyIndicatorNameCell.Append(new TableCellProperties(
-                    new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = keyIndicatorsColumnWidth.ToString() }));
+                TableCell keyIndicatorNameCell = new TableCell(new Paragraph(
+                    new ParagraphProperties(new SpacingBetweenLines { Before = "0", After = "0" }),
+                    new Run(WordUtils.GetRunProperties(),
+                        new Text(IndicatorsNames[record.KeyIndicatorId]))));
+                keyIndicatorNameCell.Append(keyIndicatorsHeadCellProperties.CloneNode(true));
 
                 row.Append(keyIndicatorNameCell);
 
@@ -161,19 +187,19 @@ namespace Application.Services.Word
                         indicatorStr = i.Value == null ? "" : ((double)i.Value).ToString();
 
                     var indicatorByCourseCell = new TableCell(
-                            new TableCellProperties(
-                                new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = (coursesColumnWidth / _courses.Count).ToString() }
-                            ),
-                            new Paragraph(new Run(WordUtils.GetRunProperties(), new Text(indicatorStr)))
+                            courseValueHeadCellProperties.CloneNode(true),
+                            new Paragraph(paragraphProperties.CloneNode(true),
+                                new Run(WordUtils.GetRunProperties(), new Text(indicatorStr)))
                         );
 
                     row.Append(indicatorByCourseCell);
                 }
 
-                TableCell noteValueCell = new TableCell(new Paragraph(new Run(WordUtils.GetRunProperties(),
-                    new Text(record.Note == null ? "" : record.Note))));
-                noteValueCell.Append(new TableCellProperties(
-                    new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = noteColumnWidth.ToString() }));
+                TableCell noteValueCell = new TableCell(new Paragraph(
+                    new ParagraphProperties(new SpacingBetweenLines { Before = "0", After = "0" }),
+                    new Run(WordUtils.GetRunProperties(),
+                        new Text(record.Note == null ? "" : record.Note))));
+                noteValueCell.Append(noteHeadCellProperties.CloneNode(true));
 
                 row.Append(noteValueCell);
                 table.Append(row);

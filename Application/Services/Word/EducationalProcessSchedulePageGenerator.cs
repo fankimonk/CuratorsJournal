@@ -64,6 +64,19 @@ namespace Application.Services.Word
 
             table.AppendChild(tblProperties);
 
+            TableCellProperties cellProperties = new TableCellProperties(
+                new TableCellVerticalAlignment { Val = TableVerticalAlignmentValues.Center }
+            );
+
+            TableCellMargin cellMargin = new TableCellMargin(
+                new TopMargin { Width = "100", Type = TableWidthUnitValues.Dxa },
+                new BottomMargin { Width = "100", Type = TableWidthUnitValues.Dxa },
+                new LeftMargin { Width = "100", Type = TableWidthUnitValues.Dxa },
+                new RightMargin { Width = "100", Type = TableWidthUnitValues.Dxa }
+            );
+
+            //cellProperties.Append(cellMargin);
+
             TableGrid tableGrid = new TableGrid(
                 new GridColumn() { Width = "1250" },
                 new GridColumn() { Width = "1350" },
@@ -74,37 +87,58 @@ namespace Application.Services.Word
             );
             table.AppendChild(tableGrid);
 
+            ParagraphProperties paragraphProperties = new ParagraphProperties(new Justification { Val = JustificationValues.Center },
+                new SpacingBetweenLines { Before = "0", After = "0" });
+
             TableRow headRow = new TableRow();
 
-            TableCell numberHeadCell = new TableCell(new Paragraph(new Run(WordUtils.GetRunProperties(bold: true),
+            TableCell numberHeadCell = new TableCell(new Paragraph(
+                paragraphProperties.CloneNode(true),
+                new Run(WordUtils.GetRunProperties(bold: true),
                     new Text("Семестр"))));
-            numberHeadCell.Append(new TableCellProperties(
-                new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = "1250" }));
+            var numberHeadCellProperties = cellProperties.CloneNode(true);
+            numberHeadCellProperties.Append(new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = "1250" });
+            numberHeadCell.Append(numberHeadCellProperties);
 
-            TableCell startHeadCell = new TableCell(new Paragraph(new Run(WordUtils.GetRunProperties(bold: true),
-                new Text("Начало"))));
-            startHeadCell.Append(new TableCellProperties(
-                new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = "1350" }));
+            TableCell startHeadCell = new TableCell(new Paragraph(
+                paragraphProperties.CloneNode(true),
+                new Run(WordUtils.GetRunProperties(bold: true),
+                    new Text("Начало"))));
+            var startHeadCellProperties = cellProperties.CloneNode(true);
+            startHeadCellProperties.Append(new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = "1350" });
+            startHeadCell.Append(startHeadCellProperties);
 
-            TableCell endHeadCell = new TableCell(new Paragraph(new Run(WordUtils.GetRunProperties(bold: true),
-                new Text("Окончание"))));
-            endHeadCell.Append(new TableCellProperties(
-                new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = "1600" }));
+            TableCell endHeadCell = new TableCell(new Paragraph(
+                paragraphProperties.CloneNode(true),
+                new Run(WordUtils.GetRunProperties(bold: true),
+                    new Text("Окончание"))));
+            var endHeadCellProperties = cellProperties.CloneNode(true);
+            endHeadCellProperties.Append(new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = "1600" });
+            endHeadCell.Append(endHeadCellProperties);
 
-            TableCell sessionHeadCell = new TableCell(new Paragraph(new Run(WordUtils.GetRunProperties(bold: true),
+            TableCell sessionHeadCell = new TableCell(new Paragraph(
+                paragraphProperties.CloneNode(true),
+                new Run(WordUtils.GetRunProperties(bold: true),
                     new Text("Сессия"))));
-            sessionHeadCell.Append(new TableCellProperties(
-                new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = "2000" }));
+            var sessionHeadCellProperties = cellProperties.CloneNode(true);
+            sessionHeadCellProperties.Append(new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = "2000" });
+            sessionHeadCell.Append(sessionHeadCellProperties);
 
-            TableCell practiceHeadCell = new TableCell(new Paragraph(new Run(WordUtils.GetRunProperties(bold: true),
-                new Text("Практика"))));
-            practiceHeadCell.Append(new TableCellProperties(
-                new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = "2200" }));
+            TableCell practiceHeadCell = new TableCell(new Paragraph(
+                paragraphProperties.CloneNode(true), 
+                new Run(WordUtils.GetRunProperties(bold: true),
+                    new Text("Практика"))));
+            var practiceHeadCellProperties = cellProperties.CloneNode(true);
+            practiceHeadCellProperties.Append(new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = "2200" });
+            practiceHeadCell.Append(practiceHeadCellProperties);
 
-            TableCell vacationHeadCell = new TableCell(new Paragraph(new Run(WordUtils.GetRunProperties(bold: true),
-                new Text("Каникулы"))));
-            vacationHeadCell.Append(new TableCellProperties(
-                new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = "1600" }));
+            TableCell vacationHeadCell = new TableCell(new Paragraph(
+                paragraphProperties.CloneNode(true),
+                new Run(WordUtils.GetRunProperties(bold: true),
+                    new Text("Каникулы"))));
+            var vacationHeadCellProperties = cellProperties.CloneNode(true);
+            vacationHeadCellProperties.Append(new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = "1600" });
+            vacationHeadCell.Append(vacationHeadCellProperties);
 
             headRow.Append(numberHeadCell, startHeadCell, endHeadCell, sessionHeadCell, practiceHeadCell, vacationHeadCell);
             table.Append(headRow);
@@ -113,23 +147,22 @@ namespace Application.Services.Word
             {
                 TableRow row = new TableRow();
 
-                TableCell numberCell = new TableCell(new Paragraph(new Run(WordUtils.GetRunProperties(fontSize: "24"),
-                    new Text(record.SemesterNumber == null ? "" : ((int)record.SemesterNumber).ToString()))));
-                numberCell.Append(new TableCellProperties(
-                    new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = "1250" }));
+                TableCell numberCell = new TableCell(new Paragraph(
+                    paragraphProperties.CloneNode(true),
+                    new Run(WordUtils.GetRunProperties(fontSize: "24"),
+                        new Text(record.SemesterNumber == null ? "" : ((int)record.SemesterNumber).ToString()))));
+                numberCell.Append(numberHeadCellProperties.CloneNode(true));
 
-                TableCell startCell = new TableCell(new Paragraph(new Run(WordUtils.GetRunProperties(fontSize: "24"),
+                TableCell startCell = new TableCell(new Paragraph(paragraphProperties.CloneNode(true), new Run(WordUtils.GetRunProperties(fontSize: "24"),
                     new Text(record.StartDate == null ? "" : ((DateOnly)record.StartDate).ToString()))));
-                startCell.Append(new TableCellProperties(
-                    new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = "1350" }));
+                startCell.Append(startHeadCellProperties.CloneNode(true));
 
-                TableCell endCell = new TableCell(new Paragraph(new Run(WordUtils.GetRunProperties(fontSize: "24"),
+                TableCell endCell = new TableCell(new Paragraph(paragraphProperties.CloneNode(true), new Run(WordUtils.GetRunProperties(fontSize: "24"),
                     new Text(record.EndDate == null ? "" : ((DateOnly)record.EndDate).ToString()))));
-                endCell.Append(new TableCellProperties(
-                    new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = "1600" }));
+                endCell.Append(endHeadCellProperties.CloneNode(true));
 
                 TableCell sessionCell = new TableCell();
-                var sessionCellParagraph = new Paragraph();
+                var sessionCellParagraph = new Paragraph(paragraphProperties.CloneNode(true));
                 var sessionStartDateRun = new Run(WordUtils.GetRunProperties(fontSize: "24"));
                 var sessionEndDateRun = new Run(WordUtils.GetRunProperties(fontSize: "24"));
 
@@ -149,11 +182,10 @@ namespace Application.Services.Word
                 sessionCellParagraph.Append(sessionEndDateRun);
                 sessionCell.Append(sessionCellParagraph);
 
-                sessionCell.Append(new TableCellProperties(
-                    new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = "2000" }));
+                sessionCell.Append(sessionHeadCellProperties.CloneNode(true));
 
                 TableCell practiceCell = new TableCell();
-                var practiceCellParagraph = new Paragraph();
+                var practiceCellParagraph = new Paragraph(paragraphProperties.CloneNode(true));
                 var practiceStartDateRun = new Run(WordUtils.GetRunProperties(fontSize: "24"));
                 var practiceEndDateRun = new Run(WordUtils.GetRunProperties(fontSize: "24"));
 
@@ -173,11 +205,10 @@ namespace Application.Services.Word
                 practiceCellParagraph.Append(practiceEndDateRun);
                 practiceCell.Append(practiceCellParagraph);
 
-                practiceCell.Append(new TableCellProperties(
-                    new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = "2200" }));
+                practiceCell.Append(practiceHeadCellProperties.CloneNode(true));
 
                 TableCell vacationCell = new TableCell();
-                var vacationCellParagraph = new Paragraph();
+                var vacationCellParagraph = new Paragraph(paragraphProperties.CloneNode(true));
                 var vacationStartDateRun = new Run(WordUtils.GetRunProperties(fontSize: "24"));
                 var vacationEndDateRun = new Run(WordUtils.GetRunProperties(fontSize: "24"));
 
@@ -197,8 +228,7 @@ namespace Application.Services.Word
                 vacationCellParagraph.Append(vacationEndDateRun);
                 vacationCell.Append(vacationCellParagraph);
 
-                vacationCell.Append(new TableCellProperties(
-                    new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = "1600" }));
+                vacationCell.Append(vacationHeadCellProperties.CloneNode(true));
 
                 row.Append(numberCell, startCell, endCell, sessionCell, practiceCell, vacationCell);
                 table.Append(row);

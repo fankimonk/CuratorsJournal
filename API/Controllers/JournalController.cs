@@ -61,6 +61,14 @@ namespace API.Controllers
             return Ok(journalResponses);
         }
 
+        [HttpGet("verifyaccess/{journalId}")]
+        [Authorize]
+        public async Task<ActionResult<bool>> VerifyAccess([FromRoute] int journalId)
+        {
+            var userId = int.Parse(HttpContext.User.Claims.FirstOrDefault(c => c.Type == CustomClaims.UserId)!.Value);
+            return Ok(await _journalsRepository.VerifyAccess(userId, journalId));
+        }
+
         [HttpGet("downloadword/{journalId}")]
         public async Task<IActionResult> DownloadWord([FromRoute] int journalId)
         {

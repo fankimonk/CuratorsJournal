@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace Frontend.Services
 {
-    public class JournalState(HttpClient httpClient, NavigationManager navigationManager)
+    public class JournalState(HttpClient httpClient, NavigationManager navigationManager, APIService apiService)
     {
         public int JournalId { get; private set; }
 
@@ -20,7 +20,7 @@ namespace Frontend.Services
 
         private readonly HttpClient _httpClient = httpClient;
         private readonly NavigationManager _navigationManager = navigationManager;
-
+        private readonly APIService _apiService = apiService;
         private LinkedList<PageResponse> _pages = [];
 
         public async Task Initialize(int journalId, int pageId)
@@ -32,6 +32,8 @@ namespace Frontend.Services
                 JournalId = journalId;
                 await FetchContents();
 
+                if (JournalContents == null) return;
+
                 PageTypesNavLinksExpanded.Clear();
                 foreach (var pt in JournalContents!.PageTypes.Where(pt => pt.MaxPages != 1))
                 {
@@ -40,6 +42,8 @@ namespace Frontend.Services
             }
 
             UpdateCurrentPage();
+
+            if (CurrentPageNode == null) return;
 
             if (PageTypesNavLinksExpanded.ContainsKey(CurrentPageNode!.Value!.PageType!.Id))
             {
@@ -90,6 +94,13 @@ namespace Frontend.Services
             JournalContents = null;
             CurrentPageNode = null;
 
+            var hasAccess = await _apiService.GetFromJsonAsync<bool>("api/journal/verifyaccess/" + JournalId);
+            if (!hasAccess)
+            {
+                _navigationManager.NavigateTo("/AccessDenied");
+                return;
+            }
+
             JournalContents = await _httpClient.GetFromJsonAsync<JournalContentsResponse>("api/journal/" + JournalId.ToString() + "/contents/");
 
             RefillPages();
@@ -116,11 +127,12 @@ namespace Frontend.Services
                 if (currentNode.Value.Id == CurrentPageId)
                 {
                     CurrentPageNode = currentNode;
-                    break;
+                    return;
                 }
 
                 currentNode = currentNode.Next;
             }
+            _navigationManager.NavigateTo("/Error");
         }
     }
 }

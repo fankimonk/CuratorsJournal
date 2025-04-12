@@ -1,7 +1,6 @@
 ﻿using Application.Utils;
 using DataAccess.Interfaces;
 using DocumentFormat.OpenXml;
-using DocumentFormat.OpenXml.Bibliography;
 using DocumentFormat.OpenXml.Wordprocessing;
 using Domain.Entities;
 using Domain.Entities.JournalContent;
@@ -70,6 +69,22 @@ namespace Application.Services.Word
 
             table.AppendChild(tblProperties);
 
+            TableCellProperties cellProperties = new TableCellProperties(
+                new TableCellVerticalAlignment { Val = TableVerticalAlignmentValues.Center }
+            );
+
+            //TableCellMargin cellMargin = new TableCellMargin(
+            //    new TopMargin { Width = "100", Type = TableWidthUnitValues.Dxa },
+            //    new BottomMargin { Width = "100", Type = TableWidthUnitValues.Dxa },
+            //    new LeftMargin { Width = "100", Type = TableWidthUnitValues.Dxa },
+            //    new RightMargin { Width = "100", Type = TableWidthUnitValues.Dxa }
+            //);
+
+            //cellProperties.Append(cellMargin);
+
+            ParagraphProperties paragraphProperties = new ParagraphProperties(new Justification { Val = JustificationValues.Center },
+                new SpacingBetweenLines { Before = "0", After = "0" });
+
             TableGrid tableGrid = new TableGrid(
                 new GridColumn() { Width = "650" },
                 new GridColumn() { Width = "6050" },
@@ -80,23 +95,30 @@ namespace Application.Services.Word
 
             TableRow headRow = new TableRow();
 
-            TableCell numberHeadCell = new TableCell(new Paragraph(new Run(WordUtils.GetRunProperties(bold: true),
+            TableCell numberHeadCell = new TableCell(new Paragraph(
+                paragraphProperties.CloneNode(true),
+                new Run(WordUtils.GetRunProperties(bold: true),
                     new Text("№"))));
-            numberHeadCell.Append(new TableCellProperties(
-                new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = "650" }));
+            var numberHeadCellProperties = cellProperties.CloneNode(true);
+            numberHeadCellProperties.Append(new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = "650" });
+            numberHeadCell.Append(numberHeadCellProperties);
 
-            TableCell studentHeadCell = new TableCell(new Paragraph(new Run(WordUtils.GetRunProperties(bold: true),
-                new Text("Фамилия, имя отчество (полностью)"))));
-            studentHeadCell.Append(new TableCellProperties(
-                new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = "6050" }));
+            TableCell studentHeadCell = new TableCell(new Paragraph(paragraphProperties.CloneNode(true),
+                new Run(WordUtils.GetRunProperties(bold: true),
+                    new Text("Фамилия, имя отчество (полностью)"))));
+            var studentHeadCellProperties = cellProperties.CloneNode(true);
+            studentHeadCellProperties.Append(new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = "6050" });
+            studentHeadCell.Append(studentHeadCellProperties);
 
-            TableCell phoneHeadCell = new TableCell(new Paragraph(new Run(WordUtils.GetRunProperties(bold: true),
-                new Text("Контактный телефон"))));
-            phoneHeadCell.Append(new TableCellProperties(
-                new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = "1650" }));
+            TableCell phoneHeadCell = new TableCell(new Paragraph(paragraphProperties.CloneNode(true),
+                new Run(WordUtils.GetRunProperties(bold: true),
+                    new Text("Контактный телефон"))));
+            var phoneHeadCellProperties = cellProperties.CloneNode(true);
+            phoneHeadCellProperties.Append(new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = "1650" });
+            phoneHeadCell.Append(phoneHeadCellProperties);
 
             TableCell cardNumberHeadCell = new TableCell(
-                new Paragraph(
+                new Paragraph(paragraphProperties.CloneNode(true),
                     new Run(WordUtils.GetRunProperties(bold: true),
                         new Text("№ страни-"),
                         new Break()),
@@ -112,8 +134,9 @@ namespace Application.Services.Word
                     new Run(WordUtils.GetRunProperties(bold: true),
                         new Text("учета"))
                 ));
-            cardNumberHeadCell.Append(new TableCellProperties(
-                new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = "1650" }));
+            var cardNumberHeadCellProperties = cellProperties.CloneNode(true);
+            cardNumberHeadCellProperties.Append(new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = "1650" });
+            cardNumberHeadCell.Append(cardNumberHeadCellProperties);
 
             headRow.Append(numberHeadCell, studentHeadCell, phoneHeadCell, cardNumberHeadCell);
             table.Append(headRow);
@@ -122,25 +145,26 @@ namespace Application.Services.Word
             {
                 TableRow row = new TableRow();
 
-                TableCell numberCell = new TableCell(new Paragraph(new Run(WordUtils.GetRunProperties(fontSize: "24"),
-                    new Text(record.Number == null ? "" : ((int)record.Number).ToString()))));
-                numberCell.Append(new TableCellProperties(
-                    new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = "650" }));
+                TableCell numberCell = new TableCell(new Paragraph(
+                    paragraphProperties.CloneNode(true),
+                    new Run(WordUtils.GetRunProperties(fontSize: "24"),
+                        new Text(record.Number == null ? "" : ((int)record.Number).ToString()))));
+                numberCell.Append(numberHeadCellProperties.CloneNode(true));
 
-                TableCell studentCell = new TableCell(new Paragraph(new Run(WordUtils.GetRunProperties(fontSize: "24"),
-                    new Text(record.Student == null ? "" : GetStudentFIO(record.Student)))));
-                studentCell.Append(new TableCellProperties(
-                    new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = "6050" }));
+                TableCell studentCell = new TableCell(new Paragraph(new ParagraphProperties(new SpacingBetweenLines { After = "0", Before = "0" }),
+                    new Run(WordUtils.GetRunProperties(fontSize: "24"),
+                        new Text(record.Student == null ? "" : GetStudentFIO(record.Student)))));
+                studentCell.Append(studentHeadCellProperties.CloneNode(true));
 
-                TableCell phoneCell = new TableCell(new Paragraph(new Run(WordUtils.GetRunProperties(fontSize: "24"),
-                    new Text((record.Student == null || record.Student.PhoneNumber == null) ? "" : record.Student.PhoneNumber))));
-                phoneCell.Append(new TableCellProperties(
-                    new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = "1650" }));
+                TableCell phoneCell = new TableCell(new Paragraph(new ParagraphProperties(new SpacingBetweenLines { After = "0", Before = "0" }),
+                    new Run(WordUtils.GetRunProperties(fontSize: "24"),
+                        new Text((record.Student == null || record.Student.PhoneNumber == null) ? "" : record.Student.PhoneNumber))));
+                phoneCell.Append(phoneHeadCellProperties.CloneNode(true));
 
-                TableCell cardNumberCell = new TableCell(new Paragraph(new Run(WordUtils.GetRunProperties(fontSize: "24"),
-                    new Text(record.PersonalizedAccountingCardId == null ? "" : record.PersonalizedAccountingCardId.ToString()))));
-                cardNumberCell.Append(new TableCellProperties(
-                    new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = "1650" }));
+                TableCell cardNumberCell = new TableCell(new Paragraph(new ParagraphProperties(new SpacingBetweenLines { After = "0", Before = "0" }),
+                    new Run(WordUtils.GetRunProperties(fontSize: "24"),
+                        new Text(record.PersonalizedAccountingCardId == null ? "" : record.PersonalizedAccountingCardId.ToString()))));
+                cardNumberCell.Append(cardNumberHeadCellProperties.CloneNode(true));
 
                 row.Append(numberCell, studentCell, phoneCell, cardNumberCell);
                 table.Append(row);

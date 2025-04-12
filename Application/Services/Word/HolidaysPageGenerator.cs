@@ -59,7 +59,8 @@ namespace Application.Services.Word
 
             var title = new Paragraph(
                 new ParagraphProperties(
-                    new Justification { Val = JustificationValues.Center }),
+                    new Justification { Val = JustificationValues.Center },
+                    new SpacingBetweenLines { After = "100", Before = "100" }),
                 new Run(
                     runProperties,
                     new Text(text))
@@ -85,17 +86,33 @@ namespace Application.Services.Word
                 )
             );
 
+            TableCellProperties cellProperties = new TableCellProperties(
+                new TableCellMargin(
+                    new TopMargin { Width = "0", Type = TableWidthUnitValues.Dxa },
+                    new BottomMargin { Width = "0", Type = TableWidthUnitValues.Dxa },
+                    new LeftMargin { Width = "50", Type = TableWidthUnitValues.Dxa },
+                    new RightMargin { Width = "0", Type = TableWidthUnitValues.Dxa })
+            );
+
             table.AppendChild(tblProperties);
 
+            var dateColumnWidth = 3500;
+            var nameColumnWidth = 6500;
+
             TableGrid tableGrid = new TableGrid(
-                new GridColumn() { Width = "3000" },
-                new GridColumn() { Width = "7000" }
+                new GridColumn() { Width = dateColumnWidth.ToString() },
+                new GridColumn() { Width = nameColumnWidth.ToString() }
             );
             table.AppendChild(tableGrid);
 
             foreach (var holiday in holidayType.Holidays)
             {
                 TableRow row = new TableRow();
+
+                TableRowProperties rowProperties = new TableRowProperties(
+                    new TableRowHeight { Val = 0, HeightType = HeightRuleValues.Auto }
+                );
+                row.Append(rowProperties);
 
                 var dateRunProperties = new RunProperties(
                     new RunFonts()
@@ -116,9 +133,12 @@ namespace Application.Services.Word
                     dateText += MonthsUtils.MonthsDateNames[(int)holiday.Month];
                 }
 
-                TableCell dateCell = new TableCell(new Paragraph(new Run(dateRunProperties, new Text(dateText))));
-                dateCell.Append(new TableCellProperties(
-                    new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = "3000" }));
+                TableCell dateCell = new TableCell(new Paragraph(
+                    new ParagraphProperties(new SpacingBetweenLines { Before = "0", After = "0" }),
+                    new Run(dateRunProperties, new Text(dateText))));
+                var dateCellProperties = cellProperties.CloneNode(true);
+                dateCellProperties.Append(new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = dateColumnWidth.ToString() });
+                dateCell.Append(dateCellProperties);
 
                 var nameRunProperties = new RunProperties(
                     new RunFonts()
@@ -131,9 +151,12 @@ namespace Application.Services.Word
                     new FontSize() { Val = "24" }
                 );
 
-                TableCell nameCell = new TableCell(new Paragraph(new Run(nameRunProperties, new Text(holiday.Name ?? ""))));
-                nameCell.Append(new TableCellProperties(
-                    new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = "7000" }));
+                TableCell nameCell = new TableCell(new Paragraph(
+                    new ParagraphProperties(new SpacingBetweenLines { Before = "0", After = "0" }),
+                    new Run(nameRunProperties, new Text(holiday.Name ?? ""))));
+                var nameCellProperties = cellProperties.CloneNode(true);
+                nameCellProperties.Append(new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = nameColumnWidth.ToString() });
+                nameCell.Append(nameCellProperties);
 
                 row.Append(dateCell, nameCell);
                 table.Append(row);

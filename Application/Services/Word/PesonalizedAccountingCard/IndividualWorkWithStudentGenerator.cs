@@ -52,6 +52,22 @@ namespace Application.Services.Word
 
             table.AppendChild(tblProperties);
 
+            TableCellProperties cellProperties = new TableCellProperties(
+                new TableCellVerticalAlignment { Val = TableVerticalAlignmentValues.Top }
+            );
+
+            //TableCellMargin cellMargin = new TableCellMargin(
+            //    new TopMargin { Width = "100", Type = TableWidthUnitValues.Dxa },
+            //    new BottomMargin { Width = "100", Type = TableWidthUnitValues.Dxa },
+            //    new LeftMargin { Width = "100", Type = TableWidthUnitValues.Dxa },
+            //    new RightMargin { Width = "100", Type = TableWidthUnitValues.Dxa }
+            //);
+
+            //cellProperties.Append(cellMargin);
+
+            ParagraphProperties paragraphProperties = new ParagraphProperties(new Justification { Val = JustificationValues.Center },
+                new SpacingBetweenLines { Before = "0", After = "0" });
+
             TableGrid tableGrid = new TableGrid(
                 new GridColumn() { Width = "950" },
                 new GridColumn() { Width = "7500" },
@@ -61,25 +77,30 @@ namespace Application.Services.Word
 
             TableRow headRow = new TableRow();
 
-            TableCell dateHeadCell = new TableCell(new Paragraph(new Run(WordUtils.GetRunProperties(bold: true),
+            TableCell dateHeadCell = new TableCell(new Paragraph(paragraphProperties.CloneNode(true),
+                new Run(WordUtils.GetRunProperties(bold: true),
                     new Text("Дата"))));
-            dateHeadCell.Append(new TableCellProperties(
-                new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = "950" }));
+            var dateHeadCellProperties = cellProperties.CloneNode(true);
+            dateHeadCellProperties.Append(new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = "950" });
+            dateHeadCell.Append(dateHeadCellProperties);
 
-            TableCell workDoneHeadCell = new TableCell(new Paragraph(
+            TableCell workDoneHeadCell = new TableCell(new Paragraph(paragraphProperties.CloneNode(true),
                 new Run(WordUtils.GetRunProperties(bold: true),
                     new Text("Проведенная работа и рекомендации ППС,"),
                     new Break()),
                 new Run(WordUtils.GetRunProperties(bold: true),
                     new Text("специалистов СППС"))
             ));
-            workDoneHeadCell.Append(new TableCellProperties(
-                new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = "7500" }));
+            var workDoneHeadCellProperties = cellProperties.CloneNode(true);
+            workDoneHeadCellProperties.Append(new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = "7500" });
+            workDoneHeadCell.Append(workDoneHeadCellProperties);
 
-            TableCell resultHeadCell = new TableCell(new Paragraph(new Run(WordUtils.GetRunProperties(bold: true),
-                new Text("Результат"))));
-            resultHeadCell.Append(new TableCellProperties(
-                new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = "1550" }));
+            TableCell resultHeadCell = new TableCell(new Paragraph(paragraphProperties.CloneNode(true),
+                new Run(WordUtils.GetRunProperties(bold: true),
+                    new Text("Результат"))));
+            var resultHeadCellProperties = cellProperties.CloneNode(true);
+            resultHeadCellProperties.Append(new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = "1550" });
+            resultHeadCell.Append(resultHeadCellProperties);
 
             headRow.Append(dateHeadCell, workDoneHeadCell, resultHeadCell);
             table.Append(headRow);
@@ -88,20 +109,18 @@ namespace Application.Services.Word
             {
                 TableRow row = new TableRow();
 
-                TableCell dateCell = new TableCell(new Paragraph(new Run(WordUtils.GetRunProperties(fontSize: "24"),
-                    new Text(record.Date == null ? "" : ((DateOnly)record.Date).ToString()))));
-                dateCell.Append(new TableCellProperties(
-                    new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = "950" }));
+                TableCell dateCell = new TableCell(new Paragraph(paragraphProperties.CloneNode(true),
+                    new Run(WordUtils.GetRunProperties(fontSize: "24"),
+                        new Text(record.Date == null ? "" : ((DateOnly)record.Date).ToString()))));
+                dateCell.Append(dateHeadCellProperties.CloneNode(true));
 
                 TableCell workDoneCell = new TableCell(new Paragraph(new Run(WordUtils.GetRunProperties(fontSize: "24"),
                     new Text(record.WorkDoneAndRecommendations == null ? "" : record.WorkDoneAndRecommendations))));
-                workDoneCell.Append(new TableCellProperties(
-                    new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = "7500" }));
+                workDoneCell.Append(workDoneHeadCellProperties.CloneNode(true));
 
                 TableCell resultCell = new TableCell(new Paragraph(new Run(WordUtils.GetRunProperties(fontSize: "24"),
                     new Text(record.Result == null ? "" : record.Result))));
-                resultCell.Append(new TableCellProperties(
-                    new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = "1550" }));
+                resultCell.Append(resultHeadCellProperties.CloneNode(true));
 
                 row.Append(dateCell, workDoneCell, resultCell);
                 table.Append(row);

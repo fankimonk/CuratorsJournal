@@ -36,6 +36,12 @@ namespace DataAccess.Repositories
             return null;
         }
 
+        public async Task<bool> VerifyAccess(int userId, int journalId)
+        {
+            var journals = await GetAllAsync(userId);
+            return journals != null && journals.Any(j => j.Id == journalId);
+        }
+
         public async Task<Journal?> GetById(int journalId)
         {
             return await _dbContext.Journals.AsNoTracking()

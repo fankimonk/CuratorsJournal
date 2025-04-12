@@ -1,5 +1,5 @@
 ﻿@page "/journal/{journalId:int}/Title"
-@page "/journal/{journalId:int}/Title/{pageId:int}"
+@page "/journal/{journalId:int}/Title/{pageId:int?}"
 
 @using Contracts.Journal
 @using Frontend.Services
@@ -35,7 +35,7 @@ else
 
 @code {
     [Parameter]
-    public int PageId { get; set; }
+    public int? PageId { get; set; }
 
     [Parameter]
     public int JournalId { get; set; }
@@ -45,6 +45,7 @@ else
     protected override async Task OnInitializedAsync()
     {
         _pageData = await HttpClient.GetFromJsonAsync<TitlePageResponse>("api/journal/" + JournalId.ToString() + "/titlepage/");
-        await JournalState.Initialize(JournalId, _pageData!.PageId);
+        if (PageId == null) PageId = _pageData!.PageId;
+        await JournalState.Initialize(JournalId, (int)PageId);
     }
 }

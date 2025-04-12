@@ -3475,6 +3475,32 @@
     ]
   },
   {
+    "ContainingType": "API.Controllers.JournalController",
+    "Method": "VerifyAccess",
+    "RelativePath": "api/journal/verifyaccess/{journalId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "journalId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Boolean",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
     "ContainingType": "API.Controllers.LiteratureController",
     "Method": "GetAll",
     "RelativePath": "api/literature",

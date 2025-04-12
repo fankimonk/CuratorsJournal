@@ -29,7 +29,6 @@ namespace Application.Services.Word
             foreach (var page in pages)
             {
                 AppendTitleName();
-                WordUtils.AppendBreaks(1, _documentBody);
 
                 AppendTable(page.ContactPhoneNumbers);
 
@@ -53,10 +52,12 @@ namespace Application.Services.Word
 
             var title = new Paragraph(
                 new ParagraphProperties(
-                    new Justification { Val = JustificationValues.Center }),
+                    new Justification { Val = JustificationValues.Center },
+                    new SpacingBetweenLines { After = "0" }),
                 new Run(
                     runProperties,
-                    new Text("КОНТАКТНЫЕ ТЕЛЕФОНЫ"))
+                    new Text("КОНТАКТНЫЕ ТЕЛЕФОНЫ"),
+                    new Break())
             );
 
             _documentBody.Append(title);
@@ -77,17 +78,38 @@ namespace Application.Services.Word
                 )
             );
 
+            TableCellProperties cellProperties = new TableCellProperties(
+                new TableCellVerticalAlignment { Val = TableVerticalAlignmentValues.Center }
+            );
+
+            TableCellMargin cellMargin = new TableCellMargin(
+                new TopMargin { Width = "100", Type = TableWidthUnitValues.Dxa },
+                new BottomMargin { Width = "100", Type = TableWidthUnitValues.Dxa },
+                new LeftMargin { Width = "100", Type = TableWidthUnitValues.Dxa },
+                new RightMargin { Width = "100", Type = TableWidthUnitValues.Dxa }
+            );
+
+            cellProperties.Append(cellMargin);
+
             table.AppendChild(tblProperties);
 
+            int nameColumnWidth = 5000;
+            int phoneColumnWidth = 5000;
+
             TableGrid tableGrid = new TableGrid(
-                new GridColumn() { Width = "5000" },
-                new GridColumn() { Width = "5000" }
+                new GridColumn() { Width = nameColumnWidth.ToString() },
+                new GridColumn() { Width = phoneColumnWidth.ToString() }
             );
             table.AppendChild(tableGrid);
 
             foreach (var phone in contactPhones)
             {
                 TableRow row = new TableRow();
+
+                TableRowProperties rowProperties = new TableRowProperties(
+                    new TableRowHeight { Val = 0, HeightType = HeightRuleValues.Auto }
+                );
+                row.Append(rowProperties);
 
                 var nameRunProperties = new RunProperties(
                     new RunFonts()
@@ -100,9 +122,12 @@ namespace Application.Services.Word
                     new FontSize() { Val = "28" }
                 );
 
-                TableCell nameCell = new TableCell(new Paragraph(new Run(nameRunProperties, new Text(phone.Name ?? ""))));
-                nameCell.Append(new TableCellProperties(
-                    new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = "5000" }));
+                TableCell nameCell = new TableCell(new Paragraph(
+                    new ParagraphProperties(new SpacingBetweenLines { Before = "0", After = "0" }),
+                    new Run(nameRunProperties, new Text(phone.Name ?? ""))));
+                var nameCellProperties = cellProperties.CloneNode(true);
+                nameCellProperties.Append(new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = nameColumnWidth.ToString() });
+                nameCell.Append(nameCellProperties);
 
                 var phoneRunProperties = new RunProperties(
                     new RunFonts()
@@ -115,9 +140,12 @@ namespace Application.Services.Word
                     new FontSize() { Val = "28" }
                 );
 
-                TableCell phoneCell = new TableCell(new Paragraph(new Run(phoneRunProperties, new Text(phone.PhoneNumber ?? ""))));
-                phoneCell.Append(new TableCellProperties(
-                    new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = "5000" }));
+                TableCell phoneCell = new TableCell(new Paragraph(
+                    new ParagraphProperties(new SpacingBetweenLines { Before = "0", After = "0" }),
+                    new Run(phoneRunProperties, new Text(phone.PhoneNumber ?? ""))));
+                var phoneCellProperties = cellProperties.CloneNode(true);
+                phoneCellProperties.Append(new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = nameColumnWidth.ToString() });
+                phoneCell.Append(phoneCellProperties);
 
                 row.Append(nameCell, phoneCell);
                 table.Append(row);
