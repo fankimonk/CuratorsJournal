@@ -16,12 +16,13 @@ namespace API.Controllers
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            var page = await _pagesRepository.CreateAsync(new Page { JournalId = request.JournalId, PageTypeId = request.PageTypeId });
+            var page = await _pagesRepository.CreateAsync(new Page { JournalId = request.JournalId, PageTypeId = request.PageTypeId, IsApproved = false });
             if (page == null) return BadRequest();
 
             return CreatedAtAction(nameof(AddPage), new PageResponse(
                 page.Id,
                 page.JournalId,
+                page.IsApproved,
                 new PageTypeResponse(page.PageType!.Id, page.PageType.Name, page.PageType.MaxPages, null)));
         }
 
@@ -30,6 +31,28 @@ namespace API.Controllers
         {
             if (!await _pagesRepository.DeleteAsync(id)) return NotFound();
             return NoContent();
+        }
+
+        [HttpPut("toggleisapproved/{pageId}")]
+        public async Task<ActionResult<bool>> ToggleIsApproved([FromRoute] int pageId)
+        {
+            var isApproved = await _pagesRepository.ToggleIsApproved(pageId);
+            if (isApproved == null) return NotFound();
+            return Ok(isApproved);
+        }
+
+        [HttpPut("approvealljournalpages/{journalId}")]
+        public async Task<ActionResult> ApproveAllJournalPages([FromRoute] int journalId)
+        {
+            if (!await _pagesRepository.ApproveAllJournalPagesAsync(journalId)) return NotFound();
+            return Ok();
+        }
+
+        [HttpPut("Unapprovealljournalpages/{journalId}")]
+        public async Task<ActionResult> UnapproveAllJournalPages([FromRoute] int journalId)
+        {
+            if (!await _pagesRepository.UnapproveAllJournalPagesAsync(journalId)) return NotFound();
+            return Ok();
         }
     }
 }

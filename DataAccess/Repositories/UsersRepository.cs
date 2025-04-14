@@ -43,17 +43,6 @@ namespace DataAccess.Repositories
             return await _dbContext.Users.Include(u => u.Role).AsNoTracking().FirstOrDefaultAsync(u => u.Id == id);
         }
 
-        public async Task<HashSet<Permissions>> GetUserPermissions(int id)
-        {
-            var user = await _dbContext.Users.AsNoTracking()
-                .Include(u => u.Role)
-                .ThenInclude(r => r!.Permissions)
-                .FirstOrDefaultAsync(u => u.Id == id);
-            if (user == null) return [];
-
-            return user.Role!.Permissions.Select(p => (Permissions)p.Id).ToHashSet();
-        }
-
         public async Task<User?> UpdateAsync(int id, User user)
         {
             if (user == null) return null;

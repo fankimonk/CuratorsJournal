@@ -31,21 +31,41 @@ else
             {
                 <tr class="@GetRowClass(phone.Id)">
                     <td class="align-middle col-6">
-                        <textarea rows="1" style="overflow:hidden; resize:none;" oninput="this.style.height = 'auto'; this.style.height = (this.scrollHeight) + 'px';"
-                        @bind="phone.Name" @bind:after='async () => await Update(phone)' class="input fullwidth" />
+                        @if (JournalState.IsCurrentPageApproved)
+                        {
+                            <p>@phone.Name</p>
+                        }
+                        else
+                        {
+                            <textarea rows="1" style="overflow:hidden; resize:none;" oninput="this.style.height = 'auto'; this.style.height = (this.scrollHeight) + 'px';"
+                            @bind="phone.Name" @bind:after='async () => await Update(phone)' class="input fullwidth" />
+                        }
                     </td>
                     <td class="align-top col-6">
-                        <input type="tel" maxlength="19" @bind="phone.PhoneNumber" @bind:after='async () => await Update(phone)' class="input fullwidth" />
+                        @if (JournalState.IsCurrentPageApproved)
+                        {
+                            <p>@phone.PhoneNumber</p>
+                        }
+                        else
+                        {
+                            <input type="tel" maxlength="19" @bind="phone.PhoneNumber" @bind:after='async () => await Update(phone)' class="input fullwidth" />
+                        }
                     </td>
-                    <td>
-                        <DeleteButton @onclick="() => OpenDeleteModal(phone.Id)"></DeleteButton>
-                    </td>
+                    @if (!JournalState.IsCurrentPageApproved)
+                    {
+                        <td>
+                            <DeleteButton @onclick="() => OpenDeleteModal(phone.Id)"></DeleteButton>
+                        </td>
+                    }
                 </tr>
             }
         </tbody>
     </table>
 
-    <AddButton @onclick="Add">Добавить строку</AddButton>
+    @if (!JournalState.IsCurrentPageApproved)
+    {
+        <AddButton @onclick="Add">Добавить строку</AddButton>
+    }
 
     <ConfirmDeleteModal IsVisible="_isDeleteModalVisible" OnClose="CloseDeleteModal" IdToDelete="_idToDelete" OnDeleteById="Delete" />
 
@@ -63,6 +83,8 @@ else
 
     protected override async Task OnInitializedAsync()
     {
+        JournalState.OnToggleIsApproved += StateHasChanged;
+
         await JournalState.Initialize(JournalId, PageId);
 
         _pageData = await HttpClient.GetFromJsonAsync<ContactPhonesPageResponse>("api/journal/contactphone/" + PageId.ToString());

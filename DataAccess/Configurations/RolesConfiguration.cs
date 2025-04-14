@@ -11,13 +11,6 @@ namespace DataAccess.Configurations
         {
             builder.HasKey(r => r.Id);
 
-            builder
-                .HasMany(r => r.Permissions)
-                .WithMany(p => p.Roles)
-                .UsingEntity<RolePermission>(
-                    l => l.HasOne<Permission>().WithMany().HasForeignKey(p => p.PermissionId),
-                    r => r.HasOne<Role>().WithMany().HasForeignKey(r => r.RoleId));
-
             var roles = Enum
                 .GetValues<Roles>()
                 .Select(r => new Role

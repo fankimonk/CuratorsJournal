@@ -24,36 +24,39 @@
 }
 else
 {
-    <AddButton @onclick="OpenAddTypeModal" IsDisabled="_pageData.HolidayTypes.Where(ht => ht.Holidays.Count == 0).Count() == 0">Добавить категорию</AddButton>
-    <Modal IsVisible="_isAddTypeModalVisible" OnClose="CloseAddTypeModal">
-        <div class="container">
-            <div class="row">
-                <div class="col d-flex align-items-center justify-content-center">
-                    <h3>Добавить категорию</h3>
+    @if (!JournalState.IsCurrentPageApproved)
+    {
+        <AddButton @onclick="OpenAddTypeModal" IsDisabled="_pageData.HolidayTypes.Where(ht => ht.Holidays.Count == 0).Count() == 0">Добавить категорию</AddButton>
+        <Modal IsVisible="_isAddTypeModalVisible" OnClose="CloseAddTypeModal">
+            <div class="container">
+                <div class="row">
+                    <div class="col d-flex align-items-center justify-content-center">
+                        <h3>Добавить категорию</h3>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col d-flex align-items-center justify-content-center">
+                        <select @bind="_typeToAddId" class="form-control mb-3">
+                            @foreach (var ht in _pageData.HolidayTypes.Where(ht => ht.Holidays.Count == 0))
+                            {
+                                <option @key="ht.Id" value="@ht.Id">@ht.Name</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col d-flex align-items-start justify-content-start">
+                        <ReferenceButton Uri="/HolidayTypes">Категории праздников</ReferenceButton>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col d-flex align-items-center justify-content-center">
+                        <AddButton IsDisabled="@(_typeToAddId == -1)" @onclick="async () => { await Add(_typeToAddId); CloseAddTypeModal(); }" style="width:100%">Добавить</AddButton>
+                    </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col d-flex align-items-center justify-content-center">
-                    <select @bind="_typeToAddId" class="form-control mb-3">
-                        @foreach (var ht in _pageData.HolidayTypes.Where(ht => ht.Holidays.Count == 0))
-                        {
-                            <option @key="ht.Id" value="@ht.Id">@ht.Name</option>
-                        }
-                    </select>
-                </div>
-            </div>
-            <div class="row mb-3">
-                <div class="col d-flex align-items-start justify-content-start">
-                    <ReferenceButton Uri="/HolidayTypes">Категории праздников</ReferenceButton>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col d-flex align-items-center justify-content-center">
-                    <AddButton IsDisabled="@(_typeToAddId == -1)" @onclick="async () => { await Add(_typeToAddId); CloseAddTypeModal(); }" style="width:100%">Добавить</AddButton>
-                </div>
-            </div>
-        </div>
-    </Modal>
+        </Modal>
+    }
 
     @foreach (var ht in _pageData.HolidayTypes.Where(ht => ht.Holidays.Count > 0))
     {
@@ -65,40 +68,73 @@ else
                 @foreach (var h in ht.Holidays)
                 {
                     <tr class="@GetRowClass(h.Id)">
-                        <td class="align-middle col-sm-1">
-                            <input id="isRelativeDate" type="checkbox" @bind="h.IsRelativeDate" @bind:after="async () => await Update(h)" class="input" />
-                            <label for="isRelativeDate">Относ. дата</label>
-                        </td>
+                        @if (!JournalState.IsCurrentPageApproved)
+                        {
+                            <td class="align-middle col-sm-1">
+                                <input id="isRelativeDate" type="checkbox" @bind="h.IsRelativeDate" @bind:after="async () => await Update(h)" class="input" />
+                                <label for="isRelativeDate">Относ. дата</label>
+                            </td>
+                        }
                         <td class="align-middle col-5">
-                            @if (!h.IsRelativeDate)
+                            @if (JournalState.IsCurrentPageApproved)
                             {
-                                <input type="number" min="1" max="31" step="1" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))"
-                                @bind="h.Day" @bind:after="async () => await Update(h)" class="input" />
+                                <p>
+                                    @if (!h.IsRelativeDate)
+                                    {
+                                        @(h.Day + " ") 
+                                    }
+                                    else
+                                    {
+                                        @(h.RelativeDate + " ") 
+                                    }
+                                    @(h.Month == null || !MonthsUtils.MonthsDateNames.ContainsKey((int)h.Month) ? "" : MonthsUtils.MonthsDateNames[(int)h.Month])
+                                </p>
                             }
                             else
                             {
-                                <input @bind="h.RelativeDate" @bind:after="async () => await Update(h)" class="input" />
-                            }
-                            <select @bind="h.Month" @bind:after="async () => await Update(h)" class="input">
-                                <option value="">(нет)</option>
-                                @foreach (var m in MonthsUtils.MonthsDateNames)
+                                @if (!h.IsRelativeDate)
                                 {
-                                    <option @key="m.Key" value="@m.Key">@m.Value</option>
+                                    <input type="number" min="1" max="31" step="1" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))"
+                                           @bind="h.Day" @bind:after="async () => await Update(h)" class="input" />
                                 }
-                            </select>
+                                else
+                                {
+                                    <input @bind="h.RelativeDate" @bind:after="async () => await Update(h)" class="input" />
+                                }
+                                <select @bind="h.Month" @bind:after="async () => await Update(h)" class="input">
+                                    <option value="">(нет)</option>
+                                    @foreach (var m in MonthsUtils.MonthsDateNames)
+                                    {
+                                        <option @key="m.Key" value="@m.Key">@m.Value</option>
+                                    }
+                                </select>
+                            }
                         </td>
                         <td class="align-middle col-6">
-                            <textarea rows="1" style="overflow:hidden; resize:none;" oninput="this.style.height = 'auto'; this.style.height = (this.scrollHeight) + 'px';"
+                            @if (JournalState.IsCurrentPageApproved)
+                            {
+                                @h.Name
+                            }
+                            else
+                            {
+                                <textarea rows="1" style="overflow:hidden; resize:none;" oninput="this.style.height = 'auto'; this.style.height = (this.scrollHeight) + 'px';"
                                 @bind="h.Name" @bind:after="async () => await Update(h)" class="input fullwidth" />
+                            }
                         </td>
-                        <td class="align-middle">
-                            <DeleteButton @onclick="() => OpenDeleteModal(h.Id)" />
-                        </td>
+                        @if (!JournalState.IsCurrentPageApproved)
+                        {
+                            <td class="align-middle">
+                                <DeleteButton @onclick="() => OpenDeleteModal(h.Id)" />
+                            </td>
+                        }
                     </tr>
                 }
             </tbody>
         </table>
-        <AddButton @onclick="async () => await Add(ht.Id)">Добавить</AddButton>
+        @if (!JournalState.IsCurrentPageApproved)
+        {
+            <AddButton @onclick="async () => await Add(ht.Id)">Добавить</AddButton>
+        }
     }
 
     <ConfirmDeleteModal IsVisible="_isDeleteModalVisible" OnClose="CloseDeleteModal" IdToDelete="_idToDelete" OnDeleteById="Delete" />
@@ -121,6 +157,8 @@ else
 
     protected override async Task OnInitializedAsync()
     {
+        JournalState.OnToggleIsApproved += StateHasChanged;
+
         await JournalState.Initialize(JournalId, PageId);
 
         _pageData = await HttpClient.GetFromJsonAsync<HolidaysPageResponse>("api/journal/holiday/" + PageId);

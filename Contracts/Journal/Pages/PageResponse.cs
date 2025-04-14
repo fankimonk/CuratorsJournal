@@ -1,9 +1,16 @@
 ﻿namespace Contracts.Journal.Pages
 {
-    public record PageResponse
+    public class PageResponse
     (
-        int Id,
-        int JournalId,
-        PageTypeResponse? PageType
-    );
+        int id,
+        int journalId,
+        bool isApproved,
+        PageTypeResponse? pageType
+    )
+    {
+        public int Id { get; set; } = id;
+        public int JournalId { get; set; } = journalId;
+        public bool IsApproved { get; set; } = isApproved;
+        public PageTypeResponse? PageType { get; set; } = pageType;
+    }
 }

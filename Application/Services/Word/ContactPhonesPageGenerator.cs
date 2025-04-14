@@ -83,8 +83,8 @@ namespace Application.Services.Word
             );
 
             TableCellMargin cellMargin = new TableCellMargin(
-                new TopMargin { Width = "100", Type = TableWidthUnitValues.Dxa },
-                new BottomMargin { Width = "100", Type = TableWidthUnitValues.Dxa },
+                new TopMargin { Width = "50", Type = TableWidthUnitValues.Dxa },
+                new BottomMargin { Width = "50", Type = TableWidthUnitValues.Dxa },
                 new LeftMargin { Width = "100", Type = TableWidthUnitValues.Dxa },
                 new RightMargin { Width = "100", Type = TableWidthUnitValues.Dxa }
             );

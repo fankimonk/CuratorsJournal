@@ -26,7 +26,7 @@
                     {
                         <NavLink class="nav-link d-flex justify-content-between" style="position:relative; cursor:pointer;" @onclick="() => ToggleExpandSubNav(pt.Id)">
                             <span class="text-nowrap">
-                                @if (JournalState.PageTypesNavLinksExpanded[pt.Id])
+                                @if (JournalState.PageTypesNavLinksExpanded.ContainsKey(pt.Id) && JournalState.PageTypesNavLinksExpanded[pt.Id])
                                 {
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-up-fill" viewBox="0 0 16 16">
                                         <path d="m7.247 4.86-4.796 5.481c-.566.647-.106 1.659.753 1.659h9.592a1 1 0 0 0 .753-1.659l-4.796-5.48a1 1 0 0 0-1.506 0z"></path>
@@ -38,7 +38,14 @@
                                         <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"></path>
                                     </svg>
                                 }
-                                @pt.Name
+                                @if (PageTypesRusNames.ContainsKey(pt.Id))
+                                {
+                                    @PageTypesRusNames[pt.Id].ToString();
+                                }
+                                else
+                                {
+                                    @pt.Name
+                                }
                             </span>
                             <AddButton StopPropagation="true" IsNotOutline="true" ButtonSize="ButtonSizes.Small" @onclick='async () => await AddPage(pt.Id)' />
                         </NavLink>
@@ -75,12 +82,44 @@
     {
         { 1, "Титульная страница" },
         { 2, "Контактные телефоны" },
-        { 3, "Праздники" },
-        { 4, "Социально-педагогическая характеристика" },
+        { 3, "Календарь праздников" },
+        { 4, "Социальная характеристика учебной группы" },
         { 5, "График учебного процесса" },
         { 6, "Динамика основных показателей группы за период обучения" },
         { 7, "Актив учебной группы" },
-        { 8, "Список студентов" }
+        { 8, "Список студентов" },
+        { 9, "Карта персонифицированного учета" },
+        { 10, "Карта здоровья студентов" },
+        { 11, "Учет итоговой успеваемости студентов группы" },
+        { 12, "Учет идеологической и воспитательной работы куратора учебной группы (по месяцам)" },
+        { 13, "Учет информационных часов" },
+        { 14, "Участие куратора в работе педагогических семинаров" },
+        { 15, "Работа с научно-методической и педагогической литературой" },
+        { 16, "Психолого-педагогическая характеристика учебной группы" },
+        { 17, "Рекомендации и замечания лиц, проверяющих работу куратора" },
+        { 18, "Традиции вуза, факультета, группы" },
+    };
+
+    private Dictionary<int, string> PageTypesRusNames = new Dictionary<int, string>()
+    {
+        { 1, "Титульные страницы" },
+        { 2, "Контактные телефоны" },
+        { 3, "Календарь праздников" },
+        { 4, "Социальная характеристика учебной группы" },
+        { 5, "График учебного процесса" },
+        { 6, "Динамика основных показателей группы за период обучения" },
+        { 7, "Актив учебной группы" },
+        { 8, "Список студентов" },
+        { 9, "Карты персонифицированного учета" },
+        { 10, "Карты здоровья студентов" },
+        { 11, "Учет итоговой успеваемости студентов группы" },
+        { 12, "Учет идеологической и воспитательной работы куратора учебной группы (по месяцам)" },
+        { 13, "Учет информационных часов" },
+        { 14, "Участие куратора в работе педагогических семинаров" },
+        { 15, "Работа с научно-методической и педагогической литературой" },
+        { 16, "Психолого-педагогическая характеристика учебной группы" },
+        { 17, "Рекомендации и замечания лиц, проверяющих работу куратора" },
+        { 18, "Традиции вуза, факультета, группы" },
     };
 
     private async Task AddPage(int pageTypeId)
@@ -107,6 +146,7 @@
     protected override async Task OnInitializedAsync()
     {
         JournalState.OnInitialize += HandleOnInitialize;
+        JournalState.OnFecthContents += HandleOnInitialize;
     }
 
     private void HandleOnInitialize()
@@ -117,6 +157,7 @@
     public void Dispose()
     {
         JournalState.OnInitialize -= HandleOnInitialize;
+        JournalState.OnFecthContents -= HandleOnInitialize;
     }
 }
 

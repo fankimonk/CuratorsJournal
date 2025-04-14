@@ -13,6 +13,10 @@ namespace Frontend.Services
         public Action? OnUserInitialized;
 
         public List<string> RolesThatAreAllowedToCreateEntities = ["Admin", "Dean", "DeputyDean", "HeadOfDepartment", "Teacher"];
+        public bool CanCreateEntities => User != null && RolesThatAreAllowedToCreateEntities.Contains(User.Role.Name);
+
+        public List<string> RolesThatCanApprovePages = ["Dean", "DeputyDean", "HeadOfDepartment", "SocialDepartmentWorker"];
+        public bool CanApprovePages => User != null && RolesThatCanApprovePages.Contains(User.Role.Name);
 
         public bool IsAdmin => User != null && User.Role.Name == "Admin";
 

@@ -101,6 +101,7 @@ builder.Services.AddScoped<IGroupsService, GroupsService>();
 builder.Services.AddScoped<IJournalsService, JournalsService>();
 builder.Services.AddScoped<IUsersService, UsersService>();
 builder.Services.AddScoped<IWordService, WordService>();
+builder.Services.AddScoped<IPersonalizedAccountingCardsService, PersonalizedAccountingCardsService>();
 
 builder.Services.AddScoped<IJwtProvider, JwtProvider>();
 builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();

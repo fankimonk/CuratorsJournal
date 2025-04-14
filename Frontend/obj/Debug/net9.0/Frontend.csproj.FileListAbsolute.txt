@@ -87,7 +87,6 @@ C:\Dev\Web\CuratorsJournal\Frontend\obj\Debug\net9.0\compressed\ovgvtnwldt-notf2
 C:\Dev\Web\CuratorsJournal\Frontend\obj\Debug\net9.0\compressed\pxgklafh5v-h1s4sie4z3.gz
 C:\Dev\Web\CuratorsJournal\Frontend\obj\Debug\net9.0\compressed\o81bgcgknk-63fj8s7r0e.gz
 C:\Dev\Web\CuratorsJournal\Frontend\obj\Debug\net9.0\compressed\mwwz246s69-0j3bgjxly4.gz
-C:\Dev\Web\CuratorsJournal\Frontend\obj\Debug\net9.0\compressed\yfpirp1akv-cw3ymtwl3x.gz
 C:\Dev\Web\CuratorsJournal\Frontend\obj\Debug\net9.0\compressed\40c5ve33ph-kbylhf9is7.gz
 C:\Dev\Web\CuratorsJournal\Frontend\obj\Debug\net9.0\compressed\3gin1ph7ub-25o87uqmvr.gz
 C:\Dev\Web\CuratorsJournal\Frontend\obj\Debug\net9.0\compressed\wkaqiq4loj-3oqa5jn5xg.gz
@@ -108,3 +107,4 @@ C:\Dev\Web\CuratorsJournal\Frontend\obj\Debug\net9.0\refint\Frontend.dll
 C:\Dev\Web\CuratorsJournal\Frontend\obj\Debug\net9.0\Frontend.pdb
 C:\Dev\Web\CuratorsJournal\Frontend\obj\Debug\net9.0\Frontend.genruntimeconfig.cache
 C:\Dev\Web\CuratorsJournal\Frontend\obj\Debug\net9.0\ref\Frontend.dll
+C:\Dev\Web\CuratorsJournal\Frontend\obj\Debug\net9.0\compressed\yfpirp1akv-88l9hkhcu1.gz

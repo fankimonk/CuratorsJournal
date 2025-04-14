@@ -31,7 +31,7 @@ else
     @foreach (var active in _pageData.GroupActives)
     {
         <p class="flex-container">
-            @if (i > 2)
+            @if (i > 2 && !JournalState.IsCurrentPageApproved)
             {
                 <input @bind="active.PositionName" @bind:after="async () => await Update(active)" class="input underline flex-input" /> 
             }
@@ -39,24 +39,37 @@ else
             {
                 @(active.PositionName + " ")
             }
-            <select @bind="active.StudentId" @bind:after="async () => await Update(active)" class="input underline flex-input" >
-                <option value="">(нет)</option>
-                @foreach (var student in _students)
-                {
-                    @if (active.StudentId == student.Id || !_pageData.GroupActives.Any(a => a.StudentId == student.Id))
+            @if (JournalState.IsCurrentPageApproved)
+            {
+                var studentFIO = "";
+                var student = _students.FirstOrDefault(s => s.Id == active.StudentId);
+                if (student != null) studentFIO = student.LastName + " " + student.FirstName + " " + student.MiddleName;
+                <span class="flex-input" style="text-decoration: underline;">@studentFIO</span>
+            }
+            else
+            {
+                <select @bind="active.StudentId" @bind:after="async () => await Update(active)" class="input underline flex-input">
+                    <option value="">(нет)</option>
+                    @foreach (var student in _students)
                     {
-                        <option @key="student.Id" value="@student.Id">@student.LastName @student.FirstName @student.MiddleName</option>
+                        @if (active.StudentId == student.Id || !_pageData.GroupActives.Any(a => a.StudentId == student.Id))
+                        {
+                            <option @key="student.Id" value="@student.Id">@student.LastName @student.FirstName @student.MiddleName</option>
+                        }
                     }
-                }
-            </select>
-            @if (i > 2)
+                </select>
+            }
+            @if (i > 2 && !JournalState.IsCurrentPageApproved)
             {
                 <DeleteButton @onclick="() => OpenDeleteModal(active.Id)" />
             }
         </p>
         i++;
     }
-    <AddButton @onclick="Add">Добавить</AddButton>
+    if (!JournalState.IsCurrentPageApproved)
+    {
+        <AddButton @onclick="Add">Добавить</AddButton>
+    }
 
     <ConfirmDeleteModal IsVisible="_isDeleteModalVisible" OnClose="CloseDeleteModal" IdToDelete="_idToDelete" OnDeleteById="Delete" />
 
@@ -73,6 +86,11 @@ else
     private GroupActivesPageResponse? _pageData;
 
     private List<StudentResponse>? _students;
+
+    protected override async Task OnInitializedAsync()
+    {
+        JournalState.OnToggleIsApproved += StateHasChanged;
+    }
 
     protected override async Task OnParametersSetAsync()
     {

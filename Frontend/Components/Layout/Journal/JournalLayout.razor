@@ -19,10 +19,14 @@
         <div class="top-row px-4 justify-content-between">
             @if (JournalState.CurrentPageNode != null)
             {
-                <div class="col-2">
-                    @if (JournalState.CurrentPageNode.Value.PageType!.MaxPages != 1)
+                <div class="col-5">
+                    @if (JournalState.CurrentPageType!.MaxPages != 1 && !JournalState.IsCurrentPageApproved)
                     {
                         <DeleteButton @onclick="DeletePage">Удалить страницу</DeleteButton>
+                    }
+                    @if (JournalState.CurrentPageType!.Id == 9)
+                    {
+                        <ReloadButton AdditionalClasses="ms-3" @onclick="SynchronizeStudents">Синхронизировать студентов</ReloadButton>
                     }
                 </div>
 
@@ -35,6 +39,10 @@
 
         <article class="content px-4">
             @Body
+            @if (JournalState.CurrentPageNode != null && AppState.CanApprovePages)
+            {
+                <ApproveButton @onclick="JournalState.ToggleIsCurrentPageApproved" IsApproved="JournalState.IsCurrentPageApproved" AdditionalClasses="floating-button" />
+            }
         </article>
     </main>
 </div>
@@ -50,9 +58,20 @@
     {
         await AppState.InitializeUser();
         JournalState.OnInitialize += HandleOnInitialize;
+        JournalState.OnToggleIsApproved += HandleOnInitialize;
     }
 
     private void HandleOnInitialize() => StateHasChanged();
+
+    private async Task SynchronizeStudents()
+    {
+        var response = await HttpClient.PostAsync("api/journal/personalizedaccountingcard/synchronizestudents/" + JournalState.JournalId, null);
+        if (response.IsSuccessStatusCode)
+        {
+            var ids = await response.Content.ReadFromJsonAsync<List<int>>();
+            if (ids != null && ids.Count != 0) await JournalState.FetchContents();
+        }
+    }
 
     private bool IsPrevButtonDisabled() => JournalState.CurrentPageNode == null || JournalState.CurrentPageNode.Previous == null;
     private bool IsNextButtonDisabled() => JournalState.CurrentPageNode == null || JournalState.CurrentPageNode.Next == null;
@@ -92,5 +111,6 @@
     public void Dispose()
     {
         JournalState.OnInitialize -= HandleOnInitialize;
+        JournalState.OnToggleIsApproved -= HandleOnInitialize;
     }
 }

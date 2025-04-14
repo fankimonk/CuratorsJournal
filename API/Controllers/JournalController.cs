@@ -87,6 +87,7 @@ namespace API.Controllers
             var response = pages.Select(p => new PageResponse(
                 p.Id,
                 p.JournalId,
+                p.IsApproved,
                 new PageTypeResponse(p.PageType!.Id, p.PageType.Name, p.PageType.MaxPages, null)
             )).ToList();
 
@@ -103,7 +104,7 @@ namespace API.Controllers
                 pt.Id,
                 pt.Name,
                 pt.MaxPages,
-                pt.Pages.Select(p => new PageResponse(p.Id, p.JournalId, new PageTypeResponse(pt.Id, pt.Name, pt.MaxPages, null))).ToList()
+                pt.Pages.Select(p => new PageResponse(p.Id, p.JournalId, p.IsApproved, new PageTypeResponse(pt.Id, pt.Name, pt.MaxPages, null))).ToList()
             )).ToList();
 
             return Ok(new JournalContentsResponse(journalId, response));

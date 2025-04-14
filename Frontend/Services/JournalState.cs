@@ -13,15 +13,28 @@ namespace Frontend.Services
         public JournalContentsResponse? JournalContents { get; private set; }
 
         public LinkedListNode<PageResponse>? CurrentPageNode { get; private set; }
+        public PageTypeResponse? CurrentPageType => CurrentPageNode?.Value.PageType;
+        public bool IsCurrentPageApproved => CurrentPageNode != null && CurrentPageNode.Value.IsApproved;
 
         public Dictionary<int, bool> PageTypesNavLinksExpanded = [];
 
         public Action? OnInitialize;
+        public Action? OnFecthContents;
+        public Action? OnToggleIsApproved;
 
         private readonly HttpClient _httpClient = httpClient;
         private readonly NavigationManager _navigationManager = navigationManager;
         private readonly APIService _apiService = apiService;
         private LinkedList<PageResponse> _pages = [];
+
+        public void Reset()
+        {
+            JournalId = 0;
+            CurrentPageId = 0;
+            JournalContents = null;
+            CurrentPageNode = null;
+            PageTypesNavLinksExpanded.Clear();
+        }
 
         public async Task Initialize(int journalId, int pageId)
         {
@@ -51,6 +64,20 @@ namespace Frontend.Services
             }
 
             OnInitialize?.Invoke();
+        }
+
+        public async Task ToggleIsCurrentPageApproved()
+        {
+            if (CurrentPageNode == null) return;
+
+            var response = await _httpClient.PutAsync("api/page/toggleisapproved/" + CurrentPageId, null);
+            if (response.IsSuccessStatusCode)
+            {
+                var isApproved = await response.Content.ReadFromJsonAsync<bool>();
+                CurrentPageNode.Value.IsApproved = isApproved;
+
+                OnToggleIsApproved?.Invoke();
+            }
         }
 
         public void AddPage(PageResponse page)
@@ -87,7 +114,7 @@ namespace Frontend.Services
             _navigationManager.NavigateTo(pageUri + page.PageType!.Name + "/" + page.Id);
         }
 
-        private async Task FetchContents()
+        public async Task FetchContents()
         {
             Console.WriteLine("Fetch contents " + JournalId);
 
@@ -104,6 +131,8 @@ namespace Frontend.Services
             JournalContents = await _httpClient.GetFromJsonAsync<JournalContentsResponse>("api/journal/" + JournalId.ToString() + "/contents/");
 
             RefillPages();
+
+            OnFecthContents?.Invoke();
         }
 
         private void RefillPages()

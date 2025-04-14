@@ -4207,6 +4207,92 @@
         }
       }
     },
+    "/api/page/toggleisapproved/{pageId}": {
+      "put": {
+        "tags": [
+          "Pages"
+        ],
+        "parameters": [
+          {
+            "name": "pageId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "boolean"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "boolean"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/page/approvealljournalpages/{journalId}": {
+      "put": {
+        "tags": [
+          "Pages"
+        ],
+        "parameters": [
+          {
+            "name": "journalId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/page/Unapprovealljournalpages/{journalId}": {
+      "put": {
+        "tags": [
+          "Pages"
+        ],
+        "parameters": [
+          {
+            "name": "journalId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/journal/personalizedaccountingcard/parentalinformation/{cardId}": {
       "get": {
         "tags": [
@@ -4955,6 +5041,29 @@
                 }
               }
             }
+          }
+        }
+      }
+    },
+    "/api/journal/personalizedaccountingcard/synchronizestudents/{journalId}": {
+      "post": {
+        "tags": [
+          "PersonalizedAccountingCards"
+        ],
+        "parameters": [
+          {
+            "name": "journalId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
           }
         }
       }
@@ -10715,6 +10824,9 @@
             "type": "integer",
             "format": "int32"
           },
+          "isApproved": {
+            "type": "boolean"
+          },
           "pageTypeId": {
             "type": "integer",
             "format": "int32"
@@ -10865,6 +10977,9 @@
           "journalId": {
             "type": "integer",
             "format": "int32"
+          },
+          "isApproved": {
+            "type": "boolean"
           },
           "pageType": {
             "$ref": "#/components/schemas/PageTypeResponse"
@@ -11216,27 +11331,6 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/PerformanceAccountingGradeResponse"
-            },
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "Permission": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "name": {
-            "type": "string",
-            "nullable": true
-          },
-          "roles": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Role"
             },
             "nullable": true
           }
@@ -11648,13 +11742,6 @@
           },
           "name": {
             "type": "string",
-            "nullable": true
-          },
-          "permissions": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Permission"
-            },
             "nullable": true
           },
           "users": {

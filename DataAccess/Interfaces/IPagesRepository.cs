@@ -11,5 +11,8 @@ namespace DataAccess.Interfaces
         Task<List<PageType>?> GetByJournalIdGroupedByTypes(int journalId);
         Task<Page?> GetById(int id);
         Task<List<Page>?> GetJournalPagesByType(int journalId, PageTypes pageType);
+        Task<bool?> ToggleIsApproved(int pageId);
+        Task<bool> ApproveAllJournalPagesAsync(int journalId);
+        Task<bool> UnapproveAllJournalPagesAsync(int journalId);
     }
 }

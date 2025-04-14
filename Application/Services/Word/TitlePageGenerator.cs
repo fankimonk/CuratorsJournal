@@ -45,11 +45,6 @@ namespace Application.Services.Word
             if (titlePageData == null) return null;
 
             return titlePageData.Item2;
-
-            //var group = _journal.Group;
-            //var department = group!.Specialty!.Department;
-
-            //var curator = group.Curator;
         }
 
         private void AppendEducationalInstitutionName()
@@ -265,6 +260,8 @@ namespace Application.Services.Word
             var labelRun = new Run(labelRunProperties,
                 new Text("КУРАТОР"));
 
+            var paragraph = new Paragraph(paragraphProperties, labelRun);
+
             var valueRunProperties = new RunProperties(
                 new RunFonts()
                 {
@@ -284,15 +281,112 @@ namespace Application.Services.Word
                 curatorFIO = worker.LastName + " " + worker.FirstName + " " + worker.MiddleName;
             }
 
-            var valueRun = new Run(valueRunProperties,
-                new TabChar(),
-                new Text(curatorFIO),
-                new TabChar());
+            var valueRun = new Run(valueRunProperties, new TabChar());
 
-             var paragraph = new Paragraph(paragraphProperties,
-                labelRun, valueRun);
+            //55 в 1й строке
+            //11 табов
+            //65 во 2й и 3й строке
+            //13 табов
 
-            _documentBody.Append(paragraph);
+            int linesCount = 3;
+            if (curatorFIO != "")
+            {
+                var curatorWords = curatorFIO.Split(' ');
+                var lines = new List<string>();
+                string currentLine = "";
+                int lineMaxChars = 55;
+
+                foreach (var word in curatorWords)
+                {
+                    if (currentLine.Length + word.Length + 1 <= lineMaxChars)
+                    {
+                        currentLine += word + " ";
+                    }
+                    else
+                    {
+                        lines.Add(currentLine);
+                        currentLine = word + " ";
+                        lineMaxChars = 65;
+                    }
+                }
+
+                if (!string.IsNullOrEmpty(currentLine) && !lines.Contains(currentLine))
+                {
+                    lines.Add(currentLine);
+                }
+
+                linesCount = Math.Min(linesCount, lines.Count);
+                for (int i = 0; i < linesCount; i++)
+                {
+                    var lineStr = lines[i];
+                   
+                    int tabCount = i == 0
+                        ? 11 - (Math.Max(0, lineStr.Length - 3) / 5)
+                        : 13 - (Math.Max(0, lineStr.Length - 3) / 5);
+
+                    if (i == 0)
+                    {
+                        valueRun.Append(new Text(lineStr));
+                        for (int j = 0; j < tabCount; j++)
+                            valueRun.Append(new TabChar());
+                        paragraph.Append(valueRun);
+                        _documentBody.Append(paragraph);
+                    }
+                    else
+                    {
+                        var newParagraph = new Paragraph(paragraphProperties.CloneNode(true));
+                        var newValueRun = new Run(valueRunProperties.CloneNode(true), new Text(lineStr));
+
+                        for (int j = 0; j < tabCount; j++)
+                        {
+                            newValueRun.Append(new TabChar());
+                        }
+
+                        newParagraph.Append(newValueRun);
+                        _documentBody.Append(newParagraph);
+                    }  
+                }
+
+                AppendEmptyLines(3 - linesCount);
+            }
+            else
+            {
+                valueRun.Append(new Text(""));
+                for (int j = 0; j < 11; j++)
+                    valueRun.Append(new TabChar());
+                paragraph.Append(valueRun);
+                _documentBody.Append(paragraph);
+                AppendEmptyLines(linesCount - 1);
+            }
+        }
+
+        private void AppendEmptyLines(int count)
+        {
+            var runProperties = new RunProperties(
+                new RunFonts()
+                {
+                    Ascii = "Times New Roman",
+                    HighAnsi = "Times New Roman",
+                    EastAsia = "Times New Roman",
+                    ComplexScript = "Times New Roman"
+                },
+                new Underline() { Val = UnderlineValues.Single },
+                new FontSize() { Val = "28" }
+            );
+
+            for (int i = 0; i < count; i++)
+            {
+                var emptyParagraph = new Paragraph(new ParagraphProperties(
+                new Justification { Val = JustificationValues.Both }
+            ));
+                var emptyRun = new Run(runProperties.CloneNode(true));
+                for (int j = 0; j < 13; j++)
+                {
+                    emptyRun.Append(new TabChar());
+                }
+                emptyParagraph.Append(emptyRun);
+                _documentBody.Append(emptyParagraph);
+            }
         }
 
         private void AppendDepartment()

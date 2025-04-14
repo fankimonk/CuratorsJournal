@@ -4,6 +4,7 @@
 @inherits LayoutComponentBase
 
 @inject AppState AppState
+@inject JournalState JournalState
 @inject JwtAuthenticationStateProvider AuthStateProvider
 
 <div class="page">
@@ -31,5 +32,6 @@
     protected async override Task OnInitializedAsync()
     {
         await AppState.InitializeUser();
+        JournalState.Reset();
     }
 }

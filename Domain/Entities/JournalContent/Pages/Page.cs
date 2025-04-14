@@ -11,6 +11,8 @@ namespace Domain.Entities.JournalContent.Pages
     {
         public int Id { get; set; }
 
+        public bool IsApproved { get; set; }
+
         public int PageTypeId { get; set; }
         public PageType? PageType { get; set; }
 

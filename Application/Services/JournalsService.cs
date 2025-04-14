@@ -25,7 +25,7 @@ namespace Application.Services
             var pageTypes = Enum.GetValues<PageTypes>();
             foreach (var pt in pageTypes)
             {
-                await _pagesRepository.CreateAsync(new Page { PageTypeId = (int)pt, JournalId = createdJournal.Id });
+                await _pagesRepository.CreateAsync(new Page { PageTypeId = (int)pt, JournalId = createdJournal.Id, IsApproved = false });
             }
 
             return createdJournal;

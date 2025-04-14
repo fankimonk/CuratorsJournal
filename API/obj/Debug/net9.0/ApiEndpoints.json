@@ -2934,6 +2934,22 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "API.Controllers.PersonalizedAccountingCardsController",
+    "Method": "SynchronizeStudents",
+    "RelativePath": "api/journal/personalizedaccountingcard/synchronizestudents/{journalId}",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "journalId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "API.Controllers.WorkWithParentsController",
     "Method": "Add",
     "RelativePath": "api/journal/personalizedaccountingcard/workwithparents",
@@ -3629,6 +3645,64 @@
     "Parameters": [
       {
         "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "API.Controllers.PagesController",
+    "Method": "ApproveAllJournalPages",
+    "RelativePath": "api/page/approvealljournalpages/{journalId}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "journalId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "API.Controllers.PagesController",
+    "Method": "ToggleIsApproved",
+    "RelativePath": "api/page/toggleisapproved/{pageId}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "pageId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Boolean",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "API.Controllers.PagesController",
+    "Method": "UnapproveAllJournalPages",
+    "RelativePath": "api/page/Unapprovealljournalpages/{journalId}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "journalId",
         "Type": "System.Int32",
         "IsRequired": true
       }

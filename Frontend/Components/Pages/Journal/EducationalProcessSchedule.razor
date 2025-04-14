@@ -40,40 +40,116 @@ else
             {
                 <tr class="@GetRowClass(record.Id)">
                     <td>
-                        <input type="number" min="1" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))"
-                            @bind="record.SemesterNumber" @bind:after="async () => await Update(record)" class="input fullwidth" />
+                        @if (JournalState.IsCurrentPageApproved)
+                        {
+                            <p>@record.SemesterNumber</p>
+                        }
+                        else
+                        {
+                            <input type="number" min="1" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))"
+                                   @bind="record.SemesterNumber" @bind:after="async () => await Update(record)" class="input fullwidth" />
+                        }
                     </td>
                     <td>
-                        <input type="date" @bind="record.StartDate" @bind:after="async () => await Update(record)" class="input" />
+                        @if (JournalState.IsCurrentPageApproved)
+                        {
+                            @record.StartDate.ToString()
+                        }
+                        else
+                        {
+                            <input type="date" @bind="record.StartDate" @bind:after="async () => await Update(record)" class="input" />
+                        }
                     </td>
                     <td>
-                        <input type="date" @bind="record.EndDate" @bind:after="async () => await Update(record)" class="input" />
+                        @if (JournalState.IsCurrentPageApproved)
+                        {
+                            @record.EndDate.ToString()
+                        }
+                        else
+                        {
+                            <input type="date" @bind="record.EndDate" @bind:after="async () => await Update(record)" class="input" />
+                        }
                     </td>
                     <td>
-                        с <input type="date" @bind="record.SessionStartDate" @bind:after="async () => await Update(record)" class="input" />
+                        с 
+                        @if (JournalState.IsCurrentPageApproved)
+                        {
+                            @record.SessionStartDate.ToString()
+                        }
+                        else
+                        {
+                            <input type="date" @bind="record.SessionStartDate" @bind:after="async () => await Update(record)" class="input" />
+                        }
                         <br />
-                        по <input type="date" @bind="record.SessionEndDate" @bind:after="async () => await Update(record)" class="input" />
+                        по
+                        @if (JournalState.IsCurrentPageApproved)
+                        {
+                            @record.SessionEndDate.ToString()
+                        }
+                        else
+                        {
+                            <input type="date" @bind="record.SessionEndDate" @bind:after="async () => await Update(record)" class="input" />
+                        }
                     </td>
                     <td>
                         <div>
-                            с <input type="date" @bind="record.PracticeStartDate" @bind:after="async () => await Update(record)" class="input" />
+                            с 
+                            @if (JournalState.IsCurrentPageApproved)
+                            {
+                                @record.PracticeStartDate.ToString()
+                            }
+                            else
+                            {
+                                <input type="date" @bind="record.PracticeStartDate" @bind:after="async () => await Update(record)" class="input" />
+                            }
                             <br />
-                            по <input type="date" @bind="record.PracticeEndDate" @bind:after="async () => await Update(record)" class="input" />
+                            по
+                            @if (JournalState.IsCurrentPageApproved)
+                            {
+                                @record.PracticeEndDate.ToString()
+                            }
+                            else
+                            {
+                                <input type="date" @bind="record.PracticeEndDate" @bind:after="async () => await Update(record)" class="input" />
+                            }
                         </div>
                     </td>
                     <td>
-                        с <input type="date" @bind="record.VacationStartDate" @bind:after="async () => await Update(record)" class="input" />
+                        с
+                        @if (JournalState.IsCurrentPageApproved)
+                        {
+                            @record.VacationStartDate.ToString()
+                        }
+                        else
+                        {
+                            <input type="date" @bind="record.VacationStartDate" @bind:after="async () => await Update(record)" class="input" />
+                        }
                         <br />
-                        по <input type="date" @bind="record.VacationEndDate" @bind:after="async () => await Update(record)" class="input" />
+                        по
+                        @if (JournalState.IsCurrentPageApproved)
+                        {
+                            @record.VacationEndDate.ToString()
+                        }
+                        else
+                        {
+                            <input type="date" @bind="record.VacationEndDate" @bind:after="async () => await Update(record)" class="input" />
+                        }
                     </td>
-                    <td>
-                        <DeleteButton @onclick="() => OpenDeleteModal(record.Id)" />
-                    </td>
+                    @if (!JournalState.IsCurrentPageApproved)
+                    {
+                        <td>
+                            <DeleteButton @onclick="() => OpenDeleteModal(record.Id)" />
+                        </td>
+                    }
                 </tr>
             }
         </tbody>
     </table>
-    <AddButton @onclick="Add">Добавить строку</AddButton>
+
+    @if (!JournalState.IsCurrentPageApproved)
+    {
+        <AddButton @onclick="Add">Добавить строку</AddButton>
+    }
 
     <ConfirmDeleteModal IsVisible="_isDeleteModalVisible" OnClose="CloseDeleteModal" IdToDelete="_idToDelete" OnDeleteById="Delete" />
 
@@ -91,6 +167,8 @@ else
 
     protected override async Task OnInitializedAsync()
     {
+        JournalState.OnToggleIsApproved += StateHasChanged;
+
         await JournalState.Initialize(JournalId, PageId);
 
         _pageData = await HttpClient.GetFromJsonAsync<EducationalProcessSchedulePageResponse>("api/journal/educationalprocessschedule/" + PageId.ToString());
