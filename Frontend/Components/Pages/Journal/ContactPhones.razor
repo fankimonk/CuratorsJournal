@@ -5,15 +5,14 @@
 @attribute [Authorize]
 
 @using Frontend.Components.Buttons
-@using Frontend.Components.Inputs
 @using Frontend.Components.Utils
 @using Frontend.Services
-@using Contracts.Journal
 @using Contracts.Journal.ContactPhones
 
 @inject HttpClient HttpClient
 @inject JournalState JournalState
 @inject IJSRuntime JSRuntime
+@inject AppState AppState
 
 <PageTitle>Контактные Телефоны</PageTitle>
 
@@ -31,7 +30,7 @@ else
             {
                 <tr class="@GetRowClass(phone.Id)">
                     <td class="align-middle col-6">
-                        @if (JournalState.IsCurrentPageApproved)
+                        @if (!_canEdit)
                         {
                             <p>@phone.Name</p>
                         }
@@ -42,7 +41,7 @@ else
                         }
                     </td>
                     <td class="align-top col-6">
-                        @if (JournalState.IsCurrentPageApproved)
+                        @if (!_canEdit)
                         {
                             <p>@phone.PhoneNumber</p>
                         }
@@ -51,7 +50,7 @@ else
                             <input type="tel" maxlength="19" @bind="phone.PhoneNumber" @bind:after='async () => await Update(phone)' class="input fullwidth" />
                         }
                     </td>
-                    @if (!JournalState.IsCurrentPageApproved)
+                    @if (_canEdit)
                     {
                         <td>
                             <DeleteButton @onclick="() => OpenDeleteModal(phone.Id)"></DeleteButton>
@@ -62,7 +61,7 @@ else
         </tbody>
     </table>
 
-    @if (!JournalState.IsCurrentPageApproved)
+    @if (_canEdit)
     {
         <AddButton @onclick="Add">Добавить строку</AddButton>
     }
@@ -80,6 +79,8 @@ else
     public int JournalId { get; set; }
 
     private ContactPhonesPageResponse? _pageData;
+
+    private bool _canEdit => !JournalState.IsCurrentPageApproved && AppState.CanEditJournal;
 
     protected override async Task OnInitializedAsync()
     {

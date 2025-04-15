@@ -36,40 +36,91 @@ else
             {
                 <tr>
                     <td>
-                        <textarea rows="1" style="overflow:hidden; resize:none;" oninput="this.style.height = 'auto'; this.style.height = (this.scrollHeight) + 'px';"
+                        @if (CanEdit)
+                        {
+                            <textarea rows="1" style="overflow:hidden; resize:none;" oninput="this.style.height = 'auto'; this.style.height = (this.scrollHeight) + 'px';"
                             @bind="record.ActivityName" @bind:after="async () => await Update(record)" class="input fullwidth" />
+                        }
+                        else
+                        {
+                            <p>@record.ActivityName</p>
+                        }
                     </td>
                     <td>
-                        <textarea rows="1" style="overflow:hidden; resize:none;" oninput="this.style.height = 'auto'; this.style.height = (this.scrollHeight) + 'px';"
+                        @if (CanEdit)
+                        {
+                            <textarea rows="1" style="overflow:hidden; resize:none;" oninput="this.style.height = 'auto'; this.style.height = (this.scrollHeight) + 'px';"
                             @bind="record.ParticipationKind" @bind:after="async () => await Update(record)" class="input fullwidth" />
+                        }
+                        else
+                        {
+                            <p>@record.ParticipationKind</p>
+                        }
                     </td>
                     <td>
-                        <input type="date" @bind="record.StartDate" @bind:after="async () => await Update(record)" class="input fullwidth" />
+                        @if (CanEdit)
+                        {
+                            <input type="date" @bind="record.StartDate" @bind:after="async () => await Update(record)" class="input fullwidth" />
+                        }
+                        else
+                        {
+                            <p>@record.StartDate.ToString()</p>
+                        }
                     </td>
                     <td>
-                        <input type="date" @bind="record.EndDate" @bind:after="async () => await Update(record)" class="input fullwidth" />
+                        @if (CanEdit)
+                        {
+                            <input type="date" @bind="record.EndDate" @bind:after="async () => await Update(record)" class="input fullwidth" />
+                        }
+                        else
+                        {
+                            <p>@record.EndDate.ToString()</p>
+                        }
                     </td>
                     <td>
-                        <textarea rows="1" style="overflow:hidden; resize:none;" oninput="this.style.height = 'auto'; this.style.height = (this.scrollHeight) + 'px';"
+                        @if (CanEdit)
+                        {
+                            <textarea rows="1" style="overflow:hidden; resize:none;" oninput="this.style.height = 'auto'; this.style.height = (this.scrollHeight) + 'px';"
                             @bind="record.Result" @bind:after="async () => await Update(record)" class="input fullwidth" />
+                        }
+                        else
+                        {
+                            <p>@record.Result</p>
+                        }
                     </td>
                     <td>
-                        <textarea rows="1" style="overflow:hidden; resize:none;" oninput="this.style.height = 'auto'; this.style.height = (this.scrollHeight) + 'px';"
+                        @if (CanEdit)
+                        {
+                            <textarea rows="1" style="overflow:hidden; resize:none;" oninput="this.style.height = 'auto'; this.style.height = (this.scrollHeight) + 'px';"
                             @bind="record.Note" @bind:after="async () => await Update(record)" class="input fullwidth" />
+                        }
+                        else
+                        {
+                            <p>@record.Note</p>
+                        }
                     </td>
-                    <td>
-                        <DeleteButton @onclick="async () => await Delete(record)" />
-                    </td>
+                    @if (CanEdit)
+                    {
+                        <td>
+                            <DeleteButton @onclick="async () => await Delete(record)" />
+                        </td>
+                    }
                 </tr>
             }
         </tbody>
     </table>
-    <AddButton @onclick="Add">Добавить строку</AddButton>
+    @if (CanEdit)
+    {
+        <AddButton @onclick="Add">Добавить строку</AddButton>
+    }
 }
 
 @code {
     [Parameter]
     public int CardId { get; set; }
+
+    [Parameter]
+    public bool CanEdit { get; set; }
 
     private List<IndividualInformationRecordResponse>? _individualInformation;
 

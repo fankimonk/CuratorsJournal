@@ -1,5 +1,5 @@
 ﻿@page "/journal/{journalId:int}/PsychologicalAndPedagogicalCharacteristics/{pageId:int}"
- 
+
 @inherits CRUDPageBase
 
 @attribute [Authorize]
@@ -14,6 +14,7 @@
 
 @inject HttpClient HttpClient
 @inject JournalState JournalState
+@inject AppState AppState
 
 <PageTitle>Психолого-педагогическая характеристика учебной группы</PageTitle>
 
@@ -26,23 +27,56 @@
 }
 else
 {
-    <textarea rows="28" @bind="_pageData.Content" @bind:after="Update" class="fullwidth" style="resize:none;" />
+    @if (_canEdit)
+    {
+        <textarea rows="28" @bind="_pageData.Content" @bind:after="Update" class="fullwidth" style="resize:none;" />
+    }
+    else
+    {
+        <p>@_pageData.Content</p>
+    }
     <p>
         Ф. И. О., должность специалиста
-        <select @bind="_pageData.WorkerId" @bind:after="Update" class="input underline">
-            <option value="">-- Выберите специалиста --</option>
-            @foreach (var worker in _workers)
+        @if (_canEdit)
+        {
+            <select @bind="_pageData.WorkerId" @bind:after="Update" class="input underline">
+                <option value="">-- Выберите специалиста --</option>
+                @foreach (var worker in _workers)
+                {
+                    <option @key="worker.Id" value="@worker.Id">
+                        @worker.LastName @worker.FirstName @worker.MiddleName,
+                        @worker.Position.Name
+                    </option>
+                }
+            </select>
+            <ReferenceButton Uri="/Workers" ButtonSize="ButtonSizes.Small" />
+        }
+        else
+        {
+            var worker = _workers.FirstOrDefault(w => w.Id == _pageData.WorkerId);
+            if (worker != null)
             {
-                <option @key="worker.Id" value="@worker.Id">
-                    @worker.LastName @worker.FirstName @worker.MiddleName, 
+                <span>
+                    @worker.LastName @worker.FirstName @worker.MiddleName,
                     @worker.Position.Name
-                </option>
+                </span>
             }
-        </select>
-        <ReferenceButton Uri="/Workers" ButtonSize="ButtonSizes.Small" />
+            else
+            {
+                <span></span>
+            }
+        }
     </p>
     <p>
-        Дата <input type="date" @bind="_pageData.Date" @bind:after="Update" class="input underline" />
+        Дата 
+        @if (_canEdit)
+        {
+            <input type="date" @bind="_pageData.Date" @bind:after="Update" class="input underline" />
+        }
+        else
+        {
+            @(_pageData.Date.ToString())
+        }
     </p>
 
     <AlertBottom IsVisible="_isServerErrorAlertVisible" OnClose="CloseServerErrorAlert">@_errorMessage</AlertBottom>
@@ -58,6 +92,13 @@ else
     private PsychologicalAndPedagogicalCharacteristicsResponse? _pageData;
 
     private List<WorkerResponse>? _workers;
+
+    private bool _canEdit => !JournalState.IsCurrentPageApproved && AppState.CanApprovePages;
+
+    protected override async Task OnInitializedAsync()
+    {
+        JournalState.OnToggleIsApproved += StateHasChanged;
+    }
 
     protected override async Task OnParametersSetAsync()
     {

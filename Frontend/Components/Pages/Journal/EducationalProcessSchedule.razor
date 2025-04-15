@@ -13,6 +13,7 @@
 
 @inject HttpClient HttpClient
 @inject JournalState JournalState
+@inject AppState AppState
 
 <PageTitle>График учебного процесса</PageTitle>
 
@@ -40,7 +41,7 @@ else
             {
                 <tr class="@GetRowClass(record.Id)">
                     <td>
-                        @if (JournalState.IsCurrentPageApproved)
+                        @if (!_canEdit)
                         {
                             <p>@record.SemesterNumber</p>
                         }
@@ -51,7 +52,7 @@ else
                         }
                     </td>
                     <td>
-                        @if (JournalState.IsCurrentPageApproved)
+                        @if (!_canEdit)
                         {
                             @record.StartDate.ToString()
                         }
@@ -61,7 +62,7 @@ else
                         }
                     </td>
                     <td>
-                        @if (JournalState.IsCurrentPageApproved)
+                        @if (!_canEdit)
                         {
                             @record.EndDate.ToString()
                         }
@@ -71,8 +72,8 @@ else
                         }
                     </td>
                     <td>
-                        с 
-                        @if (JournalState.IsCurrentPageApproved)
+                        с
+                        @if (!_canEdit)
                         {
                             @record.SessionStartDate.ToString()
                         }
@@ -82,7 +83,7 @@ else
                         }
                         <br />
                         по
-                        @if (JournalState.IsCurrentPageApproved)
+                        @if (!_canEdit)
                         {
                             @record.SessionEndDate.ToString()
                         }
@@ -93,8 +94,8 @@ else
                     </td>
                     <td>
                         <div>
-                            с 
-                            @if (JournalState.IsCurrentPageApproved)
+                            с
+                            @if (!_canEdit)
                             {
                                 @record.PracticeStartDate.ToString()
                             }
@@ -104,7 +105,7 @@ else
                             }
                             <br />
                             по
-                            @if (JournalState.IsCurrentPageApproved)
+                            @if (!_canEdit)
                             {
                                 @record.PracticeEndDate.ToString()
                             }
@@ -116,7 +117,7 @@ else
                     </td>
                     <td>
                         с
-                        @if (JournalState.IsCurrentPageApproved)
+                        @if (!_canEdit)
                         {
                             @record.VacationStartDate.ToString()
                         }
@@ -126,7 +127,7 @@ else
                         }
                         <br />
                         по
-                        @if (JournalState.IsCurrentPageApproved)
+                        @if (!_canEdit)
                         {
                             @record.VacationEndDate.ToString()
                         }
@@ -135,7 +136,7 @@ else
                             <input type="date" @bind="record.VacationEndDate" @bind:after="async () => await Update(record)" class="input" />
                         }
                     </td>
-                    @if (!JournalState.IsCurrentPageApproved)
+                    @if (_canEdit)
                     {
                         <td>
                             <DeleteButton @onclick="() => OpenDeleteModal(record.Id)" />
@@ -146,7 +147,7 @@ else
         </tbody>
     </table>
 
-    @if (!JournalState.IsCurrentPageApproved)
+    @if (_canEdit)
     {
         <AddButton @onclick="Add">Добавить строку</AddButton>
     }
@@ -164,6 +165,8 @@ else
     public int JournalId { get; set; }
 
     public EducationalProcessSchedulePageResponse? _pageData;
+
+    private bool _canEdit => !JournalState.IsCurrentPageApproved && AppState.CanEditJournal;
 
     protected override async Task OnInitializedAsync()
     {

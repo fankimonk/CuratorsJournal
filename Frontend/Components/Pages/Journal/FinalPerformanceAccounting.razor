@@ -13,9 +13,11 @@
 @using Frontend.Components.Buttons
 @using Frontend.Components.Utils
 @using Frontend.Services
+@using Frontend.Utils.Extensions
 
 @inject HttpClient HttpClient
 @inject JournalState JournalState
+@inject AppState AppState
 
 <PageTitle>Учет итоговой успеваемости студентов группы</PageTitle>
 
@@ -27,59 +29,62 @@
 }
 else
 {
-    <div class="mb-3">
-        <AddButton @onclick="OpenAddColumnModal">Добавить столбец</AddButton>
-    </div>
-
-    <Modal IsVisible="_isAddColumnModalVisible" OnClose="CloseAddColumnModal">
-        <div class="row">
-            <div class="col d-flex align-items-center justify-content-center">
-                <h3>Добавить столбец</h3>
-            </div>
+    @if (_canEdit)
+    {
+        <div class="mb-3">
+            <AddButton @onclick="OpenAddColumnModal">Добавить столбец</AddButton>
         </div>
-        <div class="row">
-            <div class="col-md-12">
-                <EditForm method="post" Model="_addColumnRequest" OnValidSubmit="AddColumn" FormName="add" Enhance>
-                    <div class="mb-3">
-                        <InputSelect id="certificationType" 
-                        TValue="int?" 
-                        Value="_addColumnRequest.CertificationTypeId" 
-                        ValueChanged="ResetAddColumnRequestSubject"
-                        ValueExpression="@(() => _addColumnRequest.CertificationTypeId)"
-                        class="form-control">
-                            <option value="">(нет)</option>
-                            @foreach (var ct in _certificationTypes)
-                            {
-                                <option @key="ct.Id" value="@ct.Id">@ct.Name</option>
-                            }
-                        </InputSelect>
-                    </div>
-                    <div class="mb-3">
-                        <ReferenceButton Uri="/CertificationTypes">Типы аттестации</ReferenceButton>
-                    </div>
-                    @if (_addColumnRequest.CertificationTypeId != null)
-                    {
+
+        <Modal IsVisible="_isAddColumnModalVisible" OnClose="CloseAddColumnModal">
+            <div class="row">
+                <div class="col d-flex align-items-center justify-content-center">
+                    <h3>Добавить столбец</h3>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <EditForm method="post" Model="_addColumnRequest" OnValidSubmit="AddColumn" FormName="add" Enhance>
                         <div class="mb-3">
-                            <label for="subject" class="form-label">Предмет: </label>
-                            <InputSelect id="subject" @bind-Value="_addColumnRequest.SubjectId" class="form-control">
+                            <InputSelect id="certificationType"
+                            TValue="int?"
+                            Value="_addColumnRequest.CertificationTypeId"
+                            ValueChanged="ResetAddColumnRequestSubject"
+                            ValueExpression="@(() => _addColumnRequest.CertificationTypeId)"
+                            class="form-control">
                                 <option value="">(нет)</option>
-                                @foreach (var s in GetSubjectsThatAreNotInCertificationType((int)_addColumnRequest.CertificationTypeId))
+                                @foreach (var ct in _certificationTypes)
                                 {
-                                    <option @key="s.Id" value="@s.Id">@s.Name</option>
+                                    <option @key="ct.Id" value="@ct.Id">@ct.Name</option>
                                 }
                             </InputSelect>
                         </div>
                         <div class="mb-3">
-                            <ReferenceButton Uri="/Subjects">Предметы</ReferenceButton>
+                            <ReferenceButton Uri="/CertificationTypes">Типы аттестации</ReferenceButton>
                         </div>
-                    }
-                    <div class="mb-3">
-                        <EditButton type="submit" style="width:100%;">Добавить</EditButton>
-                    </div>
-                </EditForm>
+                        @if (_addColumnRequest.CertificationTypeId != null)
+                        {
+                            <div class="mb-3">
+                                <label for="subject" class="form-label">Предмет: </label>
+                                <InputSelect id="subject" @bind-Value="_addColumnRequest.SubjectId" class="form-control">
+                                    <option value="">(нет)</option>
+                                    @foreach (var s in GetSubjectsThatAreNotInCertificationType((int)_addColumnRequest.CertificationTypeId))
+                                    {
+                                        <option @key="s.Id" value="@s.Id">@s.Name</option>
+                                    }
+                                </InputSelect>
+                            </div>
+                            <div class="mb-3">
+                                <ReferenceButton Uri="/Subjects">Предметы</ReferenceButton>
+                            </div>
+                        }
+                        <div class="mb-3">
+                            <EditButton type="submit" style="width:100%;">Добавить</EditButton>
+                        </div>
+                    </EditForm>
+                </div>
             </div>
-        </div>
-    </Modal>
+        </Modal>
+    }
 
     <table class="table table-bordered">
         <thead>
@@ -102,7 +107,14 @@ else
                 {
                     @foreach (var column in ct.PerformanceAccountingColumns!)
                     {
-                        <th class="text-center align-middle" @onclick="() => OpenEditColumnModal(column)" style="cursor:pointer;">@column.SubjectResponse?.AbbreviatedName</th>
+                        @if (_canEdit)
+                        {
+                            <th class="text-center align-middle" @onclick="() => OpenEditColumnModal(column)" style="cursor:pointer;">@column.SubjectResponse?.AbbreviatedName</th>
+                        }
+                        else
+                        {
+                            <th class="text-center align-middle">@column.SubjectResponse?.AbbreviatedName</th>
+                        }
                     }
                 }
             </tr>
@@ -112,19 +124,41 @@ else
             {
                 <tr class="@GetRowClass(record.Id)">
                     <td>
-                        <input type="number" min="0" @bind="record.Number" @bind:after='async () => await UpdateRecord(record)' class="input fullwidth" />
+                        @if (_canEdit)
+                        {
+                            <input type="number" min="0" @bind="record.Number" @bind:after='async () => await UpdateRecord(record)' class="input fullwidth" />
+                        }
+                        else
+                        {
+                            <p>@record.Number</p>
+                        }
                     </td>
                     <td>
-                        <select @bind="record.StudentId" @bind:after="async () => await UpdateRecord(record)" class="input fullwidth">
-                            <option value="">(нет)</option>
-                            @foreach (var student in _students)
-                            {
-                                @if (record.StudentId == student.Id || !_pageData.Records.Any(a => a.StudentId == student.Id))
+                        @if (_canEdit)
+                        {
+                            <select @bind="record.StudentId" @bind:after="async () => await UpdateRecord(record)" class="input fullwidth">
+                                <option value="">(нет)</option>
+                                @foreach (var student in _students)
                                 {
-                                    <option @key="student.Id" value="@student.Id">@student.LastName @student.FirstName @student.MiddleName</option>
+                                    @if (record.StudentId == student.Id || !_pageData.Records.Any(a => a.StudentId == student.Id))
+                                    {
+                                        <option @key="student.Id" value="@student.Id">@student.LastName @student.FirstName @student.MiddleName</option>
+                                    }
                                 }
+                            </select>
+                        }
+                        else
+                        {
+                            var student = _students.FirstOrDefault(s => s.Id == record.StudentId);
+                            if (student != null)
+                            {
+                                <p>@student.GetFIO()</p>
                             }
-                        </select>
+                            else
+                            {
+                                <p></p>
+                            }
+                        }
                     </td>
                     @foreach (var ct in GetNotEmptyCertificationTypes())
                     {
@@ -134,67 +168,96 @@ else
                             <td class="@GetCellClass(grade!.Id)">
                                 @if (ct.Id != 2)
                                 {
-                                    <input type="number" min="0" max="10" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))"
-                                    @bind="grade!.Grade" @bind:after="async () => await UpdateGrade(grade)" class="input fullwidth" />
+                                    @if (_canEdit)
+                                    {
+                                        <input type="number" min="0" max="10" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))"
+                                        @bind="grade!.Grade" @bind:after="async () => await UpdateGrade(grade)" class="input fullwidth" />
+                                    }
+                                    else
+                                    {
+                                        <p>@grade.Grade.ToString()</p>
+                                    }
                                 }
                                 else
                                 {
-                                    // <input type="checkbox" @bind="grade!.IsPassed" @bind:after="async () => await UpdateGrade(grade)" />
-                                    <select @bind="_gradesIsPassedValues[grade.Id]" @bind:after="async () => await UpdateGrade(grade)" class="input fullwidth">
-                                        <option value="">(нет)</option>
-                                        <option value="True">Зачтено</option>
-                                        <option value="False">Не зачтено</option>
-                                    </select>
+                                    @if (_canEdit)
+                                    {
+                                        <select @bind="_gradesIsPassedValues[grade.Id]" @bind:after="async () => await UpdateGrade(grade)" class="input fullwidth">
+                                            <option value="">(нет)</option>
+                                            <option value="True">Зачтено</option>
+                                            <option value="False">Не зачтено</option>
+                                        </select>
+                                    }
+                                    else
+                                    {
+                                        if (grade.IsPassed != null)
+                                        {
+                                            <p>@((bool)grade.IsPassed ? "Зачтено" : "Не зачтено")</p>
+                                        }
+                                        else
+                                        {
+                                            <p></p>
+                                        }
+                                    }
                                 }
                             </td>
                         }
                     }
-                    <td>
-                        <DeleteButton @onclick="() => OpenDeleteModal(record.Id)" />
-                    </td>
+                    @if (_canEdit)
+                    {
+                        <td>
+                            <DeleteButton @onclick="() => OpenDeleteModal(record.Id)" />
+                        </td>
+                    }
                 </tr>
             }
         </tbody>
     </table>
 
-    <AddButton @onclick="AddRecord">Добавить строку</AddButton>
+    @if (_canEdit)
+    {
+        <AddButton @onclick="AddRecord">Добавить строку</AddButton>
+    }
 
     <ConfirmDeleteModal IsVisible="_isDeleteModalVisible" OnClose="CloseDeleteModal" IdToDelete="_idToDelete" OnDeleteById="DeleteRecord" />
 
-    <Modal IsVisible="_isEditColumnModalVisible" OnClose="CloseEditColumnModal">
-        <div class="row">
-            <div class="col d-flex align-items-center justify-content-center">
-                <h3>Редактировать столбец</h3>
+    @if (_canEdit)
+    {
+        <Modal IsVisible="_isEditColumnModalVisible" OnClose="CloseEditColumnModal">
+            <div class="row">
+                <div class="col d-flex align-items-center justify-content-center">
+                    <h3>Редактировать столбец</h3>
+                </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-md-12">
-                <EditForm method="put" Model="_editColumnRequest" OnValidSubmit="UpdateColumn" FormName="edit" Enhance>
-                    <div class="mb-3">
-                        <label for="subject" class="form-label">Предмет: </label>
-                        <InputSelect id="subject" @bind-Value="_editColumnRequest.SubjectId" class="form-control">
-                            <option value="">(нет)</option>
-                            @foreach (var s in GetSubjectsThatAreNotInCertificationType(_columnToEdit.CertificationTypeId, _columnToEdit.SubjectResponse?.Id))
-                            {
-                                <option @key="s.Id" value="@s.Id">@s.Name</option>
-                            }
-                        </InputSelect>
-                    </div>
-                    <div class="mb-3">
-                        <ReferenceButton Uri="/Subjects">Предметы</ReferenceButton>
-                    </div>
-                    <div class="mb-3">
-                        <EditButton type="submit" style="width:100%;">Сохранить</EditButton>
-                    </div>
-                </EditForm>
+            <div class="row">
+                <div class="col-md-12">
+                    <EditForm method="put" Model="_editColumnRequest" OnValidSubmit="UpdateColumn" FormName="edit" Enhance>
+                        <div class="mb-3">
+                            <label for="subject" class="form-label">Предмет: </label>
+                            <InputSelect id="subject" @bind-Value="_editColumnRequest.SubjectId" class="form-control">
+                                <option value="">(нет)</option>
+                                @foreach (var s in GetSubjectsThatAreNotInCertificationType(_columnToEdit.CertificationTypeId, _columnToEdit.SubjectResponse?.Id))
+                                {
+                                    <option @key="s.Id" value="@s.Id">@s.Name</option>
+                                }
+                            </InputSelect>
+                        </div>
+                        <div class="mb-3">
+                            <ReferenceButton Uri="/Subjects">Предметы</ReferenceButton>
+                        </div>
+                        <div class="mb-3">
+                            <EditButton type="submit" style="width:100%;">Сохранить</EditButton>
+                        </div>
+                    </EditForm>
+                </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col">
-                <DeleteButton @onclick="() => OpenDeleteColumnModal(_columnToEdit.Id)" style="width:100%;">Удалить</DeleteButton>
+            <div class="row">
+                <div class="col">
+                    <DeleteButton @onclick="() => OpenDeleteColumnModal(_columnToEdit.Id)" style="width:100%;">Удалить</DeleteButton>
+                </div>
             </div>
-        </div>
-    </Modal>
+        </Modal>
+    }
 
     <ConfirmDeleteModal IsVisible="_isDeleteColumnModalVisible" OnClose="CloseDeleteColumnModal" IdToDelete="_idToDelete" OnDeleteById="DeleteColumn" />
 
@@ -227,6 +290,13 @@ else
     private CreatePerformanceAccountingColumnRequest _addColumnRequest { get; set; } = new(null, null, -1);
 
     private Dictionary<int, string> _gradesIsPassedValues = [];
+
+    private bool _canEdit => !JournalState.IsCurrentPageApproved && AppState.CanEditJournal;
+
+    protected override async Task OnInitializedAsync()
+    {
+        JournalState.OnToggleIsApproved += StateHasChanged;
+    }
 
     protected override async Task OnParametersSetAsync()
     {

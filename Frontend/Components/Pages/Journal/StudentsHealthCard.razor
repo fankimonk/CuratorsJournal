@@ -13,10 +13,12 @@
 @using Frontend.Components.Buttons
 @using Frontend.Components.Utils
 @using Frontend.Services
+@using Frontend.Utils.Extensions
 
 @inject HttpClient HttpClient
 @inject JournalState JournalState
 @inject IJSRuntime JSRuntime
+@inject AppState AppState
 
 <PageTitle>Карта здоровья студентов</PageTitle>
 
@@ -24,18 +26,27 @@
     КАРТА ЗДОРОВЬЯ СТУДЕНТОВ 
     @if (_academicYears != null)
     {
-        @(" В ")
-        <select @bind="_pageData!.Attributes.AcademicYearId" @bind:after="UpdateAttributes" class="text-center input ms-2">
-            <option value="">(нет)</option>
-            @foreach (var academicYear in _academicYears)
-            {
-                <option @key="academicYear.Id" value="@academicYear.Id">
-                    @academicYear.StartYear / @academicYear.EndYear
-                </option>
-            }
-        </select>
-        <ReferenceButton ButtonSize="ButtonSizes.Small" AdditionalClasses="me-2" Uri="/AcademicYears" />
-        @(" учебном году")
+        @if (!_canEdit)
+        {
+            var academicYear = _academicYears.FirstOrDefault(a => a.Id == _pageData.Attributes.AcademicYearId);
+            var academicYearStr = academicYear == null ? "(нет)" : academicYear.StartYear + " / " + academicYear.EndYear;
+            <span> В @academicYearStr учебном году</span>
+        }
+        else
+        {
+            @(" В ")
+            <select @bind="_pageData!.Attributes.AcademicYearId" @bind:after="UpdateAttributes" class="text-center input ms-2">
+                <option value="">(нет)</option>
+                @foreach (var academicYear in _academicYears)
+                {
+                    <option @key="academicYear.Id" value="@academicYear.Id">
+                        @academicYear.StartYear / @academicYear.EndYear
+                    </option>
+                }
+            </select>
+            <ReferenceButton ButtonSize="ButtonSizes.Small" AdditionalClasses="me-2" Uri="/AcademicYears" />
+            @(" учебном году")
+        }
     }
 </h3>
 
@@ -62,38 +73,73 @@ else
             {
                 <tr class="@GetRowClass(record.Id)">
                     <td>
-                        <input type="number" min="1" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))"
-                        @bind="record.Number" @bind:after="async () => await Update(record)" class="input fullwidth" />
+                        @if (_canEdit)
+                        {
+                            <input type="number" min="1" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))"
+                            @bind="record.Number" @bind:after="async () => await Update(record)" class="input fullwidth" />
+                        }
+                        else
+                        {
+                            <p>@record.Number</p>
+                        }
                     </td>
                     <td>
-                        <select @bind="record.StudentId" @bind:after="async () => await Update(record)" class="input fullwidth">
-                            <option value="">(нет)</option>
-                            @foreach (var student in _students)
-                            {
-                                @if (record.StudentId == student.Id || !_pageData.StudentHealthCard.Any(a => a.StudentId == student.Id))
+                        @if (_canEdit)
+                        {
+                            <select @bind="record.StudentId" @bind:after="async () => await Update(record)" class="input fullwidth">
+                                <option value="">(нет)</option>
+                                @foreach (var student in _students)
                                 {
-                                    <option @key="student.Id" value="@student.Id">@student.LastName @student.FirstName @student.MiddleName</option>
+                                    @if (record.StudentId == student.Id || !_pageData.StudentHealthCard.Any(a => a.StudentId == student.Id))
+                                    {
+                                        <option @key="student.Id" value="@student.Id">@student.LastName @student.FirstName @student.MiddleName</option>
+                                    }
                                 }
-                            }
-                        </select>
+                            </select>
+                        }
+                        else
+                        {
+                            StudentResponse? student = null;
+                            if (record.StudentId != null) student = _students.FirstOrDefault(s => s.Id == record.StudentId);
+                            <p>@(student == null ? "" : student.GetFIO())</p>
+                        }
                     </td>
                     <td>
-                        <input type="number" min="0" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))"
-                        @bind="record.MissedClasses" @bind:after="async () => await Update(record)" class="input fullwidth" />
+                        @if (_canEdit)
+                        {
+                            <input type="number" min="0" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))"
+                            @bind="record.MissedClasses" @bind:after="async () => await Update(record)" class="input fullwidth" />
+                        }
+                        else
+                        {
+                            <p>@record.MissedClasses</p>
+                        }
                     </td>
                     <td>
-                        <textarea rows="1" style="overflow:hidden; resize:none;" oninput="this.style.height = 'auto'; this.style.height = (this.scrollHeight) + 'px';"
-                        @bind="record.Note" @bind:after="async () => await Update(record)" class="input fullwidth" />
+                        @if (_canEdit)
+                        {
+                            <textarea rows="1" style="overflow:hidden; resize:none;" oninput="this.style.height = 'auto'; this.style.height = (this.scrollHeight) + 'px';"
+                            @bind="record.Note" @bind:after="async () => await Update(record)" class="input fullwidth" />
+                        }
+                        else
+                        {
+                            <p>@record.Note</p>
+                        }
                     </td>
-                    <td>
-                        <DeleteButton @onclick="() => OpenDeleteModal(record.Id)" />
-                    </td>
+                    @if (_canEdit)
+                    {
+                        <td>
+                            <DeleteButton @onclick="() => OpenDeleteModal(record.Id)" />
+                        </td>
+                    }
                 </tr>
             }
         </tbody>
     </table>
-    <AddButton @onclick="Add">Добавить строку</AddButton>
-
+    @if (_canEdit)
+    {
+        <AddButton @onclick="Add">Добавить строку</AddButton>
+    }
     <ConfirmDeleteModal IsVisible="_isDeleteModalVisible" OnClose="CloseDeleteModal" IdToDelete="_idToDelete" OnDeleteById="Delete" />
 
     <AlertBottom IsVisible="_isServerErrorAlertVisible" OnClose="CloseServerErrorAlert">@_errorMessage</AlertBottom>
@@ -113,6 +159,13 @@ else
     private List<AcademicYearResponse>? _academicYears;
 
     private List<StudentResponse>? _students;
+
+    private bool _canEdit => !JournalState.IsCurrentPageApproved && AppState.CanEditJournal;
+
+    protected override async Task OnInitializedAsync()
+    {
+        JournalState.OnToggleIsApproved += StateHasChanged;
+    }
 
     protected override async Task OnParametersSetAsync()
     {

@@ -116,8 +116,12 @@ else
 
     private List<PersonalizedAccountingCardIdResponse>? _cardIds;
 
+    private bool _canEdit => !JournalState.IsCurrentPageApproved;
+
     protected override async Task OnInitializedAsync()
     {
+        JournalState.OnToggleIsApproved += StateHasChanged;
+
         await JournalState.Initialize(JournalId, PageId);
 
         _pageData = await HttpClient.GetFromJsonAsync<StudentListPageResponse>("api/journal/studentlist/" + PageId.ToString());

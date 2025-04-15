@@ -15,6 +15,7 @@
 @inject HttpClient HttpClient
 @inject JournalState JournalState
 @inject IJSRuntime JSRuntime
+@inject AppState AppState
 
 <PageTitle>Работа с научно-методической и педагогической литературой</PageTitle>
 
@@ -42,29 +43,59 @@ else
             {
                 <tr class="@GetRowClass(record.Id)">
                     <td>
-                        <select @bind="record.LiteratureId" @bind:after="async () => await Update(record)" class="input fullwidth">
-                            <option value="">(нет)</option>
-                            @foreach (var l in _literature)
+                        @if (_canEdit)
+                        {
+                            <select @bind="record.LiteratureId" @bind:after="async () => await Update(record)" class="input fullwidth">
+                                <option value="">(нет)</option>
+                                @foreach (var l in _literature)
+                                {
+                                    <option @key="l.Id" value="@l.Id">
+                                        @l.Author, "@l.Name", @l.BibliographicData
+                                    </option>
+                                }
+                            </select>
+                        }
+                        else
+                        {
+                            var literature = _literature.FirstOrDefault(l => l.Id == record.LiteratureId);
+                            if (literature != null)
                             {
-                                <option @key="l.Id" value="@l.Id">
-                                    @l.Author, "@l.Name", @l.BibliographicData
-                                </option>
+                                <p>
+                                    @literature.Author, "@literature.Name", @literature.BibliographicData
+                                </p>
                             }
-                        </select>
+                            else
+                            {
+                                <p></p>
+                            }
+                        }
                     </td>
                     <td>
-                        <textarea rows="1" style="overflow:hidden; resize:none;" oninput="this.style.height = 'auto'; this.style.height = (this.scrollHeight) + 'px';"
+                        @if (_canEdit)
+                        {
+                            <textarea rows="1" style="overflow:hidden; resize:none;" oninput="this.style.height = 'auto'; this.style.height = (this.scrollHeight) + 'px';"
                             @bind="record.ShortAnnotation" @bind:after='async () => await Update(record)' class="input fullwidth" />
+                        }
+                        else
+                        {
+                            <p>@record.ShortAnnotation</p>
+                        }
                     </td>
-                    <td>
-                        <DeleteButton @onclick="() => OpenDeleteModal(record.Id)"/>
-                    </td>
+                    @if (_canEdit)
+                    {
+                        <td>
+                            <DeleteButton @onclick="() => OpenDeleteModal(record.Id)" />
+                        </td>
+                    }
                 </tr>
             }
 
         </tbody>
     </table>
-    <AddButton @onclick="Add">Добавить строку</AddButton>
+    @if (_canEdit)
+    {
+        <AddButton @onclick="Add">Добавить строку</AddButton>
+    }
 
     <ConfirmDeleteModal IsVisible="_isDeleteModalVisible" OnClose="CloseDeleteModal" IdToDelete="_idToDelete" OnDeleteById="Delete" />
 
@@ -82,8 +113,12 @@ else
 
     private List<LiteratureResponse>? _literature;
 
+    private bool _canEdit => !JournalState.IsCurrentPageApproved && AppState.CanEditJournal;
+
     protected override async Task OnInitializedAsync()
     {
+        JournalState.OnToggleIsApproved += StateHasChanged;
+
         await JournalState.Initialize(JournalId, PageId);
 
         _pageData = await HttpClient.GetFromJsonAsync<LiteratureWorkPageResponse>("api/journal/literaturework/" + PageId.ToString());

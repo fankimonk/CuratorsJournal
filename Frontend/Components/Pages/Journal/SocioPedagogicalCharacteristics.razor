@@ -16,6 +16,7 @@
 @inject HttpClient HttpClient
 @inject JournalState JournalState
 @inject IJSRuntime JSRuntime
+@inject AppState AppState
 
 <PageTitle>Социально-педагогическая характеристика</PageTitle>
 
@@ -37,7 +38,7 @@ else
             учебной группы @_group.Number.ToString()
             @if (_academicYears != null)
             {
-                @if (JournalState.IsCurrentPageApproved)
+                @if (!_canEdit)
                 {
                     var academicYear = _academicYears.FirstOrDefault(a => a.Id == _pageData.Attributes.AcademicYearId);
                     var academicYearStr = academicYear == null ? "(нет)" : academicYear.StartYear + " / " + academicYear.EndYear; 
@@ -64,7 +65,7 @@ else
 
     <p>
         1. Всего студентов
-        @if (JournalState.IsCurrentPageApproved)
+        @if (!_canEdit)
         {
             <span style="text-decoration: underline;">@_pageData.TotalStudents</span>
         }
@@ -77,224 +78,224 @@ else
     <p>Из них</p>
     <p>
         2. Девушки
-        @if (JournalState.IsCurrentPageApproved)
+        @if (!_canEdit)
         {
             <span style="text-decoration: underline;">@_pageData.FemalesCount</span>
         }
         else
         {
             <input type="number" min="0" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))"
-                   @bind="_pageData.FemalesCount" @bind:after="Update" class="input underline" />
+            @bind="_pageData.FemalesCount" @bind:after="Update" class="input underline" />
         }
     </p>
     <p>
         3. Юноши
-        @if (JournalState.IsCurrentPageApproved)
+        @if (!_canEdit)
         {
             <span style="text-decoration: underline;">@_pageData.MalesCount</span>
         }
         else
         {
             <input type="number" min="0" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))"
-                   @bind="_pageData.MalesCount" @bind:after="Update" class="input underline" />
+            @bind="_pageData.MalesCount" @bind:after="Update" class="input underline" />
         }
     </p>
     <p>
         4. Члены ОО "БРСМ"
-        @if (JournalState.IsCurrentPageApproved)
+        @if (!_canEdit)
         {
             <span style="text-decoration: underline;">@_pageData.BRSMMembersCount</span>
         }
         else
         {
             <input type="number" min="0" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))"
-                   @bind="_pageData.BRSMMembersCount" @bind:after="Update" class="input underline" />
+            @bind="_pageData.BRSMMembersCount" @bind:after="Update" class="input underline" />
         }
-        
+
     </p>
     <p>
         5. Дети-сироты, (до 18 лет)
-        @if (JournalState.IsCurrentPageApproved)
+        @if (!_canEdit)
         {
             <span style="text-decoration: underline;">@_pageData.OrphansUnderagesCount</span>
         }
         else
         {
             <input type="number" min="0" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))"
-                   @bind="_pageData.OrphansUnderagesCount" @bind:after="Update" class="input underline" />
+            @bind="_pageData.OrphansUnderagesCount" @bind:after="Update" class="input underline" />
         }
-        
+
     </p>
     <p>
         6. Дети, оставшиеся без попечения родителей (до 18 лет)
-        @if (JournalState.IsCurrentPageApproved)
+        @if (!_canEdit)
         {
             <span style="text-decoration: underline;">@_pageData.StudentsWithoutParentalCareUnderagesCount</span>
         }
         else
         {
             <input type="number" min="0" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))"
-                   @bind="_pageData.StudentsWithoutParentalCareUnderagesCount" @bind:after="Update" class="input underline" />
+            @bind="_pageData.StudentsWithoutParentalCareUnderagesCount" @bind:after="Update" class="input underline" />
         }
-        
+
     </p>
     <p>
         7. Лица из числа детей-сирот <br />
         и детей, оставшихся без попечения родителей (18-23 года)
-        @if (JournalState.IsCurrentPageApproved)
+        @if (!_canEdit)
         {
             <span style="text-decoration: underline;">@_pageData.OrphansOrStudentsWithoutParentalCareAdults</span>
         }
         else
         {
             <input type="number" min="0" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))"
-                   @bind="_pageData.OrphansOrStudentsWithoutParentalCareAdults" @bind:after="Update" class="input underline" />
+            @bind="_pageData.OrphansOrStudentsWithoutParentalCareAdults" @bind:after="Update" class="input underline" />
         }
-        
+
     </p>
     <p>
         8. Студенты с особенностями психофизического развития
-        @if (JournalState.IsCurrentPageApproved)
+        @if (!_canEdit)
         {
             <span style="text-decoration: underline;">@_pageData.StudentsWithSpecialPsychophysicalDevelopmentNeeds</span>
         }
         else
         {
             <input type="number" min="0" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))"
-                   @bind="_pageData.StudentsWithSpecialPsychophysicalDevelopmentNeeds" @bind:after="Update" class="input underline" />
+            @bind="_pageData.StudentsWithSpecialPsychophysicalDevelopmentNeeds" @bind:after="Update" class="input underline" />
         }
-        
+
     </p>
     <p>
         9. Имеющие родителей-инвалидов 1, 2 группы
-        @if (JournalState.IsCurrentPageApproved)
+        @if (!_canEdit)
         {
             <span style="text-decoration: underline;">@_pageData.StudentsWithDisabledParentsOfGroups1and2</span>
         }
         else
         {
             <input type="number" min="0" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))"
-                   @bind="_pageData.StudentsWithDisabledParentsOfGroups1and2" @bind:after="Update" class="input underline" />
+            @bind="_pageData.StudentsWithDisabledParentsOfGroups1and2" @bind:after="Update" class="input underline" />
         }
-        
+
     </p>
     <p>
         10. Из многодетных семей
-        @if (JournalState.IsCurrentPageApproved)
+        @if (!_canEdit)
         {
             <span style="text-decoration: underline;">@_pageData.StudentsFromLargeFamilies</span>
         }
         else
         {
             <input type="number" min="0" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))"
-                   @bind="_pageData.StudentsFromLargeFamilies" @bind:after="Update" class="input underline" />
+            @bind="_pageData.StudentsFromLargeFamilies" @bind:after="Update" class="input underline" />
         }
-        
+
     </p>
     <p>
         11. Из неполных семей
-        @if (JournalState.IsCurrentPageApproved)
+        @if (!_canEdit)
         {
             <span style="text-decoration: underline;">@_pageData.StudentsFromSingleParentFamilies</span>
         }
         else
         {
             <input type="number" min="0" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))"
-                   @bind="_pageData.StudentsFromSingleParentFamilies" @bind:after="Update" class="input underline" />
+            @bind="_pageData.StudentsFromSingleParentFamilies" @bind:after="Update" class="input underline" />
         }
-        
+
     </p>
     <p>
         12. Из регионов, пострадавших от катастрофы на Чернобыльской АЭС
-        @if (JournalState.IsCurrentPageApproved)
+        @if (!_canEdit)
         {
             <span style="text-decoration: underline;">@_pageData.StudentsFromRegionsAffectedByChernobylDisaster</span>
         }
         else
         {
             <input type="number" min="0" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))"
-                   @bind="_pageData.StudentsFromRegionsAffectedByChernobylDisaster" @bind:after="Update" class="input underline" />
+            @bind="_pageData.StudentsFromRegionsAffectedByChernobylDisaster" @bind:after="Update" class="input underline" />
         }
-        
+
     </p>
     <p>
         13. Из семей, отселенных из зон радиоактивного загрязнения
-        @if (JournalState.IsCurrentPageApproved)
+        @if (!_canEdit)
         {
             <span style="text-decoration: underline;">@_pageData.StudentsFromFamiliesRelocatedFromAreasOfRadioactivePollution</span>
         }
         else
         {
             <input type="number" min="0" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))"
-                   @bind="_pageData.StudentsFromFamiliesRelocatedFromAreasOfRadioactivePollution" @bind:after="Update" class="input underline" />
+            @bind="_pageData.StudentsFromFamiliesRelocatedFromAreasOfRadioactivePollution" @bind:after="Update" class="input underline" />
         }
-        
+
     </p>
     <p>
         14. Иногородних
-        @if (JournalState.IsCurrentPageApproved)
+        @if (!_canEdit)
         {
             <span style="text-decoration: underline;">@_pageData.NonResidentStudents</span>
         }
         else
         {
             <input type="number" min="0" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))"
-                   @bind="_pageData.NonResidentStudents" @bind:after="Update" class="input underline" />
+            @bind="_pageData.NonResidentStudents" @bind:after="Update" class="input underline" />
         }
     </p>
     <p>
         15. Проживают с родителями
-        @if (JournalState.IsCurrentPageApproved)
+        @if (!_canEdit)
         {
             <span style="text-decoration: underline;">@_pageData.StudentsLivingWithParents</span>
         }
         else
         {
             <input type="number" min="0" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))"
-                   @bind="_pageData.StudentsLivingWithParents" @bind:after="Update" class="input underline" />
+            @bind="_pageData.StudentsLivingWithParents" @bind:after="Update" class="input underline" />
         }
         , в общежитии
-        @if (JournalState.IsCurrentPageApproved)
+        @if (!_canEdit)
         {
             <span style="text-decoration: underline;">@_pageData.StudentsLivingInADormitory</span>
         }
         else
         {
             <input type="number" min="0" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))"
-                   @bind="_pageData.StudentsLivingInADormitory" @bind:after="Update" class="input underline" />
+            @bind="_pageData.StudentsLivingInADormitory" @bind:after="Update" class="input underline" />
         }
         , <br />у родственников
-        @if (JournalState.IsCurrentPageApproved)
+        @if (!_canEdit)
         {
             <span style="text-decoration: underline;">@_pageData.StudentsLivingWithRelatives</span>
         }
         else
         {
             <input type="number" min="0" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))"
-                   @bind="_pageData.StudentsLivingWithRelatives" @bind:after="Update" class="input underline" />
+            @bind="_pageData.StudentsLivingWithRelatives" @bind:after="Update" class="input underline" />
         }
         , на частных квартирах
-        @if (JournalState.IsCurrentPageApproved)
+        @if (!_canEdit)
         {
             <span style="text-decoration: underline;">@_pageData.StudentsLivingInPrivateApartments</span>
         }
         else
         {
             <input type="number" min="0" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))"
-                   @bind="_pageData.StudentsLivingInPrivateApartments" @bind:after="Update" class="input underline" />
+            @bind="_pageData.StudentsLivingInPrivateApartments" @bind:after="Update" class="input underline" />
         }
-        
+
     </p>
     <p>
         16. Другие сведения <br />
-        @if (JournalState.IsCurrentPageApproved)
+        @if (!_canEdit)
         {
             <span style="text-decoration: underline;">@_pageData.OtherInformation</span>
         }
         else
         {
             <textarea rows="1" style="overflow:hidden; resize:none;" oninput="this.style.height = 'auto'; this.style.height = (this.scrollHeight) + 'px';"
-                      @bind="_pageData.OtherInformation" @bind:after="Update" class="input underline fullwidth" />
+            @bind="_pageData.OtherInformation" @bind:after="Update" class="input underline fullwidth" />
         }
     </p>
 
@@ -313,6 +314,8 @@ else
     private GroupResponse? _group;
 
     private List<AcademicYearResponse>? _academicYears;
+
+    private bool _canEdit => !JournalState.IsCurrentPageApproved && AppState.CanEditJournal;
 
     protected override async Task OnInitializedAsync()
     {

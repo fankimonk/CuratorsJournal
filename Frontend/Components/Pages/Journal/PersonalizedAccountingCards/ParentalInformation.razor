@@ -34,51 +34,127 @@ else
             {
                 <tr class="@GetRowClass(record.Id)">
                     <td>
-                        <textarea rows="1" style="overflow:hidden; resize:none;" oninput="this.style.height = 'auto'; this.style.height = (this.scrollHeight) + 'px';"
-                        @bind="record.LastName" @bind:after="async () => await Update(record)" class="input fullwidth" />
+                        @if (CanEdit)
+                        {
+                            <textarea rows="1" style="overflow:hidden; resize:none;" oninput="this.style.height = 'auto'; this.style.height = (this.scrollHeight) + 'px';"
+                            @bind="record.LastName" @bind:after="async () => await Update(record)" class="input fullwidth" />
+                        }
+                        else
+                        {
+                            <p>@record.LastName</p>
+                        }
                     </td>
                     <td>
-                        <textarea rows="1" style="overflow:hidden; resize:none;" oninput="this.style.height = 'auto'; this.style.height = (this.scrollHeight) + 'px';"
-                        @bind="record.FirstName" @bind:after="async () => await Update(record)" class="input fullwidth" />
+                        @if (CanEdit)
+                        {
+                            <textarea rows="1" style="overflow:hidden; resize:none;" oninput="this.style.height = 'auto'; this.style.height = (this.scrollHeight) + 'px';"
+                            @bind="record.FirstName" @bind:after="async () => await Update(record)" class="input fullwidth" />
+                        }
+                        else
+                        {
+                            <p>@record.FirstName</p>
+                        }
                     </td>
                     <td>
-                        <textarea rows="1" style="overflow:hidden; resize:none;" oninput="this.style.height = 'auto'; this.style.height = (this.scrollHeight) + 'px';"
-                        @bind="record.MiddleName" @bind:after="async () => await Update(record)" class="input fullwidth" />
+                        @if (CanEdit)
+                        {
+                            <textarea rows="1" style="overflow:hidden; resize:none;" oninput="this.style.height = 'auto'; this.style.height = (this.scrollHeight) + 'px';"
+                            @bind="record.MiddleName" @bind:after="async () => await Update(record)" class="input fullwidth" />
+                        }
+                        else
+                        {
+                            <p>@record.MiddleName</p>
+                        }
                     </td>
                     <td>
-                        <textarea rows="1" style="overflow:hidden; resize:none;" oninput="this.style.height = 'auto'; this.style.height = (this.scrollHeight) + 'px';"
-                        @bind="record.PlaceOfResidence" @bind:after="async () => await Update(record)" class="input fullwidth" />
+                        @if (CanEdit)
+                        {
+                            <textarea rows="1" style="overflow:hidden; resize:none;" oninput="this.style.height = 'auto'; this.style.height = (this.scrollHeight) + 'px';"
+                            @bind="record.PlaceOfResidence" @bind:after="async () => await Update(record)" class="input fullwidth" />
+                        }
+                        else
+                        {
+                            <p>@record.PlaceOfResidence</p>
+                        }
                     </td>
                     <td>
-                        <textarea rows="1" style="overflow:hidden; resize:none;" oninput="this.style.height = 'auto'; this.style.height = (this.scrollHeight) + 'px';"
-                        @bind="record.PlaceOfWork" @bind:after="async () => await Update(record)" class="input fullwidth" />
+                        @if (CanEdit)
+                        {
+                            <textarea rows="1" style="overflow:hidden; resize:none;" oninput="this.style.height = 'auto'; this.style.height = (this.scrollHeight) + 'px';"
+                            @bind="record.PlaceOfWork" @bind:after="async () => await Update(record)" class="input fullwidth" />
+                        }
+                        else
+                        {
+                            <p>@record.PlaceOfWork</p>
+                        }
                     </td>
                     <td>
-                        <textarea rows="1" style="overflow:hidden; resize:none;" oninput="this.style.height = 'auto'; this.style.height = (this.scrollHeight) + 'px';"
-                        @bind="record.Position" @bind:after="async () => await Update(record)" class="input fullwidth" />
+                        @if (CanEdit)
+                        {
+                            <textarea rows="1" style="overflow:hidden; resize:none;" oninput="this.style.height = 'auto'; this.style.height = (this.scrollHeight) + 'px';"
+                            @bind="record.Position" @bind:after="async () => await Update(record)" class="input fullwidth" />
+                        }
+                        else
+                        {
+                            <p>@record.Position</p>
+                        }
                     </td>
                     <td>
-                        <input type="tel" maxlength="19" @bind="record.HomePhoneNumber" @bind:after="async () => await Update(record)" class="input fullwidth" />
+                        @if (CanEdit)
+                        {
+                            <input type="tel" maxlength="19" @bind="record.HomePhoneNumber" @bind:after="async () => await Update(record)" class="input fullwidth" />
+                        }
+                        else
+                        {
+                            <p>@record.HomePhoneNumber</p>
+                        }
                     </td>
                     <td>
-                        <input type="tel" maxlength="19" @bind="record.WorkPhoneNumber" @bind:after="async () => await Update(record)" class="input fullwidth" />
+                        @if (CanEdit)
+                        {
+                            <input type="tel" maxlength="19" @bind="record.WorkPhoneNumber" @bind:after="async () => await Update(record)" class="input fullwidth" />
+                        }
+                        else
+                        {
+                            <p>@record.WorkPhoneNumber</p>
+                        }
                     </td>
                     <td>
-                        <input type="tel" maxlength="19" @bind="record.MobilePhoneNumber" @bind:after="async () => await Update(record)" class="input fullwidth" />
+                        @if (CanEdit)
+                        {
+                            <input type="tel" maxlength="19" @bind="record.MobilePhoneNumber" @bind:after="async () => await Update(record)" class="input fullwidth" />
+                        }
+                        else
+                        {
+                            <p>@record.MobilePhoneNumber</p>
+                        }
                     </td>
                     <td>
-                        <textarea rows="1" style="overflow:hidden; resize:none;" oninput="this.style.height = 'auto'; this.style.height = (this.scrollHeight) + 'px';"
-                        @bind="record.OtherInformation" @bind:after="async () => await Update(record)" class="input fullwidth" />
+                        @if (CanEdit)
+                        {
+                            <textarea rows="1" style="overflow:hidden; resize:none;" oninput="this.style.height = 'auto'; this.style.height = (this.scrollHeight) + 'px';"
+                            @bind="record.OtherInformation" @bind:after="async () => await Update(record)" class="input fullwidth" />
+                        }
+                        else
+                        {
+                            <p>@record.OtherInformation</p>
+                        }
                     </td>
-                    <td>
-                        <DeleteButton @onclick="() => OpenDeleteModal(record.Id)" />
-                    </td>
+                    @if (CanEdit)
+                    {
+                        <td>
+                            <DeleteButton @onclick="() => OpenDeleteModal(record.Id)" />
+                        </td>
+                    }
                 </tr>
             }
         </tbody>
     </table>
-    <AddButton @onclick="Add">Добавить строку</AddButton>
-
+    @if (CanEdit)
+    {
+        <AddButton @onclick="Add">Добавить строку</AddButton>
+    }
+    
     <ConfirmDeleteModal IsVisible="_isDeleteModalVisible" OnClose="CloseDeleteModal" IdToDelete="_idToDelete" OnDeleteById="Delete" />
 
     <AlertBottom IsVisible="_isServerErrorAlertVisible" OnClose="CloseServerErrorAlert">@_errorMessage</AlertBottom>
@@ -87,6 +163,9 @@ else
 @code {
     [Parameter]
     public int CardId { get; set; }
+
+    [Parameter]
+    public bool CanEdit { get; set; }
 
     private List<ParentalInformationRecordResponse>? _parentalInformation;
 

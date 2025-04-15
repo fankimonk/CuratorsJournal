@@ -19,6 +19,7 @@
 @inject HttpClient HttpClient
 @inject JournalState JournalState
 @inject IJSRuntime JSRuntime
+@inject AppState AppState
 
 <PageTitle>Рекомендации и замечания лиц, проверяющих работу куратора</PageTitle>
 
@@ -51,39 +52,91 @@ else
             {
                 <tr class="@GetRowClass(record.Id)">
                     <td>
-                        <input type="date" @bind="record.Date" @bind:after='async () => await Update(record)' class="input" />
+                        @if (_canEdit)
+                        {
+                            <input type="date" @bind="record.Date" @bind:after='async () => await Update(record)' class="input" />
+                        }
+                        else
+                        {
+                            <p>@record.Date.ToString()</p>
+                        }
                     </td>
                     <td>
-                        <select @bind="record.ReviewerId" @bind:after="async () => await Update(record)" class="input fullwidth">
-                            <option value="">(нет)</option>
-                            @foreach (var worker in _workers)
+                        @if (_canEdit)
+                        {
+                            <select @bind="record.ReviewerId" @bind:after="async () => await Update(record)" class="input fullwidth">
+                                <option value="">(нет)</option>
+                                @foreach (var worker in _workers)
+                                {
+                                    <option @key="worker.Id" value="@worker.Id">
+                                        @worker.Position.Name, <br />
+                                        @worker.LastName
+                                    </option>
+                                }
+                            </select>
+                        }
+                        else
+                        {
+                            var worker = _workers.FirstOrDefault(w => w.Id == record.ReviewerId);
+                            if (worker != null)
                             {
-                                <option @key="worker.Id" value="@worker.Id">
-                                    @worker.Position.Name, <br/>
+                                <p>
+                                    @worker.Position.Name, <br />
                                     @worker.LastName
-                                </option>
+                                </p>
                             }
-                        </select>
+                            else
+                            {
+                                <p></p>
+                            }
+                        }
                     </td>
                     <td>
-                        <textarea rows="1" style="overflow:hidden; resize:none;" oninput="this.style.height = 'auto'; this.style.height = (this.scrollHeight) + 'px';"
+                        @if (_canEdit)
+                        {
+                            <textarea rows="1" style="overflow:hidden; resize:none;" oninput="this.style.height = 'auto'; this.style.height = (this.scrollHeight) + 'px';"
                             @bind="record.Content" @bind:after='async () => await Update(record)' class="input fullwidth" />
+                        }
+                        else
+                        {
+                            <p>@record.Content</p>
+                        }
                     </td>
                     <td>
-                        <textarea rows="1" style="overflow:hidden; resize:none;" oninput="this.style.height = 'auto'; this.style.height = (this.scrollHeight) + 'px';"
+                        @if (_canEdit)
+                        {
+                            <textarea rows="1" style="overflow:hidden; resize:none;" oninput="this.style.height = 'auto'; this.style.height = (this.scrollHeight) + 'px';"
                             @bind="record.Result" @bind:after='async () => await Update(record)' class="input fullwidth" />
+                        }
+                        else
+                        {
+                            <p>@record.Result</p>
+                        }
                     </td>
                     <td>
-                        <input type="date" @bind="record.ExecutionDate" @bind:after='async () => await Update(record)' class="input fullwidth" />
+                        @if (_canEdit)
+                        {
+                            <input type="date" @bind="record.ExecutionDate" @bind:after='async () => await Update(record)' class="input fullwidth" />
+                        }
+                        else
+                        {
+                            <p>@record.ExecutionDate.ToString()</p>
+                        }
                     </td>
-                    <td>
-                        <DeleteButton @onclick="() => OpenDeleteModal(record.Id)" />
-                    </td>
+                    @if (_canEdit)
+                    {
+                        <td>
+                            <DeleteButton @onclick="() => OpenDeleteModal(record.Id)" />
+                        </td>
+                    }
                 </tr>
             }
         </tbody>
     </table>
-    <AddButton @onclick="Add">Добавить строку</AddButton>
+    @if (_canEdit)
+    {
+        <AddButton @onclick="Add">Добавить строку</AddButton>
+    }
 
     <ConfirmDeleteModal IsVisible="_isDeleteModalVisible" OnClose="CloseDeleteModal" IdToDelete="_idToDelete" OnDeleteById="Delete" />
 
@@ -100,6 +153,13 @@ else
     private RecommendationsAndRemarksPageResponse? _pageData;
 
     private List<WorkerResponse>? _workers;
+
+    private bool _canEdit => !JournalState.IsCurrentPageApproved && AppState.CanApprovePages;
+
+    protected override async Task OnInitializedAsync()
+    {
+        JournalState.OnToggleIsApproved += StateHasChanged;
+    }
 
     protected override async Task OnParametersSetAsync()
     {

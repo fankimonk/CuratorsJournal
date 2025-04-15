@@ -56,10 +56,6 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xCdXR0b25zXFJlbG9hZEJ1dHRvbi5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Dev/Web/CuratorsJournal/Frontend/Components/Inputs/GrowingTextArea.razor]
-build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xJbnB1dHNcR3Jvd2luZ1RleHRBcmVhLnJhem9y
-build_metadata.AdditionalFiles.CssScope = 
-
 [C:/Dev/Web/CuratorsJournal/Frontend/Components/Layout/EmptyLayout.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xMYXlvdXRcRW1wdHlMYXlvdXQucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 

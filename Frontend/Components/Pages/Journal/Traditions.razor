@@ -15,6 +15,7 @@
 @inject HttpClient HttpClient
 @inject JournalState JournalState
 @inject IJSRuntime JSRuntime
+@inject AppState AppState
 
 <PageTitle>Традиции ВУЗа, факультета, группы</PageTitle>
 
@@ -40,37 +41,76 @@ else
             {
                 <tr class="@GetRowClass(record.Id)">
                     <td>
-                        <textarea rows="1" style="overflow:hidden; resize:none;" oninput="this.style.height = 'auto'; this.style.height = (this.scrollHeight) + 'px';"
+                        @if (_canEdit)
+                        {
+                            <textarea rows="1" style="overflow:hidden; resize:none;" oninput="this.style.height = 'auto'; this.style.height = (this.scrollHeight) + 'px';"
                             @bind="record.Name" @bind:after="async () => await Update(record)" class="input fullwidth" />
+                        }
+                        else
+                        {
+                            <p>@record.Name</p>
+                        }
                     </td>
                     <td>
-                        <input type="number" min="1" max="31" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))"
-                            @bind="record.Day" @bind:after="async () => await Update(record)" class="input" />.
-                        <select @bind="record.Month" @bind:after="async () => await Update(record)" class="input">
-                            <option value="">(нет)</option>
-                            @foreach (var m in MonthsUtils.MonthsDateNames)
-                            {
-                                <option @key="m.Key" value="@m.Key">@m.Value</option>
-                            }
-                        </select>
+                        @if (_canEdit)
+                        {
+                            <input type="number" min="1" max="31" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))"
+                            @bind="record.Day" @bind:after="async () => await Update(record)" class="input" />
+                            @(" ")
+                            <select @bind="record.Month" @bind:after="async () => await Update(record)" class="input">
+                                <option value="">(нет)</option>
+                                @foreach (var m in MonthsUtils.MonthsDateNames)
+                                {
+                                    <option @key="m.Key" value="@m.Key">@m.Value</option>
+                                }
+                            </select>
+                        }
+                        else
+                        {
+                            var dateStr = "";
+                            if (record.Day != null) dateStr += record.Day + " ";
+                            if (record.Month != null && MonthsUtils.MonthsDateNames.ContainsKey((int)record.Month))
+                                dateStr += MonthsUtils.MonthsDateNames[(int)record.Month];
+                            <p>@dateStr</p>
+                        }
                     </td>
                     <td>
-                        <textarea rows="1" style="overflow:hidden; resize:none;" oninput="this.style.height = 'auto'; this.style.height = (this.scrollHeight) + 'px';"
+                        @if (_canEdit)
+                        {
+                            <textarea rows="1" style="overflow:hidden; resize:none;" oninput="this.style.height = 'auto'; this.style.height = (this.scrollHeight) + 'px';"
                             @bind="record.ParticipationForm" @bind:after="async () => await Update(record)" class="input fullwidth" />
+                        }
+                        else
+                        {
+                            <p>@record.ParticipationForm</p>
+                        }
                     </td>
                     <td>
-                        <textarea rows="1" style="overflow:hidden; resize:none;" oninput="this.style.height = 'auto'; this.style.height = (this.scrollHeight) + 'px';"
+                        @if (_canEdit)
+                        {
+                            <textarea rows="1" style="overflow:hidden; resize:none;" oninput="this.style.height = 'auto'; this.style.height = (this.scrollHeight) + 'px';"
                             @bind="record.Note" @bind:after="async () => await Update(record)" class="input fullwidth" />
+                        }
+                        else
+                        {
+                            <p>@record.Note</p>
+                        }
                     </td>
-                    <td>
-                        <DeleteButton @onclick="() => OpenDeleteModal(record.Id)" />
-                    </td>
+                    @if (_canEdit)
+                    {
+                        <td>
+                            <DeleteButton @onclick="() => OpenDeleteModal(record.Id)" />
+                        </td>
+                    }
                 </tr>
             }
         </tbody>
     </table>
-    <AddButton @onclick="Add">Добавить строку</AddButton>
-
+    @if (_canEdit)
+    {
+        <AddButton @onclick="Add">Добавить строку</AddButton>
+    }
+    
     <ConfirmDeleteModal IsVisible="_isDeleteModalVisible" OnClose="CloseDeleteModal" IdToDelete="_idToDelete" OnDeleteById="Delete" />
 
     <AlertBottom IsVisible="_isServerErrorAlertVisible" OnClose="CloseServerErrorAlert">@_errorMessage</AlertBottom>
@@ -84,6 +124,13 @@ else
     public int JournalId { get; set; }
 
     public TraditionsPageResponse? _pageData;
+
+    private bool _canEdit => !JournalState.IsCurrentPageApproved && AppState.CanEditJournal;
+
+    protected override async Task OnInitializedAsync()
+    {
+        JournalState.OnToggleIsApproved += StateHasChanged;
+    }
 
     protected override async Task OnParametersSetAsync()
     {

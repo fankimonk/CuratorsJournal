@@ -14,6 +14,7 @@
 @inject HttpClient HttpClient
 @inject JournalState JournalState
 @inject IJSRuntime JSRuntime
+@inject AppState AppState
 
 <PageTitle>Учет информационных часов</PageTitle>
 
@@ -38,25 +39,53 @@ else
             {
                 <tr class="@GetRowClass(record.Id)">
                     <td>
-                        <input type="date" @bind="record.Date" @bind:after="async () => await Update(record)" class="input" />
+                        @if (_canEdit)
+                        {
+                            <input type="date" @bind="record.Date" @bind:after="async () => await Update(record)" class="input" />
+                        }
+                        else
+                        {
+                            <p>@record.Date.ToString()</p>
+                        }
                     </td>
                     <td>
-                        <textarea rows="1" style="overflow:hidden; resize:none;" oninput="this.style.height = 'auto'; this.style.height = (this.scrollHeight) + 'px';"
+                        @if (_canEdit)
+                        {
+                            <textarea rows="1" style="overflow:hidden; resize:none;" oninput="this.style.height = 'auto'; this.style.height = (this.scrollHeight) + 'px';"
                             @bind="record.Topic" @bind:after="async () => await Update(record)" class="input fullwidth" />
+                        }
+                        else
+                        {
+                            <p>@record.Topic</p>
+                        }
                     </td>
                     <td>
-                        <textarea rows="1" style="overflow:hidden; resize:none;" oninput="this.style.height = 'auto'; this.style.height = (this.scrollHeight) + 'px';"
+                        @if (_canEdit)
+                        {
+                            <textarea rows="1" style="overflow:hidden; resize:none;" oninput="this.style.height = 'auto'; this.style.height = (this.scrollHeight) + 'px';"
                             @bind="record.Note" @bind:after="async () => await Update(record)" class="input fullwidth" />
+                        }
+                        else
+                        {
+                            <p>@record.Note</p>
+                        }
                     </td>
-                    <td>
-                        <DeleteButton @onclick="() => OpenDeleteModal(record.Id)" />
-                    </td>
+                    @if (_canEdit)
+                    {
+                        <td>
+                            <DeleteButton @onclick="() => OpenDeleteModal(record.Id)" />
+                        </td>
+                    }
                 </tr>
             }
 
         </tbody>
     </table>
-    <AddButton @onclick="Add">Добавить строку</AddButton>
+    @if (_canEdit)
+    {
+        <AddButton @onclick="Add">Добавить строку</AddButton>
+
+    }
 
     <ConfirmDeleteModal IsVisible="_isDeleteModalVisible" OnClose="CloseDeleteModal" IdToDelete="_idToDelete" OnDeleteById="Delete" />
 
@@ -71,6 +100,13 @@ else
     public int JournalId { get; set; }
 
     private InformationHoursAccountingPageResponse? _pageData;
+
+    private bool _canEdit => !JournalState.IsCurrentPageApproved && AppState.CanEditJournal;
+
+    protected override async Task OnInitializedAsync()
+    {
+        JournalState.OnToggleIsApproved += StateHasChanged;
+    }
 
     protected override async Task OnParametersSetAsync()
     {

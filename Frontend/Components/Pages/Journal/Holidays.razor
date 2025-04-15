@@ -4,10 +4,8 @@
 
 @attribute [Authorize]
 
-@using Contracts.Journal
 @using Contracts.Journal.Holidays
 @using Frontend.Components.Buttons
-@using Frontend.Components.Pages.ReferencePages.HolidayType
 @using Frontend.Components.Utils
 @using Frontend.Services
 @using Frontend.Utils
@@ -15,6 +13,7 @@
 @inject HttpClient HttpClient
 @inject JournalState JournalState
 @inject IJSRuntime JSRuntime
+@inject AppState AppState
 
 <PageTitle>Праздники</PageTitle>
 
@@ -24,7 +23,7 @@
 }
 else
 {
-    @if (!JournalState.IsCurrentPageApproved)
+    @if (_canEdit)
     {
         <AddButton @onclick="OpenAddTypeModal" IsDisabled="_pageData.HolidayTypes.Where(ht => ht.Holidays.Count == 0).Count() == 0">Добавить категорию</AddButton>
         <Modal IsVisible="_isAddTypeModalVisible" OnClose="CloseAddTypeModal">
@@ -68,7 +67,7 @@ else
                 @foreach (var h in ht.Holidays)
                 {
                     <tr class="@GetRowClass(h.Id)">
-                        @if (!JournalState.IsCurrentPageApproved)
+                        @if (_canEdit)
                         {
                             <td class="align-middle col-sm-1">
                                 <input id="isRelativeDate" type="checkbox" @bind="h.IsRelativeDate" @bind:after="async () => await Update(h)" class="input" />
@@ -76,7 +75,7 @@ else
                             </td>
                         }
                         <td class="align-middle col-5">
-                            @if (JournalState.IsCurrentPageApproved)
+                            @if (!_canEdit)
                             {
                                 <p>
                                     @if (!h.IsRelativeDate)
@@ -95,7 +94,7 @@ else
                                 @if (!h.IsRelativeDate)
                                 {
                                     <input type="number" min="1" max="31" step="1" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))"
-                                           @bind="h.Day" @bind:after="async () => await Update(h)" class="input" />
+                                    @bind="h.Day" @bind:after="async () => await Update(h)" class="input" />
                                 }
                                 else
                                 {
@@ -111,7 +110,7 @@ else
                             }
                         </td>
                         <td class="align-middle col-6">
-                            @if (JournalState.IsCurrentPageApproved)
+                            @if (!_canEdit)
                             {
                                 @h.Name
                             }
@@ -121,7 +120,7 @@ else
                                 @bind="h.Name" @bind:after="async () => await Update(h)" class="input fullwidth" />
                             }
                         </td>
-                        @if (!JournalState.IsCurrentPageApproved)
+                        @if (_canEdit)
                         {
                             <td class="align-middle">
                                 <DeleteButton @onclick="() => OpenDeleteModal(h.Id)" />
@@ -131,7 +130,7 @@ else
                 }
             </tbody>
         </table>
-        @if (!JournalState.IsCurrentPageApproved)
+        @if (_canEdit)
         {
             <AddButton @onclick="async () => await Add(ht.Id)">Добавить</AddButton>
         }
@@ -154,6 +153,8 @@ else
     private int _typeToAddId = -1;
 
     private bool _isAddTypeModalVisible = false;
+
+    private bool _canEdit => !JournalState.IsCurrentPageApproved && AppState.CanEditJournal;
 
     protected override async Task OnInitializedAsync()
     {

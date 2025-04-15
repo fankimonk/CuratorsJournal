@@ -424,10 +424,16 @@ namespace Application.Services.Word
                 new FontSize() { Val = "28" }
             );
 
+            var department = _journal.Group.Specialty.Department.AbbreviatedName;
+            if (department.Length > 50) department = department.Substring(0, 50);
+
             var valueRun = new Run(valueRunProperties,
                 new TabChar(),
-                new Text(_journal.Group.Specialty.Department.AbbreviatedName),
-                new TabChar());
+                new Text(department));
+
+            int tabCount = 10 - (Math.Max(0, department.Length - 1) / 5);
+            for (int i = 0; i < tabCount; i++)
+                valueRun.Append(new TabChar());
 
             var paragraph = new Paragraph(paragraphProperties,
                 labelRun, valueRun);
@@ -471,9 +477,19 @@ namespace Application.Services.Word
                 new FontSize() { Val = "28" }
             );
 
+            string faculty = _journal.Group.Specialty.Department.Deanery.Faculty.Name;
+            var facultyWords = faculty.Split(' ');
+            if (facultyWords.First().ToLower() == "факультет") facultyWords = facultyWords.Skip(1).ToArray();
+            faculty = string.Join(' ', facultyWords);
+            if (faculty.Length > 50) faculty = faculty.Substring(0, 50);
+
             var valueRun = new Run(valueRunProperties,
                 new TabChar(),
-                new Text(_journal.Group.Specialty.Department.Deanery.Faculty.Name));
+                new Text(faculty));
+
+            int tabCount = 10 - (Math.Max(0, faculty.Length - 1) / 5);
+            for (int i = 0; i < tabCount; i++)
+                valueRun.Append(new TabChar());
 
             var paragraph = new Paragraph(paragraphProperties,
                 labelRun, valueRun);

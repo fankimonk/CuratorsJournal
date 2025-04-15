@@ -13,6 +13,7 @@
 @inject HttpClient HttpClient
 @inject JournalState JournalState
 @inject IJSRuntime JSRuntime
+@inject AppState AppState
 
 <PageTitle>Динамика основных показателей группы за период обучения</PageTitle>
 
@@ -113,7 +114,7 @@ else
 
     private List<int>? _courses;
 
-    private bool _canEdit => !JournalState.IsCurrentPageApproved;
+    private bool _canEdit => !JournalState.IsCurrentPageApproved && AppState.CanEditJournal;
 
     private Dictionary<int, string> IndicatorsNames = new Dictionary<int, string>
     {

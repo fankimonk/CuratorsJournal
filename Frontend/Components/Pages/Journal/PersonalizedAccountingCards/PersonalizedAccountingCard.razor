@@ -14,10 +14,12 @@
 @using Frontend.Components.Pages.Journal.PersonalizedAccountingCards.Modals
 @using Frontend.Components.Utils
 @using Frontend.Services
+@using Frontend.Utils.Extensions
 
 @inject HttpClient HttpClient
 @inject JournalState JournalState
 @inject IJSRuntime JSRuntime
+@inject AppState AppState
 
 <PageTitle>Карта персонифицированного учета</PageTitle>
 
@@ -31,37 +33,87 @@ else
 {
     <p class="flex-container">
         <b>Фамилия, имя отчество </b>
-        <select @bind="_pageData.StudentId" @bind:after="Update" class="input underline flex-input">
-            <option value="">(нет)</option>
-            @foreach (var student in Students)
+        @if (_canEdit)
+        {
+            <select @bind="_pageData.StudentId" @bind:after="Update" class="input underline flex-input">
+                <option value="">(нет)</option>
+                @foreach (var student in Students)
+                {
+                    <option @key="student.Id" value="@student.Id">@student.LastName @student.FirstName @student.MiddleName</option>
+                }
+            </select>
+            <ReferenceButton Uri="@GetStudentsRefPageUri()" ButtonSize="ButtonSizes.Small" />
+        }
+        else
+        {
+            var student = _students.FirstOrDefault(s => s.Id == _pageData.StudentId);
+            if (student != null)
             {
-                <option @key="student.Id" value="@student.Id">@student.LastName @student.FirstName @student.MiddleName</option>
+                <span style="text-decoration: underline;"> @student.GetFIO()</span>
             }
-        </select>
-        <ReferenceButton Uri="@GetStudentsRefPageUri()" ButtonSize="ButtonSizes.Small" />
+            else
+            {
+                <span></span>
+            }
+        }
     </p>
     <p class="flex-container">
         Дата рождения 
-        <input type="date" @bind="_pageData.BirthDate" @bind:after="Update" class="input underline flex-input" />
+        @if (_canEdit)
+        {
+            <input type="date" @bind="_pageData.BirthDate" @bind:after="Update" class="input underline flex-input" />
+        }
+        else
+        {
+            <span style="text-decoration: underline;"> @_pageData.BirthDate.ToString()</span>
+        }
     </p>
     <p>
         Паспортные данные <br/>
-        <textarea rows="1" style="overflow:hidden; resize:none;" oninput="this.style.height = 'auto'; this.style.height = (this.scrollHeight) + 'px';"
-        @bind="_pageData.PassportData" @bind:after="Update" class="input underline fullwidth" />
+        @if (_canEdit)
+        {
+            <textarea rows="1" style="overflow:hidden; resize:none;" oninput="this.style.height = 'auto'; this.style.height = (this.scrollHeight) + 'px';"
+            @bind="_pageData.PassportData" @bind:after="Update" class="input underline fullwidth" />
+        }
+        else
+        {
+            <span style="text-decoration: underline;">@_pageData.PassportData</span>
+        }
     </p>
     <p class="flex-container">
         гражданство
-        <input @bind="_pageData.Citizenship" @bind:after="Update" class="input underline flex-input" />
+        @if (_canEdit)
+        {
+            <input @bind="_pageData.Citizenship" @bind:after="Update" class="input underline flex-input" />
+        }
+        else
+        {
+            <span style="text-decoration: underline;"> @_pageData.Citizenship</span>
+        }
     </p>
     <p>
         Окончил УО <br/>
-        <textarea rows="1" style="overflow:hidden; resize:none;" oninput="this.style.height = 'auto'; this.style.height = (this.scrollHeight) + 'px';"
-        @bind="_pageData.GraduatedEducationalInstitution" @bind:after="Update" class="input underline fullwidth" />
+        @if (_canEdit)
+        {
+            <textarea rows="1" style="overflow:hidden; resize:none;" oninput="this.style.height = 'auto'; this.style.height = (this.scrollHeight) + 'px';"
+            @bind="_pageData.GraduatedEducationalInstitution" @bind:after="Update" class="input underline fullwidth" />
+        }
+        else
+        {
+            <span style="text-decoration: underline;">@_pageData.GraduatedEducationalInstitution</span>
+        }
     </p>
     <p>
         Место и адрес проживания в период обучения <br/>
-        <textarea rows="1" style="overflow:hidden; resize:none;" oninput="this.style.height = 'auto'; this.style.height = (this.scrollHeight) + 'px';"
-        @bind="_pageData.ResidentialAddress" @bind:after="Update" class="input underline fullwidth" />
+        @if (_canEdit)
+        {
+            <textarea rows="1" style="overflow:hidden; resize:none;" oninput="this.style.height = 'auto'; this.style.height = (this.scrollHeight) + 'px';"
+            @bind="_pageData.ResidentialAddress" @bind:after="Update" class="input underline fullwidth" />
+        }
+        else
+        {
+            <span style="text-decoration: underline;">@_pageData.ResidentialAddress</span>
+        }
     </p>
 
     @if (_pageData.StudentId != null)
@@ -81,20 +133,32 @@ else
             {
                 @foreach (var cd in _studentChronicDiseases)
                 {
-                    <DeletableChip @onclick='() => OpenDeleteDiseaseModal(cd.Id)'>@cd.Name</DeletableChip>
+                    @if (_canEdit)
+                    {
+                        <DeletableChip @onclick='() => OpenDeleteDiseaseModal(cd.Id)'>@cd.Name</DeletableChip>
+                    }
+                    else
+                    {
+                        var diseaseStr = cd.Name;
+                        if (cd != _studentChronicDiseases.Last()) diseaseStr += ", ";
+                        <span>@diseaseStr</span>
+                    }
                 }
-                <AddButton @onclick='OpenAddDiseaseModal' style="margin-bottom: 8px;" />
+                @if (_canEdit)
+                {
+                    <AddButton @onclick='OpenAddDiseaseModal' style="margin-bottom: 8px;" />
 
-                <AddChronicDiseaseModal IsVisible="_isAddDiseaseModalVisible"
-                StudentId="(int)_pageData.StudentId"
-                AddDiseaseRequest="ChronicDiseaseToAdd"
-                CreateDiseaseReqeust="CreateDiseaseRequest"
-                ChronicDiseases="_chronicDiseases"
-                StudentChronicDiseases="_studentChronicDiseases"
-                OnClose="CloseAddDiseaseModal"
-                AddDiseaseToPage="AddDiseaseToPage"
-                AddDisease="AddDisease"
-                ShowServerErrorAlert="ShowServerErrorAlert"/>
+                    <AddChronicDiseaseModal IsVisible="_isAddDiseaseModalVisible"
+                    StudentId="(int)_pageData.StudentId"
+                    AddDiseaseRequest="ChronicDiseaseToAdd"
+                    CreateDiseaseReqeust="CreateDiseaseRequest"
+                    ChronicDiseases="_chronicDiseases"
+                    StudentChronicDiseases="_studentChronicDiseases"
+                    OnClose="CloseAddDiseaseModal"
+                    AddDiseaseToPage="AddDiseaseToPage"
+                    AddDisease="AddDisease"
+                    ShowServerErrorAlert="ShowServerErrorAlert" />
+                }
             }
         </p>
         <p>
@@ -110,20 +174,32 @@ else
             {
                 @foreach (var pe in _studentPEGroups)
                 {
-                    <DeletableChip @onclick='() => OpenDeletePEGroupModal(pe.Id)'>@pe.Name</DeletableChip>
+                    @if (_canEdit)
+                    {
+                        <DeletableChip @onclick='() => OpenDeletePEGroupModal(pe.Id)'>@pe.Name</DeletableChip>
+                    }
+                    else
+                    {
+                        var groupStr = pe.Name;
+                        if (pe != _studentPEGroups.Last()) groupStr += ", ";
+                        <span>@groupStr</span>
+                    }
                 }
-                <AddButton @onclick='OpenAddPEGroupModal' style="margin-bottom: 8px;" />
+                @if (_canEdit)
+                {
+                    <AddButton @onclick='OpenAddPEGroupModal' style="margin-bottom: 8px;" />
 
-                <AddPEGroupModal IsVisible="_isAddPEGroupModalVisible"
-                StudentId="(int)_pageData.StudentId"
-                AddPEGroupRequest="PEGroupToAdd"
-                CreatePEGroupReqeust="CreatePEGroupRequest"
-                PEGroups="_peGroups"
-                StudentPEGroups="_studentPEGroups"
-                OnClose="CloseAddPEGroupModal"
-                AddPEGroupToPage="AddPEGroupToPage"
-                AddPEGroup="AddPEGroup"
-                ShowServerErrorAlert="ShowServerErrorAlert" />
+                    <AddPEGroupModal IsVisible="_isAddPEGroupModalVisible"
+                                     StudentId="(int)_pageData.StudentId"
+                                     AddPEGroupRequest="PEGroupToAdd"
+                                     CreatePEGroupReqeust="CreatePEGroupRequest"
+                                     PEGroups="_peGroups"
+                                     StudentPEGroups="_studentPEGroups"
+                                     OnClose="CloseAddPEGroupModal"
+                                     AddPEGroupToPage="AddPEGroupToPage"
+                                     AddPEGroup="AddPEGroup"
+                                     ShowServerErrorAlert="ShowServerErrorAlert" />
+                }
             }
         </p>
 
@@ -132,22 +208,22 @@ else
     <div class="mb-5"></div>
 
     <div class="mb-5">
-        <ParentalInformation CardId="_pageData.Id" />
+        <ParentalInformation CardId="_pageData.Id" CanEdit="_canEdit" />
     </div>
     <div class="mb-5">
-        <IndividualInformation CardId="_pageData.Id" />
+        <IndividualInformation CardId="_pageData.Id" CanEdit="_canEdit" />
     </div>
     <div class="mb-5">
-        <StudentEncouragements CardId="_pageData.Id" />
+        <StudentEncouragements CardId="_pageData.Id" CanEdit="_canEdit" />
     </div>
     <div class="mb-5">
-        <StudentDisciplinaryResponsibilities CardId="_pageData.Id" />
+        <StudentDisciplinaryResponsibilities CardId="_pageData.Id" CanEdit="_canEdit" />
     </div>
     <div class="mb-5">
-        <IndividualWorkWithStudent CardId="_pageData.Id" />
+        <IndividualWorkWithStudent CardId="_pageData.Id" CanEdit="_canEdit" />
     </div>
     <div class="mb-5">
-        <WorkWithParents CardId="_pageData.Id" />
+        <WorkWithParents CardId="_pageData.Id" CanEdit="_canEdit" />
     </div>
 
     <ConfirmDeleteModal IsVisible="_isDeletePEGroupModalVisible" OnClose="CloseDeletePEGroupModal" IdToDelete="_idToDelete" OnDeleteById="DeletePEGroup" />
@@ -191,6 +267,13 @@ else
     public AddStudentPEGroupRequest PEGroupToAdd { get; set; } = new(-1, null);
     [SupplyParameterFromForm]
     public CreatePEGroupRequest CreatePEGroupRequest { get; set; } = new("");
+
+    private bool _canEdit => !JournalState.IsCurrentPageApproved && AppState.CanEditJournal;
+
+    protected override async Task OnInitializedAsync()
+    {
+        JournalState.OnToggleIsApproved += StateHasChanged;
+    }
 
     protected override async Task OnParametersSetAsync()
     {
