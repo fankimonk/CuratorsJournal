@@ -283,11 +283,6 @@ namespace Application.Services.Word
 
             var valueRun = new Run(valueRunProperties, new TabChar());
 
-            //55 в 1й строке
-            //11 табов
-            //65 во 2й и 3й строке
-            //13 табов
-
             int linesCount = 3;
             if (curatorFIO != "")
             {
@@ -428,7 +423,7 @@ namespace Application.Services.Word
             if (department.Length > 50) department = department.Substring(0, 50);
 
             var valueRun = new Run(valueRunProperties,
-                new TabChar(),
+                new TabChar(), new TabChar(),
                 new Text(department));
 
             int tabCount = 10 - (Math.Max(0, department.Length - 1) / 5);

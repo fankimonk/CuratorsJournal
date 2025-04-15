@@ -20,7 +20,8 @@
             @if (JournalState.CurrentPageNode != null)
             {
                 <div class="col-5">
-                    @if (JournalState.CurrentPageType!.MaxPages != 1 && !JournalState.IsCurrentPageApproved)
+                    @if (JournalState.CurrentPageType!.MaxPages != 1 && !JournalState.IsCurrentPageApproved &&
+                        !((JournalState.CurrentPageType.Id == 16 || JournalState.CurrentPageType.Id == 17) && !AppState.CanApprovePages))
                     {
                         <DeleteButton @onclick="DeletePage">Удалить страницу</DeleteButton>
                     }

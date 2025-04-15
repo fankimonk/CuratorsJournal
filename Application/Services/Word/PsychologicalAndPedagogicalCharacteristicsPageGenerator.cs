@@ -56,14 +56,24 @@ namespace Application.Services.Word
 
         private void AppendContent(PsychologicalAndPedagogicalCharacteristics characteristics)
         {
-            var content = new Paragraph(
+            int maxCharactersCount = 28 * 65;
+
+            var contentStr = characteristics.Content == null ? "" : characteristics.Content;
+            if (contentStr.Length > maxCharactersCount) contentStr = contentStr.Substring(0, maxCharactersCount);
+
+            var contentParagraph = new Paragraph(
                 new ParagraphProperties(
-                    new Justification { Val = JustificationValues.Both }),
-                new Run(WordUtils.GetRunProperties(underline: true),
-                    new TabChar(),
-                    new Text(characteristics.Content == null ? "" : characteristics.Content),
-                    new TabChar())
+                    new Justification { Val = JustificationValues.Both })
             );
+
+            var contentRun = new Run(WordUtils.GetRunProperties(underline: true),
+                new Text(characteristics.Content == null ? "" : characteristics.Content));
+
+            int tabCount = 28 * 13 - (Math.Max(0, contentStr.Length - 1) / 5);
+            for (int i = 0; i < tabCount; i++)
+                contentRun.Append(new TabChar());
+
+            contentParagraph.Append(contentRun);
 
             var worker = new Paragraph(
                 new ParagraphProperties(
@@ -87,7 +97,7 @@ namespace Application.Services.Word
                     new TabChar(), new TabChar())
             );
 
-            _documentBody.Append(content, worker, dateAndSignature);
+            _documentBody.Append(contentParagraph, worker, dateAndSignature);
         }
 
         private string GetWorkerString(Worker worker)

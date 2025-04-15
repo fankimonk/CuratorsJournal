@@ -40,7 +40,7 @@ else
         @if (_canEdit)
         {
             <select @bind="_pageData.WorkerId" @bind:after="Update" class="input underline">
-                <option value="">-- Выберите специалиста --</option>
+                <option value="">(нет)</option>
                 @foreach (var worker in _workers)
                 {
                     <option @key="worker.Id" value="@worker.Id">
@@ -93,7 +93,8 @@ else
 
     private List<WorkerResponse>? _workers;
 
-    private bool _canEdit => !JournalState.IsCurrentPageApproved && AppState.CanApprovePages;
+    private bool _canEdit => !JournalState.IsCurrentPageApproved && AppState.CanApprovePages &&
+        (AppState.User.WorkerId != null && (_pageData.WorkerId == AppState.User.WorkerId || _pageData.WorkerId == null));
 
     protected override async Task OnInitializedAsync()
     {
@@ -108,6 +109,7 @@ else
             ("api/journal/psychologicalpedagogicalcharacteristics/" + PageId.ToString());
 
         _workers = await HttpClient.GetFromJsonAsync<List<WorkerResponse>>("api/worker/");
+        _workers = _workers?.Where(w => w.Id == AppState.User?.WorkerId || w.Id == _pageData?.WorkerId).ToList();
     }
 
     private async Task Update()
