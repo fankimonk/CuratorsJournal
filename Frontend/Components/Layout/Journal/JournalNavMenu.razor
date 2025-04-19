@@ -2,6 +2,7 @@
 @using Contracts.Journal.Pages
 @using Frontend.Components.Buttons
 @using Frontend.Services
+@using Frontend.Utils.Extensions
 
 @inject JournalState JournalState
 @inject HttpClient HttpClient
@@ -59,7 +60,15 @@
                                 @if (PagesRusNames.ContainsKey(pt.Id))
                                 {
                                     <div class="text-nowrap">
-                                        @PagesRusNames[pt.Id].ToString()
+                                        @switch (pt.Id)
+                                        {
+                                            case 9:
+                                                @(page.Student == null ? "(нет)" : page.Student.GetFIO())
+                                                break;
+                                            default:
+                                                @PagesRusNames[pt.Id].ToString()
+                                                break;
+                                        }
                                     </div>
                                 }
                                 else
@@ -145,19 +154,9 @@
 
     protected override async Task OnInitializedAsync()
     {
-        JournalState.OnInitialize += HandleOnInitialize;
-        JournalState.OnFecthContents += HandleOnInitialize;
-    }
-
-    private void HandleOnInitialize()
-    {
-        StateHasChanged();
-    }
-
-    public void Dispose()
-    {
-        JournalState.OnInitialize -= HandleOnInitialize;
-        JournalState.OnFecthContents -= HandleOnInitialize;
+        JournalState.OnInitialize += StateHasChanged;
+        JournalState.OnFecthContents += StateHasChanged;
+        JournalState.OnCardStudentUpdated += StateHasChanged;
     }
 }
 

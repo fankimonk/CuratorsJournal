@@ -7,6 +7,7 @@ using Contracts.Curator;
 using Microsoft.AspNetCore.Authorization;
 using Application.Authorization;
 using Domain.Entities;
+using API.Mappers;
 
 namespace API.Controllers
 {
@@ -88,7 +89,8 @@ namespace API.Controllers
                 p.Id,
                 p.JournalId,
                 p.IsApproved,
-                new PageTypeResponse(p.PageType!.Id, p.PageType.Name, p.PageType.MaxPages, null)
+                new PageTypeResponse(p.PageType!.Id, p.PageType.Name, p.PageType.MaxPages, null),
+                p.PersonalizedAccountingCard != null && p.PersonalizedAccountingCard.Student != null ? p.PersonalizedAccountingCard.Student.ToResponse() : null
             )).ToList();
 
             return Ok(new JournalPagesResponse(journalId, response));
@@ -104,7 +106,12 @@ namespace API.Controllers
                 pt.Id,
                 pt.Name,
                 pt.MaxPages,
-                pt.Pages.Select(p => new PageResponse(p.Id, p.JournalId, p.IsApproved, new PageTypeResponse(pt.Id, pt.Name, pt.MaxPages, null))).ToList()
+                pt.Pages.Select(p => new PageResponse(
+                    p.Id, 
+                    p.JournalId, 
+                    p.IsApproved, 
+                    new PageTypeResponse(pt.Id, pt.Name, pt.MaxPages, null),
+                    p.PersonalizedAccountingCard != null && p.PersonalizedAccountingCard.Student != null ? p.PersonalizedAccountingCard.Student.ToResponse() : null)).ToList()
             )).ToList();
 
             return Ok(new JournalContentsResponse(journalId, response));
@@ -138,8 +145,7 @@ namespace API.Controllers
             var titlePageResponse = new TitlePageResponse(
                 titlePageData.Item1,
                 journalId,
-                group.Number,
-                group.AdmissionYear.ToString(),
+                group.ToResponse(),
                 curatorResponse,
                 department!.AbbreviatedName,
                 department!.Deanery!.Faculty!.Name

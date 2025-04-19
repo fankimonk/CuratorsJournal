@@ -190,15 +190,15 @@ else
                     <AddButton @onclick='OpenAddPEGroupModal' style="margin-bottom: 8px;" />
 
                     <AddPEGroupModal IsVisible="_isAddPEGroupModalVisible"
-                                     StudentId="(int)_pageData.StudentId"
-                                     AddPEGroupRequest="PEGroupToAdd"
-                                     CreatePEGroupReqeust="CreatePEGroupRequest"
-                                     PEGroups="_peGroups"
-                                     StudentPEGroups="_studentPEGroups"
-                                     OnClose="CloseAddPEGroupModal"
-                                     AddPEGroupToPage="AddPEGroupToPage"
-                                     AddPEGroup="AddPEGroup"
-                                     ShowServerErrorAlert="ShowServerErrorAlert" />
+                    StudentId="(int)_pageData.StudentId"
+                    AddPEGroupRequest="PEGroupToAdd"
+                    CreatePEGroupReqeust="CreatePEGroupRequest"
+                    PEGroups="_peGroups"
+                    StudentPEGroups="_studentPEGroups"
+                    OnClose="CloseAddPEGroupModal"
+                    AddPEGroupToPage="AddPEGroupToPage"
+                    AddPEGroup="AddPEGroup"
+                    ShowServerErrorAlert="ShowServerErrorAlert" />
                 }
             }
         </p>
@@ -335,6 +335,9 @@ else
         }
         else
         {
+            var card = await response.Content.ReadFromJsonAsync<PersonalizedAccountingCardResponse>();
+            JournalState.UpdatePageStudent(PageId, _students!.FirstOrDefault(s => s.Id == card!.StudentId));
+
             await FetchStudentsWithCards();
             await FetchStudentPEGroupsAndChronicDiseases();
         }

@@ -1,33 +1,53 @@
 ﻿@page "/journal/{journalId:int}/Title"
 @page "/journal/{journalId:int}/Title/{pageId:int?}"
 
+@using Contracts.Curator
+@using Contracts.Groups
 @using Contracts.Journal
+@using Contracts.Teachers
 @using Frontend.Services
 
 @attribute [Authorize]
 
 @inject HttpClient HttpClient
 @inject JournalState JournalState
+@inject AppState AppState
+@inject APIService APIService
 
 <PageTitle>Титульная страница</PageTitle>
 
 <h3 class="d-flex justify-content-center">ЖУРНАЛ</h3>
 <h3 class="d-flex justify-content-center">КУРАТОРА УЧЕБНОЙ ГРУППЫ</h3>
 
-@if (_pageData == null)
+@if (_pageData == null || _teachers == null)
 {
     <p><em>Загрузка...</em></p>
 }
 else
 {
-    <p>Группа № <u>@_pageData.GroupNumber</u></p>
-    <p>Год поступления <u>@_pageData.AdmissionYear</u></p>
+    <p>Группа № <u>@_pageData.Group.Number</u></p>
+    <p>Год поступления <u>@_pageData.Group.AdmissionYear</u></p>
     <p>
         Куратор 
-        <u>
-            @if (_pageData.Curator != null)
-                @(_pageData.Curator.LastName + ' ' + _pageData.Curator.FirstName + ' ' + _pageData.Curator.MiddleName)
-        </u>
+        @if (_canAppointCurator)
+        {
+            <select @bind="_pageData.Group.CuratorId" @bind:after="AppointCurator" class="input underline">
+                <option value="">(нет)</option>
+                @foreach (var teacher in _teachers)
+                {
+                    <option @key="teacher.Id" value="@teacher.Id">@teacher.LastName @teacher.FirstName @teacher.MiddleName</option>
+                }
+            </select>
+        }
+        else
+        {
+            <u>
+                @if (_pageData.Curator != null)
+                {
+                    @(_pageData.Curator.LastName + ' ' + _pageData.Curator.FirstName + ' ' + _pageData.Curator.MiddleName)
+                }
+            </u>
+        }
     </p>
     <p>Кафедра <u>@_pageData.DepartmentName</u></p>
     <p>Факультет <u>@_pageData.FacultyName</u></p>
@@ -42,10 +62,41 @@ else
 
     private TitlePageResponse? _pageData;
 
+    private List<TeacherResponse>? _teachers;
+
+    private bool _canAppointCurator => AppState.User != null && AppState.User.Role.Name == "HeadOfDepartment";
+
     protected override async Task OnInitializedAsync()
     {
         _pageData = await HttpClient.GetFromJsonAsync<TitlePageResponse>("api/journal/" + JournalId.ToString() + "/titlepage/");
         if (PageId == null) PageId = _pageData!.PageId;
         await JournalState.Initialize(JournalId, (int)PageId);
+
+        _teachers = await APIService.GetFromJsonAsync<List<TeacherResponse>>("api/teacher");
+    }
+
+    private async Task AppointCurator()
+    {
+        if (_pageData == null) return;
+
+        var response = await HttpClient.PutAsJsonAsync<AppointCuratorRequest>("api/group/appointcurator",
+            new AppointCuratorRequest(_pageData.Group.Id, _pageData.Group.CuratorId));
+
+        if (!response.IsSuccessStatusCode)
+        {
+
+        }
+        else
+        {
+            try 
+            { 
+                var curator = await response.Content.ReadFromJsonAsync<CuratorResponse>(); 
+                _pageData.Curator = curator;
+            }
+            catch
+            {
+                _pageData.Curator = null;   
+            }
+        }
     }
 }

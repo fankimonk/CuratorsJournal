@@ -3,6 +3,7 @@ using API.Mappers.Journal;
 using API.Mappers.Journal.PersonalizedAccountingCards;
 using Application.Interfaces;
 using Contracts.Journal.PersonalizedAccountingCards;
+using Contracts.Journal.StudentList;
 using DataAccess.Interfaces.PageRepositories.PersonalizedAccountingCards;
 using Microsoft.AspNetCore.Mvc;
 
@@ -50,11 +51,11 @@ namespace API.Controllers
         }
 
         [HttpGet("getbystudent/{studentId}")]
-        public async Task<ActionResult<int>> GetCardIdByStudentId([FromRoute] int studentId)
+        public async Task<ActionResult<int>> GetCardByStudentId([FromRoute] int studentId)
         {
-            var id = await _entityRepository.GetCardIdByStudentIdAsync(studentId);
-            if (id == null) return NotFound();
-            return Ok((int)id);
+            var card = await _entityRepository.GetCardByStudentIdAsync(studentId);
+            if (card == null) return NotFound();
+            return Ok(new CardInfoResponse(card.Id, card.PageId));
         }
 
         [HttpGet("getstudentswithcards/{journalId}")]

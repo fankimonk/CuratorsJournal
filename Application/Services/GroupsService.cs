@@ -34,7 +34,7 @@ namespace Application.Services
             return createdGroup;
         }
 
-        public async Task<Group?> AppointCurator(int groupId, int curatorId)
+        public async Task<Group?> AppointCurator(int groupId, int? curatorId)
         {
             var updatedGroup = await _groupsRepository.UpdateCuratorAsync(groupId, curatorId);
             return updatedGroup;

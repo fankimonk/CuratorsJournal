@@ -22,7 +22,7 @@ namespace DataAccess.Repositories.PageRepositories
 
             await _dbContext.SaveChangesAsync();
 
-            return createdRecord.Entity;
+            return await _dbContext.StudentList.Include(l => l.PersonalizedAccountingCard).AsNoTracking().FirstOrDefaultAsync(l => l.Id == createdRecord.Entity.Id);
         }
 
         public async Task<bool> DeleteAsync(int id)
@@ -37,7 +37,12 @@ namespace DataAccess.Repositories.PageRepositories
         public async Task<List<StudentListRecord>?> GetByPageIdAsync(int pageId)
         {
             if (!await PageExists(pageId)) return null;
-            return await _dbContext.StudentList.AsNoTracking().Where(c => c.PageId == pageId).ToListAsync();
+            return await _dbContext.StudentList.Include(l => l.PersonalizedAccountingCard).AsNoTracking().Where(c => c.PageId == pageId)
+                .OrderBy(p => p.Student == null)
+                .ThenBy(p => p.Student!.LastName)
+                .ThenBy(p => p.Student!.FirstName)
+                .ThenBy(p => p.Student!.MiddleName)
+                .ToListAsync();
         }
 
         public async Task<StudentListRecord?> UpdateAsync(int id, StudentListRecord record)
@@ -52,7 +57,7 @@ namespace DataAccess.Repositories.PageRepositories
                 if (record.StudentId != null && !await StudentsMatch((int)record.StudentId, (int)record.PersonalizedAccountingCardId)) return null;
             }
 
-            var recordToUpdate = await _dbContext.StudentList.FirstOrDefaultAsync(p => p.Id == id);
+            var recordToUpdate = await _dbContext.StudentList.Include(l => l.PersonalizedAccountingCard).FirstOrDefaultAsync(p => p.Id == id);
             if (recordToUpdate == null) return null;
 
             recordToUpdate.Number = record.Number;

@@ -9,7 +9,7 @@ namespace Contracts.Mappers.Journal
             return new UpdateStudentListRecordRequest(
                 record.Number,
                 record.StudentId,
-                record.PersonalizedAccountingCardId
+                record.CardInfo?.Id
             );
         }
     }

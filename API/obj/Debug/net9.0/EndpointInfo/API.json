@@ -2209,7 +2209,24 @@
         },
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/CuratorResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CuratorResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CuratorResponse"
+                }
+              }
+            }
           }
         }
       }
@@ -8190,7 +8207,8 @@
           },
           "curatorId": {
             "type": "integer",
-            "format": "int32"
+            "format": "int32",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -8205,6 +8223,20 @@
           "refreshToken": {
             "type": "string",
             "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "CardInfoResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageId": {
+            "type": "integer",
+            "format": "int32"
           }
         },
         "additionalProperties": false
@@ -10983,6 +11015,9 @@
           },
           "pageType": {
             "$ref": "#/components/schemas/PageTypeResponse"
+          },
+          "student": {
+            "$ref": "#/components/schemas/StudentResponse"
           }
         },
         "additionalProperties": false
@@ -12337,10 +12372,8 @@
             "format": "int32",
             "nullable": true
           },
-          "personalizedAccountingCardId": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
+          "cardInfo": {
+            "$ref": "#/components/schemas/CardInfoResponse"
           }
         },
         "additionalProperties": false
@@ -12529,13 +12562,8 @@
             "type": "integer",
             "format": "int32"
           },
-          "groupNumber": {
-            "type": "string",
-            "nullable": true
-          },
-          "admissionYear": {
-            "type": "string",
-            "nullable": true
+          "group": {
+            "$ref": "#/components/schemas/GroupResponse"
           },
           "curator": {
             "$ref": "#/components/schemas/CuratorResponse"

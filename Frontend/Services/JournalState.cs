@@ -1,6 +1,7 @@
 ﻿using Contracts.Journal.Pages;
 using Contracts.Journal;
 using Microsoft.AspNetCore.Components;
+using Contracts.Students;
 
 namespace Frontend.Services
 {
@@ -21,6 +22,7 @@ namespace Frontend.Services
         public Action? OnInitialize;
         public Action? OnFecthContents;
         public Action? OnToggleIsApproved;
+        public Action? OnCardStudentUpdated;
 
         private readonly HttpClient _httpClient = httpClient;
         private readonly NavigationManager _navigationManager = navigationManager;
@@ -64,6 +66,16 @@ namespace Frontend.Services
             }
 
             OnInitialize?.Invoke();
+        }
+
+        public void UpdatePageStudent(int pageId, StudentResponse? student)
+        {
+            if (JournalContents == null) return;
+            var page = JournalContents.PageTypes.SelectMany(pt => pt.Pages!)
+                .FirstOrDefault(p => p.Id == pageId);
+            if (page == null) return;
+            page.Student = student;
+            OnCardStudentUpdated?.Invoke();
         }
 
         public async Task ToggleIsCurrentPageApproved()

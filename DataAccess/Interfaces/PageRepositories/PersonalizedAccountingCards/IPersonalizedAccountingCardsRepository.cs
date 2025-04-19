@@ -5,7 +5,7 @@ namespace DataAccess.Interfaces.PageRepositories.PersonalizedAccountingCards
     public interface IPersonalizedAccountingCardsRepository : IPageRepositoryBase
     {
         Task<PersonalizedAccountingCard?> GetByPageIdAsync(int pageId);
-        Task<int?> GetCardIdByStudentIdAsync(int studentId);
+        Task<PersonalizedAccountingCard?> GetCardByStudentIdAsync(int studentId);
         Task<List<int>> GetStudentIdsThatHaveCard(int journalId);
         Task<List<int>?> GetStudentIdsThatDontHaveCard(int journalId);
         Task<PersonalizedAccountingCard?> CreateAsync(PersonalizedAccountingCard characteristics);

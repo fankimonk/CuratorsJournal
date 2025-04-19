@@ -8,7 +8,9 @@ namespace API.Mappers.Journal
         public static StudentListRecordResponse ToResponse(this StudentListRecord record)
         {
             return new StudentListRecordResponse(
-                record.Id, record.Number, record.StudentId, record.PersonalizedAccountingCardId
+                record.Id, record.Number, record.StudentId, 
+                record.PersonalizedAccountingCard == null ? null : new CardInfoResponse(
+                    record.PersonalizedAccountingCard.Id, record.PersonalizedAccountingCard.PageId)
             );
         }
 

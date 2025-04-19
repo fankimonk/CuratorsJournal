@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using API.Mappers;
 using Microsoft.AspNetCore.Authorization;
 using Application.Authorization;
+using Contracts.Curator;
 
 namespace API.Controllers
 {
@@ -47,13 +48,18 @@ namespace API.Controllers
         }
 
         [HttpPut("appointcurator")]
-        public async Task<ActionResult> AppointCurator([FromBody] AppointCuratorRequest request)
+        public async Task<ActionResult<CuratorResponse?>> AppointCurator([FromBody] AppointCuratorRequest request)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
             var group = await _groupsService.AppointCurator(request.GroupId, request.CuratorId);
             if (group == null) return BadRequest();
-            return Ok();
+            if (group.Curator != null)
+            {
+                var worker = group.Curator.Worker;
+                return Ok(new CuratorResponse(group.Curator.Id, worker.FirstName, worker.MiddleName, worker.LastName));
+            }
+            return Ok(null);
         }
 
         [HttpGet("getbyjournal/{journalId}")]

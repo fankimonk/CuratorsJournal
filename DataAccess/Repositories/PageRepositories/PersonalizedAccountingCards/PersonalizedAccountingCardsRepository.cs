@@ -72,11 +72,11 @@ namespace DataAccess.Repositories.PageRepositories.PersonalizedAccountingCards
         private async Task<bool> JournalExists(int id) =>
             await _dbContext.Journals.AsNoTracking().FirstOrDefaultAsync(j => j.Id == id) != null;
 
-        public async Task<int?> GetCardIdByStudentIdAsync(int studentId)
+        public async Task<PersonalizedAccountingCard?> GetCardByStudentIdAsync(int studentId)
         {
             var card = await _dbContext.PersonalizedAccountingCards.AsNoTracking().FirstOrDefaultAsync(c => c.StudentId == studentId);
             if (card == null) return null;
-            return card.Id;
+            return card;
         }
 
         public async Task<List<int>> GetStudentIdsThatHaveCard(int journalId)

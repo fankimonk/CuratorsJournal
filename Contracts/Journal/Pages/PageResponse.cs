@@ -1,16 +1,20 @@
-﻿namespace Contracts.Journal.Pages
+﻿using Contracts.Students;
+
+namespace Contracts.Journal.Pages
 {
     public class PageResponse
     (
         int id,
         int journalId,
         bool isApproved,
-        PageTypeResponse? pageType
+        PageTypeResponse? pageType,
+        StudentResponse? student
     )
     {
         public int Id { get; set; } = id;
         public int JournalId { get; set; } = journalId;
         public bool IsApproved { get; set; } = isApproved;
         public PageTypeResponse? PageType { get; set; } = pageType;
+        public StudentResponse? Student { get; set; } = student;
     }
 }

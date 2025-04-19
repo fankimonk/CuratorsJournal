@@ -100,7 +100,6 @@ C:\Dev\Web\CuratorsJournal\Frontend\obj\Debug\net9.0\staticwebassets\msbuild.bui
 C:\Dev\Web\CuratorsJournal\Frontend\obj\Debug\net9.0\staticwebassets\msbuild.buildMultiTargeting.Frontend.props
 C:\Dev\Web\CuratorsJournal\Frontend\obj\Debug\net9.0\staticwebassets\msbuild.buildTransitive.Frontend.props
 C:\Dev\Web\CuratorsJournal\Frontend\obj\Debug\net9.0\staticwebassets.pack.json
-C:\Dev\Web\CuratorsJournal\Frontend\obj\Debug\net9.0\staticwebassets.upToDateCheck.txt
 C:\Dev\Web\CuratorsJournal\Frontend\obj\Debug\net9.0\Frontend.csproj.Up2Date
 C:\Dev\Web\CuratorsJournal\Frontend\obj\Debug\net9.0\Frontend.dll
 C:\Dev\Web\CuratorsJournal\Frontend\obj\Debug\net9.0\refint\Frontend.dll
@@ -108,3 +107,4 @@ C:\Dev\Web\CuratorsJournal\Frontend\obj\Debug\net9.0\Frontend.pdb
 C:\Dev\Web\CuratorsJournal\Frontend\obj\Debug\net9.0\Frontend.genruntimeconfig.cache
 C:\Dev\Web\CuratorsJournal\Frontend\obj\Debug\net9.0\ref\Frontend.dll
 C:\Dev\Web\CuratorsJournal\Frontend\obj\Debug\net9.0\compressed\yfpirp1akv-88l9hkhcu1.gz
+C:\Dev\Web\CuratorsJournal\Frontend\obj\Debug\net9.0\staticwebassets.upToDateCheck.txt

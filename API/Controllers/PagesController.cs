@@ -1,4 +1,5 @@
-﻿using Contracts.Journal.Pages;
+﻿using API.Mappers;
+using Contracts.Journal.Pages;
 using DataAccess.Interfaces;
 using Domain.Entities.JournalContent.Pages;
 using Microsoft.AspNetCore.Mvc;
@@ -23,7 +24,8 @@ namespace API.Controllers
                 page.Id,
                 page.JournalId,
                 page.IsApproved,
-                new PageTypeResponse(page.PageType!.Id, page.PageType.Name, page.PageType.MaxPages, null)));
+                new PageTypeResponse(page.PageType!.Id, page.PageType.Name, page.PageType.MaxPages, null),
+                page.PersonalizedAccountingCard != null && page.PersonalizedAccountingCard.Student != null ? page.PersonalizedAccountingCard.Student.ToResponse() : null));
         }
 
         [HttpDelete("{id}")]

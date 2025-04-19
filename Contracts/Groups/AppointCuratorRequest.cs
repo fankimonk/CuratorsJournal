@@ -7,7 +7,6 @@ namespace Contracts.Groups
         [Required]
         int GroupId,
 
-        [Required]
-        int CuratorId
+        int? CuratorId
     );
 }

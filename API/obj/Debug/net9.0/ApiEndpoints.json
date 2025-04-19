@@ -772,7 +772,17 @@
         "IsRequired": true
       }
     ],
-    "ReturnTypes": []
+    "ReturnTypes": [
+      {
+        "Type": "Contracts.Curator.CuratorResponse",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
   },
   {
     "ContainingType": "API.Controllers.GroupController",
@@ -2362,7 +2372,7 @@
   },
   {
     "ContainingType": "API.Controllers.PersonalizedAccountingCardsController",
-    "Method": "GetCardIdByStudentId",
+    "Method": "GetCardByStudentId",
     "RelativePath": "api/journal/personalizedaccountingcard/getbystudent/{studentId}",
     "HttpMethod": "GET",
     "IsController": true,

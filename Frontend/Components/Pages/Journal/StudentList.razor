@@ -85,8 +85,11 @@ else
                     </td>
                     <td>
                         <p>
-                            @if (record.PersonalizedAccountingCardId == null) { @("-") }
-                            else { @(record.PersonalizedAccountingCardId.ToString()) }
+                            @if (record.CardInfo == null) { @("-") }
+                            else 
+                            {
+                                <a href="@($"/journal/{JournalId}/PersonalizedAccountingCard/{record.CardInfo.PageId}")">@record.CardInfo.Id</a>
+                            }
                         </p>
                     </td>
                     <td>
@@ -167,7 +170,7 @@ else
 
         if (record.StudentId == null)
         {
-            record.PersonalizedAccountingCardId = null;
+            record.CardInfo = null;
             await Update(record);
             return;
         }
@@ -175,14 +178,14 @@ else
         var response = await HttpClient.GetAsync("api/journal/personalizedaccountingcard/getbystudent/" + record.StudentId);
         if (response.IsSuccessStatusCode)
         {
-            var id = await response.Content.ReadFromJsonAsync<int>();
-            record.PersonalizedAccountingCardId = id;
+            var info = await response.Content.ReadFromJsonAsync<CardInfoResponse>();
+            record.CardInfo = info;
 
             await Update(record);
         }
         else
         {
-            record.PersonalizedAccountingCardId = null;
+            record.CardInfo = null;
             await Update(record);
         }
     }
@@ -192,11 +195,11 @@ else
         _rowsWithErrors.Remove(record.Id);
         CloseServerErrorAlert();
 
-        if (record.StudentId == null) record.PersonalizedAccountingCardId = null;
-        if (record.StudentId != null && record.PersonalizedAccountingCardId == null)
+        if (record.StudentId == null) record.CardInfo = null;
+        if (record.StudentId != null && record.CardInfo == null)
         {
             var cardIdResponse = await HttpClient.GetAsync("api/journal/personalizedaccountingcard/getbystudent/" + record.StudentId);
-            if (cardIdResponse.IsSuccessStatusCode) record.PersonalizedAccountingCardId = await cardIdResponse.Content.ReadFromJsonAsync<int>();
+            if (cardIdResponse.IsSuccessStatusCode) record.CardInfo = await cardIdResponse.Content.ReadFromJsonAsync<CardInfoResponse>();
         }
 
         var request = record.ToRequest();

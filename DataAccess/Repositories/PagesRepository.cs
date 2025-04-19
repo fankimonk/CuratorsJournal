@@ -110,7 +110,7 @@ namespace DataAccess.Repositories
         public async Task<List<PageType>?> GetByJournalIdGroupedByTypes(int journalId)
         {
             if (!await JournalExists(journalId)) return null;
-            return await _dbContext.PageTypes.Include(pt => pt.Pages).ThenInclude(p => p.PersonalizedAccountingCard).ThenInclude(c => c!.Student).AsNoTracking()
+            var contents = await _dbContext.PageTypes.Include(pt => pt.Pages).ThenInclude(p => p.PersonalizedAccountingCard).ThenInclude(c => c!.Student).AsNoTracking()
                 .Select(pt => new PageType
                 {
                     Id = pt.Id,
@@ -118,6 +118,13 @@ namespace DataAccess.Repositories
                     MaxPages = pt.MaxPages,
                     Pages = pt.Pages.Where(p => p.JournalId == journalId).ToList()
                 }).ToListAsync();
+            var cardPageType = contents.FirstOrDefault(pt => pt.Id == (int)PageTypes.PersonalizedAccountingCard);
+            cardPageType!.Pages = cardPageType.Pages
+                .OrderBy(p => p.PersonalizedAccountingCard!.Student == null)
+                .ThenBy(p => p.PersonalizedAccountingCard!.Student?.LastName)
+                .ThenBy(p => p.PersonalizedAccountingCard!.Student?.FirstName)
+                .ThenBy(p => p.PersonalizedAccountingCard!.Student?.MiddleName).ToList();
+            return contents;
         }
 
         public async Task<List<Page>?> GetJournalPagesByType(int journalId, PageTypes pageType)

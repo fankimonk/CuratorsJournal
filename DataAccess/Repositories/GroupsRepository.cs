@@ -83,7 +83,8 @@ namespace DataAccess.Repositories
 
             groupToUpdate.CuratorId = curatorId;
             await _dbContext.SaveChangesAsync();
-            return groupToUpdate;
+            return await _dbContext.Groups.Include(g => g.Curator).ThenInclude(c => c.Worker)
+                .FirstOrDefaultAsync(g => g.Id == groupToUpdate.Id);
         }
 
         public async Task<Group?> GetByJournalId(int id)
