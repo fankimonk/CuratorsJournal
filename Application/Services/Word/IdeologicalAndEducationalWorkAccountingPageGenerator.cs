@@ -101,15 +101,20 @@ namespace Application.Services.Word
             );
             table.AppendChild(tableGrid);
 
+            ParagraphProperties paragraphProperties = new ParagraphProperties(new Justification { Val = JustificationValues.Center },
+                new SpacingBetweenLines { Before = "0", After = "0" });
+
             TableRow headRow = new TableRow();
 
-            TableCell termHeadCell = new TableCell(new Paragraph(new Run(WordUtils.GetRunProperties(bold: true),
+            TableCell termHeadCell = new TableCell(new Paragraph(paragraphProperties.CloneNode(true),
+                new Run(WordUtils.GetRunProperties(bold: true, fontSize: "26"),
                     new Text("Срок выполнения"))));
             termHeadCell.Append(new TableCellProperties(
                 new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = termColumnWidth.ToString() }));
 
-            TableCell contentHeadCell = new TableCell(new Paragraph(new Run(WordUtils.GetRunProperties(bold: true),
-                new Text("Содержание работы"))));
+            TableCell contentHeadCell = new TableCell(new Paragraph(paragraphProperties.CloneNode(true), 
+                new Run(WordUtils.GetRunProperties(bold: true, fontSize: "26"),
+                    new Text("Содержание работы"))));
             contentHeadCell.Append(new TableCellProperties(
                 new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = contentColumnWidth.ToString() }));
 

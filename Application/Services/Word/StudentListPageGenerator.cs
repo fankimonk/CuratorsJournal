@@ -43,7 +43,7 @@ namespace Application.Services.Word
             var title = new Paragraph(
                 new ParagraphProperties(
                     new Justification { Val = JustificationValues.Center },
-                    new SpacingBetweenLines() { After ="0" }),
+                    new SpacingBetweenLines() { After = "0" }),
                 new Run(
                     WordUtils.GetRunProperties(bold:true),
                     new Text("СПИСОК СТУДЕНТОВ"))
@@ -97,21 +97,21 @@ namespace Application.Services.Word
 
             TableCell numberHeadCell = new TableCell(new Paragraph(
                 paragraphProperties.CloneNode(true),
-                new Run(WordUtils.GetRunProperties(bold: true),
+                new Run(WordUtils.GetRunProperties(bold: true, fontSize: "26"),
                     new Text("№"))));
             var numberHeadCellProperties = cellProperties.CloneNode(true);
             numberHeadCellProperties.Append(new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = "650" });
             numberHeadCell.Append(numberHeadCellProperties);
 
             TableCell studentHeadCell = new TableCell(new Paragraph(paragraphProperties.CloneNode(true),
-                new Run(WordUtils.GetRunProperties(bold: true),
+                new Run(WordUtils.GetRunProperties(bold: true, fontSize: "26"),
                     new Text("Фамилия, имя отчество (полностью)"))));
             var studentHeadCellProperties = cellProperties.CloneNode(true);
             studentHeadCellProperties.Append(new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = "6050" });
             studentHeadCell.Append(studentHeadCellProperties);
 
             TableCell phoneHeadCell = new TableCell(new Paragraph(paragraphProperties.CloneNode(true),
-                new Run(WordUtils.GetRunProperties(bold: true),
+                new Run(WordUtils.GetRunProperties(bold: true, fontSize: "26"),
                     new Text("Контактный телефон"))));
             var phoneHeadCellProperties = cellProperties.CloneNode(true);
             phoneHeadCellProperties.Append(new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = "1650" });
@@ -119,19 +119,19 @@ namespace Application.Services.Word
 
             TableCell cardNumberHeadCell = new TableCell(
                 new Paragraph(paragraphProperties.CloneNode(true),
-                    new Run(WordUtils.GetRunProperties(bold: true),
+                    new Run(WordUtils.GetRunProperties(bold: true, fontSize: "26"),
                         new Text("№ страни-"),
                         new Break()),
-                    new Run(WordUtils.GetRunProperties(bold: true),
+                    new Run(WordUtils.GetRunProperties(bold: true, fontSize: "26"),
                         new Text("цы персо-"),
                         new Break()),
-                    new Run(WordUtils.GetRunProperties(bold: true),
+                    new Run(WordUtils.GetRunProperties(bold: true, fontSize: "26"),
                         new Text("нифицы-"),
                         new Break()),
-                    new Run(WordUtils.GetRunProperties(bold: true),
+                    new Run(WordUtils.GetRunProperties(bold: true, fontSize: "26"),
                         new Text("рованного"),
                         new Break()),
-                    new Run(WordUtils.GetRunProperties(bold: true),
+                    new Run(WordUtils.GetRunProperties(bold: true, fontSize: "26"),
                         new Text("учета"))
                 ));
             var cardNumberHeadCellProperties = cellProperties.CloneNode(true);

@@ -183,6 +183,11 @@ namespace DataAccess.Repositories
                         .ThenInclude(c => c!.IndividualWorkWithStudent);
                     pages = pages.Include(p => p.PersonalizedAccountingCard)
                         .ThenInclude(c => c!.WorkWithParents);
+                    pages = pages
+                        .OrderBy(p => p.PersonalizedAccountingCard!.Student == null)
+                        .ThenBy(p => p.PersonalizedAccountingCard!.Student!.LastName)
+                        .ThenBy(p => p.PersonalizedAccountingCard!.Student!.FirstName)
+                        .ThenBy(p => p.PersonalizedAccountingCard!.Student!.MiddleName);
                     break;
 
                 case PageTypes.StudentsHealthCard:

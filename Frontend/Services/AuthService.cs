@@ -1,5 +1,6 @@
 ﻿using API.Contracts.User;
 using Contracts.User;
+using Frontend.Utils.Auth;
 using Microsoft.AspNetCore.Components;
 
 namespace Frontend.Services
@@ -11,7 +12,7 @@ namespace Frontend.Services
         private readonly NavigationManager _navigationManager = navigationManager;
         private readonly HttpClient _httpClient = httpClient;
 
-        public async Task<bool> Login(string username, string password)
+        public async Task<AuthStatus> Login(string username, string password)
         {
             var response = await _httpClient.PostAsJsonAsync<LoginUserRequest>("api/auth/login", new LoginUserRequest(username, password));
             if (response.IsSuccessStatusCode)
@@ -22,11 +23,12 @@ namespace Frontend.Services
                 await _accessTokenService.Set(token!.AccessToken);
                 await _refreshTokenService.Set(token!.RefreshToken);
 
-                return true;
+                return new AuthStatus(true, null);
             }
             else
             {
-                return false;
+                var errorMessage = await response.Content.ReadAsStringAsync();
+                return new AuthStatus(false, errorMessage);
             }
         }
 

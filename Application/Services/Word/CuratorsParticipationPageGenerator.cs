@@ -83,29 +83,37 @@ namespace Application.Services.Word
             );
             table.AppendChild(tableGrid);
 
+            ParagraphProperties paragraphProperties = new ParagraphProperties(new Justification { Val = JustificationValues.Center },
+                new SpacingBetweenLines { Before = "0", After = "0" });
+
             TableRow headRow = new TableRow();
 
-            TableCell dateHeadCell = new TableCell(new Paragraph(new Run(WordUtils.GetRunProperties(bold: true),
+            TableCell dateHeadCell = new TableCell(new Paragraph(paragraphProperties.CloneNode(true),
+                new Run(WordUtils.GetRunProperties(bold: true, fontSize: "26"),
                     new Text("Дата"))));
             dateHeadCell.Append(new TableCellProperties(
                 new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = dateColumnWidth.ToString() }));
 
-            TableCell topicHeadCell = new TableCell(new Paragraph(new Run(WordUtils.GetRunProperties(bold: true),
-                new Text("Тема семинара заседания"))));
+            TableCell topicHeadCell = new TableCell(new Paragraph(paragraphProperties.CloneNode(true), 
+                new Run(WordUtils.GetRunProperties(bold: true, fontSize: "26"),
+                    new Text("Тема семинара заседания"))));
             topicHeadCell.Append(new TableCellProperties(
                 new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = topicColumnWidth.ToString() }));
 
-            TableCell participationFormHeadCell = new TableCell(new Paragraph(new Run(WordUtils.GetRunProperties(bold: true),
-                new Text("Форма участия"))));
+            TableCell participationFormHeadCell = new TableCell(new Paragraph(paragraphProperties.CloneNode(true), 
+                new Run(WordUtils.GetRunProperties(bold: true, fontSize: "26"),
+                    new Text("Форма участия"))));
             participationFormHeadCell.Append(new TableCellProperties(
                 new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = participationFormColumnWidth.ToString() }));
 
-            TableCell locationHeadCell = new TableCell(new Paragraph(new Run(WordUtils.GetRunProperties(bold: true),
+            TableCell locationHeadCell = new TableCell(new Paragraph(paragraphProperties.CloneNode(true), 
+                new Run(WordUtils.GetRunProperties(bold: true, fontSize: "26"),
                     new Text("Место проведения"))));
             locationHeadCell.Append(new TableCellProperties(
                 new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = locationColumnWidth.ToString() }));
 
-            TableCell noteHeadCell = new TableCell(new Paragraph(new Run(WordUtils.GetRunProperties(bold: true),
+            TableCell noteHeadCell = new TableCell(new Paragraph(paragraphProperties.CloneNode(true), 
+                new Run(WordUtils.GetRunProperties(bold: true, fontSize: "26"),
                     new Text("Примечание"))));
             noteHeadCell.Append(new TableCellProperties(
                 new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = noteColumnWidth.ToString() }));

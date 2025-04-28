@@ -28,13 +28,13 @@ namespace Application.Services.Word.PesonalizedAccountingCard
                 new ParagraphProperties(
                     new Justification { Val = JustificationValues.Start },
                     new SpacingBetweenLines() { After = "0" } ),
-                new Run(WordUtils.GetRunProperties(bold: true),
+                new Run(WordUtils.GetRunProperties(bold: true, fontSize: "26"),
                     new Text("Сведения о родителях и/или других родственниках, законных представителях"),
                     new Break()),
-                new Run(WordUtils.GetRunProperties(fontSize: "24"),
+                new Run(WordUtils.GetRunProperties(fontSize: "20"),
                     new Text("(Ф.И.О. (полностью); место жительства и/или место пребывания; место работы, занимаемая должность,"),
                     new Break()),
-                new Run(WordUtils.GetRunProperties(fontSize: "24"),
+                new Run(WordUtils.GetRunProperties(fontSize: "20"),
                     new Text("Телефон (дом./раоч./моб.); другие сведения)"))
             );
 

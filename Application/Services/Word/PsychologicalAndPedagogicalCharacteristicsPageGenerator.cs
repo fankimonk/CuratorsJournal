@@ -79,6 +79,7 @@ namespace Application.Services.Word
                 new ParagraphProperties(
                     new Justification { Val = JustificationValues.Both }),
                 new Run(WordUtils.GetRunProperties(),
+                    new TabChar(),
                     new Text("Ф. И. О., должность специалиста")),
                 new Run(WordUtils.GetRunProperties(underline: true),
                     new TabChar(),
@@ -90,6 +91,7 @@ namespace Application.Services.Word
                 new ParagraphProperties(
                     new Justification { Val = JustificationValues.Both }),
                 new Run(WordUtils.GetRunProperties(),
+                    new TabChar(),
                     new Text("Дата, подпись")),
                 new Run(WordUtils.GetRunProperties(underline: true),
                     new TabChar(),

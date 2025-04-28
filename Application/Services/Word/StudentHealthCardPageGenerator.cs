@@ -108,31 +108,47 @@ namespace Application.Services.Word
             );
             table.AppendChild(tableGrid);
 
+            TableCellProperties cellProperties = new TableCellProperties(
+                new TableCellVerticalAlignment { Val = TableVerticalAlignmentValues.Center }
+            );
+
+            ParagraphProperties paragraphProperties = new ParagraphProperties(new Justification { Val = JustificationValues.Center },
+                new SpacingBetweenLines { Before = "0", After = "0" });
+
             TableRow headRow = new TableRow();
 
-            TableCell numberHeadCell = new TableCell(new Paragraph(new Run(WordUtils.GetRunProperties(bold: true),
+            TableCell numberHeadCell = new TableCell(new Paragraph(paragraphProperties.CloneNode(true),
+                new Run(WordUtils.GetRunProperties(bold: true, fontSize: "26"),
                     new Text("№"))));
-            numberHeadCell.Append(new TableCellProperties(
-                new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = numberColumnWidth.ToString() }));
+            var numberHeadCellProperties = cellProperties.CloneNode(true);
+            numberHeadCellProperties.Append(new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = numberColumnWidth.ToString() });
+            numberHeadCell.Append(numberHeadCellProperties);
 
-            TableCell studentHeadCell = new TableCell(new Paragraph(new Run(WordUtils.GetRunProperties(bold: true),
-                new Text("Фамилия, имя, отчество (полностью)"))));
-            studentHeadCell.Append(new TableCellProperties(
-                new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = studentColumnWidth.ToString() }));
+            TableCell studentHeadCell = new TableCell(new Paragraph(paragraphProperties.CloneNode(true), 
+                new Run(WordUtils.GetRunProperties(bold: true, fontSize: "26"),
+                    new Text("Фамилия, имя, отчество (полностью)"))));
+            var studentHeadCellProperties = cellProperties.CloneNode(true);
+            studentHeadCellProperties.Append(new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = studentColumnWidth.ToString() });
+            studentHeadCell.Append(studentHeadCellProperties);
 
-            TableCell classesMissedHeadCell = new TableCell(new Paragraph(
-                new Run(WordUtils.GetRunProperties(bold: true),
+            TableCell classesMissedHeadCell = new TableCell(new Paragraph(paragraphProperties.CloneNode(true),
+                new Run(WordUtils.GetRunProperties(bold: true, fontSize: "26"),
                     new Text("Пропущено учебных занятий"),
                     new Break()),
-                new Run(WordUtils.GetRunProperties(bold: true),
+                new Run(WordUtils.GetRunProperties(bold: true, fontSize: "26"),
                     new Text("по болезни"))));
-            classesMissedHeadCell.Append(new TableCellProperties(
-                new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = classesMissedColumnWidth.ToString() }));
+            var classesMissedHeadCellProperties = cellProperties.CloneNode(true);
+            classesMissedHeadCellProperties.Append(
+                new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = classesMissedColumnWidth.ToString() });
+            classesMissedHeadCell.Append(classesMissedHeadCellProperties);
 
-            TableCell noteHeadCell = new TableCell(new Paragraph(new Run(WordUtils.GetRunProperties(bold: true),
+            TableCell noteHeadCell = new TableCell(new Paragraph(paragraphProperties.CloneNode(true), 
+                new Run(WordUtils.GetRunProperties(bold: true, fontSize: "26"),
                     new Text("Примечание"))));
-            noteHeadCell.Append(new TableCellProperties(
-                new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = noteColumnWidth.ToString() }));
+            var noteHeadCellProperties = cellProperties.CloneNode(true);
+            noteHeadCellProperties.Append(
+                new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = noteColumnWidth.ToString() });
+            noteHeadCell.Append(noteHeadCellProperties);
 
             headRow.Append(numberHeadCell, studentHeadCell, classesMissedHeadCell, noteHeadCell);
             table.Append(headRow);

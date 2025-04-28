@@ -1,7 +1,5 @@
-﻿using Application.Interfaces;
-using Application.Utils;
+﻿using Application.Utils;
 using DataAccess.Interfaces;
-using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Wordprocessing;
 using Domain.Entities;
 using Domain.Entities.JournalContent;
@@ -389,15 +387,34 @@ namespace Application.Services.Word
 
             _documentBody.Append(fifteenthPointParagraph2);
 
-            var otherInformation = new Paragraph(paragraphProeprties.CloneNode(true),
-                new Run(WordUtils.GetRunProperties(),
-                    new Text("16. Другие сведения ")),
-                new Run(WordUtils.GetRunProperties(underline: true),
-                    new Text(characteristics.OtherInformation == null ? "" : characteristics.OtherInformation),
-                    new TabChar())
-            );
+            //var orphansUnderagesCount = characteristics.OrphansUnderagesCount == null ? "" : ((int)characteristics.OrphansUnderagesCount).ToString();
+            //if (orphansUnderagesCount.Length > 10) orphansUnderagesCount = orphansUnderagesCount.Substring(0, 10);
+            //tabCount = 2 - (Math.Max(0, orphansUnderagesCount.Length - 1) / 5);
+            //var orphansUnderagesCountParagraph = new Paragraph(paragraphProeprties.CloneNode(true),
+            //    new Run(WordUtils.GetRunProperties(),
+            //        new Text("5. Дети-сироты, (до 18 лет)")));
+            //var orphansUnderagesCountValueRun = new Run(WordUtils.GetRunProperties(underline: true),
+            //    new TabChar(),
+            //    new Text(orphansUnderagesCount));
+            //for (int i = 0; i < tabCount; i++)
+            //    orphansUnderagesCountValueRun.Append(new TabChar());
+            //orphansUnderagesCountParagraph.Append(orphansUnderagesCountValueRun);
+            //_documentBody.Append(orphansUnderagesCountParagraph);
 
-            _documentBody.Append(otherInformation);
+            int maxCharactersCount = 45 + 5 * 65;
+            var otherInfoStr = characteristics.OtherInformation == null ? "" : characteristics.OtherInformation;
+            if (otherInfoStr.Length > maxCharactersCount) otherInfoStr = otherInfoStr.Substring(0, maxCharactersCount);
+            tabCount = (9 + 5 * 13) - (Math.Max(0, otherInfoStr.Length - 1) / 5);
+            var otherInfoParagraph = new Paragraph(paragraphProeprties.CloneNode(true),
+                new Run(WordUtils.GetRunProperties(),
+                    new Text("16. Другие сведения ")));
+            var otherInfoValueRun = new Run(WordUtils.GetRunProperties(underline: true),
+                new TabChar(),
+                new Text(otherInfoStr));
+            for (int i = 0; i < tabCount; i++)
+                otherInfoValueRun.Append(new TabChar());
+            otherInfoParagraph.Append(otherInfoValueRun);
+            _documentBody.Append(otherInfoParagraph);
         }
     }
 }

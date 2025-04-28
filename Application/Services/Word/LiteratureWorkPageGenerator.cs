@@ -75,15 +75,20 @@ namespace Application.Services.Word
             );
             table.AppendChild(tableGrid);
 
+            ParagraphProperties paragraphProperties = new ParagraphProperties(new Justification { Val = JustificationValues.Center },
+                new SpacingBetweenLines { Before = "0", After = "0" });
+
             TableRow headRow = new TableRow();
 
-            TableCell dataHeadCell = new TableCell(new Paragraph(new Run(WordUtils.GetRunProperties(bold: true),
+            TableCell dataHeadCell = new TableCell(new Paragraph(paragraphProperties.CloneNode(true),
+                new Run(WordUtils.GetRunProperties(bold: true, fontSize: "26"),
                     new Text("Автор, название, библиографические данные"))));
             dataHeadCell.Append(new TableCellProperties(
                 new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = dataColumnWidth.ToString() }));
 
-            TableCell annotationHeadCell = new TableCell(new Paragraph(new Run(WordUtils.GetRunProperties(bold: true),
-                new Text("Краткая аннотация"))));
+            TableCell annotationHeadCell = new TableCell(new Paragraph(paragraphProperties.CloneNode(true), 
+                new Run(WordUtils.GetRunProperties(bold: true, fontSize: "26"),
+                    new Text("Краткая аннотация"))));
             annotationHeadCell.Append(new TableCellProperties(
                 new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = annotationColumnWidth.ToString() }));
 

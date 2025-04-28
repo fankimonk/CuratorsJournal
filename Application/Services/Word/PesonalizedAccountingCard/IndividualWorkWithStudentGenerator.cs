@@ -78,14 +78,14 @@ namespace Application.Services.Word
             TableRow headRow = new TableRow();
 
             TableCell dateHeadCell = new TableCell(new Paragraph(paragraphProperties.CloneNode(true),
-                new Run(WordUtils.GetRunProperties(bold: true),
+                new Run(WordUtils.GetRunProperties(bold: true, fontSize: "26"),
                     new Text("Дата"))));
             var dateHeadCellProperties = cellProperties.CloneNode(true);
             dateHeadCellProperties.Append(new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = "950" });
             dateHeadCell.Append(dateHeadCellProperties);
 
             TableCell workDoneHeadCell = new TableCell(new Paragraph(paragraphProperties.CloneNode(true),
-                new Run(WordUtils.GetRunProperties(bold: true),
+                new Run(WordUtils.GetRunProperties(bold: true, fontSize: "26"),
                     new Text("Проведенная работа и рекомендации ППС,"),
                     new Break()),
                 new Run(WordUtils.GetRunProperties(bold: true),
@@ -96,7 +96,7 @@ namespace Application.Services.Word
             workDoneHeadCell.Append(workDoneHeadCellProperties);
 
             TableCell resultHeadCell = new TableCell(new Paragraph(paragraphProperties.CloneNode(true),
-                new Run(WordUtils.GetRunProperties(bold: true),
+                new Run(WordUtils.GetRunProperties(bold: true, fontSize: "26"),
                     new Text("Результат"))));
             var resultHeadCellProperties = cellProperties.CloneNode(true);
             resultHeadCellProperties.Append(new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = "1550" });

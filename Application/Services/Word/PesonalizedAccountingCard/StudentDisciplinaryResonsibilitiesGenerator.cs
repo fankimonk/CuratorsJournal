@@ -28,7 +28,7 @@ namespace Application.Services.Word
             var title = new Paragraph(
                 new ParagraphProperties(
                     new Justification { Val = JustificationValues.Start }),
-                new Run(WordUtils.GetRunProperties(bold: true),
+                new Run(WordUtils.GetRunProperties(bold: true, fontSize: "26"),
                     new Text("Отметка о дисциплинарной ответственности")));
 
             _documentBody.Append(title);
@@ -58,20 +58,29 @@ namespace Application.Services.Word
             );
             table.AppendChild(tableGrid);
 
+            ParagraphProperties paragraphProperties = new ParagraphProperties(
+                new SpacingBetweenLines { Before = "0", After = "0" });
+
             TableRow headRow = new TableRow();
 
-            TableCell dateHeadCell = new TableCell(new Paragraph(new Run(WordUtils.GetRunProperties(),
+            TableCell dateHeadCell = new TableCell(new Paragraph(paragraphProperties.CloneNode(true), 
+                new Run(WordUtils.GetRunProperties(fontSize: "26"),
+                    new TabChar(),
                     new Text("Дата"))));
             dateHeadCell.Append(new TableCellProperties(
                 new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = "1250" }));
 
-            TableCell achievementHeadCell = new TableCell(new Paragraph(new Run(WordUtils.GetRunProperties(),
-                new Text("За какой проступок"))));
+            TableCell achievementHeadCell = new TableCell(new Paragraph(paragraphProperties.CloneNode(true), 
+                new Run(WordUtils.GetRunProperties(fontSize: "26"),
+                    new TabChar(),
+                    new Text("За какой проступок"))));
             achievementHeadCell.Append(new TableCellProperties(
                 new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = "5350" }));
 
-            TableCell encouragementKindHeadCell = new TableCell(new Paragraph(new Run(WordUtils.GetRunProperties(),
-                new Text("Вид"))));
+            TableCell encouragementKindHeadCell = new TableCell(new Paragraph(paragraphProperties.CloneNode(true), 
+                new Run(WordUtils.GetRunProperties(fontSize: "26"),
+                    new TabChar(),
+                    new Text("Вид"))));
             encouragementKindHeadCell.Append(new TableCellProperties(
                 new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = "3400" }));
 

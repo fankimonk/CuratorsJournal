@@ -79,35 +79,48 @@ namespace Application.Services.Word
             );
             table.AppendChild(tableGrid);
 
+            ParagraphProperties paragraphProperties = new ParagraphProperties(new Justification { Val = JustificationValues.Center },
+                new SpacingBetweenLines { Before = "0", After = "0" });
+
+            TableCellProperties cellProperties = new TableCellProperties(
+                new TableCellVerticalAlignment { Val = TableVerticalAlignmentValues.Center }
+            );
+
             TableRow headRow = new TableRow();
 
-            TableCell dateHeadCell = new TableCell(new Paragraph(new Run(WordUtils.GetRunProperties(bold: true),
+            TableCell dateHeadCell = new TableCell(new Paragraph(paragraphProperties.CloneNode(true),
+                new Run(WordUtils.GetRunProperties(bold: true, fontSize: "26"),
                     new Text("Дата"))));
-            dateHeadCell.Append(new TableCellProperties(
-                new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = dateColumnWidth.ToString() }));
+            var dateHeadCellProperties = cellProperties.CloneNode(true);
+            dateHeadCellProperties.Append(new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = dateColumnWidth.ToString() });
+            dateHeadCell.Append(dateHeadCellProperties);
 
-            TableCell reviewerHeadCell = new TableCell(new Paragraph(
-                new Run(WordUtils.GetRunProperties(bold: true),
+            TableCell reviewerHeadCell = new TableCell(new Paragraph(paragraphProperties.CloneNode(true),
+                new Run(WordUtils.GetRunProperties(bold: true, fontSize: "26"),
                     new Text("Кто проверил"),
                     new Break()),
-                new Run(WordUtils.GetRunProperties(bold: true),
+                new Run(WordUtils.GetRunProperties(bold: true, fontSize: "26"),
                     new Text("(должность, фамилия)"))));
-            reviewerHeadCell.Append(new TableCellProperties(
-                new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = reviewerColumnWidth.ToString() }));
+            var reviewerHeadCellProperties = cellProperties.CloneNode(true);
+            reviewerHeadCellProperties.Append(new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = reviewerColumnWidth.ToString() });
+            reviewerHeadCell.Append(reviewerHeadCellProperties);
 
-            TableCell contentHeadCell = new TableCell(new Paragraph(new Run(WordUtils.GetRunProperties(bold: true),
-                new Text("Рекомендации, замечания"))));
-            contentHeadCell.Append(new TableCellProperties(
-                new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = contentColumnWidth.ToString() }));
+            TableCell contentHeadCell = new TableCell(new Paragraph(paragraphProperties.CloneNode(true), 
+                new Run(WordUtils.GetRunProperties(bold: true, fontSize: "26"),
+                    new Text("Рекомендации, замечания"))));
+            var contentHeadCellProperties = cellProperties.CloneNode(true);
+            contentHeadCellProperties.Append(new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = contentColumnWidth.ToString() });
+            contentHeadCell.Append(contentHeadCellProperties);
 
-            TableCell resultHeadCell = new TableCell(new Paragraph(
-                new Run(WordUtils.GetRunProperties(bold: true),
+            TableCell resultHeadCell = new TableCell(new Paragraph(paragraphProperties.CloneNode(true),
+                new Run(WordUtils.GetRunProperties(bold: true, fontSize: "26"),
                     new Text("Выполнение,"),
                     new Break()),
-                new Run(WordUtils.GetRunProperties(bold: true),
+                new Run(WordUtils.GetRunProperties(bold: true, fontSize: "26"),
                     new Text("Дата"))));
-            resultHeadCell.Append(new TableCellProperties(
-                new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = resultColumnWidth.ToString() }));
+            var resultHeadCellProperties = cellProperties.CloneNode(true);
+            resultHeadCellProperties.Append(new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = resultColumnWidth.ToString() });
+            resultHeadCell.Append(resultHeadCellProperties);
 
             headRow.Append(dateHeadCell, reviewerHeadCell, contentHeadCell, resultHeadCell);
             table.Append(headRow);

@@ -2,11 +2,12 @@
 
 namespace Contracts.User
 {
-    public record LoginUserRequest(
+    public class LoginUserRequest(string username, string password)
+    {
         [Required]
-        string Username,
+        public string Username { get; set; } = username;
 
-        [Required] 
-        string Password
-        );
+        [Required]
+        public string Password { get; set; } = password;
+    }
 }

@@ -1,6 +1,8 @@
 ﻿@page "/login"
 
+@using Contracts.User
 @using Frontend.Components.Layout
+@using Frontend.Components.Utils
 @using Frontend.Services
 
 @layout EmptyLayout
@@ -12,30 +14,61 @@
     <div class="login-container">
         <h1 class="text-center login-title">Войдите в аккаунт, чтобы продолжить</h1>
         <div class="account-wall">
-            <img class="profile-img" src="https://lh5.googleusercontent.com/-b0-k99FZlyE/AAAAAAAAAAI/AAAAAAAAAAA/eu7opA4byxI/photo.jpg?sz=120"
-                alt="" />
             <div class="form-signin">
-                <input type="text" @bind-value="Username" class="form-control" placeholder="Имя пользователя" required autofocus />
-                <input type="password" @bind-value="Password" class="form-control" placeholder="Пароль" required />
-                <button class="btn btn-lg btn-primary btn-block w-100" @onclick="OnLogin">
-                    Войти
-                </button>
+                <EditForm method="post" Model="LoginRequest" OnValidSubmit="TryLogin" OnInvalidSubmit="ShowErrorAlert" FormName="login" Enhance>
+                    <DataAnnotationsValidator />
+                    <Alert Type="error" IsVisible="_isErrorAlertVisible" OnClose="CloseErrorAlert">
+                        <ValidationSummary />
+                        @_errorMessage
+                    </Alert>
+                    <div class="mb-3">
+                        <label for="username" class="form-label">Имя пользователя: </label>
+                        <InputText id="username" @bind-Value="LoginRequest.Username" class="form-control" />
+                    </div>
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Пароль: </label>
+                        <InputText id="password" @bind-Value="LoginRequest.Password" class="form-control" />
+                    </div>
+                    <button class="btn btn-primary" type="submit">Войти</button>
+                </EditForm>
             </div>
         </div>
     </div>
 </div>
 
-@code {
-    public string Username { get; set; } = string.Empty;
-    public string Password { get; set; } = string.Empty;
 
-    private async Task OnLogin()
+
+@code {
+    private LoginUserRequest LoginRequest = new("", "");
+
+    private bool _isErrorAlertVisible = false;
+
+    private string? _errorMessage = "";
+
+    private async Task TryLogin()
     {
-        var status = await AuthService.Login(Username, Password);
-        if (status)
+        var status = await AuthService.Login(LoginRequest.Username, LoginRequest.Password);
+        if (status.Status && string.IsNullOrEmpty(status.ErrorMessage))
         {
             NavigationManager.NavigateTo("/");
+            LoginRequest = new("", "");
         }
+        else
+        {
+            _errorMessage = status.ErrorMessage;
+            ShowErrorAlert();
+        }
+    }
+
+    private void CloseErrorAlert() 
+    {
+        _errorMessage = null;
+        _isErrorAlertVisible = false;
+    }
+
+    private void ShowErrorAlert()
+    {
+        _isErrorAlertVisible = true;
     }
 }
 

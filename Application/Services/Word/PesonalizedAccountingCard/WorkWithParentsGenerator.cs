@@ -68,20 +68,20 @@ namespace Application.Services.Word
             TableRow headRow = new TableRow();
 
             TableCell dateHeadCell = new TableCell(new Paragraph(paragraphProperties.CloneNode(true),
-                new Run(WordUtils.GetRunProperties(bold: true),
+                new Run(WordUtils.GetRunProperties(bold: true, fontSize: "26"),
                     new Text("Дата"))));
             dateHeadCell.Append(new TableCellProperties(
                 new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = "1000" }));
 
             TableCell workContentHeadCell = new TableCell(new Paragraph(paragraphProperties.CloneNode(true),
-                new Run(WordUtils.GetRunProperties(bold: true),
+                new Run(WordUtils.GetRunProperties(bold: true, fontSize: "26"),
                     new Text("Содержание работы"))
             ));
             workContentHeadCell.Append(new TableCellProperties(
                 new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = "5600" }));
 
             TableCell noteHeadCell = new TableCell(new Paragraph(paragraphProperties.CloneNode(true),
-                new Run(WordUtils.GetRunProperties(bold: true),
+                new Run(WordUtils.GetRunProperties(bold: true, fontSize: "26"),
                     new Text("Примечание"))));
             noteHeadCell.Append(new TableCellProperties(
                 new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = "3400" }));

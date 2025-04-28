@@ -78,43 +78,43 @@ namespace Application.Services.Word.PesonalizedAccountingCard
             var content = new Paragraph(
                 new ParagraphProperties(
                     new Justification { Val = JustificationValues.Both }),
-                new Run(WordUtils.GetRunProperties(bold: true),
+                new Run(WordUtils.GetRunProperties(bold: true, fontSize: "26"),
                     new Text("Фамилия, имя отчество")),
-                new Run(WordUtils.GetRunProperties(underline: true),
+                new Run(WordUtils.GetRunProperties(underline: true, fontSize: "26"),
                     new TabChar(),
                     new Text(card.Student == null ? "" : GetStudentFIO(card.Student)),
                     new TabChar(),
                     new Break()),
-                new Run(WordUtils.GetRunProperties(),
+                new Run(WordUtils.GetRunProperties(fontSize: "26"),
                     new Text("Дата рождения")),
-                new Run(WordUtils.GetRunProperties(underline: true),
-                    new TabChar(), new TabChar(),
+                new Run(WordUtils.GetRunProperties(underline: true, fontSize: "26"),
+                    new TabChar(),
                     new Text(card.BirthDate == null ? "" : ((DateOnly)card.BirthDate).ToString()),
                     new TabChar(), new TabChar(),
                     new Break()),
-                new Run(WordUtils.GetRunProperties(),
+                new Run(WordUtils.GetRunProperties(fontSize: "26"),
                     new Text("Паспортные данные")),
-                new Run(WordUtils.GetRunProperties(underline: true),
+                new Run(WordUtils.GetRunProperties(underline: true, fontSize: "26"),
                     new TabChar(), new TabChar(),
                     new Text(card.PassportData == null ? "" : card.PassportData),
                     new TabChar(), new TabChar()),
-                new Run(WordUtils.GetRunProperties(),
+                new Run(WordUtils.GetRunProperties(fontSize: "26"),
                     new Text("гражданство")),
-                new Run(WordUtils.GetRunProperties(underline: true),
-                    new TabChar(),
+                new Run(WordUtils.GetRunProperties(underline: true, fontSize: "26"),
+                    new TabChar(), new TabChar(),
                     new Text(card.Citizenship == null ? "" : card.Citizenship),
                     new TabChar(),
                     new Break()),
-                new Run(WordUtils.GetRunProperties(),
+                new Run(WordUtils.GetRunProperties(fontSize: "26"),
                     new Text("Окончил УО")),
-                new Run(WordUtils.GetRunProperties(underline: true),
-                    new TabChar(), new TabChar(),
+                new Run(WordUtils.GetRunProperties(underline: true, fontSize: "26"),
+                    new TabChar(),
                     new Text(card.GraduatedEducationalInstitution == null ? "" : card.GraduatedEducationalInstitution),
                     new TabChar(), new TabChar(),
                     new Break()),
-                new Run(WordUtils.GetRunProperties(),
+                new Run(WordUtils.GetRunProperties(fontSize: "26"),
                     new Text("Место и адрес проживания в период обучения")),
-                new Run(WordUtils.GetRunProperties(underline: true),
+                new Run(WordUtils.GetRunProperties(underline: true, fontSize: "26"),
                     new TabChar(),
                     new Text(card.ResidentialAddress == null ? "" : card.ResidentialAddress),
                     new TabChar())
@@ -133,7 +133,7 @@ namespace Application.Services.Word.PesonalizedAccountingCard
             return new Paragraph(
                 new ParagraphProperties(
                     new Justification { Val = JustificationValues.Start }),
-                new Run(WordUtils.GetRunProperties(bold: true),
+                new Run(WordUtils.GetRunProperties(bold: true, fontSize: "26"),
                     new Text(text),
                     new Break())
             );
@@ -143,37 +143,37 @@ namespace Application.Services.Word.PesonalizedAccountingCard
         {
             var chronicDiseasesLabel = new Run(WordUtils.GetRunProperties(),
                 new Text("Хронические заболевания"));
-            var tabRun1 = new Run(WordUtils.GetRunProperties(underline: true), new TabChar());
+            var tabRun1 = new Run(WordUtils.GetRunProperties(underline: true, fontSize: "26"), new TabChar());
             healthStatusParagraph.Append(chronicDiseasesLabel, tabRun1);
 
             foreach (var cd in chronicDiseases)
             {
                 var text = cd == chronicDiseases.Last() ? cd.Name : cd.Name + ", ";
-                var cdRun = new Run(WordUtils.GetRunProperties(underline: true),
+                var cdRun = new Run(WordUtils.GetRunProperties(underline: true, fontSize: "26"),
                     new Text(text));
                 healthStatusParagraph.Append(cdRun);
             }
 
-            var tabRun2 = new Run(WordUtils.GetRunProperties(underline: true), new TabChar(), new Break());
+            var tabRun2 = new Run(WordUtils.GetRunProperties(underline: true, fontSize: "26"), new TabChar(), new Break());
             healthStatusParagraph.Append(tabRun2);
         }
 
         private void AppendPEGroups(List<PEGroup> peGroups, Paragraph healthStatusParagraph)
         {
-            var peGroupLabel = new Run(WordUtils.GetRunProperties(),
+            var peGroupLabel = new Run(WordUtils.GetRunProperties(fontSize: "26"),
                 new Text("Группы по физической культуре (основная специальная)"));
-            var tabRun1 = new Run(WordUtils.GetRunProperties(underline: true), new TabChar());
+            var tabRun1 = new Run(WordUtils.GetRunProperties(underline: true, fontSize: "26"), new TabChar());
             healthStatusParagraph.Append(peGroupLabel, tabRun1);
 
             foreach (var group in peGroups)
             {
                 var text = group == peGroups.Last() ? group.Name : group.Name + ", ";
-                var groupRun = new Run(WordUtils.GetRunProperties(underline: true),
+                var groupRun = new Run(WordUtils.GetRunProperties(underline: true, fontSize: "26"),
                     new Text(text));
                 healthStatusParagraph.Append(groupRun);
             }
 
-            var tabRun2 = new Run(WordUtils.GetRunProperties(underline: true), new TabChar());
+            var tabRun2 = new Run(WordUtils.GetRunProperties(underline: true, fontSize: "26"), new TabChar());
             healthStatusParagraph.Append(tabRun2);
         }
 
