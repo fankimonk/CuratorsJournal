@@ -103,7 +103,7 @@ namespace Application.Services.Word
                 keyIndicatorsHeadCellProperties,
                 new Paragraph(
                     paragraphProperties.CloneNode(true),
-                    new Run(WordUtils.GetRunProperties(bold: true), new Text("Основные показатели")))
+                    new Run(WordUtils.GetRunProperties(bold: true, fontSize: "26"), new Text("Основные показатели")))
             );
             headerRow1.AppendChild(keyIndicatorsCell);
 
@@ -114,7 +114,7 @@ namespace Application.Services.Word
             var courseCell = new TableCell(
                 courseHeadCellProperties,
                 new Paragraph(paragraphProperties.CloneNode(true),
-                    new Run(WordUtils.GetRunProperties(bold: true), new Text("Курс")))
+                    new Run(WordUtils.GetRunProperties(bold: true, fontSize: "26"), new Text("Курс")))
             );
             headerRow1.AppendChild(courseCell);
 
@@ -125,7 +125,7 @@ namespace Application.Services.Word
             var noteCell = new TableCell(
                 noteHeadCellProperties,
                 new Paragraph(paragraphProperties.CloneNode(true),
-                    new Run(WordUtils.GetRunProperties(bold: true), new Text("Примечание")))
+                    new Run(WordUtils.GetRunProperties(bold: true, fontSize: "26"), new Text("Примечание")))
             );
             headerRow1.AppendChild(noteCell);
 
@@ -150,7 +150,7 @@ namespace Application.Services.Word
                 var courseHeaderCell = new TableCell(
                     courseValueHeadCellProperties.CloneNode(true),
                     new Paragraph(paragraphProperties.CloneNode(true),
-                        new Run(WordUtils.GetRunProperties(bold: true), new Text(course.ToString())))
+                        new Run(WordUtils.GetRunProperties(bold: true, fontSize: "26"), new Text(course.ToString())))
                 );
                 headerRow2.AppendChild(courseHeaderCell);
             }
@@ -172,7 +172,7 @@ namespace Application.Services.Word
 
                 TableCell keyIndicatorNameCell = new TableCell(new Paragraph(
                     new ParagraphProperties(new SpacingBetweenLines { Before = "0", After = "0" }),
-                    new Run(WordUtils.GetRunProperties(),
+                    new Run(WordUtils.GetRunProperties(fontSize: "26"),
                         new Text(IndicatorsNames[record.KeyIndicatorId]))));
                 keyIndicatorNameCell.Append(keyIndicatorsHeadCellProperties.CloneNode(true));
 
@@ -186,10 +186,14 @@ namespace Application.Services.Word
                     else
                         indicatorStr = i.Value == null ? "" : ((double)i.Value).ToString();
 
+                    TableCellProperties indicatorByCourseCellProperties = new TableCellProperties(
+                        new TableCellVerticalAlignment { Val = TableVerticalAlignmentValues.Center }
+                    );
+
                     var indicatorByCourseCell = new TableCell(
-                            courseValueHeadCellProperties.CloneNode(true),
+                            indicatorByCourseCellProperties.CloneNode(true),
                             new Paragraph(paragraphProperties.CloneNode(true),
-                                new Run(WordUtils.GetRunProperties(), new Text(indicatorStr)))
+                                new Run(WordUtils.GetRunProperties(fontSize: "26"), new Text(indicatorStr)))
                         );
 
                     row.Append(indicatorByCourseCell);
@@ -197,7 +201,7 @@ namespace Application.Services.Word
 
                 TableCell noteValueCell = new TableCell(new Paragraph(
                     new ParagraphProperties(new SpacingBetweenLines { Before = "0", After = "0" }),
-                    new Run(WordUtils.GetRunProperties(),
+                    new Run(WordUtils.GetRunProperties(fontSize: "26"),
                         new Text(record.Note == null ? "" : record.Note))));
                 noteValueCell.Append(noteHeadCellProperties.CloneNode(true));
 

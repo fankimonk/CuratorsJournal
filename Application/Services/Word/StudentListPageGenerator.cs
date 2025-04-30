@@ -73,15 +73,6 @@ namespace Application.Services.Word
                 new TableCellVerticalAlignment { Val = TableVerticalAlignmentValues.Center }
             );
 
-            //TableCellMargin cellMargin = new TableCellMargin(
-            //    new TopMargin { Width = "100", Type = TableWidthUnitValues.Dxa },
-            //    new BottomMargin { Width = "100", Type = TableWidthUnitValues.Dxa },
-            //    new LeftMargin { Width = "100", Type = TableWidthUnitValues.Dxa },
-            //    new RightMargin { Width = "100", Type = TableWidthUnitValues.Dxa }
-            //);
-
-            //cellProperties.Append(cellMargin);
-
             ParagraphProperties paragraphProperties = new ParagraphProperties(new Justification { Val = JustificationValues.Center },
                 new SpacingBetweenLines { Before = "0", After = "0" });
 

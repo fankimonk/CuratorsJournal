@@ -83,24 +83,35 @@ namespace Application.Services.Word
             );
             table.AppendChild(tableProperties);
 
+            TableCellProperties cellProperties = new TableCellProperties(
+                new TableCellVerticalAlignment { Val = TableVerticalAlignmentValues.Center }
+            );
+
+            ParagraphProperties paragraphProperties = new ParagraphProperties(new Justification { Val = JustificationValues.Center },
+                new SpacingBetweenLines { Before = "0", After = "0" });
+
             var headerRow1 = new TableRow();
 
-            var numberHeadCell = new TableCell(
-                new TableCellProperties(
-                    new VerticalMerge { Val = MergedCellValues.Restart },
-                    new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = numberColumnWidth.ToString() }
-                ),
-                new Paragraph(new Run(WordUtils.GetRunProperties(bold: true), new Text("№")))
+            var numberHeadCell = new TableCell(new Paragraph(paragraphProperties.CloneNode(true),
+                new Run(WordUtils.GetRunProperties(bold: true, fontSize: "26"), 
+                    new Text("№")))
             );
+            var numberHeadCellProperties = cellProperties.CloneNode(true);
+            numberHeadCellProperties.Append(
+                new VerticalMerge { Val = MergedCellValues.Restart },
+                new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = numberColumnWidth.ToString() });
+            numberHeadCell.Append(numberHeadCellProperties);
             headerRow1.AppendChild(numberHeadCell);
 
-            var studentHeadCell = new TableCell(
-                new TableCellProperties(
-                    new VerticalMerge { Val = MergedCellValues.Restart },
-                    new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = studentColumnWidth.ToString() }
-                ),
-                new Paragraph(new Run(WordUtils.GetRunProperties(bold: true), new Text("Ф. И. О. студента")))
+            var studentHeadCell = new TableCell(new Paragraph(paragraphProperties.CloneNode(true),
+                new Run(WordUtils.GetRunProperties(bold: true, fontSize: "26"), 
+                    new Text("Ф. И. О. студента")))
             );
+            var studentHeadCellProperties = cellProperties.CloneNode(true);
+            studentHeadCellProperties.Append(
+                new VerticalMerge { Val = MergedCellValues.Restart },
+                new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = studentColumnWidth.ToString() });
+            studentHeadCell.Append(studentHeadCellProperties);
             headerRow1.AppendChild(studentHeadCell);
 
             var subjectHeadCell = new TableCell(
@@ -108,7 +119,8 @@ namespace Application.Services.Word
                     new GridSpan { Val = gradeColumnsCount },
                     new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = subjectColumnWidth.ToString() }
                 ),
-                new Paragraph(new Run(WordUtils.GetRunProperties(bold: true), new Text("Название дисциплины")))
+                new Paragraph(paragraphProperties.CloneNode(true),
+                    new Run(WordUtils.GetRunProperties(bold: true, fontSize: "26"), new Text("Название дисциплины")))
             );
             headerRow1.AppendChild(subjectHeadCell);
 
@@ -121,7 +133,7 @@ namespace Application.Services.Word
                     new VerticalMerge { Val = MergedCellValues.Continue },
                     new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = numberColumnWidth.ToString() }
                 ),
-                new Paragraph()
+                new Paragraph(paragraphProperties.CloneNode(true))
             );
             headerRow2.AppendChild(numberEmptyHeadCell1);
 
@@ -130,7 +142,7 @@ namespace Application.Services.Word
                     new VerticalMerge { Val = MergedCellValues.Continue },
                     new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = studentColumnWidth.ToString() }
                 ),
-                new Paragraph()
+                new Paragraph(paragraphProperties.CloneNode(true))
             );
             headerRow2.AppendChild(studentEmptyHeadCell1);
 
@@ -142,7 +154,8 @@ namespace Application.Services.Word
                         new GridSpan { Val = ct.PerformanceAccountingColumns.Count },
                         new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = (ct.PerformanceAccountingColumns.Count * gradeColumnWidth).ToString() }
                     ),
-                    new Paragraph(new Run(WordUtils.GetRunProperties(bold: true), new Text(ct.Name)))
+                    new Paragraph(paragraphProperties.CloneNode(true),
+                        new Run(WordUtils.GetRunProperties(bold: true, fontSize: "26"), new Text(ct.Name)))
                 );
                 headerRow2.AppendChild(certificationTypeHeadCell);
             }
@@ -150,13 +163,16 @@ namespace Application.Services.Word
             table.AppendChild(headerRow2);
 
             var headerRow3 = new TableRow();
+            var rowProperties = new TableRowProperties();
+            rowProperties.Append(new TableRowHeight { Val = 1900 });
+            headerRow3.AppendChild(rowProperties);
 
             var numberEmptyHeadCell2 = new TableCell(
                 new TableCellProperties(
                     new VerticalMerge { Val = MergedCellValues.Continue },
                     new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = numberColumnWidth.ToString() }
                 ),
-                new Paragraph()
+                new Paragraph(paragraphProperties.CloneNode(true))
             );
             headerRow3.AppendChild(numberEmptyHeadCell2);
 
@@ -165,7 +181,7 @@ namespace Application.Services.Word
                     new VerticalMerge { Val = MergedCellValues.Continue },
                     new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = studentColumnWidth.ToString() }
                 ),
-                new Paragraph()
+                new Paragraph(paragraphProperties.CloneNode(true))
             );
             headerRow3.AppendChild(studentEmptyHeadCell2);
 
@@ -174,13 +190,15 @@ namespace Application.Services.Word
                 foreach (var column in ct.PerformanceAccountingColumns)
                 {
                     var subjectNameHeadCell = new TableCell(
-                        new TableCellProperties(
-                            new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = (gradeColumnWidth).ToString() }
-                        ),
-                        new Paragraph(
-                            new Run(WordUtils.GetRunProperties(bold: true),
+                        new Paragraph(paragraphProperties.CloneNode(true),
+                            new Run(WordUtils.GetRunProperties(bold: true, fontSize: "26"),
                                 new Text(column.Subject == null ? "" : column.Subject.AbbreviatedName)))
                     );
+                    var subjectNameHeadCellProperties = cellProperties.CloneNode(true);
+                    subjectNameHeadCellProperties.Append(
+                        new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = gradeColumnWidth.ToString() },
+                        new TextDirection { Val = TextDirectionValues.BottomToTopLeftToRight });
+                    subjectNameHeadCell.Append(subjectNameHeadCellProperties);
                     headerRow3.AppendChild(subjectNameHeadCell);
                 }
             }
@@ -191,15 +209,17 @@ namespace Application.Services.Word
             {
                 TableRow row = new TableRow();
 
-                TableCell numberCell = new TableCell(new Paragraph(new Run(WordUtils.GetRunProperties(),
+                TableCell numberCell = new TableCell(new Paragraph(new Run(WordUtils.GetRunProperties(fontSize: "26"),
                     new Text(record.Number.ToString() ?? ""))));
                 numberCell.Append(new TableCellProperties(
+                    new TableCellVerticalAlignment { Val = TableVerticalAlignmentValues.Center },
                     new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = numberColumnWidth.ToString() }));
                 row.Append(numberCell);
 
-                TableCell studentCell = new TableCell(new Paragraph(new Run(WordUtils.GetRunProperties(),
+                TableCell studentCell = new TableCell(new Paragraph(new Run(WordUtils.GetRunProperties(fontSize: "26"),
                     new Text(record.Student == null ? "" : GetStudentFIO(record.Student)))));
                 studentCell.Append(new TableCellProperties(
+                    new TableCellVerticalAlignment { Val = TableVerticalAlignmentValues.Center },
                     new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = studentColumnWidth.ToString() }));
                 row.Append(studentCell);
 
@@ -215,9 +235,11 @@ namespace Application.Services.Word
 
                         var gradeCell = new TableCell(
                             new TableCellProperties(
+                                new TableCellVerticalAlignment { Val = TableVerticalAlignmentValues.Center },
                                 new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = gradeColumnWidth.ToString() }
                             ),
-                            new Paragraph(new Run(WordUtils.GetRunProperties(), new Text(gradeText)))
+                            new Paragraph(paragraphProperties.CloneNode(true),
+                                new Run(WordUtils.GetRunProperties(fontSize: "26"), new Text(gradeText)))
                         );
 
                         row.Append(gradeCell);
@@ -232,7 +254,7 @@ namespace Application.Services.Word
 
         private string GetStudentFIO(Student student)
         {
-            return student.LastName + " " + student.FirstName + " " + student.MiddleName;
+            return student.LastName + " " + student.FirstName[0] + ". " + student.MiddleName[0] + ".";
         }
 
         private int GetColumnCount() => _certificationTypes.SelectMany(ct => ct.PerformanceAccountingColumns!).Count();

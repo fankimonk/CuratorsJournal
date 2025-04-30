@@ -119,7 +119,7 @@ namespace Application.Services.Word
                         EastAsia = "Times New Roman",
                         ComplexScript = "Times New Roman"
                     },
-                    new FontSize() { Val = "28" }
+                    new FontSize() { Val = "26" }
                 );
 
                 TableCell nameCell = new TableCell(new Paragraph(
@@ -137,7 +137,7 @@ namespace Application.Services.Word
                         EastAsia = "Times New Roman",
                         ComplexScript = "Times New Roman"
                     },
-                    new FontSize() { Val = "28" }
+                    new FontSize() { Val = "26" }
                 );
 
                 TableCell phoneCell = new TableCell(new Paragraph(

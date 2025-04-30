@@ -53,19 +53,31 @@ namespace Application.Services.Word
 
         private void AppendActives(List<GroupActive> groupActives)
         {
-            foreach (var active in groupActives)
+            for (int i = 0; i < groupActives.Count; i++)
             {
                 var content = new Paragraph(
                     new ParagraphProperties(
-                        new Justification { Val = JustificationValues.Both }),
-                    new Run(WordUtils.GetRunProperties(),
-                        new Text(active.PositionName == null ? "" : active.PositionName)),
-                    new Run(WordUtils.GetRunProperties(underline: true),
-                        new TabChar(),
-                        new Text(active.Student == null ? "" : GetStudentFIO(active.Student)),
-                        new TabChar())
+                        new Justification { Val = JustificationValues.Both })
                 );
 
+                var positionStr = groupActives[i].PositionName ?? "";
+                if (positionStr.Length > 25) positionStr = positionStr.Substring(0, 25);
+                int positionTabCount = Math.Max(0, positionStr.Length - 1) / 5 + 1;
+                Run positionRun = new();
+                if (i <= 2) positionRun.Append(WordUtils.GetRunProperties());
+                else positionRun.Append(WordUtils.GetRunProperties(underline: true));
+                positionRun.Append(new Text(positionStr));
+
+                var studentStr = groupActives[i].Student == null ? "" : GetStudentFIO(groupActives[i].Student);
+                if (studentStr.Length > 65 - positionStr.Length) studentStr = studentStr.Substring(0, 65 - positionStr.Length);
+                int tabsLeftCount = 13 - positionTabCount - Math.Max(0, studentStr.Length - 1) / 5;
+                Run studentRun = new Run(WordUtils.GetRunProperties(underline: true),
+                    new TabChar(),
+                    new Text(studentStr));
+                for (int j = 0; j < tabsLeftCount; j++)
+                    studentRun.Append(new TabChar());
+
+                content.Append(positionRun, studentRun);
                 _documentBody.Append(content);
             }
         }

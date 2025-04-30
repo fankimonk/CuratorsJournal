@@ -94,7 +94,7 @@ namespace Application.Services.Word
 
             TableCell numberHeadCell = new TableCell(new Paragraph(
                 paragraphProperties.CloneNode(true),
-                new Run(WordUtils.GetRunProperties(bold: true),
+                new Run(WordUtils.GetRunProperties(bold: true, fontSize: "26"),
                     new Text("Семестр"))));
             var numberHeadCellProperties = cellProperties.CloneNode(true);
             numberHeadCellProperties.Append(new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = "1250" });
@@ -102,7 +102,7 @@ namespace Application.Services.Word
 
             TableCell startHeadCell = new TableCell(new Paragraph(
                 paragraphProperties.CloneNode(true),
-                new Run(WordUtils.GetRunProperties(bold: true),
+                new Run(WordUtils.GetRunProperties(bold: true, fontSize: "26"),
                     new Text("Начало"))));
             var startHeadCellProperties = cellProperties.CloneNode(true);
             startHeadCellProperties.Append(new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = "1350" });
@@ -110,7 +110,7 @@ namespace Application.Services.Word
 
             TableCell endHeadCell = new TableCell(new Paragraph(
                 paragraphProperties.CloneNode(true),
-                new Run(WordUtils.GetRunProperties(bold: true),
+                new Run(WordUtils.GetRunProperties(bold: true, fontSize: "26"),
                     new Text("Окончание"))));
             var endHeadCellProperties = cellProperties.CloneNode(true);
             endHeadCellProperties.Append(new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = "1600" });
@@ -118,7 +118,7 @@ namespace Application.Services.Word
 
             TableCell sessionHeadCell = new TableCell(new Paragraph(
                 paragraphProperties.CloneNode(true),
-                new Run(WordUtils.GetRunProperties(bold: true),
+                new Run(WordUtils.GetRunProperties(bold: true, fontSize: "26"),
                     new Text("Сессия"))));
             var sessionHeadCellProperties = cellProperties.CloneNode(true);
             sessionHeadCellProperties.Append(new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = "2000" });
@@ -126,7 +126,7 @@ namespace Application.Services.Word
 
             TableCell practiceHeadCell = new TableCell(new Paragraph(
                 paragraphProperties.CloneNode(true), 
-                new Run(WordUtils.GetRunProperties(bold: true),
+                new Run(WordUtils.GetRunProperties(bold: true, fontSize: "26"),
                     new Text("Практика"))));
             var practiceHeadCellProperties = cellProperties.CloneNode(true);
             practiceHeadCellProperties.Append(new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = "2200" });
@@ -134,7 +134,7 @@ namespace Application.Services.Word
 
             TableCell vacationHeadCell = new TableCell(new Paragraph(
                 paragraphProperties.CloneNode(true),
-                new Run(WordUtils.GetRunProperties(bold: true),
+                new Run(WordUtils.GetRunProperties(bold: true, fontSize: "26"),
                     new Text("Каникулы"))));
             var vacationHeadCellProperties = cellProperties.CloneNode(true);
             vacationHeadCellProperties.Append(new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = "1600" });

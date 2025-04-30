@@ -1,6 +1,7 @@
 ﻿using Application.Utils;
 using DataAccess.Interfaces;
 using DocumentFormat.OpenXml;
+using DocumentFormat.OpenXml.ExtendedProperties;
 using DocumentFormat.OpenXml.Wordprocessing;
 using Domain.Entities.JournalContent;
 using Domain.Entities.JournalContent.Pages.Attributes;
@@ -101,6 +102,10 @@ namespace Application.Services.Word
             );
             table.AppendChild(tableGrid);
 
+            TableCellProperties cellProperties = new TableCellProperties(
+                new TableCellVerticalAlignment { Val = TableVerticalAlignmentValues.Center }
+            );
+
             ParagraphProperties paragraphProperties = new ParagraphProperties(new Justification { Val = JustificationValues.Center },
                 new SpacingBetweenLines { Before = "0", After = "0" });
 
@@ -121,10 +126,12 @@ namespace Application.Services.Word
             headRow.Append(termHeadCell, contentHeadCell);
             table.Append(headRow);
 
+            var valueParagraphProperties = new ParagraphProperties(new SpacingBetweenLines { Before = "0", After = "0" });
+
             foreach (var record in records)
             {
-                TableRow row = new TableRow();
-
+                var rows = new List<TableRow>() { new TableRow() };
+                
                 string termStr = "";
                 if (record.StartDate != null && record.EndDate != null)
                 {
@@ -135,21 +142,82 @@ namespace Application.Services.Word
                     termStr += record.StartDate.ToString();
                 }
 
-                TableCell termCell = new TableCell(new Paragraph(new Run(WordUtils.GetRunProperties(fontSize: "24"),
-                    new Text(termStr))));
-                termCell.Append(new TableCellProperties(
-                    new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = termColumnWidth.ToString() }));
+                var termCellProperties = (TableCellProperties)cellProperties.CloneNode(true);
+                termCellProperties.Append(new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = termColumnWidth.ToString() });
 
-                TableCell contentCell = new TableCell(new Paragraph(new Run(WordUtils.GetRunProperties(fontSize: "24"),
-                    new Text(record.WorkContent ?? ""))));
-                contentCell.Append(new TableCellProperties(
-                    new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = contentColumnWidth.ToString() }));
+                var splitTerm = termStr.Split(' ');
+                if (splitTerm.Length > 2)
+                {
+                    AddCellToRow(rows[0], splitTerm[0] + " " + splitTerm[1] + " ", termCellProperties, valueParagraphProperties);
+                    rows.Add(new TableRow());
+                    AddCellToRow(rows[1], splitTerm[2], termCellProperties, valueParagraphProperties);
+                }
+                else
+                {
+                    AddCellToRow(rows[0], termStr, termCellProperties, valueParagraphProperties);
+                }
 
-                row.Append(termCell, contentCell);
-                table.Append(row);
+                var contentStr = record.WorkContent ?? "";
+                var contentCellProperties = (TableCellProperties)cellProperties.CloneNode(true);
+                contentCellProperties.Append(new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = contentColumnWidth.ToString() });
+
+                var splitContent = contentStr.Split(' ');
+                var contentLines = new List<string>();
+                string currentLine = "";
+                int lineMaxChars = 90;
+                int currentRowIndex = 0;
+                foreach (var word in splitContent)
+                {
+                    if (currentLine.Length + word.Length + 1 <= lineMaxChars)
+                    {
+                        currentLine += word + " ";
+                    }
+                    else
+                    {
+                        if (currentRowIndex == rows.Count)
+                        {
+                            rows.Add(new TableRow());
+                            AddCellToRow(rows[currentRowIndex], "", termCellProperties, valueParagraphProperties);
+                        }
+                        AddCellToRow(rows[currentRowIndex], currentLine, contentCellProperties, valueParagraphProperties);
+                        contentLines.Add(currentLine);
+                        currentRowIndex++;
+                        currentLine = word + " ";
+                    }
+                }
+
+                if (!string.IsNullOrEmpty(currentLine) && !contentLines.Contains(currentLine))
+                {
+                    if (currentRowIndex == rows.Count)
+                    {
+                        rows.Add(new TableRow());
+                        AddCellToRow(rows[currentRowIndex], "", termCellProperties, valueParagraphProperties);
+                    }
+                    AddCellToRow(rows[currentRowIndex], currentLine, contentCellProperties, valueParagraphProperties);
+                    currentRowIndex++;
+                }
+
+                for (int i = currentRowIndex; i < rows.Count; i++)
+                {
+                    AddCellToRow(rows[i], "", contentCellProperties, valueParagraphProperties);
+                }
+
+                foreach (var row in rows) table.Append(row);
             }
 
             _documentBody.Append(table);
+        }
+
+        private void AddCellToRow(TableRow row, string content, TableCellProperties? cellProperties = null, ParagraphProperties? paragraphProperties = null)
+        {
+            TableCell cell = new TableCell();
+            if (cellProperties != null) cell.Append(cellProperties.CloneNode(true));
+            var paragraph = new Paragraph();
+            if (paragraphProperties != null) paragraph.Append(paragraphProperties.CloneNode(true));
+            paragraph.Append(new Run(WordUtils.GetRunProperties(fontSize: "26"),
+                    new Text(content)));
+            cell.Append(paragraph);
+            row.Append(cell);
         }
     }
 }

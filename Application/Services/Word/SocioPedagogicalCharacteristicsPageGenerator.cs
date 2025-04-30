@@ -387,20 +387,6 @@ namespace Application.Services.Word
 
             _documentBody.Append(fifteenthPointParagraph2);
 
-            //var orphansUnderagesCount = characteristics.OrphansUnderagesCount == null ? "" : ((int)characteristics.OrphansUnderagesCount).ToString();
-            //if (orphansUnderagesCount.Length > 10) orphansUnderagesCount = orphansUnderagesCount.Substring(0, 10);
-            //tabCount = 2 - (Math.Max(0, orphansUnderagesCount.Length - 1) / 5);
-            //var orphansUnderagesCountParagraph = new Paragraph(paragraphProeprties.CloneNode(true),
-            //    new Run(WordUtils.GetRunProperties(),
-            //        new Text("5. Дети-сироты, (до 18 лет)")));
-            //var orphansUnderagesCountValueRun = new Run(WordUtils.GetRunProperties(underline: true),
-            //    new TabChar(),
-            //    new Text(orphansUnderagesCount));
-            //for (int i = 0; i < tabCount; i++)
-            //    orphansUnderagesCountValueRun.Append(new TabChar());
-            //orphansUnderagesCountParagraph.Append(orphansUnderagesCountValueRun);
-            //_documentBody.Append(orphansUnderagesCountParagraph);
-
             int maxCharactersCount = 45 + 5 * 65;
             var otherInfoStr = characteristics.OtherInformation == null ? "" : characteristics.OtherInformation;
             if (otherInfoStr.Length > maxCharactersCount) otherInfoStr = otherInfoStr.Substring(0, maxCharactersCount);

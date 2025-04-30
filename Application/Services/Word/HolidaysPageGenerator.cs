@@ -122,7 +122,7 @@ namespace Application.Services.Word
                         EastAsia = "Times New Roman",
                         ComplexScript = "Times New Roman"
                     },
-                    new FontSize() { Val = "24" }
+                    new FontSize() { Val = "22" }
                 );
 
                 string dateText = "";
@@ -148,7 +148,7 @@ namespace Application.Services.Word
                         EastAsia = "Times New Roman",
                         ComplexScript = "Times New Roman"
                     },
-                    new FontSize() { Val = "24" }
+                    new FontSize() { Val = "22" }
                 );
 
                 TableCell nameCell = new TableCell(new Paragraph(
