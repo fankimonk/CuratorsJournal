@@ -1,6 +1,7 @@
 ﻿using Application.Utils;
 using DataAccess.Interfaces;
 using DataAccess.Interfaces.PageRepositories.FinalPerformanceAccounting;
+using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Wordprocessing;
 using Domain.Entities;
 using Domain.Entities.JournalContent.FinalPerformanceAccounting;
@@ -18,6 +19,8 @@ namespace Application.Services.Word
         private readonly int _journalId;
 
         private List<CertificationType> _certificationTypes = [];
+
+        private UInt32Value _valueRowHeight = 420;
 
         public FinalPerformanceAccountingPageGenerator(int journalId, Body body, IPagesRepository pagesRepository,
             IPerformanceAccountingColumnsRepository columnsRepository)
@@ -207,16 +210,18 @@ namespace Application.Services.Word
 
             foreach (var record in records)
             {
-                TableRow row = new TableRow();
+                TableRow row = new TableRow(new TableRowProperties(new TableRowHeight() { Val = _valueRowHeight }));
 
-                TableCell numberCell = new TableCell(new Paragraph(new Run(WordUtils.GetRunProperties(fontSize: "26"),
-                    new Text(record.Number.ToString() ?? ""))));
+                TableCell numberCell = new TableCell(new Paragraph(paragraphProperties.CloneNode(true),
+                    new Run(WordUtils.GetRunProperties(fontSize: "26"),
+                        new Text(record.Number.ToString() ?? ""))));
                 numberCell.Append(new TableCellProperties(
                     new TableCellVerticalAlignment { Val = TableVerticalAlignmentValues.Center },
                     new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = numberColumnWidth.ToString() }));
                 row.Append(numberCell);
 
-                TableCell studentCell = new TableCell(new Paragraph(new Run(WordUtils.GetRunProperties(fontSize: "26"),
+                TableCell studentCell = new TableCell(new Paragraph(new ParagraphProperties(new SpacingBetweenLines { Before = "0", After = "0" }),
+                    new Run(WordUtils.GetRunProperties(fontSize: "26"),
                     new Text(record.Student == null ? "" : GetStudentFIO(record.Student)))));
                 studentCell.Append(new TableCellProperties(
                     new TableCellVerticalAlignment { Val = TableVerticalAlignmentValues.Center },

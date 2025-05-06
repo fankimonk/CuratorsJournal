@@ -11,6 +11,10 @@ namespace Application.Services.Word
 
         private readonly Body _documentBody;
 
+        private ParagraphProperties _valueParagraphProperties = new ParagraphProperties(new SpacingBetweenLines { Before = "0", After = "0" });
+
+        private UInt32Value _valueRowHeight = 480;
+
         public WorkWithParentsGenerator(List<WorkWithParentsRecord> workWithParents, Body body)
         {
             _workWithParents = workWithParents;
@@ -91,24 +95,27 @@ namespace Application.Services.Word
 
             foreach (var record in _workWithParents)
             {
-                TableRow row = new TableRow();
+                TableRow row = new TableRow(new TableRowProperties(new TableRowHeight() { Val = _valueRowHeight }));
 
                 TableCell dateCell = new TableCell(new Paragraph(paragraphProperties.CloneNode(true),
                     new Run(WordUtils.GetRunProperties(fontSize: "24"),
                         new Text(record.Date == null ? "" : ((DateOnly)record.Date).ToString()))));
                 dateCell.Append(new TableCellProperties(
+                    new TableCellVerticalAlignment { Val = TableVerticalAlignmentValues.Center },
                     new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = "1000" }));
 
-                TableCell workContentCell = new TableCell(new Paragraph(paragraphProperties.CloneNode(true), 
+                TableCell workContentCell = new TableCell(new Paragraph(_valueParagraphProperties.CloneNode(true), 
                     new Run(WordUtils.GetRunProperties(fontSize: "24"),
                         new Text(record.WorkContent == null ? "" : record.WorkContent))));
                 workContentCell.Append(new TableCellProperties(
+                    new TableCellVerticalAlignment { Val = TableVerticalAlignmentValues.Center },
                     new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = "5600" }));
 
-                TableCell noteCell = new TableCell(new Paragraph(paragraphProperties.CloneNode(true), 
+                TableCell noteCell = new TableCell(new Paragraph(_valueParagraphProperties.CloneNode(true), 
                     new Run(WordUtils.GetRunProperties(fontSize: "24"),
                         new Text(record.Note == null ? "" : record.Note))));
                 noteCell.Append(new TableCellProperties(
+                    new TableCellVerticalAlignment { Val = TableVerticalAlignmentValues.Center },
                     new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = "3400" }));
 
                 row.Append(dateCell, workContentCell, noteCell);

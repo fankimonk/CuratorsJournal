@@ -75,29 +75,42 @@ namespace Application.Services.Word
 
             contentParagraph.Append(contentRun);
 
-            var worker = new Paragraph(
-                new ParagraphProperties(
-                    new Justification { Val = JustificationValues.Both }),
-                new Run(WordUtils.GetRunProperties(),
-                    new TabChar(),
-                    new Text("Ф. И. О., должность специалиста")),
-                new Run(WordUtils.GetRunProperties(underline: true),
-                    new TabChar(),
-                    new Text(characteristics.Worker == null ? "" : GetWorkerString(characteristics.Worker)),
-                    new TabChar())
-            );
+            var signatureParagraphProperties = new ParagraphProperties();
+            signatureParagraphProperties.Append(new Justification { Val = JustificationValues.Both });
+            Tabs tabs = new Tabs();
+            tabs.Append(new TabStop()
+            {
+                Val = TabStopValues.Left,
+                Position = 360
+            });
+            signatureParagraphProperties.Append(tabs);
 
-            var dateAndSignature = new Paragraph(
-                new ParagraphProperties(
-                    new Justification { Val = JustificationValues.Both }),
+            string workerStr = characteristics.Worker == null ? "" : GetWorkerString(characteristics.Worker);
+            var worker = new Paragraph(signatureParagraphProperties.CloneNode(true),
                 new Run(WordUtils.GetRunProperties(),
                     new TabChar(),
-                    new Text("Дата, подпись")),
-                new Run(WordUtils.GetRunProperties(underline: true),
-                    new TabChar(),
-                    new Text(characteristics.Date == null ? "" : ((DateOnly)characteristics.Date).ToString()),
-                    new TabChar(), new TabChar())
+                    new Text("Ф. И. О., должность специалиста"))
             );
+            var workerFioRun = new Run(WordUtils.GetRunProperties(underline: true),
+                    new TabChar(),
+                    new Text(workerStr));
+            int workerTabCount = 6 - Math.Max(0, workerStr.Length - 1) / 5;
+            for (int i = 0; i < workerTabCount; i++)
+                workerFioRun.Append(new TabChar());
+            worker.Append(workerFioRun);
+
+            var dateAndSignature = new Paragraph(signatureParagraphProperties.CloneNode(true),
+                new Run(WordUtils.GetRunProperties(),
+                    new TabChar(),
+                    new Text("Дата, подпись"))
+            );
+            int dateTabCount = characteristics.Date == null ? 9 : 8;
+            var dateRun = new Run(WordUtils.GetRunProperties(underline: true),
+                    new TabChar(),
+                    new Text(characteristics.Date == null ? "" : ((DateOnly)characteristics.Date).ToString()));
+            for (int i = 0; i < dateTabCount; i++)
+                dateRun.Append(new TabChar());
+            dateAndSignature.Append(dateRun);
 
             _documentBody.Append(contentParagraph, worker, dateAndSignature);
         }

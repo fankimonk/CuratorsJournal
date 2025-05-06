@@ -15,6 +15,14 @@ namespace Application.Services.Word
 
         private int _journalId;
 
+        private TableCellProperties _cellProperties = new TableCellProperties(
+            new TableCellVerticalAlignment { Val = TableVerticalAlignmentValues.Center }
+        );
+
+        private ParagraphProperties _valueParagraphProperties = new ParagraphProperties(new SpacingBetweenLines { Before = "0", After = "0" });
+
+        private UInt32Value _valueRowHeight = 420;
+
         public CuratorsParticipationPageGenerator(int journalId, Body body, IPagesRepository pagesRepository)
         {
             _journalId = journalId;
@@ -123,38 +131,228 @@ namespace Application.Services.Word
 
             foreach (var record in records)
             {
-                TableRow row = new TableRow();
+                var rows = new List<TableRow>() { new TableRow(new TableRowProperties(new TableRowHeight() { Val = _valueRowHeight })) };
 
-                TableCell dateCell = new TableCell(new Paragraph(new Run(WordUtils.GetRunProperties(fontSize: "24"),
-                    new Text(record.Date == null ? "" : ((DateOnly)record.Date).ToString()))));
-                dateCell.Append(new TableCellProperties(
-                    new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = dateColumnWidth.ToString() }));
+                var dateStr = record.Date == null ? "" : ((DateOnly)record.Date).ToString();
+                var dateCellProperties = (TableCellProperties)_cellProperties.CloneNode(true);
+                dateCellProperties.Append(new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = dateColumnWidth.ToString() });
+                TableCell dateCell = new TableCell(new Paragraph(_valueParagraphProperties.CloneNode(true),
+                    new Run(WordUtils.GetRunProperties(fontSize: "24"),
+                        new Text(record.Date == null ? "" : ((DateOnly)record.Date).ToString()))));
+                dateCell.Append(dateCellProperties);
+                rows[0].Append(dateCell);
 
-                TableCell topicCell = new TableCell(new Paragraph(new Run(WordUtils.GetRunProperties(fontSize: "24"),
-                    new Text(record.Topic ?? ""))));
-                topicCell.Append(new TableCellProperties(
-                    new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = topicColumnWidth.ToString() }));
+                var topicStr = record.Topic ?? "";
+                var topicCellProperties = (TableCellProperties)_cellProperties.CloneNode(true);
+                topicCellProperties.Append(new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = topicColumnWidth.ToString() });
+                AppendTopic(topicStr, rows, topicCellProperties, dateCellProperties);
 
-                TableCell participationFormCell = new TableCell(new Paragraph(new Run(WordUtils.GetRunProperties(fontSize: "24"),
-                    new Text(record.ParticipationForm ?? ""))));
-                participationFormCell.Append(new TableCellProperties(
-                    new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = participationFormColumnWidth.ToString() }));
+                var participationFormStr = record.ParticipationForm ?? "";
+                var participationFormCellProperties = (TableCellProperties)_cellProperties.CloneNode(true);
+                participationFormCellProperties.Append(new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = participationFormColumnWidth.ToString() });
+                AppendParticipationForm(participationFormStr, rows, participationFormCellProperties, topicCellProperties, dateCellProperties);
 
-                TableCell locationCell = new TableCell(new Paragraph(new Run(WordUtils.GetRunProperties(fontSize: "24"),
-                    new Text(record.SeminarLocation ?? ""))));
-                locationCell.Append(new TableCellProperties(
-                    new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = locationColumnWidth.ToString() }));
+                var locationStr = record.SeminarLocation ?? "";
+                var locationCellProperties = (TableCellProperties)_cellProperties.CloneNode(true);
+                locationCellProperties.Append(new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = locationColumnWidth.ToString() });
+                AppendLocation(locationStr, rows, locationCellProperties, participationFormCellProperties, topicCellProperties, dateCellProperties);
 
-                TableCell noteCell = new TableCell(new Paragraph(new Run(WordUtils.GetRunProperties(fontSize: "24"),
-                    new Text(record.Note ?? ""))));
-                noteCell.Append(new TableCellProperties(
-                    new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = noteColumnWidth.ToString() }));
+                var noteStr = record.Note ?? "";
+                var noteCellProperties = (TableCellProperties)_cellProperties.CloneNode(true);
+                noteCellProperties.Append(new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = noteColumnWidth.ToString() });
+                AppendNote(noteStr, rows, noteCellProperties, locationCellProperties, participationFormCellProperties, topicCellProperties, dateCellProperties);
 
-                row.Append(dateCell, topicCell, participationFormCell, locationCell, noteCell);
-                table.Append(row);
+                foreach (var row in rows) table.Append(row);
             }
 
             _documentBody.Append(table);
+        }
+
+        private void AppendTopic(string str, List<TableRow> rows, TableCellProperties topicCellProperties,
+            TableCellProperties dateCellProperties)
+        {
+            var split = str.Split(' ');
+            var lines = new List<string>();
+            string currentLine = "";
+            int lineMaxChars = 30;
+            int currentRowIndex = 0;
+            foreach (var word in split)
+            {
+                if (currentLine.Length + word.Length + 1 <= lineMaxChars)
+                {
+                    currentLine += word + " ";
+                }
+                else
+                {
+                    if (currentRowIndex == rows.Count)
+                    {
+                        rows.Add(new TableRow(new TableRowProperties(new TableRowHeight() { Val = _valueRowHeight })));
+                        WordUtils.AddCellToRow(rows[currentRowIndex], "", dateCellProperties, _valueParagraphProperties, "24");
+                    }
+                    WordUtils.AddCellToRow(rows[currentRowIndex], currentLine, topicCellProperties, _valueParagraphProperties, "24");
+                    lines.Add(currentLine);
+                    currentRowIndex++;
+                    currentLine = word + " ";
+                }
+            }
+
+            if (!string.IsNullOrEmpty(currentLine) && !lines.Contains(currentLine))
+            {
+                if (currentRowIndex == rows.Count)
+                {
+                    rows.Add(new TableRow(new TableRowProperties(new TableRowHeight() { Val = _valueRowHeight })));
+                    WordUtils.AddCellToRow(rows[currentRowIndex], "", dateCellProperties, _valueParagraphProperties, "24");
+                }
+                WordUtils.AddCellToRow(rows[currentRowIndex], currentLine, topicCellProperties, _valueParagraphProperties, "24");
+                currentRowIndex++;
+            }
+        }
+
+        private void AppendParticipationForm(string str, List<TableRow> rows, TableCellProperties participationFormCellProperties,
+            TableCellProperties topicCellProperties, TableCellProperties dateCellProperties)
+        {
+            var split = str.Split(' ');
+            var lines = new List<string>();
+            string currentLine = "";
+            int lineMaxChars = 17;
+            int currentRowIndex = 0;
+            foreach (var word in split)
+            {
+                if (currentLine.Length + word.Length + 1 <= lineMaxChars)
+                {
+                    currentLine += word + " ";
+                }
+                else
+                {
+                    if (currentRowIndex == rows.Count)
+                    {
+                        rows.Add(new TableRow(new TableRowProperties(new TableRowHeight() { Val = _valueRowHeight })));
+                        WordUtils.AddCellToRow(rows[currentRowIndex], "", dateCellProperties, _valueParagraphProperties, "24");
+                        WordUtils.AddCellToRow(rows[currentRowIndex], "", topicCellProperties, _valueParagraphProperties, "24");
+                    }
+                    WordUtils.AddCellToRow(rows[currentRowIndex], currentLine, participationFormCellProperties, _valueParagraphProperties, "24");
+                    lines.Add(currentLine);
+                    currentRowIndex++;
+                    currentLine = word + " ";
+                }
+            }
+
+            if (!string.IsNullOrEmpty(currentLine) && !lines.Contains(currentLine))
+            {
+                if (currentRowIndex == rows.Count)
+                {
+                    rows.Add(new TableRow(new TableRowProperties(new TableRowHeight() { Val = _valueRowHeight })));
+                    WordUtils.AddCellToRow(rows[currentRowIndex], "", dateCellProperties, _valueParagraphProperties, "24");
+                    WordUtils.AddCellToRow(rows[currentRowIndex], "", topicCellProperties, _valueParagraphProperties, "24");
+                }
+                WordUtils.AddCellToRow(rows[currentRowIndex], currentLine, participationFormCellProperties, _valueParagraphProperties, "24");
+                currentRowIndex++;
+            }
+
+            for (int i = currentRowIndex; i < rows.Count; i++)
+            {
+                WordUtils.AddCellToRow(rows[i], "", participationFormCellProperties, _valueParagraphProperties, "24");
+            }
+        }
+
+        private void AppendLocation(string str, List<TableRow> rows, TableCellProperties locationCellProperties, TableCellProperties participationFormCellProperties,
+            TableCellProperties topicCellProperties, TableCellProperties dateCellProperties)
+        {
+            var split = str.Split(' ');
+            var lines = new List<string>();
+            string currentLine = "";
+            int lineMaxChars = 20;
+            int currentRowIndex = 0;
+            foreach (var word in split)
+            {
+                if (currentLine.Length + word.Length + 1 <= lineMaxChars)
+                {
+                    currentLine += word + " ";
+                }
+                else
+                {
+                    if (currentRowIndex == rows.Count)
+                    {
+                        rows.Add(new TableRow(new TableRowProperties(new TableRowHeight() { Val = _valueRowHeight })));
+                        WordUtils.AddCellToRow(rows[currentRowIndex], "", dateCellProperties, _valueParagraphProperties, "24");
+                        WordUtils.AddCellToRow(rows[currentRowIndex], "", topicCellProperties, _valueParagraphProperties, "24");
+                        WordUtils.AddCellToRow(rows[currentRowIndex], "", participationFormCellProperties, _valueParagraphProperties, "24");
+                    }
+                    WordUtils.AddCellToRow(rows[currentRowIndex], currentLine, locationCellProperties, _valueParagraphProperties, "24");
+                    lines.Add(currentLine);
+                    currentRowIndex++;
+                    currentLine = word + " ";
+                }
+            }
+
+            if (!string.IsNullOrEmpty(currentLine) && !lines.Contains(currentLine))
+            {
+                if (currentRowIndex == rows.Count)
+                {
+                    rows.Add(new TableRow(new TableRowProperties(new TableRowHeight() { Val = _valueRowHeight })));
+                    WordUtils.AddCellToRow(rows[currentRowIndex], "", dateCellProperties, _valueParagraphProperties, "24");
+                    WordUtils.AddCellToRow(rows[currentRowIndex], "", topicCellProperties, _valueParagraphProperties, "24");
+                    WordUtils.AddCellToRow(rows[currentRowIndex], "", participationFormCellProperties, _valueParagraphProperties, "24");
+                }
+                WordUtils.AddCellToRow(rows[currentRowIndex], currentLine, locationCellProperties, _valueParagraphProperties, "24");
+                currentRowIndex++;
+            }
+
+            for (int i = currentRowIndex; i < rows.Count; i++)
+            {
+                WordUtils.AddCellToRow(rows[i], "", locationCellProperties, _valueParagraphProperties, "24");
+            }
+        }
+
+        private void AppendNote(string str, List<TableRow> rows, TableCellProperties noteCellProperties, TableCellProperties locationCellProperties,
+            TableCellProperties participationFormCellProperties, TableCellProperties topicCellProperties, TableCellProperties dateCellProperties)
+        {
+            var split = str.Split(' ');
+            var lines = new List<string>();
+            string currentLine = "";
+            int lineMaxChars = 40;
+            int currentRowIndex = 0;
+            foreach (var word in split)
+            {
+                if (currentLine.Length + word.Length + 1 <= lineMaxChars)
+                {
+                    currentLine += word + " ";
+                }
+                else
+                {
+                    if (currentRowIndex == rows.Count)
+                    {
+                        rows.Add(new TableRow(new TableRowProperties(new TableRowHeight() { Val = _valueRowHeight })));
+                        WordUtils.AddCellToRow(rows[currentRowIndex], "", dateCellProperties, _valueParagraphProperties, "24");
+                        WordUtils.AddCellToRow(rows[currentRowIndex], "", topicCellProperties, _valueParagraphProperties, "24");
+                        WordUtils.AddCellToRow(rows[currentRowIndex], "", participationFormCellProperties, _valueParagraphProperties, "24");
+                        WordUtils.AddCellToRow(rows[currentRowIndex], "", locationCellProperties, _valueParagraphProperties, "24");
+                    }
+                    WordUtils.AddCellToRow(rows[currentRowIndex], currentLine, noteCellProperties, _valueParagraphProperties, "24");
+                    lines.Add(currentLine);
+                    currentRowIndex++;
+                    currentLine = word + " ";
+                }
+            }
+
+            if (!string.IsNullOrEmpty(currentLine) && !lines.Contains(currentLine))
+            {
+                if (currentRowIndex == rows.Count)
+                {
+                    rows.Add(new TableRow(new TableRowProperties(new TableRowHeight() { Val = _valueRowHeight })));
+                    WordUtils.AddCellToRow(rows[currentRowIndex], "", dateCellProperties, _valueParagraphProperties, "24");
+                    WordUtils.AddCellToRow(rows[currentRowIndex], "", topicCellProperties, _valueParagraphProperties, "24");
+                    WordUtils.AddCellToRow(rows[currentRowIndex], "", participationFormCellProperties, _valueParagraphProperties, "24");
+                    WordUtils.AddCellToRow(rows[currentRowIndex], "", locationCellProperties, _valueParagraphProperties, "24");
+                }
+                WordUtils.AddCellToRow(rows[currentRowIndex], currentLine, noteCellProperties, _valueParagraphProperties, "24");
+                currentRowIndex++;
+            }
+
+            for (int i = currentRowIndex; i < rows.Count; i++)
+            {
+                WordUtils.AddCellToRow(rows[i], "", noteCellProperties, _valueParagraphProperties, "24");
+            }
         }
     }
 }

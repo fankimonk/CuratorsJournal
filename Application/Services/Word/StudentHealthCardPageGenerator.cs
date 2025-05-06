@@ -155,26 +155,45 @@ namespace Application.Services.Word
 
             foreach (var record in records)
             {
-                TableRow row = new TableRow();
+                TableRow row = new TableRow(new TableRowProperties(new TableRowHeight() { Val = 540 }));
 
-                TableCell numberCell = new TableCell(new Paragraph(new Run(WordUtils.GetRunProperties(fontSize: "24"),
-                    new Text(record.Number == null ? "" : ((int)record.Number).ToString()))));
+                Tabs tabs = new Tabs();
+                tabs.Append(new TabStop()
+                {
+                    Val = TabStopValues.Left,
+                    Position = 360
+                });
+
+                TableCell numberCell = new TableCell(new Paragraph(paragraphProperties.CloneNode(true),
+                    new Run(WordUtils.GetRunProperties(fontSize: "24"),
+                        new Text(record.Number == null ? "" : ((int)record.Number).ToString()))));
                 numberCell.Append(new TableCellProperties(
+                    new TableCellVerticalAlignment { Val = TableVerticalAlignmentValues.Center },
                     new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = numberColumnWidth.ToString() }));
-
-                TableCell studentCell = new TableCell(new Paragraph(new Run(WordUtils.GetRunProperties(fontSize: "24"),
-                    new Text(record.Student == null ? "" : (GetStudentFIO(record.Student))))));
+;
+                TableCell studentCell = new TableCell(new Paragraph(
+                    new ParagraphProperties(new SpacingBetweenLines { After = "0", Before = "0" }, tabs.CloneNode(true)),
+                    new Run(WordUtils.GetRunProperties(fontSize: "24"),
+                        new TabChar(),
+                        new Text(record.Student == null ? "" : (GetStudentFIO(record.Student))))));
                 studentCell.Append(new TableCellProperties(
+                    new TableCellVerticalAlignment { Val = TableVerticalAlignmentValues.Center },
                     new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = studentColumnWidth.ToString() }));
 
-                TableCell classesMissedCell = new TableCell(new Paragraph(new Run(WordUtils.GetRunProperties(fontSize: "24"),
-                    new Text(record.MissedClasses == null ? "" : ((int)record.MissedClasses).ToString()))));
+                TableCell classesMissedCell = new TableCell(new Paragraph(
+                    new ParagraphProperties(new SpacingBetweenLines { After = "0", Before = "0" }, tabs.CloneNode(true)),
+                    new Run(WordUtils.GetRunProperties(fontSize: "24"),
+                        new TabChar(),
+                        new Text(record.MissedClasses == null ? "" : ((int)record.MissedClasses).ToString()))));
                 classesMissedCell.Append(new TableCellProperties(
+                    new TableCellVerticalAlignment { Val = TableVerticalAlignmentValues.Center },
                     new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = classesMissedColumnWidth.ToString() }));
 
-                TableCell noteCell = new TableCell(new Paragraph(new Run(WordUtils.GetRunProperties(fontSize: "24"),
-                    new Text(record.Note == null ? "" : record.Note))));
+                TableCell noteCell = new TableCell(new Paragraph(new ParagraphProperties(new SpacingBetweenLines { After = "0", Before = "0" }),
+                    new Run(WordUtils.GetRunProperties(fontSize: "24"),
+                        new Text(record.Note == null ? "" : record.Note))));
                 noteCell.Append(new TableCellProperties(
+                    new TableCellVerticalAlignment { Val = TableVerticalAlignmentValues.Center },
                     new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = noteColumnWidth.ToString() }));
 
                 row.Append(numberCell, studentCell, classesMissedCell, noteCell);

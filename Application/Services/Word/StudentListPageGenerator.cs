@@ -135,6 +135,9 @@ namespace Application.Services.Word
             foreach (var record in list)
             {
                 TableRow row = new TableRow();
+                var rowProperties = new TableRowProperties();
+                rowProperties.Append(new TableRowHeight { Val = 420 });
+                row.AppendChild(rowProperties);
 
                 TableCell numberCell = new TableCell(new Paragraph(
                     paragraphProperties.CloneNode(true),
@@ -152,7 +155,7 @@ namespace Application.Services.Word
                         new Text((record.Student == null || record.Student.PhoneNumber == null) ? "" : record.Student.PhoneNumber))));
                 phoneCell.Append(phoneHeadCellProperties.CloneNode(true));
 
-                TableCell cardNumberCell = new TableCell(new Paragraph(new ParagraphProperties(new SpacingBetweenLines { After = "0", Before = "0" }),
+                TableCell cardNumberCell = new TableCell(new Paragraph(paragraphProperties.CloneNode(true),
                     new Run(WordUtils.GetRunProperties(fontSize: "24"),
                         new Text(record.PersonalizedAccountingCardId == null ? "" : record.PersonalizedAccountingCardId.ToString()))));
                 cardNumberCell.Append(cardNumberHeadCellProperties.CloneNode(true));

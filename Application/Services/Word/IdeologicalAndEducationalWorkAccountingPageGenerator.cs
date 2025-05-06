@@ -1,7 +1,6 @@
 ﻿using Application.Utils;
 using DataAccess.Interfaces;
 using DocumentFormat.OpenXml;
-using DocumentFormat.OpenXml.ExtendedProperties;
 using DocumentFormat.OpenXml.Wordprocessing;
 using Domain.Entities.JournalContent;
 using Domain.Entities.JournalContent.Pages.Attributes;
@@ -17,6 +16,8 @@ namespace Application.Services.Word
         private readonly Body _documentBody;
 
         private int _journalId;
+
+        private UInt32Value _valueRowHeight = 360;
 
         public IdeologicalAndEducationalWorkAccountingPageGenerator(int journalId, Body body, IPagesRepository pagesRepository)
         {
@@ -130,7 +131,7 @@ namespace Application.Services.Word
 
             foreach (var record in records)
             {
-                var rows = new List<TableRow>() { new TableRow() };
+                var rows = new List<TableRow>() { new TableRow(new TableRowProperties(new TableRowHeight() { Val = _valueRowHeight })) };
                 
                 string termStr = "";
                 if (record.StartDate != null && record.EndDate != null)
@@ -149,7 +150,7 @@ namespace Application.Services.Word
                 if (splitTerm.Length > 2)
                 {
                     AddCellToRow(rows[0], splitTerm[0] + " " + splitTerm[1] + " ", termCellProperties, valueParagraphProperties);
-                    rows.Add(new TableRow());
+                    rows.Add(new TableRow(new TableRowProperties(new TableRowHeight() { Val = _valueRowHeight })));
                     AddCellToRow(rows[1], splitTerm[2], termCellProperties, valueParagraphProperties);
                 }
                 else
@@ -176,7 +177,7 @@ namespace Application.Services.Word
                     {
                         if (currentRowIndex == rows.Count)
                         {
-                            rows.Add(new TableRow());
+                            rows.Add(new TableRow(new TableRowProperties(new TableRowHeight() { Val = _valueRowHeight })));
                             AddCellToRow(rows[currentRowIndex], "", termCellProperties, valueParagraphProperties);
                         }
                         AddCellToRow(rows[currentRowIndex], currentLine, contentCellProperties, valueParagraphProperties);
@@ -190,7 +191,7 @@ namespace Application.Services.Word
                 {
                     if (currentRowIndex == rows.Count)
                     {
-                        rows.Add(new TableRow());
+                        rows.Add(new TableRow(new TableRowProperties(new TableRowHeight() { Val = _valueRowHeight })));
                         AddCellToRow(rows[currentRowIndex], "", termCellProperties, valueParagraphProperties);
                     }
                     AddCellToRow(rows[currentRowIndex], currentLine, contentCellProperties, valueParagraphProperties);

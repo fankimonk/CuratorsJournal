@@ -230,7 +230,7 @@ namespace DataAccess.Repositories
 
                 case PageTypes.RecomendationsAndRemarks:
                     pages = pages.Include(p => p.RecomendationsAndRemarks)
-                        .ThenInclude(r => r.Reviewer);
+                        .ThenInclude(r => r.Reviewer).ThenInclude(r => r!.Position);
                     break;
 
                 case PageTypes.Traditions:

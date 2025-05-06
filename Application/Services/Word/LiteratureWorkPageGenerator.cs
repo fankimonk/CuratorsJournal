@@ -15,6 +15,14 @@ namespace Application.Services.Word
 
         private int _journalId;
 
+        private TableCellProperties _cellProperties = new TableCellProperties(
+            new TableCellVerticalAlignment { Val = TableVerticalAlignmentValues.Center }
+        );
+
+        private ParagraphProperties _valueParagraphProperties = new ParagraphProperties(new SpacingBetweenLines { Before = "0", After = "0" });
+
+        private UInt32Value _valueRowHeight = 420;
+
         public LiteratureWorkPageGenerator(int journalId, Body body, IPagesRepository pagesRepository)
         {
             _journalId = journalId;
@@ -97,20 +105,19 @@ namespace Application.Services.Word
 
             foreach (var record in literatureWork)
             {
-                TableRow row = new TableRow();
+                var rows = new List<TableRow>() { new TableRow(new TableRowProperties(new TableRowHeight() { Val = _valueRowHeight })) };
 
-                TableCell dataCell = new TableCell(new Paragraph(new Run(WordUtils.GetRunProperties(fontSize: "24"),
-                    new Text(record.Literature == null ? "" : GetLiteratureStr(record.Literature)))));
-                dataCell.Append(new TableCellProperties(
-                    new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = dataColumnWidth.ToString() }));
+                var dataStr = record.Literature == null ? "" : GetLiteratureStr(record.Literature);
+                var dataCellProperties = (TableCellProperties)_cellProperties.CloneNode(true);
+                dataCellProperties.Append(new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = dataColumnWidth.ToString() });
+                AppendLiterature(dataStr, rows, dataCellProperties);
 
-                TableCell annotationCell = new TableCell(new Paragraph(new Run(WordUtils.GetRunProperties(fontSize: "24"),
-                    new Text(record.ShortAnnotation == null ? "" : record.ShortAnnotation))));
-                annotationCell.Append(new TableCellProperties(
-                    new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = annotationColumnWidth.ToString() }));
+                var annotationStr = record.ShortAnnotation ?? "";
+                var annotaionCellProperties = (TableCellProperties)_cellProperties.CloneNode(true);
+                annotaionCellProperties.Append(new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = annotationColumnWidth.ToString() });
+                AppendAnnotation(annotationStr, rows, annotaionCellProperties, dataCellProperties);
 
-                row.Append(dataCell, annotationCell);
-                table.Append(row);
+                foreach (var row in rows) table.Append(row);
             }
 
             _documentBody.Append(table);
@@ -119,6 +126,88 @@ namespace Application.Services.Word
         private string GetLiteratureStr(LiteratureListRecord literature)
         {
             return literature.Author + ", \"" + literature.Name + "\", " + literature.BibliographicData;
+        }
+
+        private void AppendLiterature(string str, List<TableRow> rows, TableCellProperties cellProperties)
+        {
+            var split = str.Split(' ');
+            var lines = new List<string>();
+            string currentLine = "";
+            int lineMaxChars = 50;
+            int currentRowIndex = 0;
+            foreach (var word in split)
+            {
+                if (currentLine.Length + word.Length + 1 <= lineMaxChars)
+                {
+                    currentLine += word + " ";
+                }
+                else
+                {
+                    if (currentRowIndex == rows.Count)
+                    {
+                        rows.Add(new TableRow(new TableRowProperties(new TableRowHeight() { Val = _valueRowHeight })));
+                    }
+                    WordUtils.AddCellToRow(rows[currentRowIndex], currentLine, cellProperties, _valueParagraphProperties, "24");
+                    lines.Add(currentLine);
+                    currentRowIndex++;
+                    currentLine = word + " ";
+                }
+            }
+
+            if (!string.IsNullOrEmpty(currentLine) && !lines.Contains(currentLine))
+            {
+                if (currentRowIndex == rows.Count)
+                {
+                    rows.Add(new TableRow(new TableRowProperties(new TableRowHeight() { Val = _valueRowHeight })));
+                }
+                WordUtils.AddCellToRow(rows[currentRowIndex], currentLine, cellProperties, _valueParagraphProperties, "24");
+                currentRowIndex++;
+            }
+        }
+
+        private void AppendAnnotation(string str, List<TableRow> rows,
+            TableCellProperties annotationCellProperties, TableCellProperties literatureCellProperties)
+        {
+            var split = str.Split(' ');
+            var lines = new List<string>();
+            string currentLine = "";
+            int lineMaxChars = 75;
+            int currentRowIndex = 0;
+            foreach (var word in split)
+            {
+                if (currentLine.Length + word.Length + 1 <= lineMaxChars)
+                {
+                    currentLine += word + " ";
+                }
+                else
+                {
+                    if (currentRowIndex == rows.Count)
+                    {
+                        rows.Add(new TableRow(new TableRowProperties(new TableRowHeight() { Val = _valueRowHeight })));
+                        WordUtils.AddCellToRow(rows[currentRowIndex], "", literatureCellProperties, _valueParagraphProperties, "24");
+                    }
+                    WordUtils.AddCellToRow(rows[currentRowIndex], currentLine, annotationCellProperties, _valueParagraphProperties, "24");
+                    lines.Add(currentLine);
+                    currentRowIndex++;
+                    currentLine = word + " ";
+                }
+            }
+
+            if (!string.IsNullOrEmpty(currentLine) && !lines.Contains(currentLine))
+            {
+                if (currentRowIndex == rows.Count)
+                {
+                    rows.Add(new TableRow(new TableRowProperties(new TableRowHeight() { Val = _valueRowHeight })));
+                    WordUtils.AddCellToRow(rows[currentRowIndex], "", literatureCellProperties, _valueParagraphProperties, "24");
+                }
+                WordUtils.AddCellToRow(rows[currentRowIndex], currentLine, annotationCellProperties, _valueParagraphProperties, "24");
+                currentRowIndex++;
+            }
+
+            for (int i = currentRowIndex; i < rows.Count; i++)
+            {
+                WordUtils.AddCellToRow(rows[i], "", annotationCellProperties, _valueParagraphProperties, "24");
+            }
         }
     }
 }

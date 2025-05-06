@@ -23,6 +23,8 @@ namespace Application.Services.Word
             new SpacingBetweenLines { Before = "0", After = "0" });
         private ParagraphProperties _valueParagraphProperties = new ParagraphProperties(new SpacingBetweenLines { Before = "0", After = "0" });
 
+        private UInt32Value _valueRowHeight = 420;
+
         public InformationHoursAccountingPageGenerator(int journalId, Body body, IPagesRepository pagesRepository)
         {
             _journalId = journalId;
@@ -109,7 +111,7 @@ namespace Application.Services.Word
 
             foreach (var record in records)
             {
-                var rows = new List<TableRow>() { new TableRow() };
+                var rows = new List<TableRow>() { new TableRow(new TableRowProperties(new TableRowHeight() { Val = _valueRowHeight })) };
 
                 var dateCellProperties = (TableCellProperties)_cellProperties.CloneNode(true);
                 dateCellProperties.Append(new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = dateColumnWidth.ToString() });
@@ -156,10 +158,10 @@ namespace Application.Services.Word
                 {
                     if (currentTopicRowIndex == rows.Count)
                     {
-                        rows.Add(new TableRow());
-                        AddCellToRow(rows[currentTopicRowIndex], "", dateCellProperties, _valueParagraphProperties);
+                        rows.Add(new TableRow(new TableRowProperties(new TableRowHeight() { Val = _valueRowHeight })));
+                        WordUtils.AddCellToRow(rows[currentTopicRowIndex], "", dateCellProperties, _valueParagraphProperties);
                     }
-                    AddCellToRow(rows[currentTopicRowIndex], currentTopicLine, topicCellProperties, _valueParagraphProperties);
+                    WordUtils.AddCellToRow(rows[currentTopicRowIndex], currentTopicLine, topicCellProperties, _valueParagraphProperties);
                     topicLines.Add(currentTopicLine);
                     currentTopicRowIndex++;
                     currentTopicLine = word + " ";
@@ -170,16 +172,16 @@ namespace Application.Services.Word
             {
                 if (currentTopicRowIndex == rows.Count)
                 {
-                    rows.Add(new TableRow());
-                    AddCellToRow(rows[currentTopicRowIndex], "", dateCellProperties, _valueParagraphProperties);
+                    rows.Add(new TableRow(new TableRowProperties(new TableRowHeight() { Val = _valueRowHeight })));
+                    WordUtils.AddCellToRow(rows[currentTopicRowIndex], "", dateCellProperties, _valueParagraphProperties);
                 }
-                AddCellToRow(rows[currentTopicRowIndex], currentTopicLine, topicCellProperties, _valueParagraphProperties);
+                WordUtils.AddCellToRow(rows[currentTopicRowIndex], currentTopicLine, topicCellProperties, _valueParagraphProperties);
                 currentTopicRowIndex++;
             }
 
             for (int i = currentTopicRowIndex; i < rows.Count; i++)
             {
-                AddCellToRow(rows[i], "", topicCellProperties, _valueParagraphProperties);
+                WordUtils.AddCellToRow(rows[i], "", topicCellProperties, _valueParagraphProperties);
             }
         }
 
@@ -201,11 +203,11 @@ namespace Application.Services.Word
                 {
                     if (currentRowIndex == rows.Count)
                     {
-                        rows.Add(new TableRow());
-                        AddCellToRow(rows[currentRowIndex], "", dateCellProperties, _valueParagraphProperties);
-                        AddCellToRow(rows[currentRowIndex], "", topicCellProperties, _valueParagraphProperties);
+                        rows.Add(new TableRow(new TableRowProperties(new TableRowHeight() { Val = _valueRowHeight })));
+                        WordUtils.AddCellToRow(rows[currentRowIndex], "", dateCellProperties, _valueParagraphProperties);
+                        WordUtils.AddCellToRow(rows[currentRowIndex], "", topicCellProperties, _valueParagraphProperties);
                     }
-                    AddCellToRow(rows[currentRowIndex], currentLine, noteCellProperties, _valueParagraphProperties);
+                    WordUtils.AddCellToRow(rows[currentRowIndex], currentLine, noteCellProperties, _valueParagraphProperties);
                     lines.Add(currentLine);
                     currentRowIndex++;
                     currentLine = word + " ";
@@ -216,30 +218,18 @@ namespace Application.Services.Word
             {
                 if (currentRowIndex == rows.Count)
                 {
-                    rows.Add(new TableRow());
-                    AddCellToRow(rows[currentRowIndex], "", dateCellProperties, _valueParagraphProperties);
-                    AddCellToRow(rows[currentRowIndex], "", topicCellProperties, _valueParagraphProperties);
+                    rows.Add(new TableRow(new TableRowProperties(new TableRowHeight() { Val = _valueRowHeight })));
+                    WordUtils.AddCellToRow(rows[currentRowIndex], "", dateCellProperties, _valueParagraphProperties);
+                    WordUtils.AddCellToRow(rows[currentRowIndex], "", topicCellProperties, _valueParagraphProperties);
                 }
-                AddCellToRow(rows[currentRowIndex], currentLine, noteCellProperties, _valueParagraphProperties);
+                WordUtils.AddCellToRow(rows[currentRowIndex], currentLine, noteCellProperties, _valueParagraphProperties);
                 currentRowIndex++;
             }
 
             for (int i = currentRowIndex; i < rows.Count; i++)
             {
-                AddCellToRow(rows[i], "", noteCellProperties, _valueParagraphProperties);
+                WordUtils.AddCellToRow(rows[i], "", noteCellProperties, _valueParagraphProperties);
             }
-        }
-
-        private void AddCellToRow(TableRow row, string content, TableCellProperties? cellProperties = null, ParagraphProperties? paragraphProperties = null)
-        {
-            TableCell cell = new TableCell();
-            if (cellProperties != null) cell.Append(cellProperties.CloneNode(true));
-            var paragraph = new Paragraph();
-            if (paragraphProperties != null) paragraph.Append(paragraphProperties.CloneNode(true));
-            paragraph.Append(new Run(WordUtils.GetRunProperties(fontSize: "26"),
-                    new Text(content)));
-            cell.Append(paragraph);
-            row.Append(cell);
         }
     }
 }

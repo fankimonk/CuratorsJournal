@@ -16,6 +16,14 @@ namespace Application.Services.Word
 
         private int _journalId;
 
+        private TableCellProperties _cellProperties = new TableCellProperties(
+            new TableCellVerticalAlignment { Val = TableVerticalAlignmentValues.Center }
+        );
+
+        private ParagraphProperties _valueParagraphProperties = new ParagraphProperties(new SpacingBetweenLines { Before = "0", After = "0" });
+
+        private UInt32Value _valueRowHeight = 440;
+
         public RecommendationsAndRemarksPageGenerator(int journalId, Body body, IPagesRepository pagesRepository)
         {
             _journalId = journalId;
@@ -127,34 +135,44 @@ namespace Application.Services.Word
 
             foreach (var record in records)
             {
-                TableRow row = new TableRow();
+                var rows = new List<TableRow>() { new TableRow(new TableRowProperties(new TableRowHeight() { Val = _valueRowHeight })) };
+                var dateCellProperties = (TableCellProperties)_cellProperties.CloneNode(true);
+                dateCellProperties.Append(new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = dateColumnWidth.ToString() });
+                TableCell dateCell = new TableCell(
+                    new Paragraph(_valueParagraphProperties.CloneNode(true),
+                        new Run(WordUtils.GetRunProperties(fontSize: "24"),
+                            new Text(record.Date == null ? "" : ((DateOnly)record.Date).ToString()))));
+                dateCell.Append(dateCellProperties);
+                rows[0].Append(dateCell);
 
-                TableCell dateCell = new TableCell(new Paragraph(new Run(WordUtils.GetRunProperties(fontSize: "24"),
-                    new Text(record.Date == null ? "" : ((DateOnly)record.Date).ToString()))));
-                dateCell.Append(new TableCellProperties(
-                    new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = dateColumnWidth.ToString() }));
+                var reviewerStr = record.Reviewer == null ? "" : GetReviewerString(record.Reviewer);
+                var reviewerCellProperties = (TableCellProperties)_cellProperties.CloneNode(true);
+                reviewerCellProperties.Append(new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = reviewerColumnWidth.ToString() });
+                //TableCell reviewerCell = new TableCell(new Paragraph(new Run(WordUtils.GetRunProperties(fontSize: "24"),
+                //    new Text(record.Reviewer == null ? "" : GetReviewerString(record.Reviewer)))));
+                //reviewerCell.Append(reviewerCellProperties);
+                AppendReviewer(reviewerStr, rows, reviewerCellProperties, dateCellProperties, table);
 
-                TableCell reviewerCell = new TableCell(new Paragraph(new Run(WordUtils.GetRunProperties(fontSize: "24"),
-                    new Text(record.Reviewer == null ? "" : GetReviewerString(record.Reviewer)))));
-                reviewerCell.Append(new TableCellProperties(
-                    new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = reviewerColumnWidth.ToString() }));
-
-                TableCell contentCell = new TableCell(new Paragraph(new Run(WordUtils.GetRunProperties(fontSize: "24"),
-                    new Text(record.Content == null ? "" : record.Content))));
-                contentCell.Append(new TableCellProperties(
-                    new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = contentColumnWidth.ToString() }));
+                var contentStr = record.Content ?? "";
+                var contentCellProperties = (TableCellProperties)_cellProperties.CloneNode(true);
+                contentCellProperties.Append(new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = contentColumnWidth.ToString() });
+                //TableCell contentCell = new TableCell(new Paragraph(new Run(WordUtils.GetRunProperties(fontSize: "24"),
+                //    new Text(record.Content == null ? "" : record.Content))));
+                //contentCell.Append(contentCellProperties);
+                AppendContent(contentStr, rows, contentCellProperties, reviewerCellProperties, dateCellProperties, table);
 
                 string resultStr = "";
                 if (record.Result != null) resultStr += record.Result + ", ";
                 if (record.ExecutionDate != null) resultStr += record.ExecutionDate.ToString();
 
-                TableCell resultCell = new TableCell(new Paragraph(new Run(WordUtils.GetRunProperties(fontSize: "24"),
-                    new Text(resultStr))));
-                resultCell.Append(new TableCellProperties(
-                    new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = resultColumnWidth.ToString() }));
+                var resultCellProperties = (TableCellProperties)_cellProperties.CloneNode(true);
+                resultCellProperties.Append(new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = resultColumnWidth.ToString() });
+                //TableCell resultCell = new TableCell(new Paragraph(new Run(WordUtils.GetRunProperties(fontSize: "24"),
+                //    new Text(resultStr))));
+                //resultCell.Append(resultCellProperties);
+                AppendResult(resultStr, rows, resultCellProperties, contentCellProperties, reviewerCellProperties, dateCellProperties, table);
 
-                row.Append(dateCell, reviewerCell, contentCell, resultCell);
-                table.Append(row);
+                foreach (var row in rows) table.Append(row);
             }
 
             _documentBody.Append(table);
@@ -165,6 +183,147 @@ namespace Application.Services.Word
             string positionStr = "";
             if (worker.Position != null) positionStr += worker.Position.Name + ", ";
             return positionStr + worker.LastName + " " + worker.FirstName[0] + ". " + worker.MiddleName[0] + ".";
+        }
+
+        private void AppendReviewer(string str, List<TableRow> rows, TableCellProperties reviewerCellProperties,
+            TableCellProperties dateCellProperties, Table table)
+        {
+            var split = str.Split(' ');
+            var lines = new List<string>();
+            string currentLine = "";
+            int lineMaxChars = 30;
+            int currentRowIndex = 0;
+            foreach (var word in split)
+            {
+                if (currentLine.Length + word.Length + 1 <= lineMaxChars)
+                {
+                    currentLine += word + " ";
+                }
+                else
+                {
+                    if (currentRowIndex == rows.Count)
+                    {
+                        rows.Add(new TableRow(new TableRowProperties(new TableRowHeight() { Val = _valueRowHeight })));
+                        WordUtils.AddCellToRow(rows[currentRowIndex], "", dateCellProperties, _valueParagraphProperties, "24");
+                    }
+                    WordUtils.AddCellToRow(rows[currentRowIndex], currentLine, reviewerCellProperties, _valueParagraphProperties, "24");
+                    lines.Add(currentLine);
+                    currentRowIndex++;
+                    currentLine = word + " ";
+                }
+            }
+
+            if (!string.IsNullOrEmpty(currentLine) && !lines.Contains(currentLine))
+            {
+                if (currentRowIndex == rows.Count)
+                {
+                    rows.Add(new TableRow(new TableRowProperties(new TableRowHeight() { Val = _valueRowHeight })));
+                    WordUtils.AddCellToRow(rows[currentRowIndex], "", dateCellProperties, _valueParagraphProperties, "24");
+                }
+                WordUtils.AddCellToRow(rows[currentRowIndex], currentLine, reviewerCellProperties, _valueParagraphProperties, "24");
+                currentRowIndex++;
+            }
+
+            //for (int i = currentRowIndex; i < rows.Count; i++)
+            //{
+            //    WordUtils.AddCellToRow(rows[i], "", reviewerCellProperties, _valueParagraphProperties, "24");
+            //}
+        }
+
+        private void AppendContent(string str, List<TableRow> rows, TableCellProperties contentCellProperties, TableCellProperties reviewerCellProperties,
+            TableCellProperties dateCellProperties, Table table)
+        {
+            var split = str.Split(' ');
+            var lines = new List<string>();
+            string currentLine = "";
+            int lineMaxChars = 60;
+            int currentRowIndex = 0;
+            foreach (var word in split)
+            {
+                if (currentLine.Length + word.Length + 1 <= lineMaxChars)
+                {
+                    currentLine += word + " ";
+                }
+                else
+                {
+                    if (currentRowIndex == rows.Count)
+                    {
+                        rows.Add(new TableRow(new TableRowProperties(new TableRowHeight() { Val = _valueRowHeight })));
+                        WordUtils.AddCellToRow(rows[currentRowIndex], "", dateCellProperties, _valueParagraphProperties, "24");
+                        WordUtils.AddCellToRow(rows[currentRowIndex], "", reviewerCellProperties, _valueParagraphProperties, "24");
+                    }
+                    WordUtils.AddCellToRow(rows[currentRowIndex], currentLine, contentCellProperties, _valueParagraphProperties, "24");
+                    lines.Add(currentLine);
+                    currentRowIndex++;
+                    currentLine = word + " ";
+                }
+            }
+
+            if (!string.IsNullOrEmpty(currentLine) && !lines.Contains(currentLine))
+            {
+                if (currentRowIndex == rows.Count)
+                {
+                    rows.Add(new TableRow(new TableRowProperties(new TableRowHeight() { Val = _valueRowHeight })));
+                    WordUtils.AddCellToRow(rows[currentRowIndex], "", dateCellProperties, _valueParagraphProperties, "24");
+                    WordUtils.AddCellToRow(rows[currentRowIndex], "", reviewerCellProperties, _valueParagraphProperties, "24");
+                }
+                WordUtils.AddCellToRow(rows[currentRowIndex], currentLine, contentCellProperties, _valueParagraphProperties, "24");
+                currentRowIndex++;
+            }
+
+            for (int i = currentRowIndex; i < rows.Count; i++)
+            {
+                WordUtils.AddCellToRow(rows[i], "", contentCellProperties, _valueParagraphProperties, "24");
+            }
+        }
+
+        private void AppendResult(string str, List<TableRow> rows, TableCellProperties resultCellProperties, TableCellProperties contentCellProperties, 
+            TableCellProperties reviewerCellProperties, TableCellProperties dateCellProperties, Table table)
+        {
+            var split = str.Split(' ');
+            var lines = new List<string>();
+            string currentLine = "";
+            int lineMaxChars = 18;
+            int currentRowIndex = 0;
+            foreach (var word in split)
+            {
+                if (currentLine.Length + word.Length + 1 <= lineMaxChars)
+                {
+                    currentLine += word + " ";
+                }
+                else
+                {
+                    if (currentRowIndex == rows.Count)
+                    {
+                        rows.Add(new TableRow(new TableRowProperties(new TableRowHeight() { Val = _valueRowHeight })));
+                        WordUtils.AddCellToRow(rows[currentRowIndex], "", dateCellProperties, _valueParagraphProperties, "24");
+                        WordUtils.AddCellToRow(rows[currentRowIndex], "", reviewerCellProperties, _valueParagraphProperties, "24");
+                        WordUtils.AddCellToRow(rows[currentRowIndex], "", contentCellProperties, _valueParagraphProperties, "24");
+                    }
+                    WordUtils.AddCellToRow(rows[currentRowIndex], currentLine, resultCellProperties, _valueParagraphProperties, "24");
+                    lines.Add(currentLine);
+                    currentRowIndex++;
+                    currentLine = word + " ";
+                }
+            }
+
+            if (!string.IsNullOrEmpty(currentLine) && !lines.Contains(currentLine))
+            {
+                if (currentRowIndex == rows.Count)
+                {
+                    rows.Add(new TableRow(new TableRowProperties(new TableRowHeight() { Val = _valueRowHeight })));
+                    WordUtils.AddCellToRow(rows[currentRowIndex], "", dateCellProperties, _valueParagraphProperties, "24");
+                    WordUtils.AddCellToRow(rows[currentRowIndex], "", reviewerCellProperties, _valueParagraphProperties, "24");
+                    WordUtils.AddCellToRow(rows[currentRowIndex], "", contentCellProperties, _valueParagraphProperties, "24");
+                }
+                WordUtils.AddCellToRow(rows[currentRowIndex], currentLine, resultCellProperties, _valueParagraphProperties, "24");
+                currentRowIndex++;
+            }
+
+            for (int i = currentRowIndex; i < rows.Count; i++)
+            {
+                WordUtils.AddCellToRow(rows[i], "", resultCellProperties, _valueParagraphProperties, "24");
+            }
         }
     }
 }

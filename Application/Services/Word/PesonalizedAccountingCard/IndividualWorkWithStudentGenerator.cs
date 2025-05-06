@@ -11,6 +11,14 @@ namespace Application.Services.Word
 
         private readonly Body _documentBody;
 
+        private TableCellProperties _cellProperties = new TableCellProperties(
+            new TableCellVerticalAlignment { Val = TableVerticalAlignmentValues.Center }
+        );
+
+        private ParagraphProperties _valueParagraphProperties = new ParagraphProperties(new SpacingBetweenLines { Before = "0", After = "0" });
+
+        private UInt32Value _valueRowHeight = 600;
+
         public IndividualWorkWithStudentGenerator(List<IndividualWorkWithStudentRecord> individualWorkWithStudent, Body body)
         {
             _individualWorkWithStudent = individualWorkWithStudent;
@@ -56,15 +64,6 @@ namespace Application.Services.Word
                 new TableCellVerticalAlignment { Val = TableVerticalAlignmentValues.Top }
             );
 
-            //TableCellMargin cellMargin = new TableCellMargin(
-            //    new TopMargin { Width = "100", Type = TableWidthUnitValues.Dxa },
-            //    new BottomMargin { Width = "100", Type = TableWidthUnitValues.Dxa },
-            //    new LeftMargin { Width = "100", Type = TableWidthUnitValues.Dxa },
-            //    new RightMargin { Width = "100", Type = TableWidthUnitValues.Dxa }
-            //);
-
-            //cellProperties.Append(cellMargin);
-
             ParagraphProperties paragraphProperties = new ParagraphProperties(new Justification { Val = JustificationValues.Center },
                 new SpacingBetweenLines { Before = "0", After = "0" });
 
@@ -107,20 +106,28 @@ namespace Application.Services.Word
 
             foreach (var record in _individualWorkWithStudent)
             {
-                TableRow row = new TableRow();
+                TableRow row = new TableRow(new TableRowProperties(new TableRowHeight() { Val = _valueRowHeight }));
 
                 TableCell dateCell = new TableCell(new Paragraph(paragraphProperties.CloneNode(true),
                     new Run(WordUtils.GetRunProperties(fontSize: "24"),
                         new Text(record.Date == null ? "" : ((DateOnly)record.Date).ToString()))));
-                dateCell.Append(dateHeadCellProperties.CloneNode(true));
+                var dateCellProperties = _cellProperties.CloneNode(true);
+                dateCellProperties.Append(new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = "950" });
+                dateCell.Append(dateCellProperties);
 
-                TableCell workDoneCell = new TableCell(new Paragraph(new Run(WordUtils.GetRunProperties(fontSize: "24"),
-                    new Text(record.WorkDoneAndRecommendations == null ? "" : record.WorkDoneAndRecommendations))));
-                workDoneCell.Append(workDoneHeadCellProperties.CloneNode(true));
+                TableCell workDoneCell = new TableCell(new Paragraph(_valueParagraphProperties.CloneNode(true),
+                    new Run(WordUtils.GetRunProperties(fontSize: "24"),
+                        new Text(record.WorkDoneAndRecommendations == null ? "" : record.WorkDoneAndRecommendations))));
+                var workDoneCellProperties = _cellProperties.CloneNode(true);
+                workDoneCellProperties.Append(new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = "7500" });
+                workDoneCell.Append(workDoneCellProperties);
 
-                TableCell resultCell = new TableCell(new Paragraph(new Run(WordUtils.GetRunProperties(fontSize: "24"),
-                    new Text(record.Result == null ? "" : record.Result))));
-                resultCell.Append(resultHeadCellProperties.CloneNode(true));
+                TableCell resultCell = new TableCell(new Paragraph(_valueParagraphProperties.CloneNode(true), 
+                    new Run(WordUtils.GetRunProperties(fontSize: "24"),
+                        new Text(record.Result == null ? "" : record.Result))));
+                var resultCellProperties = _cellProperties.CloneNode(true);
+                resultCellProperties.Append(new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = "1550" });
+                resultCell.Append(resultCellProperties);
 
                 row.Append(dateCell, workDoneCell, resultCell);
                 table.Append(row);

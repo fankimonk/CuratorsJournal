@@ -16,6 +16,18 @@ namespace Application.Utils
             Landscape = 2
         }
 
+        public static void AddCellToRow(TableRow row, string content, TableCellProperties? cellProperties = null, ParagraphProperties? paragraphProperties = null, string fontSize = "26")
+        {
+            TableCell cell = new TableCell();
+            if (cellProperties != null) cell.Append(cellProperties.CloneNode(true));
+            var paragraph = new Paragraph();
+            if (paragraphProperties != null) paragraph.Append(paragraphProperties.CloneNode(true));
+            paragraph.Append(new Run(GetRunProperties(fontSize: fontSize),
+                    new Text(content)));
+            cell.Append(paragraph);
+            row.Append(cell);
+        }
+
         public static void AppendSectionBreak(PageOrientationTypes pageOrientationType, Body body)
         {
             SectionProperties sectionProperties = new();

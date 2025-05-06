@@ -146,6 +146,9 @@ namespace Application.Services.Word
             foreach (var record in schedule)
             {
                 TableRow row = new TableRow();
+                var rowProperties = new TableRowProperties();
+                rowProperties.Append(new TableRowHeight { Val = 760 });
+                row.AppendChild(rowProperties);
 
                 TableCell numberCell = new TableCell(new Paragraph(
                     paragraphProperties.CloneNode(true),
