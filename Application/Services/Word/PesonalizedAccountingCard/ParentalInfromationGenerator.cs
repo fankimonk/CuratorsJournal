@@ -65,10 +65,18 @@ namespace Application.Services.Word.PesonalizedAccountingCard
                 text += record.MobilePhoneNumber == null ? "" : record.MobilePhoneNumber + "; ";
                 text += record.OtherInformation == null ? "" : record.OtherInformation + ";";
 
-                content.Append(new Run(WordUtils.GetRunProperties(underline: true, fontSize: "24"),
-                    new Text(text), new TabChar()));
+                var recordRun = new Run(WordUtils.GetRunProperties(underline: true, fontSize: "24"),
+                    new Text(text));
 
-                if (record != _parentalInformation.Last()) content.Append(new Run(WordUtils.GetRunProperties(underline: true, fontSize: "24"), new Break()));
+                int lineCharsCount = 13 * 6;
+                while (text.Length > lineCharsCount)
+                    lineCharsCount += 13 * 6;
+                int charsLeft = lineCharsCount - text.Length;
+                int tabsLeftCount = charsLeft / 5;
+                for (int i = 0; i < tabsLeftCount; i++) recordRun.Append(new TabChar());
+                if (record != _parentalInformation.Last()) recordRun.Append(new Break());
+
+                content.Append(recordRun);
             }
 
             _documentBody.Append(content);

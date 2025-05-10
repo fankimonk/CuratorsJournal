@@ -6,8 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 using Contracts.Curator;
 using Microsoft.AspNetCore.Authorization;
 using Application.Authorization;
-using Domain.Entities;
 using API.Mappers;
+using Contracts.Journal.Files;
 
 namespace API.Controllers
 {
@@ -19,14 +19,16 @@ namespace API.Controllers
         private readonly IJournalsRepository _journalsRepository;
         private readonly IPagesRepository _pagesRepository;
         private readonly IWordService _wordService;
+        private readonly IFilesService _filesService;
 
         public JournalController(IJournalsService journalsService, IJournalsRepository journalsRepository, 
-            IPagesRepository pagesRepository, IWordService wordService)
+            IPagesRepository pagesRepository, IWordService wordService, IFilesService filesService)
         {
             _journalsService = journalsService;
             _journalsRepository = journalsRepository;
             _pagesRepository = pagesRepository;
             _wordService = wordService;
+            _filesService = filesService;
         }
 
         [HttpGet]
@@ -77,6 +79,36 @@ namespace API.Controllers
             if (fileData == null) return BadRequest();
 
             return File(fileData.MemoryStream, fileData.ContentType, fileData.FileName);
+        }
+
+        [HttpGet("documents/{journalId}")]
+        public async Task<ActionResult<List<string>>> GetDocuments([FromRoute] int journalId)
+        {
+            var documents = await _filesService.GetDocuments(journalId);
+            if (documents == null) return NotFound();
+            return Ok(documents!);
+        }
+
+        [HttpPost("downloaddocument")]
+        public async Task<IActionResult> DownloadDocument([FromBody] DownloadFileRequest request)
+        {
+            var fileData = _filesService.GetFile(request.JournalId, request.FileName);
+            if (fileData == null) return NotFound();
+            return File(fileData.MemoryStream, fileData.ContentType, fileData.FileName);
+        }
+
+        [HttpPost("uploaddocument/{journalId}")]
+        public async Task<IActionResult> UploadDocument([FromRoute] int journalId, IFormFile fileToUpload)
+        {
+            if (!await _filesService.CreateFile(journalId, fileToUpload)) return BadRequest(fileToUpload.FileName);
+            return Ok();
+        }
+
+        [HttpDelete("deletedocument")]
+        public async Task<IActionResult> DeleteDocument([FromBody] DeleteFileRequest request)
+        {
+            if (!_filesService.DeleteFile(request.JournalId, request.FileName)) return NotFound();
+            return NoContent();
         }
 
         [HttpGet("{journalId}/pages")]

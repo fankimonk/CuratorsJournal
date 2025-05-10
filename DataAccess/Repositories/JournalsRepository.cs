@@ -42,7 +42,7 @@ namespace DataAccess.Repositories
             return journals != null && journals.Any(j => j.Id == journalId);
         }
 
-        public async Task<Journal?> GetById(int journalId)
+        public async Task<Journal?> GetByIdAsync(int journalId)
         {
             return await _dbContext.Journals.AsNoTracking()
                 .Include(j => j.Group).ThenInclude(g => g!.Curator).ThenInclude(t => t!.Worker)
@@ -64,5 +64,10 @@ namespace DataAccess.Repositories
 
         private async Task<bool> GroupExists(int id) =>
             await _dbContext.Groups.AsNoTracking().FirstOrDefaultAsync(g => g.Id == id) != null;
+
+        public async Task<bool> Exists(int id)
+        {
+            return await _dbContext.Journals.AsNoTracking().FirstOrDefaultAsync(j => j.Id == id) != null;
+        }
     }
 }

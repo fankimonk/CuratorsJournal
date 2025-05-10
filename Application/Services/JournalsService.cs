@@ -33,7 +33,7 @@ namespace Application.Services
 
         public async Task<Tuple<int, Journal>?> GetJournalsTitlePageData(int journalId)
         {
-            var journal = await _journalsRepository.GetById(journalId);
+            var journal = await _journalsRepository.GetByIdAsync(journalId);
             if (journal == null) return null;
 
             var titlePages = await _pagesRepository.GetJournalPagesByType(journalId, PageTypes.Title);
