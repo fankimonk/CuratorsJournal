@@ -26,7 +26,7 @@ namespace Application.Services.Word
 
         public async Task Generate()
         {
-            var pages = await _pagesRepository.GetJournalPagesByType(_journalId, PageTypes.SocioPedagogicalCharacteristics);
+            var pages = await _pagesRepository.GetJournalPagesByTypeAsync(_journalId, PageTypes.SocioPedagogicalCharacteristics);
             if (pages == null) throw new ArgumentException(nameof(pages));
 
             var group = await _groupsRepository.GetByJournalId(_journalId);

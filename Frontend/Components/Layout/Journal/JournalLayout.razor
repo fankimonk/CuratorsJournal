@@ -1,6 +1,7 @@
 ﻿@using Contracts.Journal
 @using Contracts.Journal.Pages
 @using Frontend.Components.Buttons
+@using Frontend.Components.Utils
 @using Frontend.Services
 
 @inherits LayoutComponentBase
@@ -9,6 +10,7 @@
 @inject AppState AppState
 @inject NavigationManager NavigationManager
 @inject HttpClient HttpClient
+@inject IJSRuntime JSRuntime
 
 <div class="page">
     <div class="sidebar">
@@ -29,6 +31,7 @@
                     {
                         <ReloadButton AdditionalClasses="ms-3" @onclick="SynchronizeStudents">Синхронизировать студентов</ReloadButton>
                     }
+                    <DownloadButton @onclick="DownloadPage">Скачать страницу</DownloadButton>
                 </div>
 
                 <div class="col-0">
@@ -98,6 +101,11 @@
         if (prevPageNode == null) return ".";
 
         return $"/journal/{JournalState.JournalId}/{prevPageNode!.Value.PageType!.Name}/{prevPageNode.Value.Id}";
+    }
+
+    private async Task DownloadPage()
+    {
+        await JSRuntime.InvokeVoidAsync("downloadPage", JournalState.JournalId, JournalState.CurrentPageId, PageUtils.PagesRusNames[JournalState.CurrentPageType!.Id]);
     }
 
     private async Task DeletePage()

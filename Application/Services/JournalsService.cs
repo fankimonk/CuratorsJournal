@@ -36,7 +36,7 @@ namespace Application.Services
             var journal = await _journalsRepository.GetByIdAsync(journalId);
             if (journal == null) return null;
 
-            var titlePages = await _pagesRepository.GetJournalPagesByType(journalId, PageTypes.Title);
+            var titlePages = await _pagesRepository.GetJournalPagesByTypeAsync(journalId, PageTypes.Title);
             if (titlePages == null || titlePages.Count == 0) return null;
 
             var titlePage = titlePages.First();

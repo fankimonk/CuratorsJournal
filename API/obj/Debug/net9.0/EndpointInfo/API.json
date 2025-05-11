@@ -3701,6 +3701,37 @@
         }
       }
     },
+    "/api/journal/downloadpage/{journalId}": {
+      "get": {
+        "tags": [
+          "Journal"
+        ],
+        "parameters": [
+          {
+            "name": "journalId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "pageId",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/journal/documents/{journalId}": {
       "get": {
         "tags": [
@@ -3825,7 +3856,7 @@
       }
     },
     "/api/journal/deletedocument": {
-      "delete": {
+      "put": {
         "tags": [
           "Journal"
         ],

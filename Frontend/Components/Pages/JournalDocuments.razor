@@ -1,0 +1,69 @@
+﻿@page "/journal/{journalId:int}/documents"
+
+@inherits CRUDPageBase
+
+@using Contracts.Journal.Files
+@using Frontend.Components.Buttons
+@using Frontend.Components.Utils
+@using Microsoft.AspNetCore.Components.QuickGrid
+
+@inject HttpClient HttpClient
+@inject IJSRuntime JSRuntime
+
+<PageTitle>Документы</PageTitle>
+
+@if (_documents == null)
+{
+    <p><em>Загрузка...</em></p>
+}
+else
+{
+    <QuickGrid Items="_documents" class="table">
+        <PropertyColumn Property="@(l => l)" Title="Имя" Sortable="true" class="align-middle" />
+        @if (_canCRUD)
+        {
+            <TemplateColumn class="text-end">
+                <DownloadButton @onclick="async () => await DownloadFile(context)" StopPropagation="true" />
+                <DeleteButton @onclick="async () => await DeleteFile(context)" StopPropagation="true" />
+            </TemplateColumn>
+        }
+    </QuickGrid>
+
+    <AlertBottom IsVisible="_isServerErrorAlertVisible" OnClose="CloseServerErrorAlert">@_errorMessage</AlertBottom>
+}
+
+@code {
+    [Parameter]
+    public int JournalId { get; set; }
+
+    private IQueryable<string>? _documents;
+
+    private bool _canCRUD = true;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var documents = await HttpClient.GetFromJsonAsync<List<string>>("api/journal/documents/" + JournalId.ToString());
+        if (documents != null) _documents = documents.AsQueryable();
+    }
+
+    private async Task DownloadFile(string fileName)
+    {
+        await JSRuntime.InvokeVoidAsync("downloadFile", new DownloadFileRequest(JournalId, fileName));
+    }
+
+    private async Task DeleteFile(string fileName)
+    {
+        var response = await HttpClient.PutAsJsonAsync("api/journal/deletedocument", new DeleteFileRequest(JournalId, fileName));
+
+        if (response.IsSuccessStatusCode)
+        {
+            _documents = _documents!.Where(l => l != fileName);
+        }
+        else
+        {
+            var errorMessage = await response.Content.ReadAsStringAsync();
+            errorMessage = errorMessage.Split('\n').FirstOrDefault();
+            ShowServerErrorAlert(errorMessage);
+        }
+    }
+}

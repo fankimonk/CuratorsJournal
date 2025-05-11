@@ -3,6 +3,7 @@ using DataAccess.Interfaces;
 using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Wordprocessing;
 using Domain.Entities.JournalContent.Holidays;
+using Domain.Entities.JournalContent.Pages;
 using Domain.Enums.Journal;
 using Frontend.Utils;
 
@@ -25,21 +26,33 @@ namespace Application.Services.Word
             _holidaysRepository = holidaysRepository;
         }
 
-        public async Task Generate()
+        public async Task Generate(Page? page = null)
         {
-            var pages = await _pagesRepository.GetJournalPagesByType(_journalId, PageTypes.Holidays);
+            var pages = await _pagesRepository.GetJournalPagesByTypeAsync(_journalId, PageTypes.Holidays);
             if (pages == null) throw new ArgumentException(nameof(pages));
-            foreach (var page in pages)
+            if (page != null)
             {
-                var holidayTypes = await _holidaysRepository.GetByPageIdAsync(page.Id);
-                if (holidayTypes == null) throw new ArgumentException(nameof(page));
-
-                foreach (var ht in holidayTypes.Where(ht => ht.Holidays.Count > 0))
+                if (!pages.Any(p => p.Id == page.Id)) throw new ArgumentException(nameof(page));
+                await GeneratePage(page);
+            }
+            else
+            {
+                foreach (var p in pages)
                 {
-                    AppendTable(ht);
+                    await GeneratePage(p);
+                    WordUtils.AppendPageBreak(_documentBody);
                 }
-                
-                WordUtils.AppendPageBreak(_documentBody);
+            }   
+        }
+
+        private async Task GeneratePage(Page page)
+        {
+            var holidayTypes = await _holidaysRepository.GetByPageIdAsync(page.Id);
+            if (holidayTypes == null) throw new ArgumentException(nameof(page));
+
+            foreach (var ht in holidayTypes.Where(ht => ht.Holidays.Count > 0))
+            {
+                AppendTable(ht);
             }
         }
 

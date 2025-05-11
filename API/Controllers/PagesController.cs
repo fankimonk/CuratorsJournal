@@ -38,7 +38,7 @@ namespace API.Controllers
         [HttpPut("toggleisapproved/{pageId}")]
         public async Task<ActionResult<bool>> ToggleIsApproved([FromRoute] int pageId)
         {
-            var isApproved = await _pagesRepository.ToggleIsApproved(pageId);
+            var isApproved = await _pagesRepository.ToggleIsApprovedAsync(pageId);
             if (isApproved == null) return NotFound();
             return Ok(isApproved);
         }

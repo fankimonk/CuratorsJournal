@@ -24,7 +24,7 @@ namespace Application.Services.Word.PesonalizedAccountingCard
 
         public async Task Generate()
         {
-            var pages = await _pagesRepository.GetJournalPagesByType(_journalId, PageTypes.PersonalizedAccountingCard);
+            var pages = await _pagesRepository.GetJournalPagesByTypeAsync(_journalId, PageTypes.PersonalizedAccountingCard);
             if (pages == null) throw new ArgumentException(nameof(pages));
 
             foreach (var page in pages)

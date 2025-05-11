@@ -34,7 +34,7 @@ namespace Application.Services.Word
 
         public async Task Generate()
         {
-            var pages = await _pagesRepository.GetJournalPagesByType(_journalId, PageTypes.InformationHoursAccounting);
+            var pages = await _pagesRepository.GetJournalPagesByTypeAsync(_journalId, PageTypes.InformationHoursAccounting);
             if (pages == null) throw new ArgumentException(nameof(pages));
             foreach (var page in pages)
             {

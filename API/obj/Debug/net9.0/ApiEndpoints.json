@@ -1011,7 +1011,7 @@
     "ContainingType": "API.Controllers.JournalController",
     "Method": "DeleteDocument",
     "RelativePath": "api/journal/deletedocument",
-    "HttpMethod": "DELETE",
+    "HttpMethod": "PUT",
     "IsController": true,
     "Order": 0,
     "Parameters": [
@@ -1061,6 +1061,27 @@
         "Name": "request",
         "Type": "Contracts.Journal.Files.DownloadFileRequest",
         "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "API.Controllers.JournalController",
+    "Method": "DownloadPage",
+    "RelativePath": "api/journal/downloadpage/{journalId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "journalId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "pageId",
+        "Type": "System.Int32",
+        "IsRequired": false
       }
     ],
     "ReturnTypes": []

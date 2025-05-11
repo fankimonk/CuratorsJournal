@@ -7,11 +7,12 @@ namespace DataAccess.Interfaces
     {
         Task<Page?> CreateAsync(Page page);
         Task<bool> DeleteAsync(int id);
-        Task<List<Page>?> GetByJournalId(int journalId);
-        Task<List<PageType>?> GetByJournalIdGroupedByTypes(int journalId);
-        Task<Page?> GetById(int id);
-        Task<List<Page>?> GetJournalPagesByType(int journalId, PageTypes pageType);
-        Task<bool?> ToggleIsApproved(int pageId);
+        Task<List<Page>?> GetByJournalIdAsync(int journalId);
+        Task<List<PageType>?> GetByJournalIdGroupedByTypesAsync(int journalId);
+        Task<Page?> GetByIdAsync(int id);
+        Task<Page?> GetPageDataByIdAsync(int id);
+        Task<List<Page>?> GetJournalPagesByTypeAsync(int journalId, PageTypes pageType);
+        Task<bool?> ToggleIsApprovedAsync(int pageId);
         Task<bool> ApproveAllJournalPagesAsync(int journalId);
         Task<bool> UnapproveAllJournalPagesAsync(int journalId);
     }

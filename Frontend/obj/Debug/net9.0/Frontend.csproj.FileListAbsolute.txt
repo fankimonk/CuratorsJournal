@@ -42,7 +42,6 @@ C:\Dev\Web\CuratorsJournal\Frontend\obj\Debug\net9.0\scopedcss\projectbundle\Fro
 C:\Dev\Web\CuratorsJournal\Frontend\obj\Debug\net9.0\compressed\unlu0xluo6-eu7w3d5g1a.gz
 C:\Dev\Web\CuratorsJournal\Frontend\obj\Debug\net9.0\compressed\tel0g54dgw-khy4lop6wu.gz
 C:\Dev\Web\CuratorsJournal\Frontend\obj\Debug\net9.0\compressed\8jolxrx2qg-bkwthl912k.gz
-C:\Dev\Web\CuratorsJournal\Frontend\obj\Debug\net9.0\compressed\dgyc46k7no-7y9v1y3ex0.gz
 C:\Dev\Web\CuratorsJournal\Frontend\obj\Debug\net9.0\compressed\8hi5addhx4-bqjiyaj88i.gz
 C:\Dev\Web\CuratorsJournal\Frontend\obj\Debug\net9.0\compressed\rbb6md7g22-c2jlpeoesf.gz
 C:\Dev\Web\CuratorsJournal\Frontend\obj\Debug\net9.0\compressed\t2xxkea02z-erw9l3u2r3.gz
@@ -108,3 +107,4 @@ C:\Dev\Web\CuratorsJournal\Frontend\obj\Debug\net9.0\Frontend.genruntimeconfig.c
 C:\Dev\Web\CuratorsJournal\Frontend\obj\Debug\net9.0\ref\Frontend.dll
 C:\Dev\Web\CuratorsJournal\Frontend\obj\Debug\net9.0\compressed\yfpirp1akv-88l9hkhcu1.gz
 C:\Dev\Web\CuratorsJournal\Frontend\obj\Debug\net9.0\staticwebassets.upToDateCheck.txt
+C:\Dev\Web\CuratorsJournal\Frontend\obj\Debug\net9.0\compressed\dgyc46k7no-zdp01xah4v.gz

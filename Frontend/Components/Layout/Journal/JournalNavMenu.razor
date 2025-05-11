@@ -1,6 +1,7 @@
 ﻿@using Contracts.Journal
 @using Contracts.Journal.Pages
 @using Frontend.Components.Buttons
+@using Frontend.Components.Utils
 @using Frontend.Services
 @using Frontend.Utils.Extensions
 
@@ -39,9 +40,9 @@
                                         <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"></path>
                                     </svg>
                                 }
-                                @if (PageTypesRusNames.ContainsKey(pt.Id))
+                                @if (PageUtils.PageTypesRusNames.ContainsKey(pt.Id))
                                 {
-                                    @PageTypesRusNames[pt.Id].ToString();
+                                    @PageUtils.PageTypesRusNames[pt.Id].ToString();
                                 }
                                 else
                                 {
@@ -57,7 +58,7 @@
                         {
                             var pageUrl = $"/journal/{JournalState.JournalContents.JournalId}/{pt.Name}/{page.Id}";
                             <NavLink class="@GetNavLinkClass(pt.Id)" href="@pageUrl" Match="NavLinkMatch.All">
-                                @if (PagesRusNames.ContainsKey(pt.Id))
+                                @if (PageUtils.PagesRusNames.ContainsKey(pt.Id))
                                 {
                                     <div class="text-nowrap">
                                         @switch (pt.Id)
@@ -66,7 +67,7 @@
                                                 @(page.Student == null ? "(нет)" : page.Student.GetFIO())
                                                 break;
                                             default:
-                                                @PagesRusNames[pt.Id].ToString()
+                                                @PageUtils.PagesRusNames[pt.Id].ToString()
                                                 break;
                                         }
                                     </div>
@@ -87,50 +88,6 @@
 </div>
 
 @code {
-    private Dictionary<int, string> PagesRusNames = new Dictionary<int, string>()
-    {
-        { 1, "Титульная страница" },
-        { 2, "Контактные телефоны" },
-        { 3, "Календарь праздников" },
-        { 4, "Социальная характеристика учебной группы" },
-        { 5, "График учебного процесса" },
-        { 6, "Динамика основных показателей группы за период обучения" },
-        { 7, "Актив учебной группы" },
-        { 8, "Список студентов" },
-        { 9, "Карта персонифицированного учета" },
-        { 10, "Карта здоровья студентов" },
-        { 11, "Учет итоговой успеваемости студентов группы" },
-        { 12, "Учет идеологической и воспитательной работы куратора учебной группы (по месяцам)" },
-        { 13, "Учет информационных часов" },
-        { 14, "Участие куратора в работе педагогических семинаров" },
-        { 15, "Работа с научно-методической и педагогической литературой" },
-        { 16, "Психолого-педагогическая характеристика учебной группы" },
-        { 17, "Рекомендации и замечания лиц, проверяющих работу куратора" },
-        { 18, "Традиции вуза, факультета, группы" },
-    };
-
-    private Dictionary<int, string> PageTypesRusNames = new Dictionary<int, string>()
-    {
-        { 1, "Титульные страницы" },
-        { 2, "Контактные телефоны" },
-        { 3, "Календарь праздников" },
-        { 4, "Социальная характеристика учебной группы" },
-        { 5, "График учебного процесса" },
-        { 6, "Динамика основных показателей группы за период обучения" },
-        { 7, "Актив учебной группы" },
-        { 8, "Список студентов" },
-        { 9, "Карты персонифицированного учета" },
-        { 10, "Карты здоровья студентов" },
-        { 11, "Учет итоговой успеваемости студентов группы" },
-        { 12, "Учет идеологической и воспитательной работы куратора учебной группы (по месяцам)" },
-        { 13, "Учет информационных часов" },
-        { 14, "Участие куратора в работе педагогических семинаров" },
-        { 15, "Работа с научно-методической и педагогической литературой" },
-        { 16, "Психолого-педагогическая характеристика учебной группы" },
-        { 17, "Рекомендации и замечания лиц, проверяющих работу куратора" },
-        { 18, "Традиции вуза, факультета, группы" },
-    };
-
     private async Task AddPage(int pageTypeId)
     {
         var response = await HttpClient.PostAsJsonAsync<AddPageRequest>("api/page", new AddPageRequest(JournalState.JournalId, pageTypeId));

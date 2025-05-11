@@ -77,7 +77,14 @@ namespace API.Controllers
         {
             var fileData = await _wordService.GenerateWord(journalId);
             if (fileData == null) return BadRequest();
+            return File(fileData.MemoryStream, fileData.ContentType, fileData.FileName);
+        }
 
+        [HttpGet("downloadpage/{journalId}")]
+        public async Task<IActionResult> DownloadPage([FromRoute] int journalId, [FromQuery] int pageId)
+        {
+            var fileData = await _wordService.GeneratePage(journalId, pageId);
+            if (fileData == null) return BadRequest();
             return File(fileData.MemoryStream, fileData.ContentType, fileData.FileName);
         }
 
@@ -104,7 +111,7 @@ namespace API.Controllers
             return Ok();
         }
 
-        [HttpDelete("deletedocument")]
+        [HttpPut("deletedocument")]
         public async Task<IActionResult> DeleteDocument([FromBody] DeleteFileRequest request)
         {
             if (!_filesService.DeleteFile(request.JournalId, request.FileName)) return NotFound();
@@ -114,7 +121,7 @@ namespace API.Controllers
         [HttpGet("{journalId}/pages")]
         public async Task<ActionResult<JournalPagesResponse>> GetPages([FromRoute] int journalId)
         {
-            var pages = await _pagesRepository.GetByJournalId(journalId);
+            var pages = await _pagesRepository.GetByJournalIdAsync(journalId);
             if (pages == null) return NotFound();
 
             var response = pages.Select(p => new PageResponse(
@@ -131,7 +138,7 @@ namespace API.Controllers
         [HttpGet("{journalId}/contents")]
         public async Task<ActionResult<JournalContentsResponse>> GetContents([FromRoute] int journalId)
         {
-            var pages = await _pagesRepository.GetByJournalIdGroupedByTypes(journalId);
+            var pages = await _pagesRepository.GetByJournalIdGroupedByTypesAsync(journalId);
             if (pages == null) return NotFound();
 
             var response = pages.Select(pt => new PageTypeResponse(

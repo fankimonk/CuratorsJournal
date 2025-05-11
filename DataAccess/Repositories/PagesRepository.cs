@@ -96,18 +96,29 @@ namespace DataAccess.Repositories
             return true;
         }
 
-        public async Task<Page?> GetById(int id)
+        public async Task<Page?> GetByIdAsync(int id)
         {
             return await _dbContext.Pages.AsNoTracking().FirstOrDefaultAsync(p => p.Id == id);
         }
 
-        public async Task<List<Page>?> GetByJournalId(int journalId)
+        public async Task<Page?> GetPageDataByIdAsync(int id)
+        {
+            var page = await _dbContext.Pages.AsNoTracking().FirstOrDefaultAsync(p => p.Id == id);
+            if (page == null) return null;
+
+            var pages = GetPagesWithDataByType((PageTypes)page.PageTypeId);
+            if (pages == null) return null;
+
+            return await pages.FirstOrDefaultAsync(p => p.Id == id);
+        }
+
+        public async Task<List<Page>?> GetByJournalIdAsync(int journalId)
         {
             if (!await JournalExists(journalId)) return null;
             return await _dbContext.Pages.AsNoTracking().Include(p => p.PageType).Where(p => p.JournalId == journalId).ToListAsync();
         }
 
-        public async Task<List<PageType>?> GetByJournalIdGroupedByTypes(int journalId)
+        public async Task<List<PageType>?> GetByJournalIdGroupedByTypesAsync(int journalId)
         {
             if (!await JournalExists(journalId)) return null;
             var contents = await _dbContext.PageTypes.Include(pt => pt.Pages).ThenInclude(p => p.PersonalizedAccountingCard).ThenInclude(c => c!.Student).AsNoTracking()
@@ -127,13 +138,56 @@ namespace DataAccess.Repositories
             return contents;
         }
 
-        public async Task<List<Page>?> GetJournalPagesByType(int journalId, PageTypes pageType)
+        public async Task<List<Page>?> GetJournalPagesByTypeAsync(int journalId, PageTypes pageType)
         {
             if (!await JournalExists(journalId)) return null;
             if (!await PageTypeExists((int)pageType)) return null;
 
+            var pages = GetPagesWithDataByType(pageType);
+            if (pages == null) return null;
+
+            return await pages.Where(p => p.JournalId == journalId && p.PageTypeId == (int)pageType)
+                .ToListAsync();
+        }
+
+        private async Task<bool> PageTypeExists(int id) =>
+            await _dbContext.PageTypes.AsNoTracking().FirstOrDefaultAsync(c => c.Id == id) != null;
+
+        private async Task<bool> JournalExists(int id) =>
+            await _dbContext.Journals.AsNoTracking().FirstOrDefaultAsync(c => c.Id == id) != null;
+
+        public async Task<bool?> ToggleIsApprovedAsync(int pageId)
+        {
+            var page = await _dbContext.Pages.FirstOrDefaultAsync(p => p.Id == pageId);
+            if (page == null) return null;
+
+            page.IsApproved = !page.IsApproved;
+            await _dbContext.SaveChangesAsync();
+            return page.IsApproved;
+        }
+
+        public async Task<bool> ApproveAllJournalPagesAsync(int journalId)
+        {
+            if (!await JournalExists(journalId)) return false;
+            var pages = _dbContext.Pages.Include(p => p.PageType).Where(p => p.JournalId == journalId);
+            await pages.ForEachAsync(p => p.IsApproved = true);
+            await _dbContext.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<bool> UnapproveAllJournalPagesAsync(int journalId)
+        {
+            if (!await JournalExists(journalId)) return false;
+            var pages = _dbContext.Pages.Include(p => p.PageType).Where(p => p.JournalId == journalId);
+            await pages.ForEachAsync(p => p.IsApproved = false);
+            await _dbContext.SaveChangesAsync();
+            return true;
+        }
+
+        private IQueryable<Page>? GetPagesWithDataByType(PageTypes pageType)
+        {
             var pages = _dbContext.Pages.AsNoTracking();
-            switch(pageType)
+            switch (pageType)
             {
                 case PageTypes.ContactPhones:
                     pages = pages.Include(p => p.ContactPhoneNumbers);
@@ -237,43 +291,7 @@ namespace DataAccess.Repositories
                     pages = pages.Include(p => p.Traditions);
                     break;
             }
-
-            return await pages.Where(p => p.JournalId == journalId && p.PageTypeId == (int)pageType)
-                .ToListAsync();
-        }
-
-        private async Task<bool> PageTypeExists(int id) =>
-            await _dbContext.PageTypes.AsNoTracking().FirstOrDefaultAsync(c => c.Id == id) != null;
-
-        private async Task<bool> JournalExists(int id) =>
-            await _dbContext.Journals.AsNoTracking().FirstOrDefaultAsync(c => c.Id == id) != null;
-
-        public async Task<bool?> ToggleIsApproved(int pageId)
-        {
-            var page = await _dbContext.Pages.FirstOrDefaultAsync(p => p.Id == pageId);
-            if (page == null) return null;
-
-            page.IsApproved = !page.IsApproved;
-            await _dbContext.SaveChangesAsync();
-            return page.IsApproved;
-        }
-
-        public async Task<bool> ApproveAllJournalPagesAsync(int journalId)
-        {
-            if (!await JournalExists(journalId)) return false;
-            var pages = _dbContext.Pages.Include(p => p.PageType).Where(p => p.JournalId == journalId);
-            await pages.ForEachAsync(p => p.IsApproved = true);
-            await _dbContext.SaveChangesAsync();
-            return true;
-        }
-
-        public async Task<bool> UnapproveAllJournalPagesAsync(int journalId)
-        {
-            if (!await JournalExists(journalId)) return false;
-            var pages = _dbContext.Pages.Include(p => p.PageType).Where(p => p.JournalId == journalId);
-            await pages.ForEachAsync(p => p.IsApproved = false);
-            await _dbContext.SaveChangesAsync();
-            return true;
+            return pages;
         }
     }
 }

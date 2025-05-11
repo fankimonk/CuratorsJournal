@@ -3,6 +3,7 @@ using DataAccess.Interfaces;
 using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Wordprocessing;
 using Domain.Entities.JournalContent;
+using Domain.Entities.JournalContent.Pages;
 using Domain.Enums.Journal;
 
 namespace Application.Services.Word
@@ -22,18 +23,30 @@ namespace Application.Services.Word
             _pagesRepository = pagesRepository;
         }
 
-        public async Task Generate()
+        public async Task Generate(Page? page = null)
         {
-            var pages = await _pagesRepository.GetJournalPagesByType(_journalId, PageTypes.ContactPhones);
+            var pages = await _pagesRepository.GetJournalPagesByTypeAsync(_journalId, PageTypes.ContactPhones);
             if (pages == null) throw new ArgumentException(nameof(pages));
-            foreach (var page in pages)
+            if (page != null)
             {
-                AppendTitleName();
-
-                AppendTable(page.ContactPhoneNumbers);
-
-                WordUtils.AppendPageBreak(_documentBody);
+                if (!pages.Any(p => p.Id == page.Id)) throw new ArgumentException(nameof(page));
+                GeneratePage(page);
             }
+            else
+            {
+                foreach (var p in pages)
+                {
+                    GeneratePage(p);
+                    WordUtils.AppendPageBreak(_documentBody);
+                }
+            }
+        }
+
+        private void GeneratePage(Page page)
+        {
+            AppendTitleName();
+
+            AppendTable(page.ContactPhoneNumbers);
         }
 
         private void AppendTitleName()
