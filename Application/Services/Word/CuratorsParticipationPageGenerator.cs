@@ -3,6 +3,7 @@ using DataAccess.Interfaces;
 using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Wordprocessing;
 using Domain.Entities.JournalContent;
+using Domain.Entities.JournalContent.Pages;
 using Domain.Enums.Journal;
 
 namespace Application.Services.Word
@@ -21,7 +22,15 @@ namespace Application.Services.Word
 
         private ParagraphProperties _valueParagraphProperties = new ParagraphProperties(new SpacingBetweenLines { Before = "0", After = "0" });
 
-        private UInt32Value _valueRowHeight = 420;
+        private UInt32Value _valueRowHeight = 410;
+
+        private readonly int _maxRows = 20;
+
+        private readonly int _dateColumnWidth = 400 * 3;
+        private readonly int _topicColumnWidth = 1300 * 3;
+        private readonly int _participationFormColumnWidth = 700 * 3;
+        private readonly int _locationColumnWidth = 800 * 3;
+        private readonly int _noteColumnWidth = 1800 * 3;
 
         public CuratorsParticipationPageGenerator(int journalId, Body body, IPagesRepository pagesRepository)
         {
@@ -30,17 +39,23 @@ namespace Application.Services.Word
             _pagesRepository = pagesRepository;
         }
 
-        public async Task Generate()
+        public async Task Generate(Page? page = null)
         {
             var pages = await _pagesRepository.GetJournalPagesByTypeAsync(_journalId, PageTypes.CuratorsParticipationInPedagogicalSeminars);
             if (pages == null) throw new ArgumentException(nameof(pages));
-            foreach (var page in pages)
+            if (page != null)
             {
-                AppendTitle();
-
-                AppendTable(page.CuratorsParticipationInPedagogicalSeminars);
-
-                WordUtils.AppendPageBreak(_documentBody);
+                if (!pages.Any(p => p.Id == page.Id)) throw new ArgumentException(nameof(page));
+                var rows = GenerateRows(page.CuratorsParticipationInPedagogicalSeminars);
+                AppendTable(rows);
+            }
+            else
+            {
+                foreach (var p in pages)
+                {
+                    var rows = GenerateRows(p.CuratorsParticipationInPedagogicalSeminars);
+                    AppendTable(rows);
+                }
             }
         }
 
@@ -59,7 +74,49 @@ namespace Application.Services.Word
             _documentBody.Append(title);
         }
 
-        private void AppendTable(List<CuratorsParticipationInPedagogicalSeminarsRecord> records)
+        private List<TableRow> GenerateRows(List<CuratorsParticipationInPedagogicalSeminarsRecord> records)
+        {
+            var totalRows = new List<TableRow>();
+            foreach (var record in records)
+            {
+                var rows = new List<TableRow>() { new TableRow(new TableRowProperties(new TableRowHeight() { Val = _valueRowHeight })) };
+
+                var dateStr = record.Date == null ? "" : ((DateOnly)record.Date).ToString();
+                var dateCellProperties = (TableCellProperties)_cellProperties.CloneNode(true);
+                dateCellProperties.Append(new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = _dateColumnWidth.ToString() });
+                TableCell dateCell = new TableCell(new Paragraph(_valueParagraphProperties.CloneNode(true),
+                    new Run(WordUtils.GetRunProperties(fontSize: "24"),
+                        new Text(record.Date == null ? "" : ((DateOnly)record.Date).ToString()))));
+                dateCell.Append(dateCellProperties);
+                rows[0].Append(dateCell);
+
+                var topicStr = record.Topic ?? "";
+                var topicCellProperties = (TableCellProperties)_cellProperties.CloneNode(true);
+                topicCellProperties.Append(new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = _topicColumnWidth.ToString() });
+                AppendTopic(topicStr, rows, topicCellProperties, dateCellProperties);
+
+                var participationFormStr = record.ParticipationForm ?? "";
+                var participationFormCellProperties = (TableCellProperties)_cellProperties.CloneNode(true);
+                participationFormCellProperties.Append(new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = _participationFormColumnWidth.ToString() });
+                AppendParticipationForm(participationFormStr, rows, participationFormCellProperties, topicCellProperties, dateCellProperties);
+
+                var locationStr = record.SeminarLocation ?? "";
+                var locationCellProperties = (TableCellProperties)_cellProperties.CloneNode(true);
+                locationCellProperties.Append(new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = _locationColumnWidth.ToString() });
+                AppendLocation(locationStr, rows, locationCellProperties, participationFormCellProperties, topicCellProperties, dateCellProperties);
+
+                var noteStr = record.Note ?? "";
+                var noteCellProperties = (TableCellProperties)_cellProperties.CloneNode(true);
+                noteCellProperties.Append(new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = _noteColumnWidth.ToString() });
+                AppendNote(noteStr, rows, noteCellProperties, locationCellProperties, participationFormCellProperties, topicCellProperties, dateCellProperties);
+
+                totalRows.AddRange(rows);
+            }
+
+            return totalRows;
+        }
+
+        private void AppendTable(List<TableRow> rows)
         {
             Table table = new Table();
 
@@ -76,18 +133,12 @@ namespace Application.Services.Word
 
             table.AppendChild(tblProperties);
 
-            int dateColumnWidth = 400 * 3;
-            int topicColumnWidth = 1300 * 3;
-            int participationFormColumnWidth = 700 * 3;
-            int locationColumnWidth = 800 * 3;
-            int noteColumnWidth = 1800 * 3;
-
             TableGrid tableGrid = new TableGrid(
-                new GridColumn() { Width = dateColumnWidth.ToString() },
-                new GridColumn() { Width = topicColumnWidth.ToString() },
-                new GridColumn() { Width = participationFormColumnWidth.ToString() },
-                new GridColumn() { Width = locationColumnWidth.ToString() },
-                new GridColumn() { Width = noteColumnWidth.ToString() }
+                new GridColumn() { Width = _dateColumnWidth.ToString() },
+                new GridColumn() { Width = _topicColumnWidth.ToString() },
+                new GridColumn() { Width = _participationFormColumnWidth.ToString() },
+                new GridColumn() { Width = _locationColumnWidth.ToString() },
+                new GridColumn() { Width = _noteColumnWidth.ToString() }
             );
             table.AppendChild(tableGrid);
 
@@ -100,72 +151,92 @@ namespace Application.Services.Word
                 new Run(WordUtils.GetRunProperties(bold: true, fontSize: "26"),
                     new Text("Дата"))));
             dateHeadCell.Append(new TableCellProperties(
-                new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = dateColumnWidth.ToString() }));
+                new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = _dateColumnWidth.ToString() }));
 
-            TableCell topicHeadCell = new TableCell(new Paragraph(paragraphProperties.CloneNode(true), 
+            TableCell topicHeadCell = new TableCell(new Paragraph(paragraphProperties.CloneNode(true),
                 new Run(WordUtils.GetRunProperties(bold: true, fontSize: "26"),
                     new Text("Тема семинара заседания"))));
             topicHeadCell.Append(new TableCellProperties(
-                new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = topicColumnWidth.ToString() }));
+                new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = _topicColumnWidth.ToString() }));
 
-            TableCell participationFormHeadCell = new TableCell(new Paragraph(paragraphProperties.CloneNode(true), 
+            TableCell participationFormHeadCell = new TableCell(new Paragraph(paragraphProperties.CloneNode(true),
                 new Run(WordUtils.GetRunProperties(bold: true, fontSize: "26"),
                     new Text("Форма участия"))));
             participationFormHeadCell.Append(new TableCellProperties(
-                new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = participationFormColumnWidth.ToString() }));
+                new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = _participationFormColumnWidth.ToString() }));
 
-            TableCell locationHeadCell = new TableCell(new Paragraph(paragraphProperties.CloneNode(true), 
+            TableCell locationHeadCell = new TableCell(new Paragraph(paragraphProperties.CloneNode(true),
                 new Run(WordUtils.GetRunProperties(bold: true, fontSize: "26"),
                     new Text("Место проведения"))));
             locationHeadCell.Append(new TableCellProperties(
-                new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = locationColumnWidth.ToString() }));
+                new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = _locationColumnWidth.ToString() }));
 
-            TableCell noteHeadCell = new TableCell(new Paragraph(paragraphProperties.CloneNode(true), 
+            TableCell noteHeadCell = new TableCell(new Paragraph(paragraphProperties.CloneNode(true),
                 new Run(WordUtils.GetRunProperties(bold: true, fontSize: "26"),
                     new Text("Примечание"))));
             noteHeadCell.Append(new TableCellProperties(
-                new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = noteColumnWidth.ToString() }));
+                new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = _noteColumnWidth.ToString() }));
 
             headRow.Append(dateHeadCell, topicHeadCell, participationFormHeadCell, locationHeadCell, noteHeadCell);
             table.Append(headRow);
 
-            foreach (var record in records)
+            int pageCount = rows.Count / _maxRows;
+            pageCount += rows.Count % _maxRows == 0 ? 0 : 1;
+            for (int i = 0; i < pageCount; i++)
             {
-                var rows = new List<TableRow>() { new TableRow(new TableRowProperties(new TableRowHeight() { Val = _valueRowHeight })) };
-
-                var dateStr = record.Date == null ? "" : ((DateOnly)record.Date).ToString();
-                var dateCellProperties = (TableCellProperties)_cellProperties.CloneNode(true);
-                dateCellProperties.Append(new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = dateColumnWidth.ToString() });
-                TableCell dateCell = new TableCell(new Paragraph(_valueParagraphProperties.CloneNode(true),
-                    new Run(WordUtils.GetRunProperties(fontSize: "24"),
-                        new Text(record.Date == null ? "" : ((DateOnly)record.Date).ToString()))));
-                dateCell.Append(dateCellProperties);
-                rows[0].Append(dateCell);
-
-                var topicStr = record.Topic ?? "";
-                var topicCellProperties = (TableCellProperties)_cellProperties.CloneNode(true);
-                topicCellProperties.Append(new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = topicColumnWidth.ToString() });
-                AppendTopic(topicStr, rows, topicCellProperties, dateCellProperties);
-
-                var participationFormStr = record.ParticipationForm ?? "";
-                var participationFormCellProperties = (TableCellProperties)_cellProperties.CloneNode(true);
-                participationFormCellProperties.Append(new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = participationFormColumnWidth.ToString() });
-                AppendParticipationForm(participationFormStr, rows, participationFormCellProperties, topicCellProperties, dateCellProperties);
-
-                var locationStr = record.SeminarLocation ?? "";
-                var locationCellProperties = (TableCellProperties)_cellProperties.CloneNode(true);
-                locationCellProperties.Append(new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = locationColumnWidth.ToString() });
-                AppendLocation(locationStr, rows, locationCellProperties, participationFormCellProperties, topicCellProperties, dateCellProperties);
-
-                var noteStr = record.Note ?? "";
-                var noteCellProperties = (TableCellProperties)_cellProperties.CloneNode(true);
-                noteCellProperties.Append(new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = noteColumnWidth.ToString() });
-                AppendNote(noteStr, rows, noteCellProperties, locationCellProperties, participationFormCellProperties, topicCellProperties, dateCellProperties);
-
-                foreach (var row in rows) table.Append(row);
+                var currentTable = table.CloneNode(true);
+                AppendTitle();
+                var currentPageRows = rows.Skip(i * _maxRows).Take(_maxRows);
+                foreach (var row in currentPageRows)
+                    currentTable.Append(row);
+                for (int j = currentPageRows.Count(); j < _maxRows; j++)
+                    AppendEmptyRow((Table)currentTable);
+                _documentBody.Append(currentTable);
+                WordUtils.AppendSectionBreak(WordUtils.PageOrientationTypes.Landscape, _documentBody);
             }
+        }
 
-            _documentBody.Append(table);
+        private void AppendEmptyRow(Table table)
+        {
+            var row = new TableRow(new TableRowProperties(new TableRowHeight() { Val = _valueRowHeight }));
+
+            var dateCellProperties = (TableCellProperties)_cellProperties.CloneNode(true);
+            dateCellProperties.Append(new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = _dateColumnWidth.ToString() });
+            TableCell dateCell = new TableCell(new Paragraph(_valueParagraphProperties.CloneNode(true),
+                new Run(WordUtils.GetRunProperties(fontSize: "24"),
+                    new Text(""))));
+            dateCell.Append(dateCellProperties);
+
+            var topicCellProperties = (TableCellProperties)_cellProperties.CloneNode(true);
+            topicCellProperties.Append(new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = _topicColumnWidth.ToString() });
+            TableCell topicCell = new TableCell(new Paragraph(_valueParagraphProperties.CloneNode(true),
+                new Run(WordUtils.GetRunProperties(fontSize: "24"),
+                    new Text(""))));
+            topicCell.Append(topicCellProperties);
+
+            var participationFormCellProperties = (TableCellProperties)_cellProperties.CloneNode(true);
+            participationFormCellProperties.Append(new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = _participationFormColumnWidth.ToString() });
+            TableCell participationFormCell = new TableCell(new Paragraph(_valueParagraphProperties.CloneNode(true),
+                new Run(WordUtils.GetRunProperties(fontSize: "24"),
+                    new Text(""))));
+            participationFormCell.Append(participationFormCellProperties);
+
+            var locationCellProperties = (TableCellProperties)_cellProperties.CloneNode(true);
+            locationCellProperties.Append(new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = _locationColumnWidth.ToString() });
+            TableCell locationCell = new TableCell(new Paragraph(_valueParagraphProperties.CloneNode(true),
+                new Run(WordUtils.GetRunProperties(fontSize: "24"),
+                    new Text(""))));
+            locationCell.Append(locationCellProperties);
+
+            var noteCellProperties = (TableCellProperties)_cellProperties.CloneNode(true);
+            noteCellProperties.Append(new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = _noteColumnWidth.ToString() });
+            TableCell noteCell = new TableCell(new Paragraph(_valueParagraphProperties.CloneNode(true),
+                new Run(WordUtils.GetRunProperties(fontSize: "24"),
+                    new Text(""))));
+            noteCell.Append(noteCellProperties);
+
+            row.Append(dateCell, topicCell, participationFormCell, locationCell, noteCell);
+            table.Append(row);
         }
 
         private void AppendTopic(string str, List<TableRow> rows, TableCellProperties topicCellProperties,

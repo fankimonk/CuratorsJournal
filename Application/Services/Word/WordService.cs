@@ -55,8 +55,6 @@ namespace Application.Services.Word
                 try { await educationalProcessSchedulePageGenerator.Generate(); }
                 catch { return null; }
 
-                WordUtils.AppendBreaks(3, body);
-
                 var dynamicsOfKeyIndicatorsPageGenerator = new DynamicsOfKeyIndicatorsPageGenerator(journalId, body, _pagesRepository);
                 try { await dynamicsOfKeyIndicatorsPageGenerator.Generate(); }
                 catch { return null; }
@@ -99,8 +97,6 @@ namespace Application.Services.Word
                 try { await literatureWorkPageGenerator.Generate(); }
                 catch { return null; }
 
-                WordUtils.AppendSectionBreak(WordUtils.PageOrientationTypes.Landscape, body);
-
                 var psychologicalAndPedagogicalCharacteristicsPageGenerator = new PsychologicalAndPedagogicalCharacteristicsPageGenerator(journalId, body, _pagesRepository);
                 try { await psychologicalAndPedagogicalCharacteristicsPageGenerator.Generate(); }
                 catch { return null; }
@@ -114,8 +110,6 @@ namespace Application.Services.Word
                 var traditionPageGenerator = new TraditionsPageGenerator(journalId, body, _pagesRepository);
                 try { await traditionPageGenerator.Generate(); }
                 catch { return null; }
-
-                WordUtils.AppendSectionBreak(WordUtils.PageOrientationTypes.Landscape, body);
 
                 mainPart.Document.Append(body);
                 mainPart.Document.Save();
@@ -168,7 +162,6 @@ namespace Application.Services.Word
                         var educationalProcessSchedulePageGenerator = new EducationalProcessSchedulePageGenerator(journalId, body, _pagesRepository);
                         try { await educationalProcessSchedulePageGenerator.Generate(); }
                         catch { return null; }
-                        WordUtils.AppendBreaks(3, body);
                         var dynamicsOfKeyIndicatorsPageGenerator = new DynamicsOfKeyIndicatorsPageGenerator(journalId, body, _pagesRepository);
                         try { await dynamicsOfKeyIndicatorsPageGenerator.Generate(); }
                         catch { return null; }
@@ -178,7 +171,6 @@ namespace Application.Services.Word
                         educationalProcessSchedulePageGenerator = new EducationalProcessSchedulePageGenerator(journalId, body, _pagesRepository);
                         try { await educationalProcessSchedulePageGenerator.Generate(); }
                         catch { return null; }
-                        WordUtils.AppendBreaks(3, body);
                         dynamicsOfKeyIndicatorsPageGenerator = new DynamicsOfKeyIndicatorsPageGenerator(journalId, body, _pagesRepository);
                         try { await dynamicsOfKeyIndicatorsPageGenerator.Generate(); }
                         catch { return null; }
@@ -192,7 +184,7 @@ namespace Application.Services.Word
 
                     case (int)PageTypes.StudentList:
                         var studentListPageGenerator = new StudentListPageGenerator(journalId, body, _pagesRepository);
-                        try { await studentListPageGenerator.Generate(); }
+                        try { await studentListPageGenerator.Generate(page); }
                         catch { return null; }
                         break;
 
@@ -204,64 +196,57 @@ namespace Application.Services.Word
 
                     case (int)PageTypes.StudentsHealthCard:
                         var studentHealthCardPageGenerator = new StudentHealthCardPageGenerator(journalId, body, _pagesRepository);
-                        try { await studentHealthCardPageGenerator.Generate(); }
+                        try { await studentHealthCardPageGenerator.Generate(page); }
                         catch { return null; }
-                        WordUtils.AppendSectionBreak(WordUtils.PageOrientationTypes.Landscape, body);
                         break;
 
                     case (int)PageTypes.FinalPerformanceAccounting:
                         var finalPerformaceAccountingPageGenerator = new FinalPerformanceAccountingPageGenerator(journalId, body, _pagesRepository, _performanceAccountingColumnsRepository);
-                        try { await finalPerformaceAccountingPageGenerator.Generate(); }
+                        try { await finalPerformaceAccountingPageGenerator.Generate(page); }
                         catch { return null; }
-                        WordUtils.AppendSectionBreak(WordUtils.PageOrientationTypes.Landscape, body);
                         break;
 
                     case (int)PageTypes.CuratorsIdeologicalAndEducationalWorkAccounting:
                         var ideologicalAndEducationalWorkAccountingPageGenerator = new IdeologicalAndEducationalWorkAccountingPageGenerator(journalId, body, _pagesRepository);
-                        try { await ideologicalAndEducationalWorkAccountingPageGenerator.Generate(); }
+                        try { await ideologicalAndEducationalWorkAccountingPageGenerator.Generate(page); }
                         catch { return null; }
                         WordUtils.AppendSectionBreak(WordUtils.PageOrientationTypes.Landscape, body);
                         break;
 
                     case (int)PageTypes.InformationHoursAccounting:
                         var informationHoursAccountingPageGenerator = new InformationHoursAccountingPageGenerator(journalId, body, _pagesRepository);
-                        try { await informationHoursAccountingPageGenerator.Generate(); }
+                        try { await informationHoursAccountingPageGenerator.Generate(page); }
                         catch { return null; }
-                        WordUtils.AppendSectionBreak(WordUtils.PageOrientationTypes.Landscape, body);
                         break;
 
                     case (int)PageTypes.CuratorsParticipationInPedagogicalSeminars:
                         var curatorsParticipationPageGenerator = new CuratorsParticipationPageGenerator(journalId, body, _pagesRepository);
-                        try { await curatorsParticipationPageGenerator.Generate(); }
+                        try { await curatorsParticipationPageGenerator.Generate(page); }
                         catch { return null; }
-                        WordUtils.AppendSectionBreak(WordUtils.PageOrientationTypes.Landscape, body);
                         break;
 
                     case (int)PageTypes.LiteratureWork:
                         var literatureWorkPageGenerator = new LiteratureWorkPageGenerator(journalId, body, _pagesRepository);
-                        try { await literatureWorkPageGenerator.Generate(); }
+                        try { await literatureWorkPageGenerator.Generate(page); }
                         catch { return null; }
-                        WordUtils.AppendSectionBreak(WordUtils.PageOrientationTypes.Landscape, body);
                         break;
 
                     case (int)PageTypes.PsychologicalAndPedagogicalCharacteristics:
                         var psychologicalAndPedagogicalCharacteristicsPageGenerator = new PsychologicalAndPedagogicalCharacteristicsPageGenerator(journalId, body, _pagesRepository);
-                        try { await psychologicalAndPedagogicalCharacteristicsPageGenerator.Generate(); }
+                        try { await psychologicalAndPedagogicalCharacteristicsPageGenerator.Generate(page); }
                         catch { return null; }
                         break;
 
                     case (int)PageTypes.RecomendationsAndRemarks:
                         var recommendationsAndRemarksPageGenerator = new RecommendationsAndRemarksPageGenerator(journalId, body, _pagesRepository);
-                        try { await recommendationsAndRemarksPageGenerator.Generate(); }
+                        try { await recommendationsAndRemarksPageGenerator.Generate(page); }
                         catch { return null; }
-                        WordUtils.AppendSectionBreak(WordUtils.PageOrientationTypes.Landscape, body);
                         break;
 
                     case (int)PageTypes.Traditions:
                         var traditionPageGenerator = new TraditionsPageGenerator(journalId, body, _pagesRepository);
-                        try { await traditionPageGenerator.Generate(); }
+                        try { await traditionPageGenerator.Generate(page); }
                         catch { return null; }
-                        WordUtils.AppendSectionBreak(WordUtils.PageOrientationTypes.Landscape, body);
                         break;
                 }
 

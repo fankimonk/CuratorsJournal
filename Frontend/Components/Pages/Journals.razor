@@ -24,21 +24,22 @@ else
     <table class="table">
         <thead>
             <tr>
-                <th>Группа</th>
-                <th>Куратор</th>
-                <th></th>
+                <th class="col-4">Группа</th>
+                <th class="col-6">Куратор</th>
+                <th class="col-2"></th>
             </tr>
         </thead>
         <tbody>
             @foreach (var journal in _journals)
             {
-                <tr @onclick='async () => await OpenJournal(journal.Id)' style="cursor: pointer;">
+                <tr @onclick='() => OpenJournal(journal.Id)' style="cursor: pointer;">
                     <td>@journal.GroupNumber</td>
                     <td>
                         @GetCuratorsFIO(journal)
                     </td>
                     <td>
                         <DownloadButton @onclick="async () => await DownloadWord(journal)" StopPropagation="true" />
+                        <FileButton @onclick="() => OpenFiles(journal.Id)" StopPropagation="true"></FileButton>
                     </td>
                 </tr>
             }
@@ -56,9 +57,14 @@ else
         await APIService.GetAsync("api/auth/verify");
     }
 
-    private async Task OpenJournal(int journalId)
+    private void OpenJournal(int journalId)
     {
         NavigationManager.NavigateTo($"/journal/{journalId}/Title");
+    }
+
+    private void OpenFiles(int journalId)
+    {
+        NavigationManager.NavigateTo($"/journal/{journalId}/documents");
     }
 
     private string GetCuratorsFIO(JournalResponse journal)

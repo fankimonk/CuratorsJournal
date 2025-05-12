@@ -3,6 +3,7 @@ using DataAccess.Interfaces;
 using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Wordprocessing;
 using Domain.Entities.JournalContent;
+using Domain.Entities.JournalContent.Pages;
 using Domain.Enums.Journal;
 
 namespace Application.Services.Word
@@ -15,6 +16,12 @@ namespace Application.Services.Word
 
         private int _journalId;
 
+        private readonly int _minRows = 6;
+        private readonly int _maxRows = 8;
+
+        private ParagraphProperties _paragraphProperties = new ParagraphProperties(new Justification { Val = JustificationValues.Center },
+                new SpacingBetweenLines { Before = "0", After = "0" });
+
         public EducationalProcessSchedulePageGenerator(int journalId, Body body, IPagesRepository pagesRepository)
         {
             _journalId = journalId;
@@ -26,12 +33,21 @@ namespace Application.Services.Word
         {
             var pages = await _pagesRepository.GetJournalPagesByTypeAsync(_journalId, PageTypes.EducationalProcessSchedule);
             if (pages == null) throw new ArgumentException(nameof(pages));
-            foreach (var page in pages)
+            foreach (var p in pages)
             {
-                AppendTitle();
-
-                AppendTable(page.EducationalProcessSchedule);
+                GeneratePage(p);
+                int recordsCount = p.EducationalProcessSchedule.Count;
+                int rowsCount = recordsCount < _minRows ? _minRows : recordsCount > _maxRows ? _maxRows : recordsCount;
+                int breaksCount = 2 + 2 * (_maxRows - rowsCount);
+                WordUtils.AppendBreaks(breaksCount, _documentBody);
             }
+        }
+
+        private void GeneratePage(Page page)
+        {
+            AppendTitle();
+
+            AppendTable(page.EducationalProcessSchedule);
         }
 
         private void AppendTitle()
@@ -143,6 +159,7 @@ namespace Application.Services.Word
             headRow.Append(numberHeadCell, startHeadCell, endHeadCell, sessionHeadCell, practiceHeadCell, vacationHeadCell);
             table.Append(headRow);
 
+            if (schedule.Count > _maxRows) schedule = schedule.Take(_maxRows).ToList();
             foreach (var record in schedule)
             {
                 TableRow row = new TableRow();
@@ -237,7 +254,50 @@ namespace Application.Services.Word
                 table.Append(row);
             }
 
+            for (int i = schedule.Count; i < _minRows; i++)
+                AppendEmptyRow(table, (TableCellProperties)numberHeadCellProperties, (TableCellProperties)startHeadCellProperties, (TableCellProperties)endHeadCellProperties,
+                    (TableCellProperties)sessionHeadCellProperties, (TableCellProperties)practiceHeadCellProperties, (TableCellProperties)vacationHeadCellProperties);
+
             _documentBody.Append(table);
+        }
+
+        private void AppendEmptyRow(Table table, TableCellProperties numberCellProperties, TableCellProperties startCellProperties,
+            TableCellProperties endCellProperties, TableCellProperties sessionCellProperties, TableCellProperties practiceCellProperties,
+            TableCellProperties vacationCellProperties)
+        {
+            TableRow row = new TableRow();
+            var rowProperties = new TableRowProperties();
+            rowProperties.Append(new TableRowHeight { Val = 760 });
+            row.AppendChild(rowProperties);
+
+            TableCell numberCell = new TableCell(new Paragraph(
+                _paragraphProperties.CloneNode(true),
+                new Run(WordUtils.GetRunProperties(fontSize: "24"),
+                    new Text(""))));
+            numberCell.Append(numberCellProperties.CloneNode(true));
+
+            TableCell startCell = new TableCell(new Paragraph(_paragraphProperties.CloneNode(true), new Run(WordUtils.GetRunProperties(fontSize: "24"),
+                new Text(""))));
+            startCell.Append(startCellProperties.CloneNode(true));
+
+            TableCell endCell = new TableCell(new Paragraph(_paragraphProperties.CloneNode(true), new Run(WordUtils.GetRunProperties(fontSize: "24"),
+                new Text(""))));
+            endCell.Append(endCellProperties.CloneNode(true));
+
+            TableCell sessionCell = new TableCell(new Paragraph(_paragraphProperties.CloneNode(true), new Run(WordUtils.GetRunProperties(fontSize: "24"),
+                new Text(""))));
+            endCell.Append(sessionCellProperties.CloneNode(true));
+
+            TableCell practiceCell = new TableCell(new Paragraph(_paragraphProperties.CloneNode(true), new Run(WordUtils.GetRunProperties(fontSize: "24"),
+                new Text(""))));
+            endCell.Append(practiceCellProperties.CloneNode(true));
+
+            TableCell vacationCell = new TableCell(new Paragraph(_paragraphProperties.CloneNode(true), new Run(WordUtils.GetRunProperties(fontSize: "24"),
+                new Text(""))));
+            endCell.Append(vacationCellProperties.CloneNode(true));
+
+            row.Append(numberCell, startCell, endCell, sessionCell, practiceCell, vacationCell);
+            table.Append(row);
         }
     }
 }

@@ -5,6 +5,7 @@
 @using Contracts.Journal.Files
 @using Frontend.Components.Buttons
 @using Frontend.Components.Utils
+@using Frontend.Utils
 @using Microsoft.AspNetCore.Components.QuickGrid
 
 @inject HttpClient HttpClient
@@ -18,6 +19,18 @@
 }
 else
 {
+    <UploadButton @onclick="OpenUploadModal" AdditionalClasses="mb-3">Загрузить</UploadButton>
+    <Modal IsVisible="_isUploadModalVisible" OnClose="CloseUploadModal">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="mb-3">
+                    <InputFile OnChange="HandleFileSelected" class="form-control" />
+                </div>
+                <UploadButton @onclick="UploadFile" IsDisabled="!_canUpload">Загрузить</UploadButton>
+            </div>
+        </div>
+    </Modal>
+
     <QuickGrid Items="_documents" class="table">
         <PropertyColumn Property="@(l => l)" Title="Имя" Sortable="true" class="align-middle" />
         @if (_canCRUD)
@@ -38,12 +51,56 @@ else
 
     private IQueryable<string>? _documents;
 
+    private bool _isUploadModalVisible = false;
+
     private bool _canCRUD = true;
+
+    private const long _maxFileSize = 10 * 1024 * 1024; //10MB
+
+    private IBrowserFile? _selectedFile;
+    private bool _canUpload => _selectedFile != null;
 
     protected override async Task OnInitializedAsync()
     {
+        await FetchDocuments();
+    }
+
+    private async Task FetchDocuments()
+    {
         var documents = await HttpClient.GetFromJsonAsync<List<string>>("api/journal/documents/" + JournalId.ToString());
         if (documents != null) _documents = documents.AsQueryable();
+    }
+
+    private void HandleFileSelected(InputFileChangeEventArgs e)
+    {
+        _selectedFile = e.File;
+    }
+
+    private async Task UploadFile()
+    {
+        if (_selectedFile == null || _selectedFile.Size == 0) return;
+        try
+        {
+            using var fileStream = _selectedFile.OpenReadStream(maxAllowedSize: _maxFileSize);
+            using var formContent = new MultipartFormDataContent {
+                { new StreamContent(fileStream), "fileToUpload", _selectedFile.Name }
+            };
+
+            var response = await HttpClient.PostAsync("api/journal/uploaddocument/" + JournalId, formContent);
+
+            if (response.IsSuccessStatusCode)
+            {
+                await FetchDocuments();
+            }
+            else
+            {
+                ShowServerErrorAlert($"Ошибка: {response.ReasonPhrase}");
+            }
+        }
+        catch (Exception ex)
+        {
+            ShowServerErrorAlert($"Ошибка: {ex.Message}");
+        }
     }
 
     private async Task DownloadFile(string fileName)
@@ -65,5 +122,17 @@ else
             errorMessage = errorMessage.Split('\n').FirstOrDefault();
             ShowServerErrorAlert(errorMessage);
         }
+    }
+
+    private void OpenUploadModal()
+    {
+        _selectedFile = null;
+        _isUploadModalVisible = true;
+    }
+
+    private void CloseUploadModal()
+    {
+        _selectedFile = null;
+        _isUploadModalVisible = false;
     }
 }

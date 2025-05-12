@@ -3,6 +3,7 @@ using DataAccess.Interfaces;
 using DocumentFormat.OpenXml.Wordprocessing;
 using Domain.Entities;
 using Domain.Entities.JournalContent;
+using Domain.Entities.JournalContent.Pages;
 using Domain.Enums.Journal;
 
 namespace Application.Services.Word
@@ -22,21 +23,30 @@ namespace Application.Services.Word
             _pagesRepository = pagesRepository;
         }
 
-        public async Task Generate()
+        public async Task Generate(Page? page = null)
         {
             var pages = await _pagesRepository.GetJournalPagesByTypeAsync(_journalId, PageTypes.PsychologicalAndPedagogicalCharacteristics);
             if (pages == null) throw new ArgumentException(nameof(pages));
-
-            foreach (var page in pages)
+            if (page != null)
             {
+                if (!pages.Any(p => p.Id == page.Id)) throw new ArgumentException(nameof(page));
                 if (page.PsychologicalAndPedagogicalCharacteristics == null) throw new ArgumentException(nameof(page));
 
                 AppendTitle();
-
                 AppendContent(page.PsychologicalAndPedagogicalCharacteristics);
-
-                if (page != pages.Last()) WordUtils.AppendPageBreak(_documentBody);
             }
+            else
+            {
+                foreach (var p in pages)
+                {
+                    if (p.PsychologicalAndPedagogicalCharacteristics == null) throw new ArgumentException(nameof(p));
+
+                    AppendTitle();
+                    AppendContent(p.PsychologicalAndPedagogicalCharacteristics);
+
+                    if (p != pages.Last()) WordUtils.AppendPageBreak(_documentBody);
+                }
+            } 
         }
 
         private void AppendTitle()

@@ -4,6 +4,7 @@ using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Wordprocessing;
 using Domain.Entities;
 using Domain.Entities.JournalContent;
+using Domain.Entities.JournalContent.Pages;
 using Domain.Enums.Journal;
 
 namespace Application.Services.Word
@@ -16,6 +17,11 @@ namespace Application.Services.Word
 
         private int _journalId;
 
+        private int _maxRows = 30;
+
+        private ParagraphProperties _paragraphProperties = new ParagraphProperties(new Justification { Val = JustificationValues.Center },
+                new SpacingBetweenLines { Before = "0", After = "0" });
+
         public StudentListPageGenerator(int journalId, Body body, IPagesRepository pagesRepository)
         {
             _journalId = journalId;
@@ -23,19 +29,41 @@ namespace Application.Services.Word
             _pagesRepository = pagesRepository;
         }
 
-        public async Task Generate()
+        public async Task Generate(Page? page = null)
         {
             var pages = await _pagesRepository.GetJournalPagesByTypeAsync(_journalId, PageTypes.StudentList);
             if (pages == null) throw new ArgumentException(nameof(pages));
-
-            foreach (var page in pages)
+            if (page != null)
             {
-                AppendTitle();
-
-                AppendTable(page.StudentList);
-
-                WordUtils.AppendPageBreak(_documentBody);
+                if (!pages.Any(p => p.Id == page.Id)) throw new ArgumentException(nameof(page));
+                int pageCount = page.StudentList.Count / _maxRows;
+                pageCount += page.StudentList.Count % _maxRows == 0 ? 0 : 1;
+                for (int i = 0; i < pageCount; i++)
+                {
+                    GeneratePage(page.StudentList.Skip(i * _maxRows).Take(_maxRows).ToList());
+                }
             }
+            else
+            {
+                foreach (var p in pages)
+                {
+                    int pageCount = p.StudentList.Count / _maxRows;
+                    pageCount += p.StudentList.Count % _maxRows == 0 ? 0 : 1;
+                    for (int i = 0; i < pageCount; i++)
+                    {
+                        GeneratePage(p.StudentList.Skip(i * _maxRows).Take(_maxRows).ToList());
+                    }
+                }
+            }  
+        }
+
+        private void GeneratePage(List<StudentListRecord> list)
+        {
+            AppendTitle();
+
+            AppendTable(list);
+
+            WordUtils.AppendPageBreak(_documentBody);
         }
 
         private void AppendTitle()
@@ -136,7 +164,7 @@ namespace Application.Services.Word
             {
                 TableRow row = new TableRow();
                 var rowProperties = new TableRowProperties();
-                rowProperties.Append(new TableRowHeight { Val = 420 });
+                rowProperties.Append(new TableRowHeight { Val = 400 });
                 row.AppendChild(rowProperties);
 
                 TableCell numberCell = new TableCell(new Paragraph(
@@ -164,12 +192,49 @@ namespace Application.Services.Word
                 table.Append(row);
             }
 
+            for (int i = list.Count; i < _maxRows; i++)
+                AppendEmptyRow(table, (TableCellProperties)numberHeadCellProperties, (TableCellProperties)studentHeadCellProperties, 
+                    (TableCellProperties)phoneHeadCellProperties, (TableCellProperties)cardNumberHeadCellProperties);
+
             _documentBody.Append(table);
         }
 
         private string GetStudentFIO(Student student)
         {
             return student.LastName + " " + student.FirstName + " " + student.MiddleName;
+        }
+
+        private void AppendEmptyRow(Table table, TableCellProperties numberCellProperties, TableCellProperties studentCellProperties,
+            TableCellProperties phoneCellProperties, TableCellProperties cardNumberCellProperties)
+        {
+            TableRow row = new TableRow();
+            var rowProperties = new TableRowProperties();
+            rowProperties.Append(new TableRowHeight { Val = 400 });
+            row.AppendChild(rowProperties);
+
+            TableCell numberCell = new TableCell(new Paragraph(
+                _paragraphProperties.CloneNode(true),
+                new Run(WordUtils.GetRunProperties(fontSize: "24"),
+                    new Text(""))));
+            numberCell.Append(numberCellProperties.CloneNode(true));
+
+            TableCell studentCell = new TableCell(new Paragraph(new ParagraphProperties(new SpacingBetweenLines { After = "0", Before = "0" }),
+                new Run(WordUtils.GetRunProperties(fontSize: "24"),
+                    new Text(""))));
+            studentCell.Append(studentCellProperties.CloneNode(true));
+
+            TableCell phoneCell = new TableCell(new Paragraph(new ParagraphProperties(new SpacingBetweenLines { After = "0", Before = "0" }),
+                new Run(WordUtils.GetRunProperties(fontSize: "24"),
+                    new Text(""))));
+            phoneCell.Append(phoneCellProperties.CloneNode(true));
+
+            TableCell cardNumberCell = new TableCell(new Paragraph(_paragraphProperties.CloneNode(true),
+                new Run(WordUtils.GetRunProperties(fontSize: "24"),
+                    new Text(""))));
+            cardNumberCell.Append(cardNumberCellProperties.CloneNode(true));
+
+            row.Append(numberCell, studentCell, phoneCell, cardNumberCell);
+            table.Append(row);
         }
     }
 }

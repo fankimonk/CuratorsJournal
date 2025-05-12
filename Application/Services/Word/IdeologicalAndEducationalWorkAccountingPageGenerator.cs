@@ -3,6 +3,7 @@ using DataAccess.Interfaces;
 using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Wordprocessing;
 using Domain.Entities.JournalContent;
+using Domain.Entities.JournalContent.Pages;
 using Domain.Entities.JournalContent.Pages.Attributes;
 using Domain.Enums.Journal;
 using Frontend.Utils;
@@ -26,16 +27,16 @@ namespace Application.Services.Word
             _pagesRepository = pagesRepository;
         }
 
-        public async Task Generate()
+        public async Task Generate(Page? page = null)
         {
             var pages = await _pagesRepository.GetJournalPagesByTypeAsync(_journalId, PageTypes.CuratorsIdeologicalAndEducationalWorkAccounting);
             if (pages == null) throw new ArgumentException(nameof(pages));
-            foreach (var page in pages)
+            foreach (var p in pages)
             {
-                var pageAttributes = page.CuratorsIdeologicalAndEducationalWorkPageAttributes ?? throw new ArgumentException(nameof(page));
+                var pageAttributes = p.CuratorsIdeologicalAndEducationalWorkPageAttributes ?? throw new ArgumentException(nameof(p));
                 AppendTitle(pageAttributes);
 
-                AppendTable(page.CuratorsIdeologicalAndEducationalWorkAccounting);
+                AppendTable(p.CuratorsIdeologicalAndEducationalWorkAccounting);
 
                 WordUtils.AppendPageBreak(_documentBody);
             }

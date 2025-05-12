@@ -21,6 +21,10 @@
       "PackagePath": "staticwebassets\\js\\files.js"
     },
     {
+      "Id": "C:\\Dev\\Web\\CuratorsJournal\\Frontend\\wwwroot\\js\\textarea.js",
+      "PackagePath": "staticwebassets\\js\\textarea.js"
+    },
+    {
       "Id": "C:\\Dev\\Web\\CuratorsJournal\\Frontend\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css"
     },
@@ -199,10 +203,6 @@
     {
       "Id": "C:\\Dev\\Web\\CuratorsJournal\\Frontend\\wwwroot\\mystyles.css",
       "PackagePath": "staticwebassets\\mystyles.css"
-    },
-    {
-      "Id": "C:\\Dev\\Web\\CuratorsJournal\\Frontend\\wwwroot\\textarea.js",
-      "PackagePath": "staticwebassets\\textarea.js"
     },
     {
       "Id": "obj\\Debug\\net9.0\\staticwebassets\\msbuild.Frontend.Microsoft.AspNetCore.StaticWebAssetEndpoints.props",

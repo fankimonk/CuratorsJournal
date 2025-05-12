@@ -26,8 +26,8 @@
                         <InputText id="username" @bind-Value="LoginRequest.Username" class="form-control" />
                     </div>
                     <div class="mb-3">
-                        <label for="password" class="form-label">Пароль: </label>
-                        <InputText id="password" @bind-Value="LoginRequest.Password" class="form-control" />
+                        <label for="pswd" class="form-label">Пароль: </label>
+                        <InputText type="password" id="pswd" @bind-Value="LoginRequest.Password" class="form-control" />
                     </div>
                     <button class="btn btn-primary" type="submit">Войти</button>
                 </EditForm>
