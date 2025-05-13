@@ -246,33 +246,12 @@ namespace Application.Services.Word
                 new Justification { Val = JustificationValues.Both }
             );
 
-            var labelRunProperties = new RunProperties(
-                new RunFonts()
-                {
-                    Ascii = "Times New Roman",
-                    HighAnsi = "Times New Roman",
-                    EastAsia = "Times New Roman",
-                    ComplexScript = "Times New Roman"
-                },
-                new FontSize() { Val = "28" }
-            );
-
-            var labelRun = new Run(labelRunProperties,
+            var labelRun = new Run(WordUtils.GetRunProperties(),
                 new Text("КУРАТОР"));
 
             var paragraph = new Paragraph(paragraphProperties, labelRun);
 
-            var valueRunProperties = new RunProperties(
-                new RunFonts()
-                {
-                    Ascii = "Times New Roman",
-                    HighAnsi = "Times New Roman",
-                    EastAsia = "Times New Roman",
-                    ComplexScript = "Times New Roman"
-                },
-                new Underline() { Val = UnderlineValues.Single },
-                new FontSize() { Val = "28" }
-            );
+            var valueRunProperties = WordUtils.GetRunProperties(underline: true);
 
             string curatorFIO = "";
             if (_journal.Group.Curator != null && _journal.Group.Curator.Worker != null)
@@ -357,24 +336,12 @@ namespace Application.Services.Word
 
         private void AppendEmptyLines(int count)
         {
-            var runProperties = new RunProperties(
-                new RunFonts()
-                {
-                    Ascii = "Times New Roman",
-                    HighAnsi = "Times New Roman",
-                    EastAsia = "Times New Roman",
-                    ComplexScript = "Times New Roman"
-                },
-                new Underline() { Val = UnderlineValues.Single },
-                new FontSize() { Val = "28" }
-            );
-
             for (int i = 0; i < count; i++)
             {
                 var emptyParagraph = new Paragraph(new ParagraphProperties(
                 new Justification { Val = JustificationValues.Both }
             ));
-                var emptyRun = new Run(runProperties.CloneNode(true));
+                var emptyRun = new Run(WordUtils.GetRunProperties(underline: true));
                 for (int j = 0; j < 13; j++)
                 {
                     emptyRun.Append(new TabChar());

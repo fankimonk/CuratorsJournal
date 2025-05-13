@@ -110,7 +110,7 @@ namespace Application.Services.Word
                 string termStr = "";
                 if (record.StartDay != null && record.EndDay != null)
                 {
-                    termStr += record.StartDay.ToString() + " " + record.EndDay.ToString();
+                    termStr += record.StartDay.ToString() + " - " + record.EndDay.ToString();
                 }
                 else if (record.StartDay != null && record.EndDay == null)
                 {

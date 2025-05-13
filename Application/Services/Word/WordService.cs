@@ -154,7 +154,7 @@ namespace Application.Services.Word
 
                     case (int)PageTypes.SocioPedagogicalCharacteristics:
                         var socioPedagogicalCharacteristicsPageGenerator = new SocioPedagogicalCharacteristicsPageGenerator(journalId, body, _pagesRepository, _groupsRepository);
-                        try { await socioPedagogicalCharacteristicsPageGenerator.Generate(); }
+                        try { await socioPedagogicalCharacteristicsPageGenerator.Generate(page); }
                         catch { return null; }
                         break;
 

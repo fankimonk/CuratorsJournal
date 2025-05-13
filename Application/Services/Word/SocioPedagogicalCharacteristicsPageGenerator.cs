@@ -3,6 +3,7 @@ using DataAccess.Interfaces;
 using DocumentFormat.OpenXml.Wordprocessing;
 using Domain.Entities;
 using Domain.Entities.JournalContent;
+using Domain.Entities.JournalContent.Pages;
 using Domain.Enums.Journal;
 
 namespace Application.Services.Word
@@ -24,7 +25,7 @@ namespace Application.Services.Word
             _groupsRepository = groupsRepository;
         }
 
-        public async Task Generate()
+        public async Task Generate(Page? page = null)
         {
             var pages = await _pagesRepository.GetJournalPagesByTypeAsync(_journalId, PageTypes.SocioPedagogicalCharacteristics);
             if (pages == null) throw new ArgumentException(nameof(pages));
@@ -32,18 +33,30 @@ namespace Application.Services.Word
             var group = await _groupsRepository.GetByJournalId(_journalId);
             if (group == null) throw new ArgumentException(nameof(group));
 
-            foreach (var page in pages)
+            if (page != null)
             {
-                if (page.SocioPedagogicalCharacteristicsPageAttributes == null) throw new ArgumentException(nameof(page));
-                if (page.SocioPedagogicalCharacteristics == null) throw new ArgumentException(nameof(page));
-
-                AppendTitle(group.Number, page.SocioPedagogicalCharacteristicsPageAttributes.AcademicYear);
-                WordUtils.AppendBreaks(1, _documentBody);
-
-                AppendContent(page.SocioPedagogicalCharacteristics);
-
-                WordUtils.AppendPageBreak(_documentBody);
+                GeneratePage(page, group.Number);
             }
+            else
+            {
+                foreach (var p in pages)
+                {
+                    GeneratePage(p, group.Number);
+                }
+            }
+        }
+
+        private void GeneratePage(Page page, string groupNumber)
+        {
+            if (page.SocioPedagogicalCharacteristicsPageAttributes == null) throw new ArgumentException(nameof(page));
+            if (page.SocioPedagogicalCharacteristics == null) throw new ArgumentException(nameof(page));
+
+            AppendTitle(groupNumber, page.SocioPedagogicalCharacteristicsPageAttributes.AcademicYear);
+            WordUtils.AppendBreaks(1, _documentBody);
+
+            AppendContent(page.SocioPedagogicalCharacteristics);
+
+            WordUtils.AppendPageBreak(_documentBody);
         }
 
         private void AppendTitle(string groupNumber, AcademicYear? academicYear)
@@ -94,13 +107,14 @@ namespace Application.Services.Word
 
         private void AppendContent(SocioPedagogicalCharacteristics characteristics)
         {
-            var paragraphProeprties = new ParagraphProperties(
-                new Justification { Val = JustificationValues.Both });
+            var spacing = new SpacingBetweenLines() { Before = "200", After = "200" };
+            var paragraphProperties = new ParagraphProperties(
+                new Justification { Val = JustificationValues.Both }, spacing);
 
             var totalStudents = characteristics.TotalStudents == null ? "" : ((int)characteristics.TotalStudents).ToString();
             if (totalStudents.Length > 15) totalStudents = totalStudents.Substring(0, 15);
             int tabCount = 3 - (Math.Max(0, totalStudents.Length - 1) / 5);
-            var totalStudentsParagraph = new Paragraph(paragraphProeprties.CloneNode(true),
+            var totalStudentsParagraph = new Paragraph(paragraphProperties.CloneNode(true),
                 new Run(WordUtils.GetRunProperties(),
                     new Text("1. Всего студентов")));
             var totalStudentsValueRun = new Run(WordUtils.GetRunProperties(underline: true),
@@ -113,14 +127,14 @@ namespace Application.Services.Word
 
             _documentBody.Append(new Paragraph(
                 new ParagraphProperties(
-                    new Justification { Val = JustificationValues.Start }),
+                    new Justification { Val = JustificationValues.Start }, spacing.CloneNode(true)),
                 new Run(WordUtils.GetRunProperties(),
                     new Text("Из них"))));
 
             var femalesCount = characteristics.FemalesCount == null ? "" : ((int)characteristics.FemalesCount).ToString();
             if (femalesCount.Length > 20) femalesCount = femalesCount.Substring(0, 20);
             tabCount = 4 - (Math.Max(0, femalesCount.Length - 1) / 5);
-            var femalesCountParagraph = new Paragraph(paragraphProeprties.CloneNode(true),
+            var femalesCountParagraph = new Paragraph(paragraphProperties.CloneNode(true),
                 new Run(WordUtils.GetRunProperties(),
                     new Text("2. Девушки")));
             var femalesCountValueRun = new Run(WordUtils.GetRunProperties(underline: true),
@@ -134,7 +148,7 @@ namespace Application.Services.Word
             var malesCount = characteristics.MalesCount == null ? "" : ((int)characteristics.MalesCount).ToString();
             if (malesCount.Length > 20) malesCount = malesCount.Substring(0, 20);
             tabCount = 4 - (Math.Max(0, malesCount.Length - 1) / 5);
-            var malesCountParagraph = new Paragraph(paragraphProeprties.CloneNode(true),
+            var malesCountParagraph = new Paragraph(paragraphProperties.CloneNode(true),
                 new Run(WordUtils.GetRunProperties(),
                     new Text("3. Юноши")));
             var malesCountValueRun = new Run(WordUtils.GetRunProperties(underline: true),
@@ -148,7 +162,7 @@ namespace Application.Services.Word
             var brsmMembersCount = characteristics.BRSMMembersCount == null ? "" : ((int)characteristics.BRSMMembersCount).ToString();
             if (brsmMembersCount.Length > 15) brsmMembersCount = brsmMembersCount.Substring(0, 15);
             tabCount = 3 - (Math.Max(0, brsmMembersCount.Length - 1) / 5);
-            var brsmMembersCountParagraph = new Paragraph(paragraphProeprties.CloneNode(true),
+            var brsmMembersCountParagraph = new Paragraph(paragraphProperties.CloneNode(true),
                 new Run(WordUtils.GetRunProperties(),
                     new Text("4. Члены ОО \"БРСМ\"")));
             var brsmMembersCountValueRun = new Run(WordUtils.GetRunProperties(underline: true),
@@ -162,7 +176,7 @@ namespace Application.Services.Word
             var orphansUnderagesCount = characteristics.OrphansUnderagesCount == null ? "" : ((int)characteristics.OrphansUnderagesCount).ToString();
             if (orphansUnderagesCount.Length > 10) orphansUnderagesCount = orphansUnderagesCount.Substring(0, 10);
             tabCount = 2 - (Math.Max(0, orphansUnderagesCount.Length - 1) / 5);
-            var orphansUnderagesCountParagraph = new Paragraph(paragraphProeprties.CloneNode(true),
+            var orphansUnderagesCountParagraph = new Paragraph(paragraphProperties.CloneNode(true),
                 new Run(WordUtils.GetRunProperties(),
                     new Text("5. Дети-сироты, (до 18 лет)")));
             var orphansUnderagesCountValueRun = new Run(WordUtils.GetRunProperties(underline: true),
@@ -179,7 +193,7 @@ namespace Application.Services.Word
             if (studentsWithoutParentalCareUnderagesCount.Length > 15)
                 studentsWithoutParentalCareUnderagesCount = studentsWithoutParentalCareUnderagesCount.Substring(0, 15);
             tabCount = 3 - (Math.Max(0, studentsWithoutParentalCareUnderagesCount.Length - 1) / 5);
-            var studentsWithoutParentalCareUnderagesCountParagraph = new Paragraph(paragraphProeprties.CloneNode(true),
+            var studentsWithoutParentalCareUnderagesCountParagraph = new Paragraph(paragraphProperties.CloneNode(true),
                 new Run(WordUtils.GetRunProperties(),
                     new Text("6. Дети, оставшиеся без попечения родителей (до 18 лет)")));
             var studentsWithoutParentalCareUnderagesCountValueRun = new Run(WordUtils.GetRunProperties(underline: true),
@@ -192,7 +206,7 @@ namespace Application.Services.Word
 
             _documentBody.Append(new Paragraph(
                 new ParagraphProperties(
-                    new Justification { Val = JustificationValues.Start }),
+                    new Justification { Val = JustificationValues.Start }, spacing.CloneNode(true)),
                 new Run(WordUtils.GetRunProperties(),
                     new Text("7. Лица из числа детей-сирот"))));
 
@@ -202,7 +216,7 @@ namespace Application.Services.Word
             if (orphansOrStudentsWithoutParentalCareAdultsCount.Length > 10)
                 orphansOrStudentsWithoutParentalCareAdultsCount = orphansOrStudentsWithoutParentalCareAdultsCount.Substring(0, 10);
             tabCount = 2 - (Math.Max(0, orphansOrStudentsWithoutParentalCareAdultsCount.Length - 1) / 5);
-            var orphansOrStudentsWithoutParentalCareAdultsCountParagraph = new Paragraph(paragraphProeprties.CloneNode(true),
+            var orphansOrStudentsWithoutParentalCareAdultsCountParagraph = new Paragraph(paragraphProperties.CloneNode(true),
                 new Run(WordUtils.GetRunProperties(),
                     new Text("и детей, оставшихся без попечения родителей (18-23 года)")));
             var orphansOrStudentsWithoutParentalCareAdultsCountValueRun = new Run(WordUtils.GetRunProperties(underline: true),
@@ -219,7 +233,7 @@ namespace Application.Services.Word
             if (studentsWithSpecialPsychophysicalDevelopmentNeedsCount.Length > 10)
                 studentsWithSpecialPsychophysicalDevelopmentNeedsCount = studentsWithSpecialPsychophysicalDevelopmentNeedsCount.Substring(0, 10);
             tabCount = 2 - (Math.Max(0, studentsWithSpecialPsychophysicalDevelopmentNeedsCount.Length - 1) / 5);
-            var studentsWithSpecialPsychophysicalDevelopmentNeedsCountParagraph = new Paragraph(paragraphProeprties.CloneNode(true),
+            var studentsWithSpecialPsychophysicalDevelopmentNeedsCountParagraph = new Paragraph(paragraphProperties.CloneNode(true),
                 new Run(WordUtils.GetRunProperties(),
                     new Text("8. Студенты с особенностями психофизического развития")));
             var studentsWithSpecialPsychophysicalDevelopmentNeedsCountValueRun = new Run(WordUtils.GetRunProperties(underline: true),
@@ -236,7 +250,7 @@ namespace Application.Services.Word
             if (studentsWithDisabledParentsOfGroups1and2Count.Length > 20)
                 studentsWithDisabledParentsOfGroups1and2Count = studentsWithDisabledParentsOfGroups1and2Count.Substring(0, 20);
             tabCount = 4 - (Math.Max(0, studentsWithDisabledParentsOfGroups1and2Count.Length - 1) / 5);
-            var studentsWithDisabledParentsOfGroups1and2CountParagraph = new Paragraph(paragraphProeprties.CloneNode(true),
+            var studentsWithDisabledParentsOfGroups1and2CountParagraph = new Paragraph(paragraphProperties.CloneNode(true),
                 new Run(WordUtils.GetRunProperties(),
                     new Text("9. Имеющие родителей-инвалидов 1, 2 группы")));
             var studentsWithDisabledParentsOfGroups1and2CountValueRun = new Run(WordUtils.GetRunProperties(underline: true),
@@ -251,7 +265,7 @@ namespace Application.Services.Word
             if (studentsFromLargeFamiliesCount.Length > 35)
                 studentsFromLargeFamiliesCount = studentsFromLargeFamiliesCount.Substring(0, 35);
             tabCount = 7 - (Math.Max(0, studentsFromLargeFamiliesCount.Length - 1) / 5);
-            var studentsFromLargeFamiliesCountParagraph = new Paragraph(paragraphProeprties.CloneNode(true),
+            var studentsFromLargeFamiliesCountParagraph = new Paragraph(paragraphProperties.CloneNode(true),
                 new Run(WordUtils.GetRunProperties(),
                     new Text("10. Из многодетных семей")));
             var studentsFromLargeFamiliesCountValueRun = new Run(WordUtils.GetRunProperties(underline: true),
@@ -267,7 +281,7 @@ namespace Application.Services.Word
             if (studentsFromSingleParentFamiliesCount.Length > 40)
                 studentsFromSingleParentFamiliesCount = studentsFromSingleParentFamiliesCount.Substring(0, 40);
             tabCount = 8 - (Math.Max(0, studentsFromSingleParentFamiliesCount.Length - 1) / 5);
-            var studentsFromSingleParentFamiliesCountParagraph = new Paragraph(paragraphProeprties.CloneNode(true),
+            var studentsFromSingleParentFamiliesCountParagraph = new Paragraph(paragraphProperties.CloneNode(true),
                 new Run(WordUtils.GetRunProperties(),
                     new Text("11. Из неполных семей")));
             var studentsFromSingleParentFamiliesCountValueRun = new Run(WordUtils.GetRunProperties(underline: true),
@@ -283,7 +297,7 @@ namespace Application.Services.Word
             if (studentsFromRegionsAffectedByChernobylDisasterCount.Length > 4)
                 studentsFromRegionsAffectedByChernobylDisasterCount = studentsFromRegionsAffectedByChernobylDisasterCount.Substring(0, 4);
             tabCount = 1;
-            var studentsFromRegionsAffectedByChernobylDisasterCountParagraph = new Paragraph(paragraphProeprties.CloneNode(true),
+            var studentsFromRegionsAffectedByChernobylDisasterCountParagraph = new Paragraph(paragraphProperties.CloneNode(true),
                 new Run(WordUtils.GetRunProperties(),
                     new Text("12. Из регионов, пострадавших от катастрофы на Чернобыльской АЭС")));
             var studentsFromRegionsAffectedByChernobylDisasterCountValueRun = new Run(WordUtils.GetRunProperties(underline: true),
@@ -299,7 +313,7 @@ namespace Application.Services.Word
             if (studentsFromFamiliesRelocatedFromAreasOfRadioactivePollutionCount.Length > 10)
                 studentsFromFamiliesRelocatedFromAreasOfRadioactivePollutionCount = studentsFromFamiliesRelocatedFromAreasOfRadioactivePollutionCount.Substring(0, 10);
             tabCount = 2 - (Math.Max(0, studentsFromFamiliesRelocatedFromAreasOfRadioactivePollutionCount.Length - 1) / 5);
-            var studentsFromFamiliesRelocatedFromAreasOfRadioactivePollutionCountParagraph = new Paragraph(paragraphProeprties.CloneNode(true),
+            var studentsFromFamiliesRelocatedFromAreasOfRadioactivePollutionCountParagraph = new Paragraph(paragraphProperties.CloneNode(true),
                 new Run(WordUtils.GetRunProperties(),
                     new Text("13. Из семей, отселенных из зон радиоактивного загрязнения")));
             var studentsFromFamiliesRelocatedFromAreasOfRadioactivePollutionCountValueRun = new Run(WordUtils.GetRunProperties(underline: true),
@@ -313,7 +327,7 @@ namespace Application.Services.Word
             var nonResidentStudentsCount = characteristics.NonResidentStudents == null ? "" : ((int)characteristics.NonResidentStudents).ToString();
             if (nonResidentStudentsCount.Length > 45) nonResidentStudentsCount = nonResidentStudentsCount.Substring(0, 45);
             tabCount = 9 - (Math.Max(0, nonResidentStudentsCount.Length - 1) / 5);
-            var nonResidentStudentsCountParagraph = new Paragraph(paragraphProeprties.CloneNode(true),
+            var nonResidentStudentsCountParagraph = new Paragraph(paragraphProperties.CloneNode(true),
                 new Run(WordUtils.GetRunProperties(),
                     new Text("14. Иногородних")));
             var nonResidentStudentsCountValueRun = new Run(WordUtils.GetRunProperties(underline: true),
@@ -328,7 +342,7 @@ namespace Application.Services.Word
                 ((int)characteristics.StudentsLivingWithParents).ToString();
             if (studentsLivingWithParentsCount.Length > 10) studentsLivingWithParentsCount = studentsLivingWithParentsCount.Substring(0, 10);
             tabCount = 2 - (Math.Max(0, studentsLivingWithParentsCount.Length - 1) / 5);
-            var fifteenthPointParagraph1 = new Paragraph(paragraphProeprties.CloneNode(true),
+            var fifteenthPointParagraph1 = new Paragraph(paragraphProperties.CloneNode(true),
                 new Run(WordUtils.GetRunProperties(),
                     new Text("15. Проживают с родителями ")));
             var studentsLivingWithParentsCountValueRun = new Run(WordUtils.GetRunProperties(underline: true),
@@ -359,7 +373,7 @@ namespace Application.Services.Word
                 ((int)characteristics.StudentsLivingWithRelatives).ToString();
             if (studentsLivingWithRelativesCount.Length > 10) studentsLivingWithRelativesCount = studentsLivingWithRelativesCount.Substring(0, 10);
             tabCount = 2 - (Math.Max(0, studentsLivingWithRelativesCount.Length - 1) / 5);
-            var fifteenthPointParagraph2 = new Paragraph(paragraphProeprties.CloneNode(true),
+            var fifteenthPointParagraph2 = new Paragraph(paragraphProperties.CloneNode(true),
                 new Run(WordUtils.GetRunProperties(),
                     new Text("у родственников ")));
             var studentsLivingWithRelativesCountValueRun = new Run(WordUtils.GetRunProperties(underline: true),
@@ -387,20 +401,109 @@ namespace Application.Services.Word
 
             _documentBody.Append(fifteenthPointParagraph2);
 
+            //int maxCharactersCount = 45 + 5 * 65;
+            //var otherInfoStr = characteristics.OtherInformation == null ? "" : characteristics.OtherInformation;
+            //if (otherInfoStr.Length > maxCharactersCount) otherInfoStr = otherInfoStr.Substring(0, maxCharactersCount);
+            //tabCount = (9 + 5 * 13) - (Math.Max(0, otherInfoStr.Length - 1) / 5);
+            //var otherInfoParagraph = new Paragraph(paragraphProperties.CloneNode(true),
+            //    new Run(WordUtils.GetRunProperties(),
+            //        new Text("16. Другие сведения ")));
+            //var otherInfoValueRun = new Run(WordUtils.GetRunProperties(underline: true),
+            //    new TabChar(),
+            //    new Text(otherInfoStr));
+            //for (int i = 0; i < tabCount; i++)
+            //    otherInfoValueRun.Append(new TabChar());
+            //otherInfoParagraph.Append(otherInfoValueRun);
+            //_documentBody.Append(otherInfoParagraph);
+
             int maxCharactersCount = 45 + 5 * 65;
             var otherInfoStr = characteristics.OtherInformation == null ? "" : characteristics.OtherInformation;
             if (otherInfoStr.Length > maxCharactersCount) otherInfoStr = otherInfoStr.Substring(0, maxCharactersCount);
-            tabCount = (9 + 5 * 13) - (Math.Max(0, otherInfoStr.Length - 1) / 5);
-            var otherInfoParagraph = new Paragraph(paragraphProeprties.CloneNode(true),
+
+            var otherInfoParagraph = new Paragraph(paragraphProperties.CloneNode(true),
                 new Run(WordUtils.GetRunProperties(),
                     new Text("16. Другие сведения ")));
-            var otherInfoValueRun = new Run(WordUtils.GetRunProperties(underline: true),
-                new TabChar(),
-                new Text(otherInfoStr));
-            for (int i = 0; i < tabCount; i++)
-                otherInfoValueRun.Append(new TabChar());
-            otherInfoParagraph.Append(otherInfoValueRun);
-            _documentBody.Append(otherInfoParagraph);
+
+            var otherInfoRun = new Run(WordUtils.GetRunProperties(underline: true), new TabChar());
+
+            int linesCount = 6;
+            if (otherInfoStr != "")
+            {
+                var split = otherInfoStr.Split(' ');
+                var lines = new List<string>();
+                string currentLine = "";
+                int lineMaxChars = 45;
+
+                foreach (var word in split)
+                {
+                    if (currentLine.Length + word.Length + 1 <= lineMaxChars)
+                    {
+                        currentLine += word + " ";
+                    }
+                    else
+                    {
+                        lines.Add(currentLine);
+                        currentLine = word + " ";
+                        lineMaxChars = 65;
+                    }
+                }
+
+                if (!string.IsNullOrEmpty(currentLine) && !lines.Contains(currentLine))
+                {
+                    lines.Add(currentLine);
+                }
+
+                linesCount = Math.Min(linesCount, lines.Count);
+                for (int i = 0; i < linesCount; i++)
+                {
+                    var lineStr = lines[i];
+
+                    int otherInfoTabCount = i == 0
+                        ? 9 - (Math.Max(0, lineStr.Length - 3) / 5)
+                        : 13 - (Math.Max(0, lineStr.Length - 3) / 5);
+
+                    if (i == 0)
+                    {
+                        otherInfoRun.Append(new Text(lineStr));
+                        for (int j = 0; j < otherInfoTabCount; j++)
+                            otherInfoRun.Append(new TabChar());
+                        otherInfoParagraph.Append(otherInfoRun);
+                        _documentBody.Append(otherInfoParagraph);
+                    }
+                    else
+                    {
+                        var newParagraph = new Paragraph(paragraphProperties.CloneNode(true));
+                        var newValueRun = new Run(WordUtils.GetRunProperties(underline: true), new Text(lineStr));
+
+                        for (int j = 0; j < otherInfoTabCount; j++)
+                        {
+                            newValueRun.Append(new TabChar());
+                        }
+
+                        newParagraph.Append(newValueRun);
+                        _documentBody.Append(newParagraph);
+                    }
+                }
+
+                AppendEmptyLines(6 - linesCount);
+            }
+        }
+
+        private void AppendEmptyLines(int count)
+        {
+            for (int i = 0; i < count; i++)
+            {
+                var emptyParagraph = new Paragraph(new ParagraphProperties(
+                new Justification { Val = JustificationValues.Both }
+            ));
+                var emptyRun = new Run(WordUtils.GetRunProperties(underline: true));
+                for (int j = 0; j < 13; j++)
+                {
+                    emptyRun.Append(new TabChar());
+                }
+                emptyParagraph.Append(emptyRun);
+                _documentBody.Append(emptyParagraph);
+            }
         }
     }
 }
