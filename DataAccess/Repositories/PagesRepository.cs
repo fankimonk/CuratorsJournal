@@ -59,11 +59,8 @@ namespace DataAccess.Repositories
                     break;
 
                 case (int)PageTypes.FinalPerformanceAccounting:
-                    for (int i = 0; i < 6; i++)
-                    {
-                        page.PerformanceAccountingColumns.Add(new PerformanceAccountingColumn { CertificationTypeId = 1, SubjectId = null });
-                        page.PerformanceAccountingColumns.Add(new PerformanceAccountingColumn { CertificationTypeId = 2, SubjectId = null });
-                    }
+                    for (int i = 0; i < 6; i++) page.PerformanceAccountingColumns.Add(new PerformanceAccountingColumn { CertificationTypeId = 1, SubjectId = null });
+                    for (int i = 0; i < 10; i++) page.PerformanceAccountingColumns.Add(new PerformanceAccountingColumn { CertificationTypeId = 2, SubjectId = null });
                     break;
 
                 default:

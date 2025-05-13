@@ -36,8 +36,13 @@ namespace Application.Services.Word
             if (page != null)
             {
                 if (!pages.Any(p => p.Id == page.Id)) throw new ArgumentException(nameof(page));
-                int pageCount = page.StudentList.Count / _maxRows;
-                pageCount += page.StudentList.Count % _maxRows == 0 ? 0 : 1;
+                int pageCount;
+                if (page.StudentList.Count == 0) pageCount = 1;
+                else
+                {
+                    pageCount = page.StudentList.Count / _maxRows;
+                    pageCount += page.StudentList.Count % _maxRows == 0 ? 0 : 1;
+                }
                 for (int i = 0; i < pageCount; i++)
                 {
                     GeneratePage(page.StudentList.Skip(i * _maxRows).Take(_maxRows).ToList());
@@ -47,8 +52,13 @@ namespace Application.Services.Word
             {
                 foreach (var p in pages)
                 {
-                    int pageCount = p.StudentList.Count / _maxRows;
-                    pageCount += p.StudentList.Count % _maxRows == 0 ? 0 : 1;
+                    int pageCount;
+                    if (p.StudentList.Count == 0) pageCount = 1;
+                    else
+                    {
+                        pageCount = p.StudentList.Count / _maxRows;
+                        pageCount += p.StudentList.Count % _maxRows == 0 ? 0 : 1;
+                    }
                     for (int i = 0; i < pageCount; i++)
                     {
                         GeneratePage(p.StudentList.Skip(i * _maxRows).Take(_maxRows).ToList());

@@ -8879,14 +8879,14 @@
       "CreateIdeologicalEducationalWorkRecordRequest": {
         "type": "object",
         "properties": {
-          "startDate": {
-            "type": "string",
-            "format": "date",
+          "startDay": {
+            "type": "integer",
+            "format": "int32",
             "nullable": true
           },
-          "endDate": {
-            "type": "string",
-            "format": "date",
+          "endDay": {
+            "type": "integer",
+            "format": "int32",
             "nullable": true
           },
           "workContent": {
@@ -9556,14 +9556,14 @@
             "type": "integer",
             "format": "int32"
           },
-          "startDate": {
-            "type": "string",
-            "format": "date",
+          "startDay": {
+            "type": "integer",
+            "format": "int32",
             "nullable": true
           },
-          "endDate": {
-            "type": "string",
-            "format": "date",
+          "endDay": {
+            "type": "integer",
+            "format": "int32",
             "nullable": true
           },
           "workContent": {
@@ -10517,14 +10517,14 @@
             "type": "integer",
             "format": "int32"
           },
-          "startDate": {
-            "type": "string",
-            "format": "date",
+          "startDay": {
+            "type": "integer",
+            "format": "int32",
             "nullable": true
           },
-          "endDate": {
-            "type": "string",
-            "format": "date",
+          "endDay": {
+            "type": "integer",
+            "format": "int32",
             "nullable": true
           },
           "workContent": {
@@ -13209,13 +13209,13 @@
         "type": "object",
         "properties": {
           "startDate": {
-            "type": "string",
-            "format": "date",
+            "type": "integer",
+            "format": "int32",
             "nullable": true
           },
           "endDate": {
-            "type": "string",
-            "format": "date",
+            "type": "integer",
+            "format": "int32",
             "nullable": true
           },
           "workContent": {

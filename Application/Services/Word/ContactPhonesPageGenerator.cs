@@ -22,7 +22,7 @@ namespace Application.Services.Word
         private readonly int _nameColumnWidth = 5000;
         private readonly int _phoneColumnWidth = 5000;
 
-        private readonly UInt32Value _valueRowHeight = 390;
+        private readonly UInt32Value _valueRowHeight = 385;
 
         private readonly TableCellProperties _cellProperties = new TableCellProperties(
             new TableCellVerticalAlignment { Val = TableVerticalAlignmentValues.Center },

@@ -54,8 +54,13 @@ namespace Application.Services.Word
                 if (certificationTypes == null) throw new ArgumentException(nameof(page));
                 _certificationTypes = certificationTypes;
 
-                int pageCount = page.FinalPerformanceAccounting.Count / _maxRows;
-                pageCount += page.FinalPerformanceAccounting.Count % _maxRows == 0 ? 0 : 1;
+                int pageCount;
+                if (page.FinalPerformanceAccounting.Count == 0) pageCount = 1;
+                else
+                {
+                    pageCount = page.FinalPerformanceAccounting.Count / _maxRows;
+                    pageCount += page.FinalPerformanceAccounting.Count % _maxRows == 0 ? 0 : 1;
+                }
                 for (int i = 0; i < pageCount; i++)
                 {
                     GeneratePage(page.FinalPerformanceAccounting.Skip(i * _maxRows).Take(_maxRows).ToList());
@@ -69,8 +74,13 @@ namespace Application.Services.Word
                     if (certificationTypes == null) throw new ArgumentException(nameof(p));
                     _certificationTypes = certificationTypes;
 
-                    int pageCount = p.FinalPerformanceAccounting.Count / _maxRows;
-                    pageCount += p.FinalPerformanceAccounting.Count % _maxRows == 0 ? 0 : 1;
+                    int pageCount;
+                    if (p.FinalPerformanceAccounting.Count == 0) pageCount = 1;
+                    else
+                    {
+                        pageCount = p.FinalPerformanceAccounting.Count / _maxRows;
+                        pageCount += p.FinalPerformanceAccounting.Count % _maxRows == 0 ? 0 : 1;
+                    }
                     for (int i = 0; i < pageCount; i++)
                     {
                         GeneratePage(p.FinalPerformanceAccounting.Skip(i * _maxRows).Take(_maxRows).ToList());

@@ -13,6 +13,8 @@ namespace Application.Services.Word
 
         private ParagraphProperties _valueParagraphProperties = new ParagraphProperties(new SpacingBetweenLines { Before = "0", After = "0" });
 
+        private readonly int _maxRows = 4;
+
         public StudentEncouragementsGenerator(List<StudentEcouragement> studentEcouragements, Body body)
         {
             _studentEcouragements = studentEcouragements;
@@ -29,7 +31,8 @@ namespace Application.Services.Word
         {
             var title = new Paragraph(
                 new ParagraphProperties(
-                    new Justification { Val = JustificationValues.Start }),
+                    new Justification { Val = JustificationValues.Start },
+                    new SpacingBetweenLines() { After = "0", Before = "50" }),
                 new Run(WordUtils.GetRunProperties(bold: true, fontSize: "26"),
                     new Text("Поощрения студента")));
 
@@ -98,8 +101,12 @@ namespace Application.Services.Word
             headRow.Append(dateHeadCell, achievementHeadCell, encouragementKindHeadCell);
             table.Append(headRow);
 
+            int rowCount = 0;
             foreach (var record in _studentEcouragements)
             {
+                if (rowCount + 1 > _maxRows) break;
+                rowCount++;
+
                 TableRow row = new TableRow(new TableRowProperties(new TableRowHeight() { Val = 360 } ));
 
                 TableCell dateCell = new TableCell(new Paragraph(_valueParagraphProperties.CloneNode(true),
@@ -124,7 +131,35 @@ namespace Application.Services.Word
                 table.Append(row);
             }
 
+            for (int i = rowCount; i < _maxRows; i++) AppendEmptyRow(table);
+
             _documentBody.Append(table);
+        }
+
+        private void AppendEmptyRow(Table table)
+        {
+            TableRow row = new TableRow(new TableRowProperties(new TableRowHeight() { Val = 360 }));
+
+            TableCell dateCell = new TableCell(new Paragraph(_valueParagraphProperties.CloneNode(true),
+                new Run(WordUtils.GetRunProperties(fontSize: "24"),
+                    new Text(""))));
+            dateCell.Append(new TableCellProperties(new TableCellVerticalAlignment { Val = TableVerticalAlignmentValues.Center },
+                new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = "1250" }));
+
+            TableCell achievementCell = new TableCell(new Paragraph(_valueParagraphProperties.CloneNode(true),
+                new Run(WordUtils.GetRunProperties(fontSize: "24"),
+                    new Text(""))));
+            achievementCell.Append(new TableCellProperties(new TableCellVerticalAlignment { Val = TableVerticalAlignmentValues.Center },
+                new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = "5350" }));
+
+            TableCell encouragementKindCell = new TableCell(new Paragraph(_valueParagraphProperties.CloneNode(true),
+                new Run(WordUtils.GetRunProperties(fontSize: "24"),
+                    new Text(""))));
+            encouragementKindCell.Append(new TableCellProperties(new TableCellVerticalAlignment { Val = TableVerticalAlignmentValues.Center },
+                new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = "3400" }));
+
+            row.Append(dateCell, achievementCell, encouragementKindCell);
+            table.Append(row);
         }
     }
 }

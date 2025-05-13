@@ -19,6 +19,8 @@ namespace DataAccess.Configurations
                 new CertificationType { Id = 4, Name = "КП" },
                 new CertificationType { Id = 5, Name = "КР" }
             ];
+
+            builder.HasData(data);
         }
     }
 }

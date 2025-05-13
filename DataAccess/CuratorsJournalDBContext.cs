@@ -10,7 +10,6 @@ using Domain.Entities.JournalContent.Pages;
 using Domain.Entities.JournalContent.Pages.Attributes;
 using Domain.Entities.JournalContent.PersonalizedAccountingCardContent;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 
 namespace DataAccess
 {

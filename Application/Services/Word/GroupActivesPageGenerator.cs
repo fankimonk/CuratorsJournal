@@ -3,6 +3,7 @@ using DataAccess.Interfaces;
 using DocumentFormat.OpenXml.Wordprocessing;
 using Domain.Entities;
 using Domain.Entities.JournalContent;
+using Domain.Entities.JournalContent.Pages;
 using Domain.Enums.Journal;
 
 namespace Application.Services.Word
@@ -13,7 +14,9 @@ namespace Application.Services.Word
 
         private readonly Body _documentBody;
 
-        private int _journalId;
+        private readonly int _journalId;
+
+        private readonly int _pageInstancesPerPage = 3;
 
         public GroupActivesPageGenerator(int journalId, Body body, IPagesRepository pagesRepository)
         {
@@ -27,15 +30,42 @@ namespace Application.Services.Word
             var pages = await _pagesRepository.GetJournalPagesByTypeAsync(_journalId, PageTypes.GroupActives);
             if (pages == null) throw new ArgumentException(nameof(pages));
 
+            int pageCount;
+            if (pages.Count == 0) pageCount = 1;
+            else
+            {
+                pageCount = pages.Count / _pageInstancesPerPage;
+                pageCount += pages.Count % _pageInstancesPerPage == 0 ? 0 : 1;
+            }
+            for (int i = 0; i < pageCount; i++)
+                GeneratePage(pages.Skip(i * _pageInstancesPerPage).Take(_pageInstancesPerPage).ToList());
+
+            //foreach (var page in pages)
+            //{
+            //    if (page.GroupActives == null) throw new ArgumentException(nameof(page));
+
+            //    AppendTitle();
+            //    AppendActives(page.GroupActives);
+            //}
+
+            //WordUtils.AppendPageBreak(_documentBody);
+        }
+
+        private void GeneratePage(List<Page> pages)
+        {
             foreach (var page in pages)
             {
                 if (page.GroupActives == null) throw new ArgumentException(nameof(page));
-
                 AppendTitle();
-
                 AppendActives(page.GroupActives);
+                if (!(pages.Count == _pageInstancesPerPage && page == pages.Last())) WordUtils.AppendBreaks(4, _documentBody);
             }
-
+            for (int i = pages.Count; i < _pageInstancesPerPage; i++)
+            {
+                AppendTitle();
+                AppendEmptyInstance();
+                if (i != _pageInstancesPerPage - 1) WordUtils.AppendBreaks(4, _documentBody);
+            }
             WordUtils.AppendPageBreak(_documentBody);
         }
 
@@ -70,6 +100,35 @@ namespace Application.Services.Word
 
                 var studentStr = groupActives[i].Student == null ? "" : GetStudentFIO(groupActives[i].Student);
                 if (studentStr.Length > 65 - positionStr.Length) studentStr = studentStr.Substring(0, 65 - positionStr.Length);
+                int tabsLeftCount = 13 - positionTabCount - Math.Max(0, studentStr.Length - 1) / 5;
+                Run studentRun = new Run(WordUtils.GetRunProperties(underline: true),
+                    new TabChar(),
+                    new Text(studentStr));
+                for (int j = 0; j < tabsLeftCount; j++)
+                    studentRun.Append(new TabChar());
+
+                content.Append(positionRun, studentRun);
+                _documentBody.Append(content);
+            }
+        }
+
+        private void AppendEmptyInstance()
+        {
+            for (int i = 0; i < 6; i++)
+            {
+                var content = new Paragraph(
+                    new ParagraphProperties(
+                        new Justification { Val = JustificationValues.Both })
+                );
+
+                var positionStr = i == 0 ? "Староста" : i == 1 ? "Заместитель старосты" : i == 2 ? "Профорг" : "";
+                int positionTabCount = Math.Max(0, positionStr.Length - 1) / 5 + 1;
+                Run positionRun = new();
+                if (i <= 2) positionRun.Append(WordUtils.GetRunProperties());
+                else positionRun.Append(WordUtils.GetRunProperties(underline: true));
+                positionRun.Append(new Text(positionStr));
+
+                var studentStr = "";
                 int tabsLeftCount = 13 - positionTabCount - Math.Max(0, studentStr.Length - 1) / 5;
                 Run studentRun = new Run(WordUtils.GetRunProperties(underline: true),
                     new TabChar(),

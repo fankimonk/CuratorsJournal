@@ -32,6 +32,9 @@ namespace Application.Services.Word
         private readonly ParagraphProperties _valueParagraphProperties =
             new ParagraphProperties(new SpacingBetweenLines { Before = "0", After = "0" });
 
+        private readonly ParagraphProperties _paragraphProperties = new ParagraphProperties(new Justification { Val = JustificationValues.Center },
+                new SpacingBetweenLines { Before = "0", After = "0" });
+
         public IdeologicalAndEducationalWorkAccountingPageGenerator(int journalId, Body body, IPagesRepository pagesRepository)
         {
             _journalId = journalId;
@@ -107,7 +110,7 @@ namespace Application.Services.Word
                 string termStr = "";
                 if (record.StartDay != null && record.EndDay != null)
                 {
-                    termStr += record.StartDay.ToString() + " - " + record.EndDay.ToString();
+                    termStr += record.StartDay.ToString() + " " + record.EndDay.ToString();
                 }
                 else if (record.StartDay != null && record.EndDay == null)
                 {
@@ -154,18 +157,15 @@ namespace Application.Services.Word
             );
             table.AppendChild(tableGrid);
 
-            ParagraphProperties paragraphProperties = new ParagraphProperties(new Justification { Val = JustificationValues.Center },
-                new SpacingBetweenLines { Before = "0", After = "0" });
-
             TableRow headRow = new TableRow();
 
-            TableCell termHeadCell = new TableCell(new Paragraph(paragraphProperties.CloneNode(true),
+            TableCell termHeadCell = new TableCell(new Paragraph(_paragraphProperties.CloneNode(true),
                 new Run(WordUtils.GetRunProperties(bold: true, fontSize: "26"),
                     new Text("Срок выполнения"))));
             termHeadCell.Append(new TableCellProperties(
                 new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = _termColumnWidth.ToString() }));
 
-            TableCell contentHeadCell = new TableCell(new Paragraph(paragraphProperties.CloneNode(true),
+            TableCell contentHeadCell = new TableCell(new Paragraph(_paragraphProperties.CloneNode(true),
                 new Run(WordUtils.GetRunProperties(bold: true, fontSize: "26"),
                     new Text("Содержание работы"))));
             contentHeadCell.Append(new TableCellProperties(
@@ -174,8 +174,13 @@ namespace Application.Services.Word
             headRow.Append(termHeadCell, contentHeadCell);
             table.Append(headRow);
 
-            int pageCount = rows.Count / _maxRows;
-            pageCount += rows.Count % _maxRows == 0 ? 0 : 1;
+            int pageCount;
+            if (rows.Count == 0) pageCount = 1;
+            else
+            {
+                pageCount = rows.Count / _maxRows;
+                pageCount += rows.Count % _maxRows == 0 ? 0 : 1;
+            }
             for (int i = 0; i < pageCount; i++)
             {
                 var currentTable = table.CloneNode(true);
@@ -254,13 +259,13 @@ namespace Application.Services.Word
             var splitTerm = str.Split(' ');
             if (splitTerm.Length > 2)
             {
-                WordUtils.AddCellToRow(rows[0], splitTerm[0] + " " + splitTerm[1] + " ", cellProperties, _valueParagraphProperties);
+                WordUtils.AddCellToRow(rows[0], splitTerm[0] + " " + splitTerm[1] + " ", cellProperties, _paragraphProperties);
                 rows.Add(new TableRow(new TableRowProperties(new TableRowHeight() { Val = _valueRowHeight })));
-                WordUtils.AddCellToRow(rows[1], splitTerm[2], cellProperties, _valueParagraphProperties);
+                WordUtils.AddCellToRow(rows[1], splitTerm[2], cellProperties, _paragraphProperties);
             }
             else
             {
-                WordUtils.AddCellToRow(rows[0], str, cellProperties, _valueParagraphProperties);
+                WordUtils.AddCellToRow(rows[0], str, cellProperties, _paragraphProperties);
             }
         }
 

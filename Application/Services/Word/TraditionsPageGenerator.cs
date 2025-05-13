@@ -168,8 +168,13 @@ namespace Application.Services.Word
             headRow.Append(nameHeadCell, dateHeadCell, participationFormHeadCell, noteHeadCell);
             table.Append(headRow);
 
-            int pageCount = rows.Count / _maxRows;
-            pageCount += rows.Count % _maxRows == 0 ? 0 : 1;
+            int pageCount;
+            if (rows.Count == 0) pageCount = 1;
+            else
+            {
+                pageCount = rows.Count / _maxRows;
+                pageCount += rows.Count % _maxRows == 0 ? 0 : 1;
+            }
             for (int i = 0; i < pageCount; i++)
             {
                 var currentTable = table.CloneNode(true);

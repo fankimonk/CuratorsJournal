@@ -42,8 +42,13 @@ namespace Application.Services.Word
             {
                 if (!pages.Any(p => p.Id == page.Id)) throw new ArgumentException(nameof(page));
                 if (page.HealthCardPageAttributes == null) throw new ArgumentException(nameof(page));
-                int pageCount = page.StudentsHealthCards.Count / _maxRows;
-                pageCount += page.StudentsHealthCards.Count % _maxRows == 0 ? 0 : 1;
+                int pageCount;
+                if (page.StudentsHealthCards.Count == 0) pageCount = 1;
+                else
+                {
+                    pageCount = page.StudentsHealthCards.Count / _maxRows;
+                    pageCount += page.StudentsHealthCards.Count % _maxRows == 0 ? 0 : 1;
+                }
                 for (int i = 0; i < pageCount; i++)
                 {
                     GeneratePage(page.StudentsHealthCards.Skip(i * _maxRows).Take(_maxRows).ToList(), page.HealthCardPageAttributes.AcademicYear);
@@ -54,8 +59,13 @@ namespace Application.Services.Word
                 foreach (var p in pages)
                 {
                     if (p.HealthCardPageAttributes == null) throw new ArgumentException(nameof(p));
-                    int pageCount = p.StudentsHealthCards.Count / _maxRows;
-                    pageCount += p.StudentsHealthCards.Count % _maxRows == 0 ? 0 : 1;
+                    int pageCount;
+                    if (p.StudentsHealthCards.Count == 0) pageCount = 1;
+                    else
+                    {
+                        pageCount = p.StudentsHealthCards.Count / _maxRows;
+                        pageCount += p.StudentsHealthCards.Count % _maxRows == 0 ? 0 : 1;
+                    }
                     for (int i = 0; i < pageCount; i++)
                     {
                         GeneratePage(p.StudentsHealthCards.Skip(i * _maxRows).Take(_maxRows).ToList(), p.HealthCardPageAttributes.AcademicYear);

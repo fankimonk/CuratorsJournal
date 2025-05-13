@@ -2,6 +2,7 @@
 using DataAccess.Interfaces;
 using DocumentFormat.OpenXml.Wordprocessing;
 using Domain.Entities;
+using Domain.Entities.JournalContent.Pages;
 using Domain.Entities.JournalContent.PersonalizedAccountingCardContent;
 using Domain.Enums.Journal;
 
@@ -22,43 +23,55 @@ namespace Application.Services.Word.PesonalizedAccountingCard
             _pagesRepository = pagesRepository;
         }
 
-        public async Task Generate()
+        public async Task Generate(Page? page = null)
         {
             var pages = await _pagesRepository.GetJournalPagesByTypeAsync(_journalId, PageTypes.PersonalizedAccountingCard);
             if (pages == null) throw new ArgumentException(nameof(pages));
-
-            foreach (var page in pages)
+            if (page != null)
             {
-                if (page.PersonalizedAccountingCard == null) throw new ArgumentException(nameof(page));
-
-                AppendTitle();
-                AppendContent(page.PersonalizedAccountingCard);
-
-                var parentalInformationGenerator = new ParentalInfromationGenerator(page.PersonalizedAccountingCard.ParentalInformation, _documentBody);
-                parentalInformationGenerator.Generate();
-
-                var individualInformationGenerator = new IndividualInfromationGenerator(page.PersonalizedAccountingCard.IndividualInformation, _documentBody);
-                individualInformationGenerator.Generate();
-
-                var studentEncouragementsGenerator = new StudentEncouragementsGenerator(page.PersonalizedAccountingCard.StudentEcouragements, _documentBody);
-                studentEncouragementsGenerator.Generate();
-
-                var studentDisciplinaryResonsibilitiesGenerator = new StudentDisciplinaryResonsibilitiesGenerator
-                    (page.PersonalizedAccountingCard.StudentDisciplinaryResponsibilities, _documentBody);
-                studentDisciplinaryResonsibilitiesGenerator.Generate();
-
-                WordUtils.AppendPageBreak(_documentBody);
-
-                var individualWorkWithStudentGenerator = new IndividualWorkWithStudentGenerator(page.PersonalizedAccountingCard.IndividualWorkWithStudent, _documentBody);
-                individualWorkWithStudentGenerator.Generate();
-
-                WordUtils.AppendBreaks(1, _documentBody);
-
-                var workWithParentsGenerator = new WorkWithParentsGenerator(page.PersonalizedAccountingCard.WorkWithParents, _documentBody);
-                workWithParentsGenerator.Generate();
-
-                if (page != pages.Last()) WordUtils.AppendPageBreak(_documentBody);
+                if (!pages.Any(p => p.Id == page.Id)) throw new ArgumentException(nameof(page));
+                GeneratePage(page);
             }
+            else
+            {
+                foreach (var p in pages)
+                {
+                    GeneratePage(p);
+
+                    if (p != pages.Last()) WordUtils.AppendPageBreak(_documentBody);
+                }
+            } 
+        }
+
+        private void GeneratePage(Page page)
+        {
+            if (page.PersonalizedAccountingCard == null) throw new ArgumentException(nameof(page));
+
+            AppendTitle();
+            AppendContent(page.PersonalizedAccountingCard);
+
+            var parentalInformationGenerator = new ParentalInfromationGenerator(page.PersonalizedAccountingCard.ParentalInformation, _documentBody);
+            parentalInformationGenerator.Generate();
+
+            var individualInformationGenerator = new IndividualInfromationGenerator(page.PersonalizedAccountingCard.IndividualInformation, _documentBody);
+            individualInformationGenerator.Generate();
+
+            var studentEncouragementsGenerator = new StudentEncouragementsGenerator(page.PersonalizedAccountingCard.StudentEcouragements, _documentBody);
+            studentEncouragementsGenerator.Generate();
+
+            var studentDisciplinaryResonsibilitiesGenerator = new StudentDisciplinaryResonsibilitiesGenerator
+                (page.PersonalizedAccountingCard.StudentDisciplinaryResponsibilities, _documentBody);
+            studentDisciplinaryResonsibilitiesGenerator.Generate();
+
+            WordUtils.AppendPageBreak(_documentBody);
+
+            var individualWorkWithStudentGenerator = new IndividualWorkWithStudentGenerator(page.PersonalizedAccountingCard.IndividualWorkWithStudent, _documentBody);
+            individualWorkWithStudentGenerator.Generate();
+
+            WordUtils.AppendBreaks(1, _documentBody);
+
+            var workWithParentsGenerator = new WorkWithParentsGenerator(page.PersonalizedAccountingCard.WorkWithParents, _documentBody);
+            workWithParentsGenerator.Generate();
         }
 
         private void AppendTitle()
@@ -168,7 +181,7 @@ namespace Application.Services.Word.PesonalizedAccountingCard
 
         private void AppendChronicDisesaes(List<ChronicDisease> chronicDiseases, Paragraph healthStatusParagraph)
         {
-            var chronicDiseasesLabel = new Run(WordUtils.GetRunProperties(),
+            var chronicDiseasesLabel = new Run(WordUtils.GetRunProperties(fontSize: "26"),
                 new Text("Хронические заболевания"));
             var text = "";
             foreach (var cd in chronicDiseases)
@@ -186,7 +199,7 @@ namespace Application.Services.Word.PesonalizedAccountingCard
 
         private void AppendPEGroups(List<PEGroup> peGroups, Paragraph healthStatusParagraph)
         {
-            var peGroupsLabel = new Run(WordUtils.GetRunProperties(),
+            var peGroupsLabel = new Run(WordUtils.GetRunProperties(fontSize: "26"),
                 new Text("Группы по физической культуре (основная специальная)"));
             var text = "";
             foreach (var group in peGroups)
@@ -194,7 +207,7 @@ namespace Application.Services.Word.PesonalizedAccountingCard
                 text += group == peGroups.Last() ? group.Name : group.Name + ", ";
             }
             var peGroupsRun = new Run(WordUtils.GetRunProperties(underline: true, fontSize: "26"),
-                new TabChar(),
+                new TabChar(), new TabChar(),
                 new Text(text));
             int tabCount = 16 - Math.Max(0, text.Length - 1) / 5;
             for (int i = 0; i < tabCount; i++) peGroupsRun.Append(new TabChar());

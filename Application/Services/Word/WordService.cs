@@ -190,7 +190,7 @@ namespace Application.Services.Word
 
                     case (int)PageTypes.PersonalizedAccountingCard:
                         var personalizedAccountingCardPageGenerator = new PersonalizedAccountingCardPageGenerator(journalId, body, _pagesRepository);
-                        try { await personalizedAccountingCardPageGenerator.Generate(); }
+                        try { await personalizedAccountingCardPageGenerator.Generate(page); }
                         catch { return null; }
                         break;
 
