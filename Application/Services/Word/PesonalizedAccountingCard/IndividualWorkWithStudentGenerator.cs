@@ -17,7 +17,7 @@ namespace Application.Services.Word
 
         private readonly ParagraphProperties _valueParagraphProperties = new ParagraphProperties(new SpacingBetweenLines { Before = "0", After = "0" });
 
-        private readonly UInt32Value _valueRowHeight = 590;
+        private readonly UInt32Value _valueRowHeight = 580;
 
         private readonly int _maxRows = 15;
 

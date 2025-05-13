@@ -107,7 +107,7 @@ namespace Application.Services.Word
                 if (rowCount + 1 > _maxRows) break;
                 rowCount++;
 
-                TableRow row = new TableRow(new TableRowProperties(new TableRowHeight() { Val = 360 } ));
+                TableRow row = new TableRow(new TableRowProperties(new TableRowHeight() { Val = 340 } ));
 
                 TableCell dateCell = new TableCell(new Paragraph(_valueParagraphProperties.CloneNode(true),
                     new Run(WordUtils.GetRunProperties(fontSize: "24"),
@@ -138,7 +138,7 @@ namespace Application.Services.Word
 
         private void AppendEmptyRow(Table table)
         {
-            TableRow row = new TableRow(new TableRowProperties(new TableRowHeight() { Val = 360 }));
+            TableRow row = new TableRow(new TableRowProperties(new TableRowHeight() { Val = 340 }));
 
             TableCell dateCell = new TableCell(new Paragraph(_valueParagraphProperties.CloneNode(true),
                 new Run(WordUtils.GetRunProperties(fontSize: "24"),

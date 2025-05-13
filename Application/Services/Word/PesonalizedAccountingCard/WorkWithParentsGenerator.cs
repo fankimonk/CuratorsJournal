@@ -16,7 +16,7 @@ namespace Application.Services.Word
         private readonly ParagraphProperties _paragraphProperties = new ParagraphProperties(new Justification { Val = JustificationValues.Center },
                 new SpacingBetweenLines { Before = "0", After = "0" });
 
-        private readonly UInt32Value _valueRowHeight = 470;
+        private readonly UInt32Value _valueRowHeight = 460;
 
         private readonly int _maxRows = 6;
 

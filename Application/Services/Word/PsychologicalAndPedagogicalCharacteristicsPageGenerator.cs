@@ -136,6 +136,10 @@ namespace Application.Services.Word
 
                 AppendEmptyLines(_linesCount - linesCount);
             }
+            else
+            {
+                AppendEmptyLines(_linesCount);
+            }
 
             //_documentBody.Append(contentParagraph);
         }

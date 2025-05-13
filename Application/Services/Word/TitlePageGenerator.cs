@@ -295,8 +295,8 @@ namespace Application.Services.Word
                     var lineStr = lines[i];
                    
                     int tabCount = i == 0
-                        ? 11 - (Math.Max(0, lineStr.Length - 3) / 5)
-                        : 13 - (Math.Max(0, lineStr.Length - 3) / 5);
+                        ? 11 - (Math.Max(0, lineStr.Length - 1) / 5)
+                        : 13 - (Math.Max(0, lineStr.Length - 1) / 5);
 
                     if (i == 0)
                     {

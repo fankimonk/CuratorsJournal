@@ -459,8 +459,8 @@ namespace Application.Services.Word
                     var lineStr = lines[i];
 
                     int otherInfoTabCount = i == 0
-                        ? 9 - (Math.Max(0, lineStr.Length - 3) / 5)
-                        : 13 - (Math.Max(0, lineStr.Length - 3) / 5);
+                        ? 9 - (Math.Max(0, lineStr.Length - 1) / 5)
+                        : 13 - (Math.Max(0, lineStr.Length - 1) / 5);
 
                     if (i == 0)
                     {
@@ -487,6 +487,15 @@ namespace Application.Services.Word
 
                 AppendEmptyLines(6 - linesCount);
             }
+            else
+            {
+                otherInfoRun.Append(new Text(""));
+                for (int j = 0; j < 9; j++)
+                    otherInfoRun.Append(new TabChar());
+                otherInfoParagraph.Append(otherInfoRun);
+                _documentBody.Append(otherInfoParagraph);
+                AppendEmptyLines(linesCount - 1);
+            }
         }
 
         private void AppendEmptyLines(int count)
@@ -494,8 +503,9 @@ namespace Application.Services.Word
             for (int i = 0; i < count; i++)
             {
                 var emptyParagraph = new Paragraph(new ParagraphProperties(
-                new Justification { Val = JustificationValues.Both }
-            ));
+                    new Justification { Val = JustificationValues.Both },
+                    new SpacingBetweenLines() { Before = "200", After = "200" }
+                ));
                 var emptyRun = new Run(WordUtils.GetRunProperties(underline: true));
                 for (int j = 0; j < 13; j++)
                 {

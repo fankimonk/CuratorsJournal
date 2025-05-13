@@ -1,4 +1,5 @@
 ﻿using Application.Utils;
+using DocumentFormat.OpenXml.AdditionalCharacteristics;
 using DocumentFormat.OpenXml.Wordprocessing;
 using Domain.Entities.JournalContent.PersonalizedAccountingCardContent;
 
@@ -9,6 +10,10 @@ namespace Application.Services.Word.PesonalizedAccountingCard
         private readonly List<ParentalInformationRecord> _parentalInformation;
 
         private readonly Body _documentBody;
+
+        private readonly int _maxLineChars = 86;
+        private readonly int _maxLines = 7;
+        private int _totalLines = 0;
 
         public ParentalInfromationGenerator(List<ParentalInformationRecord> parentalInformation, Body body)
         {
@@ -43,10 +48,6 @@ namespace Application.Services.Word.PesonalizedAccountingCard
 
         private void AppendContent()
         {
-            var content = new Paragraph(
-                new ParagraphProperties(
-                    new Justification { Val = JustificationValues.Both }));
-
             foreach (var record in _parentalInformation)
             {
                 string text = "";
@@ -65,21 +66,85 @@ namespace Application.Services.Word.PesonalizedAccountingCard
                 text += record.MobilePhoneNumber == null ? "" : record.MobilePhoneNumber + "; ";
                 text += record.OtherInformation == null ? "" : record.OtherInformation + ";";
 
-                var recordRun = new Run(WordUtils.GetRunProperties(underline: true, fontSize: "24"),
-                    new Text(text));
-
-                int lineCharsCount = 13 * 6;
-                while (text.Length > lineCharsCount)
-                    lineCharsCount += 13 * 6;
-                int charsLeft = lineCharsCount - text.Length;
-                int tabsLeftCount = charsLeft / 5;
-                for (int i = 0; i < tabsLeftCount; i++) recordRun.Append(new TabChar());
-                if (record != _parentalInformation.Last()) recordRun.Append(new Break());
-
-                content.Append(recordRun);
+                AppendRecord(text);
             }
 
-            _documentBody.Append(content);
+            AppendEmptyLines(_maxLines - _totalLines);
+        }
+
+        private void AppendRecord(string text)
+        {
+            var spacing = new SpacingBetweenLines() { Before = "0", After = "0" };
+            var paragraphProperties = new ParagraphProperties(
+                new Justification { Val = JustificationValues.Both }, spacing);
+
+            var paragraph = new Paragraph(paragraphProperties.CloneNode(true));
+            var run = new Run(WordUtils.GetRunProperties(underline: true, fontSize: "24"));
+
+            if (text != "")
+            {
+                var split = text.Split(' ');
+                var lines = new List<string>();
+                string currentLine = "";
+
+                foreach (var word in split)
+                {
+                    if (currentLine.Length + word.Length + 1 <= _maxLineChars)
+                    {
+                        currentLine += word + " ";
+                    }
+                    else
+                    {
+                        lines.Add(currentLine);
+                        currentLine = word + " ";
+                    }
+                }
+
+                if (!string.IsNullOrEmpty(currentLine) && !lines.Contains(currentLine))
+                {
+                    lines.Add(currentLine);
+                }
+
+                if (_totalLines + lines.Count > _maxLines) return;
+                _totalLines += lines.Count;
+
+                for (int i = 0; i < lines.Count; i++)
+                {
+                    var lineStr = lines[i];
+
+                    int tabCount = 13 - (Math.Max(0, lineStr.Length - 1) / 7);
+
+                    var newParagraph = paragraph.CloneNode(true);
+                    var newValueRun = run.CloneNode(true);
+                    newValueRun.Append(new Text(lineStr));
+
+                    for (int j = 0; j < tabCount; j++)
+                    {
+                        newValueRun.Append(new TabChar());
+                    }
+
+                    newParagraph.Append(newValueRun);
+                    _documentBody.Append(newParagraph);
+                }
+            }
+        }
+
+        private void AppendEmptyLines(int count)
+        {
+            for (int i = 0; i < count; i++)
+            {
+                var emptyParagraph = new Paragraph(new ParagraphProperties(
+                    new Justification { Val = JustificationValues.Both },
+                    new SpacingBetweenLines() { Before = "0", After = "0" }
+                ));
+                var emptyRun = new Run(WordUtils.GetRunProperties(underline: true));
+                for (int j = 0; j < 13; j++)
+                {
+                    emptyRun.Append(new TabChar());
+                }
+                emptyParagraph.Append(emptyRun);
+                _documentBody.Append(emptyParagraph);
+            }
         }
     }
 }
