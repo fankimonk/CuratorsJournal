@@ -55,6 +55,7 @@ namespace DataAccess.Repositories
                     page.GroupActives.Add(new GroupActive { PositionName = "Староста" });
                     page.GroupActives.Add(new GroupActive { PositionName = "Заместитель старосты" });
                     page.GroupActives.Add(new GroupActive { PositionName = "Профорг" });
+                    for (int i = 0; i < 3; i++) page.GroupActives.Add(new GroupActive());
                     break;
 
                 case (int)PageTypes.FinalPerformanceAccounting:

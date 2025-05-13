@@ -16,7 +16,7 @@ namespace API.Mappers.Journal
             this CuratorsIdeologicalAndEducationalWorkAccountingRecord record)
         {
             return new IdeologicalEducationalWorkRecordResponse(
-                record.Id, record.StartDate, record.EndDate, record.WorkContent
+                record.Id, record.StartDay, record.EndDay, record.WorkContent
             );
         }
 
@@ -25,8 +25,8 @@ namespace API.Mappers.Journal
         {
             return new CuratorsIdeologicalAndEducationalWorkAccountingRecord
             {
-                StartDate = request.StartDate,
-                EndDate = request.EndDate,
+                StartDay = request.StartDate,
+                EndDay = request.EndDate,
                 WorkContent = request.WorkContent
             };
         }
@@ -36,8 +36,8 @@ namespace API.Mappers.Journal
         {
             return new CuratorsIdeologicalAndEducationalWorkAccountingRecord
             {
-                StartDate = request.StartDate,
-                EndDate = request.EndDate,
+                StartDay = request.StartDay,
+                EndDay = request.EndDay,
                 WorkContent = request.WorkContent,
                 PageId = request.PageId
             };

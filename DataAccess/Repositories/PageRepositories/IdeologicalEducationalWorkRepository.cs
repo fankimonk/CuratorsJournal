@@ -46,8 +46,8 @@ namespace DataAccess.Repositories.PageRepositories
             var recordToUpdate = await _dbContext.CuratorsIdeologicalAndEducationalWorkAccounting.FirstOrDefaultAsync(p => p.Id == id);
             if (recordToUpdate == null) return null;
 
-            recordToUpdate.StartDate = record.StartDate;
-            recordToUpdate.EndDate = record.EndDate;
+            recordToUpdate.StartDay = record.StartDay;
+            recordToUpdate.EndDay = record.EndDay;
             recordToUpdate.WorkContent = record.WorkContent;
 
             await _dbContext.SaveChangesAsync();

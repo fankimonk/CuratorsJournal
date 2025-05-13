@@ -60,19 +60,19 @@ else
                     }
                 </select>
             }
-            @if (i > 2 && _canEdit)
+            @* @if (i > 2 && _canEdit)
             {
                 <DeleteButton @onclick="() => OpenDeleteModal(active.Id)" />
-            }
+            } *@
         </p>
         i++;
     }
-    if (_canEdit)
+    @* if (_canEdit)
     {
         <AddButton @onclick="Add">Добавить</AddButton>
-    }
+    } *@
 
-    <ConfirmDeleteModal IsVisible="_isDeleteModalVisible" OnClose="CloseDeleteModal" IdToDelete="_idToDelete" OnDeleteById="Delete" />
+    @* <ConfirmDeleteModal IsVisible="_isDeleteModalVisible" OnClose="CloseDeleteModal" IdToDelete="_idToDelete" OnDeleteById="Delete" /> *@
 
     <AlertBottom IsVisible="_isServerErrorAlertVisible" OnClose="CloseServerErrorAlert">@_errorMessage</AlertBottom>
 }
@@ -118,32 +118,32 @@ else
         }
     }
 
-    private async Task Add()
-    {
-        var request = new CreateGroupActiveRequest(null, null, PageId);
-        var response = await HttpClient.PostAsJsonAsync<CreateGroupActiveRequest>("api/journal/groupactive", request);
+    // private async Task Add()
+    // {
+    //     var request = new CreateGroupActiveRequest(null, null, PageId);
+    //     var response = await HttpClient.PostAsJsonAsync<CreateGroupActiveRequest>("api/journal/groupactive", request);
 
-        if (response.IsSuccessStatusCode)
-        {
-            var addedActive = await response.Content.ReadFromJsonAsync<GroupActiveResponse>();
-            _pageData!.GroupActives.Add(addedActive!);
-        }
-        else
-        {
-            var errorMessage = (await response.Content.ReadAsStringAsync()).Split('\n').FirstOrDefault();
-            ShowServerErrorAlert(errorMessage);
-        }
-    }
+    //     if (response.IsSuccessStatusCode)
+    //     {
+    //         var addedActive = await response.Content.ReadFromJsonAsync<GroupActiveResponse>();
+    //         _pageData!.GroupActives.Add(addedActive!);
+    //     }
+    //     else
+    //     {
+    //         var errorMessage = (await response.Content.ReadAsStringAsync()).Split('\n').FirstOrDefault();
+    //         ShowServerErrorAlert(errorMessage);
+    //     }
+    // }
 
-    private async Task Delete(int activeId)
-    {
-        var response = await HttpClient.DeleteAsync("api/journal/groupactive/" + activeId);
+    // private async Task Delete(int activeId)
+    // {
+    //     var response = await HttpClient.DeleteAsync("api/journal/groupactive/" + activeId);
 
-        if (response.IsSuccessStatusCode) _pageData!.GroupActives.RemoveAll(a => a.Id == activeId);
-        else
-        {
-            var errorMessage = (await response.Content.ReadAsStringAsync()).Split('\n').FirstOrDefault();
-            ShowServerErrorAlert(errorMessage);
-        }
-    }
+    //     if (response.IsSuccessStatusCode) _pageData!.GroupActives.RemoveAll(a => a.Id == activeId);
+    //     else
+    //     {
+    //         var errorMessage = (await response.Content.ReadAsStringAsync()).Split('\n').FirstOrDefault();
+    //         ShowServerErrorAlert(errorMessage);
+    //     }
+    // }
 }

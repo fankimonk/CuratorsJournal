@@ -73,21 +73,21 @@ else
                         с
                         @if (!_canEdit)
                         {
-                            @record.StartDate.ToString()
+                            @record.StartDay.ToString()
                         }
                         else
                         {
-                            <input type="date" @bind="record.StartDate" @bind:after="async () => await Update(record)" class="input" />
+                            <input type="date" @bind="record.StartDay" @bind:after="async () => await Update(record)" class="input" />
                         }
                         <br />
                         по
                         @if (!_canEdit)
                         {
-                            @record.EndDate.ToString()
+                            @record.EndDay.ToString()
                         }
                         else
                         {
-                            <input type="date" @bind="record.EndDate" @bind:after="async () => await Update(record)" class="input" />
+                            <input type="date" @bind="record.EndDay" @bind:after="async () => await Update(record)" class="input" />
                         }
                     </td>
                     <td>
@@ -156,7 +156,7 @@ else
         _rowsWithErrors.Remove(record.Id);
         CloseServerErrorAlert();
 
-        if (record.StartDate > record.EndDate)
+        if (record.StartDay > record.EndDay)
         {
             _rowsWithErrors.Add(record.Id);
             ShowServerErrorAlert("Дата начала не может быть позже даты окончания");

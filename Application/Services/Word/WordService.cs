@@ -210,7 +210,6 @@ namespace Application.Services.Word
                         var ideologicalAndEducationalWorkAccountingPageGenerator = new IdeologicalAndEducationalWorkAccountingPageGenerator(journalId, body, _pagesRepository);
                         try { await ideologicalAndEducationalWorkAccountingPageGenerator.Generate(page); }
                         catch { return null; }
-                        WordUtils.AppendSectionBreak(WordUtils.PageOrientationTypes.Landscape, body);
                         break;
 
                     case (int)PageTypes.InformationHoursAccounting:

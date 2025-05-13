@@ -7,7 +7,7 @@ namespace Contracts.Mappers.Journal
         public static UpdateIdeologicalEducationalWorkRecordRequest ToRequest(this IdeologicalEducationalWorkRecordResponse record)
         {
             return new UpdateIdeologicalEducationalWorkRecordRequest(
-                record.StartDate, record.EndDate, record.WorkContent
+                record.StartDay, record.EndDay, record.WorkContent
             );
         }
     }

@@ -1,12 +1,12 @@
 ﻿namespace Contracts.Journal.CuratorsIdeologicalAndEducationalWorkAccounting
 {
     public class IdeologicalEducationalWorkRecordResponse(
-        int id, DateOnly? startDate, DateOnly? endDate, string? workContent)
+        int id, int? startDay, int? endDay, string? workContent)
     {
         public int Id { get; set; } = id;
 
-        public DateOnly? StartDate { get; set; } = startDate;
-        public DateOnly? EndDate { get; set; } = endDate;
+        public int? StartDay { get; set; } = startDay;
+        public int? EndDay { get; set; } = endDay;
 
         public string? WorkContent { get; set; } = workContent;
     }

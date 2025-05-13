@@ -6,8 +6,8 @@ namespace Domain.Entities.JournalContent
     {
         public int Id { get; set; }
 
-        public DateOnly? StartDate { get; set; }
-        public DateOnly? EndDate { get; set; }
+        public int? StartDay { get; set; }
+        public int? EndDay { get; set; }
 
         public string? WorkContent { get; set; } = string.Empty;
 
