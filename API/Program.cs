@@ -103,6 +103,7 @@ builder.Services.AddScoped<IUsersService, UsersService>();
 builder.Services.AddScoped<IWordService, WordService>();
 builder.Services.AddScoped<IPersonalizedAccountingCardsService, PersonalizedAccountingCardsService>();
 builder.Services.AddScoped<IFilesService, FilesService>();
+builder.Services.AddScoped<IJournalKeepingService, JournalKeepingService>();
 
 builder.Services.AddScoped<IJwtProvider, JwtProvider>();
 builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();

@@ -1,0 +1,79 @@
+﻿@page "/JournalKeeping"
+
+@inherits CRUDPageBase
+
+@using Contracts.JournalKeeping
+@using Frontend.Components.Utils
+@using Frontend.Services
+
+@attribute [Authorize]
+
+@inject AppState AppState
+@inject APIService APIService
+@inject IJSRuntime JSRuntime
+
+<PageTitle>Ведение журнала</PageTitle>
+
+@if (_journalKeeping == null)
+{
+    <p><em>Загрузка...</em></p>
+}
+else
+{
+    @if (!_canEdit)
+    {
+        <h3 class="d-flex justify-content-center mb-4">@_journalKeeping.Title</h3>
+        var paragraphs = _journalKeeping.Content.Split('\n', StringSplitOptions.RemoveEmptyEntries);
+        @foreach (var paragraph in paragraphs)
+        {
+            <p>&emsp;&emsp;@paragraph</p>
+        }
+    }
+    else
+    {
+        <textarea rows="1" style="overflow:hidden; resize:none;" oninput="this.style.height = 'auto'; this.style.height = (this.scrollHeight) + 'px';"
+                  @bind="_journalKeeping.Title" @bind:after="Update" class="fullwidth mb-4 title" />
+        <textarea rows="1" style="overflow:hidden; resize:none;" oninput="this.style.height = 'auto'; this.style.height = (this.scrollHeight) + 'px';"
+                  @bind="_journalKeeping.Content" @bind:after="Update" class="fullwidth" />
+    }
+
+    <AlertBottom IsVisible="_isServerErrorAlertVisible" OnClose="CloseServerErrorAlert">@_errorMessage</AlertBottom>
+}
+
+@code {
+
+    private JournalKeepingResponse? _journalKeeping;
+
+    private bool _canEdit => AppState.Role != null && AppState.Role == "SocialDepartmentWorker";
+
+    protected override async Task OnInitializedAsync()
+    {
+        _journalKeeping = await APIService.GetFromJsonAsync<JournalKeepingResponse>("api/journal/keeping");
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await Task.Delay(10);
+        await JSRuntime.InvokeVoidAsync("resizeTextAreas");
+    }
+
+    private async Task Update()
+    {
+        if (_journalKeeping == null) return;
+        var request = new UpdateJournalKeepingRequest(_journalKeeping.Title, _journalKeeping.Content);
+        var response = await APIService.PutAsJsonAsync<UpdateJournalKeepingRequest>("api/journal/keeping", request);
+        if (!response.IsSuccessStatusCode)
+        {
+            var errorMessage = (await response.Content.ReadAsStringAsync()).Split('\n').FirstOrDefault();
+            ShowServerErrorAlert(errorMessage);
+        }
+    }
+
+}
+
+<style>
+    .title {
+        font-weight: bold;
+        text-align: center;
+    }
+</style>

@@ -39,6 +39,10 @@ namespace Application.Services.Word
                 try { await titlePageGenerator.Generate(); }
                 catch { return null; }
 
+                var journalKeepingPageGenerator = new JournalKeepingPageGenerator(body);
+                try { await journalKeepingPageGenerator.Generate(); }
+                catch { return null; }
+
                 var contactPhonesPageGenerator = new ContactPhonesPageGenerator(journalId, body, _pagesRepository);
                 try { await contactPhonesPageGenerator.Generate(); }
                 catch { return null; }

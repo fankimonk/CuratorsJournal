@@ -74,5 +74,26 @@ namespace Frontend.Services
             }
             return response;
         }
+
+        public async Task<HttpResponseMessage> PutAsJsonAsync<T>(string endpoint, T obj)
+        {
+            var token = await _accessTokenService.Get();
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+            var response = await _httpClient.PutAsJsonAsync<T>(endpoint, obj);
+            if (response.StatusCode == HttpStatusCode.Unauthorized)
+            {
+                var refreshTokenResult = await _authService.RefreshTokenAsync();
+                if (!refreshTokenResult) await _authService.Logout();
+
+                var newToken = await _accessTokenService.Get();
+                _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", newToken);
+
+                var newResponse = await _httpClient.PutAsJsonAsync<T>(endpoint, obj);
+                if (newResponse.StatusCode == HttpStatusCode.Unauthorized) _navigationManager.NavigateTo("/login");
+                return newResponse;
+            }
+            return response;
+        }
     }
 }

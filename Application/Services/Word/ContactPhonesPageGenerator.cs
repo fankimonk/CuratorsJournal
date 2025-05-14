@@ -127,11 +127,6 @@ namespace Application.Services.Word
 
                 TableRow row = new TableRow(new TableRowProperties(new TableRowHeight() { Val = _valueRowHeight }));
 
-                //TableRowProperties rowProperties = new TableRowProperties(
-                //    new TableRowHeight { Val = 0, HeightType = HeightRuleValues.Auto }
-                //);
-                //row.Append(rowProperties);
-
                 TableCell nameCell = new TableCell(new Paragraph(
                     new ParagraphProperties(new SpacingBetweenLines { Before = "0", After = "0" }),
                     new Run(WordUtils.GetRunProperties(fontSize: "26"), new Text(nameStr))));

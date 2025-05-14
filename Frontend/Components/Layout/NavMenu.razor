@@ -18,6 +18,11 @@
                     Журналы
                 </span>
             </NavLink>
+            <NavLink class="nav-link" href="/JournalKeeping" Match="NavLinkMatch.All">
+                <span class="text-nowrap">
+                    Ведение журнала
+                </span>
+            </NavLink>
             @if (AppState.User != null)
             {
                 @if (AppState.User.Role.Name == "Admin")

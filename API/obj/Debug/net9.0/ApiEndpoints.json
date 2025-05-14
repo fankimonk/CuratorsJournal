@@ -2195,6 +2195,52 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "API.Controllers.JournalKeepingController",
+    "Method": "Get",
+    "RelativePath": "api/journal/keeping",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "Contracts.JournalKeeping.JournalKeepingResponse",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "API.Controllers.JournalKeepingController",
+    "Method": "Update",
+    "RelativePath": "api/journal/keeping",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "Contracts.JournalKeeping.UpdateJournalKeepingRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "Contracts.JournalKeeping.JournalKeepingResponse",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
     "ContainingType": "API.Controllers.LiteratureWorkController",
     "Method": "AddRecord",
     "RelativePath": "api/journal/literaturework",
