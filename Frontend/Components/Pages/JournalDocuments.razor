@@ -5,10 +5,13 @@
 @using Contracts.Journal.Files
 @using Frontend.Components.Buttons
 @using Frontend.Components.Utils
+@using Frontend.Services
 @using Microsoft.AspNetCore.Components.QuickGrid
 
 @inject HttpClient HttpClient
 @inject IJSRuntime JSRuntime
+@inject APIService APIService
+@inject AppState AppState
 
 <PageTitle>Документы</PageTitle>
 
@@ -18,7 +21,10 @@
 }
 else
 {
-    <UploadButton @onclick="OpenUploadModal" AdditionalClasses="mb-3">Загрузить</UploadButton>
+    @if (_canCRUD)
+    {
+        <UploadButton @onclick="OpenUploadModal" AdditionalClasses="mb-3">Загрузить</UploadButton>
+    }
     <Modal IsVisible="_isUploadModalVisible" OnClose="CloseUploadModal">
         <div class="row">
             <div class="col-md-12">
@@ -32,13 +38,13 @@ else
 
     <QuickGrid Items="_documents" class="table">
         <PropertyColumn Property="@(l => l)" Title="Имя" Sortable="true" class="align-middle" />
-        @if (_canCRUD)
-        {
-            <TemplateColumn class="text-end">
-                <DownloadButton @onclick="async () => await DownloadFile(context)" StopPropagation="true" />
+        <TemplateColumn class="text-end">
+            <DownloadButton @onclick="async () => await DownloadFile(context)" AdditionalClasses="me-1" StopPropagation="true" />
+            @if (_canCRUD)
+            {
                 <DeleteButton @onclick="async () => await DeleteFile(context)" StopPropagation="true" />
-            </TemplateColumn>
-        }
+            }
+        </TemplateColumn>
     </QuickGrid>
 
     <AlertBottom IsVisible="_isServerErrorAlertVisible" OnClose="CloseServerErrorAlert">@_errorMessage</AlertBottom>
@@ -52,15 +58,25 @@ else
 
     private bool _isUploadModalVisible = false;
 
-    private bool _canCRUD = true;
+    private bool _canCRUD => AppState.CanCreateEntities;
 
-    private const long _maxFileSize = 10 * 1024 * 1024; //10MB
+    private const int _maxFileSizeMB = 10;
+    private const long _maxFileSize = _maxFileSizeMB * 1024 * 1024; //10MB
 
     private IBrowserFile? _selectedFile;
     private bool _canUpload => _selectedFile != null;
 
+    private List<string> _allowedExtensions = new() { ".doc", ".docx", ".xls", ".xlsx", ".txt" };
+
     protected override async Task OnInitializedAsync()
     {
+        var hasAccess = await APIService.GetFromJsonAsync<bool>("api/journal/verifyaccess/" + JournalId);
+        if (!hasAccess)
+        {
+            NavigateToAccessDeniedPage();
+            return;
+        }
+
         await FetchDocuments();
     }
 
@@ -78,6 +94,12 @@ else
     private async Task UploadFile()
     {
         if (_selectedFile == null || _selectedFile.Size == 0) return;
+        var fileExtension = Path.GetExtension(_selectedFile.Name).ToLower();
+        if (!_allowedExtensions.Contains(fileExtension))
+        {
+            ShowServerErrorAlert($"Ошибка: Неподдерживаемый формат файла. Разрешены только: {string.Join(", ", _allowedExtensions)}");
+            return;
+        }
         try
         {
             using var fileStream = _selectedFile.OpenReadStream(maxAllowedSize: _maxFileSize);
@@ -95,6 +117,10 @@ else
             {
                 ShowServerErrorAlert($"Ошибка: {response.ReasonPhrase}");
             }
+        }
+        catch (IOException)
+        {
+            ShowServerErrorAlert($"Ошибка: Размер файла превышает {_maxFileSizeMB} МБ");
         }
         catch (Exception ex)
         {

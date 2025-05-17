@@ -64,6 +64,14 @@ namespace API.Controllers
             return Ok(journalResponses);
         }
 
+        [HttpGet("checkisapproved/{journalId}")]
+        public async Task<ActionResult<bool>> CheckIsApproved([FromRoute] int journalId)
+        {
+            var isApproved = await _journalsRepository.CheckIsApprovedAsync(journalId);
+            if (isApproved == null) return NotFound();
+            return Ok(isApproved);
+        }
+
         [HttpGet("verifyaccess/{journalId}")]
         [Authorize]
         public async Task<ActionResult<bool>> VerifyAccess([FromRoute] int journalId)

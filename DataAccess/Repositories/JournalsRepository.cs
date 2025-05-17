@@ -65,9 +65,16 @@ namespace DataAccess.Repositories
         private async Task<bool> GroupExists(int id) =>
             await _dbContext.Groups.AsNoTracking().FirstOrDefaultAsync(g => g.Id == id) != null;
 
-        public async Task<bool> Exists(int id)
+        public async Task<bool> ExistsAsync(int id)
         {
             return await _dbContext.Journals.AsNoTracking().FirstOrDefaultAsync(j => j.Id == id) != null;
+        }
+
+        public async Task<bool?> CheckIsApprovedAsync(int id)
+        {
+            if (!await ExistsAsync(id)) return null;
+            var pages = _dbContext.Pages.AsNoTracking().Where(p => p.JournalId == id);
+            return pages.All(p => p.IsApproved);
         }
     }
 }

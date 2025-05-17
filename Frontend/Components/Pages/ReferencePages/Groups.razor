@@ -70,16 +70,19 @@ else
                             }
                         </InputSelect>
                     </div>
-                    <div class="mb-3">
-                        <label for="curator" class="form-label">Куратор: </label>
-                        <InputSelect id="curator" @bind-Value="GroupToAdd.CuratorId" class="form-control">
-                            <option value="">(нет)</option>
-                            @foreach (var c in _teachers)
-                            {
-                                <option @key="c.Id" value="@c.Id">@GetCuratorsFIOById(c.Id)</option>
-                            }
-                        </InputSelect>
-                    </div>
+                    @if (AppState.IsHeadOfDepartment)
+                    {
+                        <div class="mb-3">
+                            <label for="curator" class="form-label">Куратор: </label>
+                            <InputSelect id="curator" @bind-Value="GroupToAdd.CuratorId" class="form-control">
+                                <option value="">(нет)</option>
+                                @foreach (var c in _teachers)
+                                {
+                                    <option @key="c.Id" value="@c.Id">@GetCuratorsFIOById(c.Id)</option>
+                                }
+                            </InputSelect>
+                        </div>
+                    }
                     <AddButton type="submit">Добавить</AddButton>
                 </EditForm>
             </div>
@@ -112,16 +115,19 @@ else
                             }
                         </InputSelect>
                     </div>
-                    <div class="mb-3">
-                        <label for="curator" class="form-label">Куратор: </label>
-                        <InputSelect id="curator" @bind-Value="GroupToEdit.CuratorId" class="form-control">
-                            <option value="">(нет)</option>
-                            @foreach (var c in _teachers)
-                            {
-                                <option @key="c.Id" value="@c.Id">@GetCuratorsFIOById(c.Id)</option>
-                            }
-                        </InputSelect>
-                    </div>
+                    @if (AppState.IsHeadOfDepartment)
+                    {
+                        <div class="mb-3">
+                            <label for="curator" class="form-label">Куратор: </label>
+                            <InputSelect id="curator" @bind-Value="GroupToEdit.CuratorId" class="form-control">
+                                <option value="">(нет)</option>
+                                @foreach (var c in _teachers)
+                                {
+                                    <option @key="c.Id" value="@c.Id">@GetCuratorsFIOById(c.Id)</option>
+                                }
+                            </InputSelect>
+                        </div>
+                    }
                     <EditButton type="submit">Редактировать</EditButton>
                 </EditForm>
             </div>

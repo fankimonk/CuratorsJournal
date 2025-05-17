@@ -16,6 +16,7 @@
 
 @inject HttpClient HttpClient
 @inject JournalState JournalState
+@inject AppState AppState
 
 <PageTitle>Список студентов</PageTitle>
 
@@ -119,7 +120,7 @@ else
 
     private List<PersonalizedAccountingCardIdResponse>? _cardIds;
 
-    private bool _canEdit => !JournalState.IsCurrentPageApproved;
+    private bool _canEdit => !JournalState.IsCurrentPageApproved && AppState.CanEditJournal;
 
     protected override async Task OnInitializedAsync()
     {

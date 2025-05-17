@@ -25,6 +25,11 @@
             </NavLink>
             @if (AppState.User != null)
             {
+                <NavLink class="nav-link" href="/UserInfo" Match="NavLinkMatch.All">
+                    <span class="text-nowrap">
+                        Пользовательская информация
+                    </span>
+                </NavLink>
                 @if (AppState.User.Role.Name == "Admin")
                 {
                     <NavLink class="nav-link" href="/Users" Match="NavLinkMatch.All">

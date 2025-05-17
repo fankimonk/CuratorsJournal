@@ -23,8 +23,8 @@
             @if (JournalState.CurrentPageNode != null)
             {
                 <div class="col-6">
-                    @if (JournalState.CurrentPageType!.MaxPages != 1 && !JournalState.IsCurrentPageApproved &&
-                        !((JournalState.CurrentPageType.Id == 16 || JournalState.CurrentPageType.Id == 17) && !AppState.CanApprovePages))
+                    @if (JournalState.CurrentPageType!.MaxPages != 1 && !JournalState.IsCurrentPageApproved && AppState.CanEditJournal)
+                        @* !((JournalState.CurrentPageType.Id == 16 || JournalState.CurrentPageType.Id == 17) && !AppState.CanDeleteNotCuratorsPages)) *@
                     {
                         <DeleteButton @onclick="DeletePage">Удалить страницу</DeleteButton>
                     }

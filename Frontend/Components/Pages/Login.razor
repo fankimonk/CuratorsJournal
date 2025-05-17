@@ -27,7 +27,11 @@
                     </div>
                     <div class="mb-3">
                         <label for="pswd" class="form-label">Пароль: </label>
-                        <InputText type="password" id="pswd" @bind-Value="LoginRequest.Password" class="form-control" />
+                        <InputText type="@(_showPassword ? "text" : "password")" id="pswd" @bind-Value="LoginRequest.Password" class="form-control" />
+                    </div>
+                    <div class="mb-3">
+                        <input type="checkbox" id="showpswd" @bind="_showPassword" />
+                        <label for="showpswd" class="form-label">Показать пароль</label>
                     </div>
                     <button class="btn btn-primary" type="submit">Войти</button>
                 </EditForm>
@@ -44,6 +48,8 @@
     private bool _isErrorAlertVisible = false;
 
     private string? _errorMessage = "";
+
+    private bool _showPassword = false;
 
     private async Task TryLogin()
     {
@@ -142,7 +148,7 @@
     }
 
     .login-title {
-        color: white;
+        color: black;
         font-size: 18px;
         font-weight: bold;
         display: block;

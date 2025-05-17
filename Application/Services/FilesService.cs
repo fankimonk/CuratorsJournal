@@ -44,7 +44,7 @@ namespace Application.Services
 
         public async Task<List<string>?> GetDocuments(int journalId)
         {
-            if (!await _journalsRepository.Exists(journalId)) return null;
+            if (!await _journalsRepository.ExistsAsync(journalId)) return null;
             string directoryPath = Path.Combine(_uploadDirectoryPath, journalId.ToString());
             if (!Directory.Exists(directoryPath)) return [];
             return Directory.GetFiles(directoryPath).Select(f => Path.GetFileName(f)).ToList();

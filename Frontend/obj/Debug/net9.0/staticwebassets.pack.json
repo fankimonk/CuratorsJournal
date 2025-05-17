@@ -13,6 +13,10 @@
       "PackagePath": "staticwebassets\\favicon.png"
     },
     {
+      "Id": "C:\\Dev\\Web\\CuratorsJournal\\Frontend\\wwwroot\\js\\browser_utils.js",
+      "PackagePath": "staticwebassets\\js\\browser_utils.js"
+    },
+    {
       "Id": "C:\\Dev\\Web\\CuratorsJournal\\Frontend\\wwwroot\\js\\cookies.js",
       "PackagePath": "staticwebassets\\js\\cookies.js"
     },

@@ -909,6 +909,32 @@
     ]
   },
   {
+    "ContainingType": "API.Controllers.JournalController",
+    "Method": "CheckIsApproved",
+    "RelativePath": "api/journal/checkisapproved/{journalId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "journalId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Boolean",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
     "ContainingType": "API.Controllers.ContactPhonesController",
     "Method": "AddContactPhone",
     "RelativePath": "api/journal/contactphone",

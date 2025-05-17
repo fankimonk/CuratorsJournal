@@ -23,6 +23,7 @@ namespace Frontend.Services
         public bool CanApprovePages => User != null && RolesThatCanApprovePages.Contains(User.Role.Name);
 
         public bool IsAdmin => User != null && User.Role.Name == "Admin";
+        public bool IsHeadOfDepartment => User != null && User.Role.Name == "HeadOfDepartment";
 
         private readonly JwtAuthenticationStateProvider _authStateProvider = authStateProvider;
         private readonly AccessTokenService _accessTokenService = accessTokenService;

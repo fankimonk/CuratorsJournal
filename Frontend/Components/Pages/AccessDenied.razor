@@ -1,7 +1,24 @@
 ﻿@page "/AccessDenied"
 
+@inject IJSRuntime JSRuntime
+
 <h3 style="color: red;">У вас нет доступа к этой странице</h3>
 
+<button class="btn btn-primary" @onclick="GoBack" disabled="@_isGoBackButtonDisabled">Назад</button>
+
 @code {
+
+    private bool _canGoBack;
+    private bool _isGoBackButtonDisabled => !_canGoBack;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _canGoBack = await JSRuntime.InvokeAsync<bool>("canGoBack");    
+    }
+
+    private async Task GoBack()
+    {
+        if (_canGoBack) await JSRuntime.InvokeVoidAsync("goBack");
+    }
 
 }

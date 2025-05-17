@@ -78,6 +78,11 @@ else
 
     private async Task DownloadWord(JournalResponse journal)
     {
-        await JSRuntime.InvokeVoidAsync("downloadWord", journal.Id, journal.GroupNumber);
+        var response = await APIService.GetAsync($"api/journal/checkisapproved/{journal.Id}");
+        if (response.IsSuccessStatusCode)
+        {
+            var isApproved = await response.Content.ReadFromJsonAsync<bool>();
+            await JSRuntime.InvokeVoidAsync("downloadWord", journal.Id, journal.GroupNumber);
+        }
     }
 }

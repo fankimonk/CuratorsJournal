@@ -50,7 +50,7 @@ else
         }
     </p>
     <p>Кафедра <u>@_pageData.DepartmentName</u></p>
-    <p>Факультет <u>@_pageData.FacultyName</u></p>
+    <p>Факультет <u>@GetFacultyName()</u></p>
 }
 
 @code {
@@ -98,5 +98,13 @@ else
                 _pageData.Curator = null;   
             }
         }
+    }
+
+    private string GetFacultyName()
+    {
+        if (_pageData == null) return "";
+        var facultyWords = _pageData.FacultyName.Split(' ');
+        if (facultyWords.First().ToLower() == "факультет") facultyWords = facultyWords.Skip(1).ToArray();
+        return string.Join(" ", facultyWords);
     }
 }

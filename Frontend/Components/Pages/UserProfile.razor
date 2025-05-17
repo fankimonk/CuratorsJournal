@@ -1,0 +1,48 @@
+﻿@page "/UserInfo"
+
+@inherits PageBase
+
+@using Contracts.Workers
+@using Frontend.Services
+@using Frontend.Utils.Extensions
+
+@attribute [Authorize]
+
+@inject AppState AppState
+@inject HttpClient HttpClient
+
+<PageTitle>Пользовательская информация</PageTitle>
+
+<h3 class="mb-3">Пользовательская информация</h3>
+
+@if (_worker != null)
+{
+    <p>Ф.И.О.: @(_worker == null ? "—" : _worker.GetFIO())</p>
+    <p>Должность: @(_worker == null ? "-" : _worker.Position.Name)</p>
+}
+else
+{
+    <p style="color: red;"><em>Информация о сотруднике не найдена.</em></p>
+}
+<p>Роль: @AppState.Role</p>
+
+@code {
+
+    private WorkerResponse? _worker;
+
+    protected override async Task OnInitializedAsync()
+    {
+        AppState.OnUserInitialized += StateHasChanged;
+
+        if (AppState.User == null) return;
+        if (AppState.User!.WorkerId != null)
+        {
+            var response = await HttpClient.GetAsync($"api/worker/{AppState.User.WorkerId}");
+            if (response.IsSuccessStatusCode)
+            {
+                _worker = await response.Content.ReadFromJsonAsync<WorkerResponse>();
+            }
+        }
+    }
+
+}
