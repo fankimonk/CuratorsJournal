@@ -39,6 +39,10 @@ namespace Application.Services.Word
                 try { await titlePageGenerator.Generate(); }
                 catch { return null; }
 
+                var tocPageGenerator = new TableOfContentsPageGenerator(body);
+                try { tocPageGenerator.Generate(); }
+                catch { return null; }
+
                 var journalKeepingPageGenerator = new JournalKeepingPageGenerator(body);
                 try { await journalKeepingPageGenerator.Generate(); }
                 catch { return null; }
@@ -252,6 +256,28 @@ namespace Application.Services.Word
                         catch { return null; }
                         break;
                 }
+
+                mainPart.Document.Append(body);
+                mainPart.Document.Save();
+            }
+
+            return GetFileData(filePath);
+        }
+
+        public async Task<FileData?> GenerateJournalKeeping()
+        {
+            string filePath = "journalKeeping.docx";
+
+            using (WordprocessingDocument wordDocument = WordprocessingDocument.Create(filePath, WordprocessingDocumentType.Document))
+            {
+                MainDocumentPart mainPart = wordDocument.AddMainDocumentPart();
+                mainPart.Document = new Document();
+
+                Body body = new Body();
+
+                var journalKeepingPageGenerator = new JournalKeepingPageGenerator(body);
+                try { await journalKeepingPageGenerator.Generate(); }
+                catch { return null; }
 
                 mainPart.Document.Append(body);
                 mainPart.Document.Save();

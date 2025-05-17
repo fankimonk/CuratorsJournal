@@ -26,13 +26,13 @@
                     @if (JournalState.CurrentPageType!.MaxPages != 1 && !JournalState.IsCurrentPageApproved && AppState.CanEditJournal)
                         @* !((JournalState.CurrentPageType.Id == 16 || JournalState.CurrentPageType.Id == 17) && !AppState.CanDeleteNotCuratorsPages)) *@
                     {
-                        <DeleteButton @onclick="DeletePage">Удалить страницу</DeleteButton>
+                        <DeleteButton @onclick="DeletePage" AdditionalClasses="me-3">Удалить страницу</DeleteButton>
                     }
                     @if (JournalState.CurrentPageType!.Id == 9)
                     {
-                        <ReloadButton AdditionalClasses="ms-3" @onclick="SynchronizeStudents">Синхронизировать студентов</ReloadButton>
+                        <ReloadButton AdditionalClasses="me-3" @onclick="SynchronizeStudents">Синхронизировать студентов</ReloadButton>
                     }
-                    <DownloadButton AdditionalClasses="ms-3" @onclick="DownloadPage">Скачать страницу</DownloadButton>
+                    <DownloadButton AdditionalClasses="me-3" @onclick="DownloadPage">Скачать страницу</DownloadButton>
                 </div>
 
                 <div class="col-0">

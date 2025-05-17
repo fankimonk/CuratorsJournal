@@ -8,9 +8,10 @@ namespace API.Controllers
 {
     [Route("api/journal/keeping")]
     [ApiController]
-    public class JournalKeepingController(IJournalKeepingService journalKeepingService) : ControllerBase
+    public class JournalKeepingController(IJournalKeepingService journalKeepingService, IWordService wordService) : ControllerBase
     {
         private readonly IJournalKeepingService _journalKeepingService = journalKeepingService;
+        private readonly IWordService _wordService = wordService;
 
         [HttpGet]
         [Authorize]
@@ -28,6 +29,14 @@ namespace API.Controllers
             var updated = await _journalKeepingService.Update(new JournalKeeping(request.Title, request.Content));
             if (updated == null) return StatusCode(500);
             return Ok(new JournalKeepingResponse(updated.Title, updated.Content));
+        }
+
+        [HttpGet("download")]
+        public async Task<IActionResult> DownloadWord()
+        {
+            var fileData = await _wordService.GenerateJournalKeeping();
+            if (fileData == null) return BadRequest();
+            return File(fileData.MemoryStream, fileData.ContentType, fileData.FileName);
         }
     }
 }

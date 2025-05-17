@@ -2267,6 +2267,16 @@
     ]
   },
   {
+    "ContainingType": "API.Controllers.JournalKeepingController",
+    "Method": "DownloadWord",
+    "RelativePath": "api/journal/keeping/download",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "API.Controllers.LiteratureWorkController",
     "Method": "AddRecord",
     "RelativePath": "api/journal/literaturework",

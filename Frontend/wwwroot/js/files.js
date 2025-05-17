@@ -23,6 +23,13 @@ async function downloadFile(downloadRequest) {
     await download(response, downloadRequest.fileName);
 }
 
+async function downloadJournalKeeping() {
+    const response = await fetch(`https://localhost:7059/api/journal/keeping/download`, {
+        method: 'GET',
+    });
+    download(response, "Ведение журнала.docx");
+}
+
 async function download(response, fileName) {
     if (!response.ok) {
         throw new Error('Failed to download');

@@ -4121,6 +4121,18 @@
         }
       }
     },
+    "/api/journal/keeping/download": {
+      "get": {
+        "tags": [
+          "JournalKeeping"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/literature": {
       "get": {
         "tags": [

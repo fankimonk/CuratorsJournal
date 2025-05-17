@@ -6,5 +6,6 @@ namespace Application.Interfaces
     {
         Task<FileData?> GenerateWord(int journalId);
         Task<FileData?> GeneratePage(int journalId, int pageId);
+        Task<FileData?> GenerateJournalKeeping();
     }
 }
