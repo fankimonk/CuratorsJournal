@@ -7,6 +7,7 @@
 @using Frontend.Components.Buttons
 @using Frontend.Components.Utils
 @using Frontend.Services
+@using Frontend.Utils.Filters
 @using Microsoft.AspNetCore.Components.QuickGrid
 
 @attribute [Authorize]
@@ -30,12 +31,26 @@ else
         <AddButton @onclick="ShowAddModal">Добавить</AddButton>
     }
 
-    <QuickGrid Items="_students" class="table">
-        <PropertyColumn Property="@(l => l.LastName)" Sortable="true" Title="Фамилия" class="align-middle" />
+    <QuickGrid Items="_filteredStudents" class="table">
+        <PropertyColumn Property="@(l => l.LastName)" Sortable="true" Title="Фамилия" class="align-middle">
+            <ColumnOptions>
+                <input @bind="_studentFilter.LastName" @bind:after="Filter" class="form-control" />
+            </ColumnOptions>
+        </PropertyColumn>
         <PropertyColumn Property="@(l => l.FirstName)" Sortable="true" Title="Имя" class="align-middle" />
         <PropertyColumn Property="@(l => l.MiddleName)" Sortable="true" Title="Отчество" class="align-middle" />
         <PropertyColumn Property="@(l => l.PhoneNumber)" Sortable="true" Title="Номер телефона" class="align-middle" />
-        <PropertyColumn Property="@(l => _groups.FirstOrDefault(g => g.Id == l.GroupId)!.Number)" Sortable="true" Title="Группа" class="align-middle" />
+        <PropertyColumn Property="@(l => _groups.FirstOrDefault(g => g.Id == l.GroupId)!.Number)" Sortable="true" Title="Группа" class="align-middle">
+            <ColumnOptions>
+                <select @bind="_studentFilter.GroupId" @bind:after="Filter" class="form-control">
+                    <option value="">(нет)</option>
+                    @foreach (var group in _groups)
+                    {
+                        <option @key="group.Id" value="@group.Id">@group.Number</option>
+                    }
+                </select>
+            </ColumnOptions>
+        </PropertyColumn>
         @if (_canCRUD)
         {
             <TemplateColumn class="text-end">
@@ -130,17 +145,18 @@ else
 }
 
 @code {
-    [SupplyParameterFromQuery]
-    public int? GroupId { get; set; }
+        [SupplyParameterFromQuery]
+        public int? GroupId { get; set; }
 
-    [SupplyParameterFromForm]
-    public CreateStudentRequest StudentToAdd { get; set; } = new("", "", "", null, null);
+        [SupplyParameterFromForm]
+        public CreateStudentRequest StudentToAdd { get; set; } = new("", "", "", null, null);
 
-    [SupplyParameterFromForm]
-    public UpdateStudentRequest StudentToEdit { get; set; } = new("", "", "", null, -1);
+        [SupplyParameterFromForm]
+        public UpdateStudentRequest StudentToEdit { get; set; } = new("", "", "", null, -1);
     private int _studentToEditId = -1;
 
     private IQueryable<StudentResponse>? _students;
+    private IQueryable<StudentResponse>? _filteredStudents;
 
     private List<GroupResponse>? _groups;
 
@@ -158,6 +174,8 @@ else
 
     private bool _canCRUD => AppState.User != null && AppState.RolesThatAreAllowedToCreateEntities.Contains(AppState.User.Role.Name);
 
+    private StudentFilter _studentFilter = new("", null);
+
     protected override async Task OnInitializedAsync()
     {
         AppState.OnUserInitialized += StateHasChanged;
@@ -165,6 +183,7 @@ else
         var students = await APIService.GetFromJsonAsync<List<StudentResponse>>(GetStudentsUri());
         if (students != null)
             _students = students.AsQueryable();
+        _filteredStudents = _students;
 
         _groups = await APIService.GetFromJsonAsync<List<GroupResponse>>("api/group");
 
@@ -176,6 +195,13 @@ else
         var studentsUri = "api/student/";
         if (GroupId != null) studentsUri += $"?GroupId={GroupId}";
         return studentsUri;
+    }
+
+    private void Filter()
+    {
+        if (_filteredStudents == null || _students == null) return;
+        _filteredStudents = _students.Where(s => s.LastName.Contains(_studentFilter.LastName));
+        if (_studentFilter.GroupId != null) _filteredStudents = _filteredStudents.Where(s => s.GroupId == _studentFilter.GroupId);
     }
 
     protected void FilterStudents()

@@ -107,7 +107,7 @@ namespace Application.Services.Word
 
         private void AppendContent(SocioPedagogicalCharacteristics characteristics)
         {
-            var spacing = new SpacingBetweenLines() { Before = "200", After = "200" };
+            var spacing = new SpacingBetweenLines() { Before = "180", After = "180" };
             var paragraphProperties = new ParagraphProperties(
                 new Justification { Val = JustificationValues.Both }, spacing);
 
@@ -420,6 +420,15 @@ namespace Application.Services.Word
             var otherInfoStr = characteristics.OtherInformation == null ? "" : characteristics.OtherInformation;
             if (otherInfoStr.Length > maxCharactersCount) otherInfoStr = otherInfoStr.Substring(0, maxCharactersCount);
 
+            Tabs tabs = new Tabs();
+            tabs.Append(new TabStop()
+            {
+                Val = TabStopValues.Right,
+                Position = 9225
+            });
+
+            var otherInfoParagraphProperties = paragraphProperties.CloneNode(true);
+            otherInfoParagraphProperties.Append(tabs);
             var otherInfoParagraph = new Paragraph(paragraphProperties.CloneNode(true),
                 new Run(WordUtils.GetRunProperties(),
                     new Text("16. Другие сведения ")));
@@ -472,13 +481,14 @@ namespace Application.Services.Word
                     }
                     else
                     {
-                        var newParagraph = new Paragraph(paragraphProperties.CloneNode(true));
+                        var newParagraph = new Paragraph(otherInfoParagraphProperties.CloneNode(true));
                         var newValueRun = new Run(WordUtils.GetRunProperties(underline: true), new Text(lineStr));
 
-                        for (int j = 0; j < otherInfoTabCount; j++)
-                        {
-                            newValueRun.Append(new TabChar());
-                        }
+                        //for (int j = 0; j < otherInfoTabCount; j++)
+                        //{
+                        //    newValueRun.Append(new TabChar());
+                        //}
+                        newValueRun.Append(new TabChar());
 
                         newParagraph.Append(newValueRun);
                         _documentBody.Append(newParagraph);
@@ -500,17 +510,24 @@ namespace Application.Services.Word
 
         private void AppendEmptyLines(int count)
         {
+            Tabs tabs = new Tabs();
+            tabs.Append(new TabStop()
+            {
+                Val = TabStopValues.Right,
+                Position = 9225
+            });
             for (int i = 0; i < count; i++)
             {
                 var emptyParagraph = new Paragraph(new ParagraphProperties(
                     new Justification { Val = JustificationValues.Both },
-                    new SpacingBetweenLines() { Before = "200", After = "200" }
+                    new SpacingBetweenLines() { Before = "180", After = "180" }, tabs.CloneNode(true)
                 ));
                 var emptyRun = new Run(WordUtils.GetRunProperties(underline: true));
-                for (int j = 0; j < 13; j++)
-                {
-                    emptyRun.Append(new TabChar());
-                }
+                //for (int j = 0; j < 13; j++)
+                //{
+                //    emptyRun.Append(new TabChar());
+                //}
+                emptyRun.Append(new TabChar());
                 emptyParagraph.Append(emptyRun);
                 _documentBody.Append(emptyParagraph);
             }

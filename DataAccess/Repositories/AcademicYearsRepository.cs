@@ -20,7 +20,9 @@ namespace DataAccess.Repositories
         {
             if (academicYear == null) return null;
 
-            var created = await _dbContext.AcademicYears.AddAsync(academicYear);
+            var academicYears = _dbContext.AcademicYears;
+            if (academicYears.Any(ay => ay.StartYear == academicYear.StartYear || ay.EndYear == academicYear.EndYear)) return null;
+            var created = await academicYears.AddAsync(academicYear);
 
             await _dbContext.SaveChangesAsync();
 

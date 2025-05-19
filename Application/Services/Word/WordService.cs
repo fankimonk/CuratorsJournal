@@ -109,8 +109,6 @@ namespace Application.Services.Word
                 try { await psychologicalAndPedagogicalCharacteristicsPageGenerator.Generate(); }
                 catch { return null; }
 
-                WordUtils.AppendSectionBreak(WordUtils.PageOrientationTypes.Portrait, body);
-
                 var recommendationsAndRemarksPageGenerator = new RecommendationsAndRemarksPageGenerator(journalId, body, _pagesRepository);
                 try { await recommendationsAndRemarksPageGenerator.Generate(); }
                 catch { return null; }

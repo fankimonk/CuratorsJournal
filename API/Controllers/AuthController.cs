@@ -37,7 +37,7 @@ namespace API.Controllers
 
             var result = await _usersService.Login(request.Username, request.Password);
 
-            if (result.Error != null || result.Token == null) return BadRequest(result.Error);
+            if (result.Error != null || result.Token == null) return BadRequest("Неверное имя пользователя или пароль");
 
             var response = new AuthResponse(result.Token.AccessToken, result.Token.RefreshToken!.Token);
 

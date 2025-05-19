@@ -49,7 +49,7 @@ namespace Application.Services.Word
                     AppendContent(p.PsychologicalAndPedagogicalCharacteristics);
                     AppendWorkerAndSignature(p.PsychologicalAndPedagogicalCharacteristics);
 
-                    if (p != pages.Last()) WordUtils.AppendPageBreak(_documentBody);
+                    WordUtils.AppendSectionBreak(WordUtils.PageOrientationTypes.Portrait, _documentBody);
                 }
             } 
         }
@@ -71,6 +71,13 @@ namespace Application.Services.Word
 
         private void AppendContent(PsychologicalAndPedagogicalCharacteristics characteristics)
         {
+            Tabs tabs = new Tabs();
+            tabs.Append(new TabStop()
+            {
+                Val = TabStopValues.Right,
+                Position = 9225
+            });
+
             int maxCharactersCount = _linesCount * _maxLineChars;
 
             var contentStr = characteristics.Content == null ? "" : characteristics.Content;
@@ -78,7 +85,7 @@ namespace Application.Services.Word
 
             var contentParagraph = new Paragraph(
                 new ParagraphProperties(
-                    new Justification { Val = JustificationValues.Both })
+                    new Justification { Val = JustificationValues.Both }, tabs)
             );
 
             var contentRun = new Run(WordUtils.GetRunProperties(underline: true));
@@ -124,11 +131,7 @@ namespace Application.Services.Word
                     var newParagraph = contentParagraph.CloneNode(true);
                     var newValueRun = contentRun.CloneNode(true);
                     newValueRun.Append(new Text(lineStr));
-
-                    for (int j = 0; j < tabCount; j++)
-                    {
-                        newValueRun.Append(new TabChar());
-                    }
+                    newValueRun.Append(new TabChar());
 
                     newParagraph.Append(newValueRun);
                     _documentBody.Append(newParagraph);
@@ -146,16 +149,20 @@ namespace Application.Services.Word
 
         private void AppendEmptyLines(int count)
         {
+            Tabs tabs = new Tabs();
+            tabs.Append(new TabStop()
+            {
+                Val = TabStopValues.Right,
+                Position = 9225
+            });
+
             for (int i = 0; i < count; i++)
             {
                 var emptyParagraph = new Paragraph(new ParagraphProperties(
-                new Justification { Val = JustificationValues.Both }
-            ));
+                    new Justification { Val = JustificationValues.Both }, tabs.CloneNode(true)
+                ));
                 var emptyRun = new Run(WordUtils.GetRunProperties(underline: true));
-                for (int j = 0; j < 13; j++)
-                {
-                    emptyRun.Append(new TabChar());
-                }
+                emptyRun.Append(new TabChar());
                 emptyParagraph.Append(emptyRun);
                 _documentBody.Append(emptyParagraph);
             }

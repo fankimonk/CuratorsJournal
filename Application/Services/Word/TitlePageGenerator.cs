@@ -260,7 +260,7 @@ namespace Application.Services.Word
                 curatorFIO = worker.LastName + " " + worker.FirstName + " " + worker.MiddleName;
             }
 
-            var valueRun = new Run(valueRunProperties, new TabChar());
+            var valueRun = new Run(valueRunProperties, new TabChar(), new TabChar());
 
             int linesCount = 3;
             if (curatorFIO != "")
@@ -295,7 +295,7 @@ namespace Application.Services.Word
                     var lineStr = lines[i];
                    
                     int tabCount = i == 0
-                        ? 11 - (Math.Max(0, lineStr.Length - 1) / 5)
+                        ? 10 - (Math.Max(0, lineStr.Length - 1) / 5)
                         : 13 - (Math.Max(0, lineStr.Length - 1) / 5);
 
                     if (i == 0)

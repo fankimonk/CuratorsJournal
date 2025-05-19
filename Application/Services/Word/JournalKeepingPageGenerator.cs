@@ -46,7 +46,7 @@ namespace Application.Services.Word
             });
             var paragraphProperties = new ParagraphProperties(
                 new Justification { Val = JustificationValues.Both },
-                new SpacingBetweenLines { After = "0", Before = "0"}, tabs);
+                new SpacingBetweenLines { After = "0", Before = "0", Line = "240" }, tabs);
 
 
             var paragraphsStrs = content.Split('\n', StringSplitOptions.RemoveEmptyEntries);
