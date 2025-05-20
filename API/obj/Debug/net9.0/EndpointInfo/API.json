@@ -139,63 +139,6 @@
       }
     },
     "/api/academicyear/{id}": {
-      "put": {
-        "tags": [
-          "AcademicYears"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpdateAcademicYearRequest"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpdateAcademicYearRequest"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpdateAcademicYearRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/AcademicYearResponse"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/AcademicYearResponse"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/AcademicYearResponse"
-                }
-              }
-            }
-          }
-        }
-      },
       "delete": {
         "tags": [
           "AcademicYears"
@@ -13018,24 +12961,6 @@
               "$ref": "#/components/schemas/TraditionResponse"
             },
             "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "UpdateAcademicYearRequest": {
-        "required": [
-          "endYear",
-          "startYear"
-        ],
-        "type": "object",
-        "properties": {
-          "startYear": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "endYear": {
-            "type": "integer",
-            "format": "int32"
           }
         },
         "additionalProperties": false

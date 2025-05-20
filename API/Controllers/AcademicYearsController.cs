@@ -47,19 +47,6 @@ namespace API.Controllers
             return CreatedAtAction(nameof(Create), response);
         }
 
-        [HttpPut("{id}")]
-        public async Task<ActionResult<AcademicYearResponse>> Update([FromRoute] int id, [FromBody] UpdateAcademicYearRequest request)
-        {
-            if (!ModelState.IsValid) return BadRequest(ModelState);
-
-            var updated = await _academicYearsRepository.UpdateAsync(id, request.ToEntity());
-            if (updated == null) return BadRequest();
-
-            var response = updated.ToResponse();
-
-            return Ok(response);
-        }
-
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete([FromRoute] int id)
         {

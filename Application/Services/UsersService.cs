@@ -22,13 +22,13 @@ namespace Application.Services
             _jwtProvider = jwtProvider;
         }
 
-        public async Task<RegistrationResult> Register(string userName, string password, int roleId, int? workerId)
+        public async Task<RegistrationResult> Register(string username, string password, int roleId, int? workerId)
         {
             var hashedPassword = _passwordHasher.Generate(password);
 
-            if (await _usersRepository.UsernameExistsAsync(userName)) return RegistrationResult.UsernameTaken;
+            if (await _usersRepository.UsernameExistsAsync(username)) return RegistrationResult.UsernameTaken;
 
-            var user = new User { UserName = userName, PasswordHash = hashedPassword, RoleId = roleId, WorkerId = workerId };
+            var user = new User { UserName = username, PasswordHash = hashedPassword, RoleId = roleId, WorkerId = workerId };
 
             var createdUser = await _usersRepository.CreateAsync(user);
             if (createdUser == null) return RegistrationResult.FailedToCreate;
@@ -36,9 +36,9 @@ namespace Application.Services
             return RegistrationResult.Succeed(createdUser);
         }
 
-        public async Task<AuthorizationResult> Login(string userName, string password)
+        public async Task<AuthorizationResult> Login(string username, string password)
         {
-            var user = await _usersRepository.GetByUsernameAsync(userName);
+            var user = await _usersRepository.GetByUsernameAsync(username);
             if (user == null)
             {
                 return AuthorizationResult.UserNotFound;

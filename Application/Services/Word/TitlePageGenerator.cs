@@ -36,7 +36,8 @@ namespace Application.Services.Word
             AppendCurator();
             AppendDepartment();
             AppendFaculty();
-            WordUtils.AppendPageBreak(_documentBody);
+            //WordUtils.AppendPageBreak(_documentBody);
+            WordUtils.AppendSectionBreak(WordUtils.PageOrientationTypes.Portrait, _documentBody);
         }
 
         private async Task<Journal?> InitializeJournalData(int journalId)

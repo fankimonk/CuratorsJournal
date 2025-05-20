@@ -195,7 +195,7 @@ namespace Application.Services.Word
 
                 TableCell cardNumberCell = new TableCell(new Paragraph(paragraphProperties.CloneNode(true),
                     new Run(WordUtils.GetRunProperties(fontSize: "24"),
-                        new Text(record.PersonalizedAccountingCardId == null ? "" : record.PersonalizedAccountingCardId.ToString()))));
+                        new Text(""/*record.PersonalizedAccountingCardId == null ? "" : record.PersonalizedAccountingCardId.ToString()*/))));
                 cardNumberCell.Append(cardNumberHeadCellProperties.CloneNode(true));
 
                 row.Append(numberCell, studentCell, phoneCell, cardNumberCell);

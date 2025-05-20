@@ -37,19 +37,5 @@ namespace DataAccess.Repositories
             await _dbContext.SaveChangesAsync();
             return true;
         }
-
-        public async Task<AcademicYear?> UpdateAsync(int id, AcademicYear academicYear)
-        {
-            if (academicYear == null) return null;
-
-            var academicYearToUpdate = await _dbContext.AcademicYears.FirstOrDefaultAsync(p => p.Id == id);
-            if (academicYearToUpdate == null) return null;
-
-            academicYearToUpdate.StartYear = academicYear.StartYear;
-            academicYearToUpdate.EndYear = academicYear.EndYear;
-
-            await _dbContext.SaveChangesAsync();
-            return academicYearToUpdate;
-        }
     }
 }

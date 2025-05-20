@@ -11,7 +11,8 @@ namespace Application.Services.Word
         {
             AppendTitle();
             AppendContent();
-            WordUtils.AppendPageBreak(_documentBody);
+            //WordUtils.AppendPageBreak(_documentBody);
+            WordUtils.AppendSectionBreak(WordUtils.PageOrientationTypes.Portrait, _documentBody);
         }
 
         private void AppendTitle()

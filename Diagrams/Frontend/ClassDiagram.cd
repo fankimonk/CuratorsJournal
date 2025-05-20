@@ -1,0 +1,77 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Diagrams.Frontend.AccessTokenService" Collapsed="true">
+    <Position X="4.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Frontend\AccessTokenService.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_cookiesService" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Diagrams.Frontend.APIService" Collapsed="true">
+    <Position X="6.75" Y="3.5" Width="1.5" />
+    <AssociationLine Name="_accessTokenService" Type="Diagrams.Frontend.AccessTokenService" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="6.75" Y="3.781" />
+        <Point X="5.688" Y="3.781" />
+        <Point X="5.688" Y="2.312" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="-1.482" Y="0.162" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="_authService" Type="Diagrams.Frontend.AuthService" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="7" Y="4.062" />
+        <Point X="7" Y="5.188" />
+        <Point X="5.75" Y="5.188" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAABAAAAAgCAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Frontend\APIService.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_accessTokenService" />
+      <Field Name="_authService" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Diagrams.Frontend.AuthService">
+    <Position X="4.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAABAAAAAACAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Frontend\AuthService.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_accessTokenService" />
+      <Field Name="_refreshTokenService" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Diagrams.Frontend.CookiesService" Collapsed="true">
+    <Position X="7.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Frontend\CookiesService.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Diagrams.Frontend.ResourceService" Collapsed="true">
+    <Position X="9" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAA=</HashCode>
+      <FileName>Frontend\ResourceService.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_apiService" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Diagrams.Frontend.RefreshTokenService" Collapsed="true">
+    <Position X="3" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Frontend\RefreshTokenService.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

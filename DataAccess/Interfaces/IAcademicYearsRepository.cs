@@ -6,7 +6,6 @@ namespace DataAccess.Interfaces
     {
         Task<List<AcademicYear>> GetAllAsync(int? yearSince = null);
         Task<AcademicYear?> CreateAsync(AcademicYear academicYear);
-        Task<AcademicYear?> UpdateAsync(int id, AcademicYear academicYear);
         Task<bool> DeleteAsync(int id);
     }
 }

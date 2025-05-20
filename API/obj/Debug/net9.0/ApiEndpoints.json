@@ -47,37 +47,6 @@
   },
   {
     "ContainingType": "API.Controllers.AcademicYearsController",
-    "Method": "Update",
-    "RelativePath": "api/academicyear/{id}",
-    "HttpMethod": "PUT",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "id",
-        "Type": "System.Int32",
-        "IsRequired": true
-      },
-      {
-        "Name": "request",
-        "Type": "Contracts.AcademicYears.UpdateAcademicYearRequest",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": [
-      {
-        "Type": "Contracts.AcademicYears.AcademicYearResponse",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
-        "StatusCode": 200
-      }
-    ]
-  },
-  {
-    "ContainingType": "API.Controllers.AcademicYearsController",
     "Method": "Delete",
     "RelativePath": "api/academicyear/{id}",
     "HttpMethod": "DELETE",
