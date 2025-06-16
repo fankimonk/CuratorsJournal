@@ -24,7 +24,7 @@ namespace Application.Services.Word
 
         private readonly IPerformanceAccountingColumnsRepository _performanceAccountingColumnsRepository = performanceAccountingColumnsRepository;
 
-        public async Task<FileData?> GenerateWord(int journalId)
+        public async Task<FileData?> GenerateWord(int journalId, bool hasPageNumeration)
         {
             string filePath = "journal.docx";
 
@@ -35,19 +35,17 @@ namespace Application.Services.Word
 
                 Body body = new Body();
 
-                //AddPageNumbering(mainPart, body);
-                
+                if (hasPageNumeration) AddPageNumbering(mainPart, body);
+
                 var titlePageGenerator = new TitlePageGenerator(journalId, body, _journalsService);
                 try { await titlePageGenerator.Generate(); }
                 catch { return null; }
 
-                //EnableDifferentFirstPageHeader(body);
+                if (hasPageNumeration) EnableDifferentFirstPageHeader(body);
 
                 var tocPageGenerator = new TableOfContentsPageGenerator(body);
                 try { tocPageGenerator.Generate(); }
                 catch { return null; }
-
-                //EnableDifferentFirstPageHeader(body);
 
                 var journalKeepingPageGenerator = new JournalKeepingPageGenerator(body);
                 try { await journalKeepingPageGenerator.Generate(); }
@@ -130,54 +128,54 @@ namespace Application.Services.Word
             return GetFileData(filePath);
         }
 
-        //private static void AddPageNumbering(MainDocumentPart mainPart, Body body)
-        //{
-        //    HeaderPart headerPart = mainPart.AddNewPart<HeaderPart>();
-        //    string headerPartId = mainPart.GetIdOfPart(headerPart);
+        private static void AddPageNumbering(MainDocumentPart mainPart, Body body)
+        {
+            HeaderPart headerPart = mainPart.AddNewPart<HeaderPart>();
+            string headerPartId = mainPart.GetIdOfPart(headerPart);
 
-        //    Header header = new Header();
-        //    Paragraph paragraph = new Paragraph(new ParagraphProperties
-        //    {
-        //        Justification = new Justification { Val = JustificationValues.Right }
-        //    });
+            Header header = new Header();
+            Paragraph paragraph = new Paragraph(new ParagraphProperties
+            {
+                Justification = new Justification { Val = JustificationValues.Right }
+            });
 
-        //    Run run = new Run(WordUtils.GetRunProperties(fontSize: "20"));
+            Run run = new Run(WordUtils.GetRunProperties(fontSize: "20"));
 
-        //    run.Append(new FieldChar { FieldCharType = FieldCharValues.Begin });
-        //    run.Append(new FieldCode("PAGE"));
-        //    run.Append(new FieldChar { FieldCharType = FieldCharValues.End });
+            run.Append(new FieldChar { FieldCharType = FieldCharValues.Begin });
+            run.Append(new FieldCode("PAGE"));
+            run.Append(new FieldChar { FieldCharType = FieldCharValues.End });
 
-        //    paragraph.Append(run);
-        //    header.Append(paragraph);
-        //    headerPart.Header = header;
+            paragraph.Append(run);
+            header.Append(paragraph);
+            headerPart.Header = header;
 
-        //    SectionProperties sectionProps = body.Elements<SectionProperties>().LastOrDefault();
-        //    if (sectionProps == null)
-        //    {
-        //        sectionProps = new SectionProperties();
-        //        body.Append(sectionProps);
-        //    }
+            SectionProperties sectionProps = body.Elements<SectionProperties>().LastOrDefault();
+            if (sectionProps == null)
+            {
+                sectionProps = new SectionProperties();
+                body.Append(sectionProps);
+            }
 
-        //    HeaderReference headerReference = new HeaderReference
-        //    {
-        //        Type = HeaderFooterValues.Default,
-        //        Id = headerPartId
-        //    };
-        //    sectionProps.Append(headerReference);
-        //}
+            HeaderReference headerReference = new HeaderReference
+            {
+                Type = HeaderFooterValues.Default,
+                Id = headerPartId
+            };
+            sectionProps.Append(headerReference);
+        }
 
-        //private static void EnableDifferentFirstPageHeader(Body body)
-        //{
-        //    SectionProperties sectionProps = body.Elements<SectionProperties>().LastOrDefault();
-        //    if (sectionProps == null)
-        //    {
-        //        sectionProps = new SectionProperties();
-        //        body.Append(sectionProps);
-        //    }
+        private static void EnableDifferentFirstPageHeader(Body body)
+        {
+            SectionProperties sectionProps = body.Elements<SectionProperties>().LastOrDefault();
+            if (sectionProps == null)
+            {
+                sectionProps = new SectionProperties();
+                body.Append(sectionProps);
+            }
 
-        //    TitlePage titlePage = new TitlePage();
-        //    sectionProps.AppendChild(titlePage);
-        //}
+            TitlePage titlePage = new TitlePage();
+            sectionProps.AppendChild(titlePage);
+        }
 
         public async Task<FileData?> GeneratePage(int journalId, int pageId)
         {

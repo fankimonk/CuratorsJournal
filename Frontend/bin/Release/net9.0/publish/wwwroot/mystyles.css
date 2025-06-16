@@ -1,0 +1,24 @@
+﻿.input {
+    border: none;
+    outline: none;
+    background: transparent;
+}
+
+.underline {
+    border-bottom: 1px solid #000;
+}
+
+.fullwidth {
+    width: 100%;
+}
+
+.flex-container {
+    display: flex;
+    align-items: center;
+}
+
+.flex-input {
+    flex: 1;
+    margin-left: 8px;
+    margin-right: 8px;
+}

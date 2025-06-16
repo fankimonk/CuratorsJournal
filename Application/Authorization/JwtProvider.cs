@@ -40,14 +40,12 @@ namespace Application.Authorization
         {
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_options.SecretKey));
             var signingCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
-
             Claim[] claims = [
                 new(CustomClaims.UserId, user.Id.ToString()),
                 new(ClaimTypes.Name, user.UserName),
                 new(ClaimTypes.Role, user.Role!.Name),
                 new(CustomClaims.WorkerId, user.WorkerId == null ? "" : ((int)user.WorkerId).ToString())
             ];
-
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(claims),
@@ -56,7 +54,6 @@ namespace Application.Authorization
                 Issuer = _options.Issuer,
                 Audience = _options.Audience
             };
-
             return new JsonWebTokenHandler().CreateToken(tokenDescriptor);
         }
     }

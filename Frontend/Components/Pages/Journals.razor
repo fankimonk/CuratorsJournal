@@ -24,8 +24,9 @@ else
     <table class="table">
         <thead>
             <tr>
-                <th class="col-4">Группа</th>
-                <th class="col-6">Куратор</th>
+                <th class="col-3">Группа</th>
+                <th class="col-5">Куратор</th>
+                <th class="col-2"></th>
                 <th class="col-2"></th>
             </tr>
         </thead>
@@ -38,8 +39,14 @@ else
                         @GetCuratorsFIO(journal)
                     </td>
                     <td>
-                        <DownloadButton @onclick="async () => await DownloadWord(journal)" StopPropagation="true" />
+                        <DownloadButton @onclick="async () => await DownloadWord(journal, _hasPageNumeration[journal.Id])" StopPropagation="true" />
                         <FileButton @onclick="() => OpenFiles(journal.Id)" StopPropagation="true"></FileButton>
+                    </td>
+                    <td>
+                        <div>
+                            <input id="haspagenumeration" type="checkbox" @bind="_hasPageNumeration[journal.Id]" @onclick:stopPropagation="@true" />
+                            <label for="haspagenumeration" @onclick:stopPropagation="@true">Нумерация страниц</label>
+                        </div>
                     </td>
                 </tr>
             }
@@ -50,10 +57,15 @@ else
 @code {
     private List<JournalResponse>? _journals;
 
+    private Dictionary<int, bool> _hasPageNumeration = new();
+
     protected override async Task OnInitializedAsync()
     {
         _journals = await APIService.GetFromJsonAsync<List<JournalResponse>>("api/journal");
-
+        if (_journals != null)
+        {
+            foreach (var journal in _journals) _hasPageNumeration.Add(journal.Id, false);
+        }
         await APIService.GetAsync("api/auth/verify");
     }
 
@@ -76,13 +88,13 @@ else
                journal.Curator.MiddleName;
     }
 
-    private async Task DownloadWord(JournalResponse journal)
+    private async Task DownloadWord(JournalResponse journal, bool hasPageNumeration)
     {
         var response = await APIService.GetAsync($"api/journal/checkisapproved/{journal.Id}");
         if (response.IsSuccessStatusCode)
         {
             var isApproved = await response.Content.ReadFromJsonAsync<bool>();
-            await JSRuntime.InvokeVoidAsync("downloadWord", journal.Id, journal.GroupNumber);
+            await JSRuntime.InvokeVoidAsync("downloadWord", journal.Id, journal.GroupNumber, hasPageNumeration);
         }
     }
 }

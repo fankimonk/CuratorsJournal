@@ -19,17 +19,17 @@ namespace Application.Services
 
         public async Task<Group?> CreateGroup(string number, int specialtyId, int admissionYear, int? curatorId)
         {
-            var group = new Group { Number = number, AdmissionYear = admissionYear, SpecialtyId = specialtyId, CuratorId = curatorId };
+            var group = new Group { Number = number, AdmissionYear = admissionYear, 
+                SpecialtyId = specialtyId, CuratorId = curatorId };
             var createdGroup = await _groupsRepository.CreateAsync(group);
-
             if (createdGroup == null) return null;
-            if (createdGroup.CuratorId != null) await _curatorsAppointmentHistoryRepository.CreateAsync(new CuratorsAppointmentHistoryRecord
-            {
-                GroupId = createdGroup.Id,
-                CuratorId = (int)createdGroup.CuratorId,
-                AppointmentDate = DateOnly.FromDateTime(DateTime.Now)
-            });
-
+            if (createdGroup.CuratorId != null) 
+                await _curatorsAppointmentHistoryRepository.CreateAsync(new CuratorsAppointmentHistoryRecord
+                {
+                    GroupId = createdGroup.Id,
+                    CuratorId = (int)createdGroup.CuratorId,
+                    AppointmentDate = DateOnly.FromDateTime(DateTime.Now)
+                });
             await _journalsService.CreateJournal(createdGroup.Id);
             return createdGroup;
         }

@@ -9,20 +9,16 @@ namespace DataAccess.Configurations
         public void Configure(EntityTypeBuilder<StudentListRecord> builder)
         {
             builder.HasKey(sl => sl.Id);
-
             builder.ToTable(t => t.HasCheckConstraint("CHK_StudentList_Number", "[Number] >= 0"));
-
             builder
                 .HasOne(sl => sl.Student)
                 .WithOne(s => s.StudentListRecord)
                 .HasForeignKey<StudentListRecord>(sl => sl.StudentId);
-
             builder
                 .HasOne(sl => sl.PersonalizedAccountingCard)
                 .WithMany(pac => pac.StudentList)
                 .HasForeignKey(sl => sl.PersonalizedAccountingCardId)
                 .OnDelete(DeleteBehavior.Restrict);
-
             builder
                 .HasOne(sl => sl.Page)
                 .WithMany(p => p.StudentList)

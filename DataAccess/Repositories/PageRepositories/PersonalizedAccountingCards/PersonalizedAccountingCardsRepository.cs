@@ -97,7 +97,5 @@ namespace DataAccess.Repositories.PageRepositories.PersonalizedAccountingCards
             var stundetsWithCards = await GetStudentIdsThatHaveCard(journalId);
             return studentIds.Except(stundetsWithCards).ToList();
         }
-
-
     }
 }

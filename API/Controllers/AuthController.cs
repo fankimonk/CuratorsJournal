@@ -54,12 +54,8 @@ namespace API.Controllers
         }
 
         [HttpPost("logout")]
-        //[Authorize(Policy = "UserPolicy")]
         public async Task<IActionResult> Logout()
         {
-            //HttpContext.Response.Cookies.Delete("tasty-cookies");
-            //return Ok();
-
             var refreshToken = Request.Cookies["refreshtoken"];
             if (!string.IsNullOrEmpty(refreshToken))
             {

@@ -21,13 +21,12 @@ namespace Application.Services
         {
             var createdJournal = await _journalsRepository.CreateAsync(new Journal { GroupId = groupId });
             if (createdJournal == null) return createdJournal;
-
             var pageTypes = Enum.GetValues<PageTypes>();
             foreach (var pt in pageTypes)
             {
-                await _pagesRepository.CreateAsync(new Page { PageTypeId = (int)pt, JournalId = createdJournal.Id, IsApproved = false });
+                await _pagesRepository.CreateAsync(new Page 
+                    { PageTypeId = (int)pt, JournalId = createdJournal.Id, IsApproved = false });
             }
-
             return createdJournal;
         }
 

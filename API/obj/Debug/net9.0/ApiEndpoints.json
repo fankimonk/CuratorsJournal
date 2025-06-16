@@ -635,7 +635,7 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "API.Controllers.GroupController",
+    "ContainingType": "API.Controllers.GroupsController",
     "Method": "GetAll",
     "RelativePath": "api/group",
     "HttpMethod": "GET",
@@ -655,7 +655,7 @@
     ]
   },
   {
-    "ContainingType": "API.Controllers.GroupController",
+    "ContainingType": "API.Controllers.GroupsController",
     "Method": "Create",
     "RelativePath": "api/group",
     "HttpMethod": "POST",
@@ -681,7 +681,7 @@
     ]
   },
   {
-    "ContainingType": "API.Controllers.GroupController",
+    "ContainingType": "API.Controllers.GroupsController",
     "Method": "Update",
     "RelativePath": "api/group/{id}",
     "HttpMethod": "PUT",
@@ -712,7 +712,7 @@
     ]
   },
   {
-    "ContainingType": "API.Controllers.GroupController",
+    "ContainingType": "API.Controllers.GroupsController",
     "Method": "Delete",
     "RelativePath": "api/group/{id}",
     "HttpMethod": "DELETE",
@@ -728,7 +728,7 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "API.Controllers.GroupController",
+    "ContainingType": "API.Controllers.GroupsController",
     "Method": "AppointCurator",
     "RelativePath": "api/group/appointcurator",
     "HttpMethod": "PUT",
@@ -754,7 +754,7 @@
     ]
   },
   {
-    "ContainingType": "API.Controllers.GroupController",
+    "ContainingType": "API.Controllers.GroupsController",
     "Method": "GetByJournal",
     "RelativePath": "api/group/getbyjournal/{journalId}",
     "HttpMethod": "GET",
@@ -1093,6 +1093,11 @@
         "Name": "journalId",
         "Type": "System.Int32",
         "IsRequired": true
+      },
+      {
+        "Name": "hasPageNumeration",
+        "Type": "System.Boolean",
+        "IsRequired": false
       }
     ],
     "ReturnTypes": []
@@ -3853,22 +3858,6 @@
         "StatusCode": 200
       }
     ]
-  },
-  {
-    "ContainingType": "API.Controllers.PagesController",
-    "Method": "UnapproveAllJournalPages",
-    "RelativePath": "api/page/Unapprovealljournalpages/{journalId}",
-    "HttpMethod": "PUT",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "journalId",
-        "Type": "System.Int32",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
   },
   {
     "ContainingType": "API.Controllers.PEGroupsController",

@@ -81,9 +81,9 @@ namespace API.Controllers
         }
 
         [HttpGet("downloadword/{journalId}")]
-        public async Task<IActionResult> DownloadWord([FromRoute] int journalId)
+        public async Task<IActionResult> DownloadWord([FromRoute] int journalId, [FromQuery] bool hasPageNumeration)
         {
-            var fileData = await _wordService.GenerateWord(journalId);
+            var fileData = await _wordService.GenerateWord(journalId, hasPageNumeration);
             if (fileData == null) return BadRequest();
             return File(fileData.MemoryStream, fileData.ContentType, fileData.FileName);
         }

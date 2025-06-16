@@ -1,0 +1,12 @@
+C:\Dev\Web\CuratorsJournal\Diagrams\bin\Debug\net9.0\Diagrams.deps.json
+C:\Dev\Web\CuratorsJournal\Diagrams\bin\Debug\net9.0\Diagrams.dll
+C:\Dev\Web\CuratorsJournal\Diagrams\bin\Debug\net9.0\Diagrams.pdb
+C:\Dev\Web\CuratorsJournal\Diagrams\obj\Debug\net9.0\Diagrams.GeneratedMSBuildEditorConfig.editorconfig
+C:\Dev\Web\CuratorsJournal\Diagrams\obj\Debug\net9.0\Diagrams.AssemblyInfoInputs.cache
+C:\Dev\Web\CuratorsJournal\Diagrams\obj\Debug\net9.0\Diagrams.AssemblyInfo.cs
+C:\Dev\Web\CuratorsJournal\Diagrams\obj\Debug\net9.0\Diagrams.csproj.CoreCompileInputs.cache
+C:\Dev\Web\CuratorsJournal\Diagrams\obj\Debug\net9.0\Diagrams.sourcelink.json
+C:\Dev\Web\CuratorsJournal\Diagrams\obj\Debug\net9.0\Diagrams.dll
+C:\Dev\Web\CuratorsJournal\Diagrams\obj\Debug\net9.0\refint\Diagrams.dll
+C:\Dev\Web\CuratorsJournal\Diagrams\obj\Debug\net9.0\Diagrams.pdb
+C:\Dev\Web\CuratorsJournal\Diagrams\obj\Debug\net9.0\ref\Diagrams.dll

@@ -2,6 +2,7 @@ using Frontend.Components;
 using Frontend.Security;
 using Frontend.Services;
 using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.Hosting.StaticWebAssets;
 
 var builder = WebApplication.CreateBuilder(args);
 

@@ -1,0 +1,12 @@
+C:\Dev\Web\CuratorsJournal\Domain\bin\Release\net9.0\Domain.deps.json
+C:\Dev\Web\CuratorsJournal\Domain\bin\Release\net9.0\Domain.dll
+C:\Dev\Web\CuratorsJournal\Domain\bin\Release\net9.0\Domain.pdb
+C:\Dev\Web\CuratorsJournal\Domain\obj\Release\net9.0\Domain.GeneratedMSBuildEditorConfig.editorconfig
+C:\Dev\Web\CuratorsJournal\Domain\obj\Release\net9.0\Domain.AssemblyInfoInputs.cache
+C:\Dev\Web\CuratorsJournal\Domain\obj\Release\net9.0\Domain.AssemblyInfo.cs
+C:\Dev\Web\CuratorsJournal\Domain\obj\Release\net9.0\Domain.csproj.CoreCompileInputs.cache
+C:\Dev\Web\CuratorsJournal\Domain\obj\Release\net9.0\Domain.sourcelink.json
+C:\Dev\Web\CuratorsJournal\Domain\obj\Release\net9.0\Domain.dll
+C:\Dev\Web\CuratorsJournal\Domain\obj\Release\net9.0\refint\Domain.dll
+C:\Dev\Web\CuratorsJournal\Domain\obj\Release\net9.0\Domain.pdb
+C:\Dev\Web\CuratorsJournal\Domain\obj\Release\net9.0\ref\Domain.dll

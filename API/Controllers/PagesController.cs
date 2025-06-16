@@ -49,12 +49,5 @@ namespace API.Controllers
             if (!await _pagesRepository.ApproveAllJournalPagesAsync(journalId)) return NotFound();
             return Ok();
         }
-
-        [HttpPut("Unapprovealljournalpages/{journalId}")]
-        public async Task<ActionResult> UnapproveAllJournalPages([FromRoute] int journalId)
-        {
-            if (!await _pagesRepository.UnapproveAllJournalPagesAsync(journalId)) return NotFound();
-            return Ok();
-        }
     }
 }

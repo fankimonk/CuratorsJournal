@@ -69,28 +69,13 @@ namespace Application.Services.Word
 
         private void AppendTitleName()
         {
-            var runProperties = new RunProperties(
-                new RunFonts()
-                {
-                    Ascii = "Times New Roman",
-                    HighAnsi = "Times New Roman",
-                    EastAsia = "Times New Roman",
-                    ComplexScript = "Times New Roman"
-                },
-                new FontSize() { Val = "28" },
-                new Bold()
-            );
-
             var title = new Paragraph(
                 new ParagraphProperties(
                     new Justification { Val = JustificationValues.Center },
                     new SpacingBetweenLines { After = "0", Before = "0" }),
-                new Run(
-                    runProperties,
-                    new Text("КОНТАКТНЫЕ ТЕЛЕФОНЫ"),
-                    new Break())
+                new Run(WordUtils.GetRunProperties(bold: true),
+                    new Text("КОНТАКТНЫЕ ТЕЛЕФОНЫ"), new Break())
             );
-
             _documentBody.Append(title);
         }
 

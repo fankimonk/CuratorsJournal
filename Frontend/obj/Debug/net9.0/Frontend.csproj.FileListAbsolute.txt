@@ -105,7 +105,7 @@ C:\Dev\Web\CuratorsJournal\Frontend\obj\Debug\net9.0\Frontend.pdb
 C:\Dev\Web\CuratorsJournal\Frontend\obj\Debug\net9.0\Frontend.genruntimeconfig.cache
 C:\Dev\Web\CuratorsJournal\Frontend\obj\Debug\net9.0\ref\Frontend.dll
 C:\Dev\Web\CuratorsJournal\Frontend\obj\Debug\net9.0\compressed\yfpirp1akv-88l9hkhcu1.gz
-C:\Dev\Web\CuratorsJournal\Frontend\obj\Debug\net9.0\staticwebassets.upToDateCheck.txt
 C:\Dev\Web\CuratorsJournal\Frontend\obj\Debug\net9.0\compressed\jd1yl0xbb3-kbylhf9is7.gz
 C:\Dev\Web\CuratorsJournal\Frontend\obj\Debug\net9.0\compressed\r64d8unpc6-o9om25p3kt.gz
-C:\Dev\Web\CuratorsJournal\Frontend\obj\Debug\net9.0\compressed\dgyc46k7no-jmy2ll365l.gz
+C:\Dev\Web\CuratorsJournal\Frontend\obj\Debug\net9.0\compressed\dgyc46k7no-do871pjmv1.gz
+C:\Dev\Web\CuratorsJournal\Frontend\obj\Debug\net9.0\staticwebassets.upToDateCheck.txt

@@ -1,0 +1,337 @@
+is_global = true
+build_property.TargetFramework = net9.0
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = true
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = 
+build_property.PlatformNeutralAssembly = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property.RootNamespace = Frontend
+build_property.RootNamespace = Frontend
+build_property.ProjectDir = C:\Dev\Web\CuratorsJournal\Frontend\
+build_property.EnableComHosting = 
+build_property.EnableGeneratedComInterfaceComImportInterop = 
+build_property.RazorLangVersion = 9.0
+build_property.SupportLocalizedComponentNames = 
+build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+build_property.MSBuildProjectDirectory = C:\Dev\Web\CuratorsJournal\Frontend
+build_property._RazorSourceGeneratorDebug = 
+build_property.EffectiveAnalysisLevelStyle = 9.0
+build_property.EnableCodeStyleSeverity = 
+
+[C:/Dev/Web/CuratorsJournal/Frontend/Components/App.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xBcHAucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Dev/Web/CuratorsJournal/Frontend/Components/Buttons/AddButton.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xCdXR0b25zXEFkZEJ1dHRvbi5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Dev/Web/CuratorsJournal/Frontend/Components/Buttons/ApproveButton.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xCdXR0b25zXEFwcHJvdmVCdXR0b24ucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Dev/Web/CuratorsJournal/Frontend/Components/Buttons/ButtonBase.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xCdXR0b25zXEJ1dHRvbkJhc2UucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Dev/Web/CuratorsJournal/Frontend/Components/Buttons/DeleteButton.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xCdXR0b25zXERlbGV0ZUJ1dHRvbi5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Dev/Web/CuratorsJournal/Frontend/Components/Buttons/DownloadButton.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xCdXR0b25zXERvd25sb2FkQnV0dG9uLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Dev/Web/CuratorsJournal/Frontend/Components/Buttons/EditButton.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xCdXR0b25zXEVkaXRCdXR0b24ucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Dev/Web/CuratorsJournal/Frontend/Components/Buttons/FileButton.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xCdXR0b25zXEZpbGVCdXR0b24ucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Dev/Web/CuratorsJournal/Frontend/Components/Buttons/ReferenceButton.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xCdXR0b25zXFJlZmVyZW5jZUJ1dHRvbi5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Dev/Web/CuratorsJournal/Frontend/Components/Buttons/ReloadButton.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xCdXR0b25zXFJlbG9hZEJ1dHRvbi5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Dev/Web/CuratorsJournal/Frontend/Components/Buttons/UploadButton.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xCdXR0b25zXFVwbG9hZEJ1dHRvbi5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Dev/Web/CuratorsJournal/Frontend/Components/Layout/EmptyLayout.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xMYXlvdXRcRW1wdHlMYXlvdXQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Dev/Web/CuratorsJournal/Frontend/Components/Pages/AccessDenied.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xBY2Nlc3NEZW5pZWQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Dev/Web/CuratorsJournal/Frontend/Components/Pages/CRUDPageBase.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xDUlVEUGFnZUJhc2UucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Dev/Web/CuratorsJournal/Frontend/Components/Pages/Error.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xFcnJvci5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Dev/Web/CuratorsJournal/Frontend/Components/Pages/JournalDocuments.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xKb3VybmFsRG9jdW1lbnRzLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Dev/Web/CuratorsJournal/Frontend/Components/Pages/JournalKeeping.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xKb3VybmFsS2VlcGluZy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Dev/Web/CuratorsJournal/Frontend/Components/Pages/Journals.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xKb3VybmFscy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Dev/Web/CuratorsJournal/Frontend/Components/Pages/Journal/ContactPhones.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xKb3VybmFsXENvbnRhY3RQaG9uZXMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Dev/Web/CuratorsJournal/Frontend/Components/Pages/Journal/CuratorsIdeologicalAndEducationalWorkAccounting.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xKb3VybmFsXEN1cmF0b3JzSWRlb2xvZ2ljYWxBbmRFZHVjYXRpb25hbFdvcmtBY2NvdW50aW5nLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Dev/Web/CuratorsJournal/Frontend/Components/Pages/Journal/CuratorsParticipationInPedagogicalSeminars.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xKb3VybmFsXEN1cmF0b3JzUGFydGljaXBhdGlvbkluUGVkYWdvZ2ljYWxTZW1pbmFycy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Dev/Web/CuratorsJournal/Frontend/Components/Pages/Journal/DynamicsOfKeyIndicators.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xKb3VybmFsXER5bmFtaWNzT2ZLZXlJbmRpY2F0b3JzLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Dev/Web/CuratorsJournal/Frontend/Components/Pages/Journal/EducationalProcessSchedule.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xKb3VybmFsXEVkdWNhdGlvbmFsUHJvY2Vzc1NjaGVkdWxlLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Dev/Web/CuratorsJournal/Frontend/Components/Pages/Journal/FinalPerformanceAccounting.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xKb3VybmFsXEZpbmFsUGVyZm9ybWFuY2VBY2NvdW50aW5nLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Dev/Web/CuratorsJournal/Frontend/Components/Pages/Journal/GroupActives.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xKb3VybmFsXEdyb3VwQWN0aXZlcy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Dev/Web/CuratorsJournal/Frontend/Components/Pages/Journal/Holidays.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xKb3VybmFsXEhvbGlkYXlzLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Dev/Web/CuratorsJournal/Frontend/Components/Pages/Journal/InformationHoursAccounting.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xKb3VybmFsXEluZm9ybWF0aW9uSG91cnNBY2NvdW50aW5nLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Dev/Web/CuratorsJournal/Frontend/Components/Pages/Journal/LiteratureWork.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xKb3VybmFsXExpdGVyYXR1cmVXb3JrLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Dev/Web/CuratorsJournal/Frontend/Components/Pages/Journal/PersonalizedAccountingCards/IndividualInformation.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xKb3VybmFsXFBlcnNvbmFsaXplZEFjY291bnRpbmdDYXJkc1xJbmRpdmlkdWFsSW5mb3JtYXRpb24ucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Dev/Web/CuratorsJournal/Frontend/Components/Pages/Journal/PersonalizedAccountingCards/IndividualWorkWithStudent.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xKb3VybmFsXFBlcnNvbmFsaXplZEFjY291bnRpbmdDYXJkc1xJbmRpdmlkdWFsV29ya1dpdGhTdHVkZW50LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Dev/Web/CuratorsJournal/Frontend/Components/Pages/Journal/PersonalizedAccountingCards/Modals/AddChronicDiseaseModal.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xKb3VybmFsXFBlcnNvbmFsaXplZEFjY291bnRpbmdDYXJkc1xNb2RhbHNcQWRkQ2hyb25pY0Rpc2Vhc2VNb2RhbC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Dev/Web/CuratorsJournal/Frontend/Components/Pages/Journal/PersonalizedAccountingCards/Modals/AddPEGroupModal.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xKb3VybmFsXFBlcnNvbmFsaXplZEFjY291bnRpbmdDYXJkc1xNb2RhbHNcQWRkUEVHcm91cE1vZGFsLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Dev/Web/CuratorsJournal/Frontend/Components/Pages/Journal/PersonalizedAccountingCards/ParentalInformation.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xKb3VybmFsXFBlcnNvbmFsaXplZEFjY291bnRpbmdDYXJkc1xQYXJlbnRhbEluZm9ybWF0aW9uLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Dev/Web/CuratorsJournal/Frontend/Components/Pages/Journal/PersonalizedAccountingCards/PersonalizedAccountingCard.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xKb3VybmFsXFBlcnNvbmFsaXplZEFjY291bnRpbmdDYXJkc1xQZXJzb25hbGl6ZWRBY2NvdW50aW5nQ2FyZC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Dev/Web/CuratorsJournal/Frontend/Components/Pages/Journal/PersonalizedAccountingCards/StudentDisciplinaryResponsibilities.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xKb3VybmFsXFBlcnNvbmFsaXplZEFjY291bnRpbmdDYXJkc1xTdHVkZW50RGlzY2lwbGluYXJ5UmVzcG9uc2liaWxpdGllcy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Dev/Web/CuratorsJournal/Frontend/Components/Pages/Journal/PersonalizedAccountingCards/StudentEncouragements.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xKb3VybmFsXFBlcnNvbmFsaXplZEFjY291bnRpbmdDYXJkc1xTdHVkZW50RW5jb3VyYWdlbWVudHMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Dev/Web/CuratorsJournal/Frontend/Components/Pages/Journal/PersonalizedAccountingCards/WorkWithParents.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xKb3VybmFsXFBlcnNvbmFsaXplZEFjY291bnRpbmdDYXJkc1xXb3JrV2l0aFBhcmVudHMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Dev/Web/CuratorsJournal/Frontend/Components/Pages/Journal/PsychologicalAndPedagogicalCharacteristics.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xKb3VybmFsXFBzeWNob2xvZ2ljYWxBbmRQZWRhZ29naWNhbENoYXJhY3RlcmlzdGljcy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Dev/Web/CuratorsJournal/Frontend/Components/Pages/Journal/RecommendationsAndRemarks.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xKb3VybmFsXFJlY29tbWVuZGF0aW9uc0FuZFJlbWFya3MucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Dev/Web/CuratorsJournal/Frontend/Components/Pages/Journal/SocioPedagogicalCharacteristics.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xKb3VybmFsXFNvY2lvUGVkYWdvZ2ljYWxDaGFyYWN0ZXJpc3RpY3MucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Dev/Web/CuratorsJournal/Frontend/Components/Pages/Journal/StudentList.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xKb3VybmFsXFN0dWRlbnRMaXN0LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Dev/Web/CuratorsJournal/Frontend/Components/Pages/Journal/StudentsHealthCard.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xKb3VybmFsXFN0dWRlbnRzSGVhbHRoQ2FyZC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Dev/Web/CuratorsJournal/Frontend/Components/Pages/Journal/TablePageBase.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xKb3VybmFsXFRhYmxlUGFnZUJhc2UucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Dev/Web/CuratorsJournal/Frontend/Components/Pages/Journal/Title.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xKb3VybmFsXFRpdGxlLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Dev/Web/CuratorsJournal/Frontend/Components/Pages/Journal/Traditions.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xKb3VybmFsXFRyYWRpdGlvbnMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Dev/Web/CuratorsJournal/Frontend/Components/Pages/Journal/_Imports.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xKb3VybmFsXF9JbXBvcnRzLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Dev/Web/CuratorsJournal/Frontend/Components/Pages/Login.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xMb2dpbi5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Dev/Web/CuratorsJournal/Frontend/Components/Pages/PageBase.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xQYWdlQmFzZS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Dev/Web/CuratorsJournal/Frontend/Components/Pages/ReferencePages/AcademicYears.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xSZWZlcmVuY2VQYWdlc1xBY2FkZW1pY1llYXJzLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Dev/Web/CuratorsJournal/Frontend/Components/Pages/ReferencePages/ChronicDiseases.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xSZWZlcmVuY2VQYWdlc1xDaHJvbmljRGlzZWFzZXMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Dev/Web/CuratorsJournal/Frontend/Components/Pages/ReferencePages/Deaneries.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xSZWZlcmVuY2VQYWdlc1xEZWFuZXJpZXMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Dev/Web/CuratorsJournal/Frontend/Components/Pages/ReferencePages/Departments.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xSZWZlcmVuY2VQYWdlc1xEZXBhcnRtZW50cy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Dev/Web/CuratorsJournal/Frontend/Components/Pages/ReferencePages/Faculties.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xSZWZlcmVuY2VQYWdlc1xGYWN1bHRpZXMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Dev/Web/CuratorsJournal/Frontend/Components/Pages/ReferencePages/Groups.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xSZWZlcmVuY2VQYWdlc1xHcm91cHMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Dev/Web/CuratorsJournal/Frontend/Components/Pages/ReferencePages/HolidayType/AddHolidayTypeModalForm.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xSZWZlcmVuY2VQYWdlc1xIb2xpZGF5VHlwZVxBZGRIb2xpZGF5VHlwZU1vZGFsRm9ybS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Dev/Web/CuratorsJournal/Frontend/Components/Pages/ReferencePages/HolidayType/EditHolidayTypeModalForm.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xSZWZlcmVuY2VQYWdlc1xIb2xpZGF5VHlwZVxFZGl0SG9saWRheVR5cGVNb2RhbEZvcm0ucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Dev/Web/CuratorsJournal/Frontend/Components/Pages/ReferencePages/HolidayType/HolidayTypes.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xSZWZlcmVuY2VQYWdlc1xIb2xpZGF5VHlwZVxIb2xpZGF5VHlwZXMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Dev/Web/CuratorsJournal/Frontend/Components/Pages/ReferencePages/Literature.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xSZWZlcmVuY2VQYWdlc1xMaXRlcmF0dXJlLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Dev/Web/CuratorsJournal/Frontend/Components/Pages/ReferencePages/PEGroup.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xSZWZlcmVuY2VQYWdlc1xQRUdyb3VwLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Dev/Web/CuratorsJournal/Frontend/Components/Pages/ReferencePages/Positions.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xSZWZlcmVuY2VQYWdlc1xQb3NpdGlvbnMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Dev/Web/CuratorsJournal/Frontend/Components/Pages/ReferencePages/Specialties.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xSZWZlcmVuY2VQYWdlc1xTcGVjaWFsdGllcy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Dev/Web/CuratorsJournal/Frontend/Components/Pages/ReferencePages/Students.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xSZWZlcmVuY2VQYWdlc1xTdHVkZW50cy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Dev/Web/CuratorsJournal/Frontend/Components/Pages/ReferencePages/Subjects.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xSZWZlcmVuY2VQYWdlc1xTdWJqZWN0cy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Dev/Web/CuratorsJournal/Frontend/Components/Pages/ReferencePages/Teachers.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xSZWZlcmVuY2VQYWdlc1xUZWFjaGVycy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Dev/Web/CuratorsJournal/Frontend/Components/Pages/ReferencePages/Users.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xSZWZlcmVuY2VQYWdlc1xVc2Vycy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Dev/Web/CuratorsJournal/Frontend/Components/Pages/ReferencePages/Workers.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xSZWZlcmVuY2VQYWdlc1xXb3JrZXJzLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Dev/Web/CuratorsJournal/Frontend/Components/Pages/UserProfile.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xVc2VyUHJvZmlsZS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Dev/Web/CuratorsJournal/Frontend/Components/Routes.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xSb3V0ZXMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Dev/Web/CuratorsJournal/Frontend/Components/Utils/Alert.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xVdGlsc1xBbGVydC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Dev/Web/CuratorsJournal/Frontend/Components/Utils/AlertBottom.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xVdGlsc1xBbGVydEJvdHRvbS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Dev/Web/CuratorsJournal/Frontend/Components/Utils/ConfirmDeleteModal.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xVdGlsc1xDb25maXJtRGVsZXRlTW9kYWwucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Dev/Web/CuratorsJournal/Frontend/Components/Utils/DeletableChip.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xVdGlsc1xEZWxldGFibGVDaGlwLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Dev/Web/CuratorsJournal/Frontend/Components/Utils/Modal.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xVdGlsc1xNb2RhbC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Dev/Web/CuratorsJournal/Frontend/Components/Utils/ModalFormBase.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xVdGlsc1xNb2RhbEZvcm1CYXNlLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Dev/Web/CuratorsJournal/Frontend/Components/_Imports.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xfSW1wb3J0cy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Dev/Web/CuratorsJournal/Frontend/Components/Layout/Journal/JournalLayout.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xMYXlvdXRcSm91cm5hbFxKb3VybmFsTGF5b3V0LnJhem9y
+build_metadata.AdditionalFiles.CssScope = b-ugu1blg2bi
+
+[C:/Dev/Web/CuratorsJournal/Frontend/Components/Layout/Journal/JournalNavMenu.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xMYXlvdXRcSm91cm5hbFxKb3VybmFsTmF2TWVudS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-rywomp374a
+
+[C:/Dev/Web/CuratorsJournal/Frontend/Components/Layout/MainLayout.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xMYXlvdXRcTWFpbkxheW91dC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-cj3fj28uav
+
+[C:/Dev/Web/CuratorsJournal/Frontend/Components/Layout/NavMenu.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xMYXlvdXRcTmF2TWVudS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-ftcrkoicqg
