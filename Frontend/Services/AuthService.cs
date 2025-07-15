@@ -52,7 +52,10 @@ namespace Frontend.Services
         public async Task Logout()
         {
             var refreshToken = await _refreshTokenService.Get();
-            _httpClient.DefaultRequestHeaders.Add("Cookie", $"refreshtoken={refreshToken}");
+            if (!string.IsNullOrEmpty(refreshToken))
+            {
+                _httpClient.DefaultRequestHeaders.Add("Cookie", $"refreshtoken={refreshToken}");
+            }
 
             var response = await _httpClient.PostAsync("api/auth/logout", null);
             if (response.IsSuccessStatusCode)

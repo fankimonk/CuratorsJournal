@@ -36,7 +36,10 @@ else
         <PropertyColumn Property="@(l => l.Role.Name)" Sortable="true" Title="Роль" class="align-middle" />
         <PropertyColumn Property="@(l => GetWorkerFIO(l.WorkerId))" Sortable="true" Title="Сотрудник" class="align-middle" />
         <TemplateColumn class="text-end">
-            <DeleteButton @onclick="async () => await Delete(context)" />
+            @if (context.Id != AppState.User.Id)
+            {
+                <DeleteButton @onclick="async () => await Delete(context)" />
+            }
         </TemplateColumn>
     </QuickGrid>
 

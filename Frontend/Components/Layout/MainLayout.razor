@@ -5,6 +5,7 @@
 @inherits LayoutComponentBase
 
 @inject AppState AppState
+@inject AuthService AuthService
 @inject JournalState JournalState
 @inject JwtAuthenticationStateProvider AuthStateProvider
 @inject NavigationManager NavigationManager
@@ -22,6 +23,10 @@
                 {
                     <DownloadButton AdditionalClasses="me-3" @onclick="DownloadJournalKeeping">Скачать страницу</DownloadButton>
                 }
+            </div>
+            <div class="col-5"></div>
+            <div class="col-0">
+                <button @onclick="Logout" class="btn btn-primary">Выйти</button>
             </div>
         </div>
 
@@ -47,5 +52,10 @@
     private async Task DownloadJournalKeeping()
     {
         await JSRuntime.InvokeVoidAsync("downloadJournalKeeping");
+    }
+
+    private async Task Logout()
+    {
+        await AuthService.Logout();
     }
 }
